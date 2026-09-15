@@ -1,0 +1,6 @@
+{
+  "name": "BookHub - Verified Rare & Pre-Owned Book Marketplace",
+  "description": "An authenticated collector book marketplace and escrow auction platform featuring certified inspection audits, seller hubs, live bidding consoles, and administrative governance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
