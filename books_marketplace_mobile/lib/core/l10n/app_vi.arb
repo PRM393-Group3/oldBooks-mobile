@@ -1,0 +1,552 @@
+{
+  "@@locale": "vi",
+  "appName": "Book Marketplace",
+  "retry": "Thử lại",
+  "cancel": "Hủy",
+  "save": "Lưu",
+  "confirm": "Xác nhận",
+  "close": "Đóng",
+  "loading": "Đang tải",
+  "navHome": "Trang chủ",
+  "navProfile": "Hồ sơ",
+  "homePlaceholderTitle": "Đang phát triển",
+  "homePlaceholderMessage": "Màn hình trang chủ sẽ có ở phiên bản sau.",
+  "loginTitle": "Đăng nhập",
+  "loginSubtitle": "Chào mừng bạn quay lại chợ sách cũ.",
+  "loginButton": "Đăng nhập",
+  "noAccountPrompt": "Chưa có tài khoản?",
+  "registerLink": "Đăng ký",
+  "registerTitle": "Tạo tài khoản",
+  "registerSubtitle": "Chỉ mất một phút để bắt đầu mua bán sách cũ.",
+  "registerButton": "Đăng ký",
+  "haveAccountPrompt": "Đã có tài khoản?",
+  "loginLink": "Đăng nhập",
+  "roleLabel": "Bạn muốn",
+  "roleOptionBuyer": "Mua sách",
+  "roleOptionSeller": "Bán sách",
+  "logout": "Đăng xuất",
+  "logoutConfirmTitle": "Đăng xuất?",
+  "logoutConfirmMessage": "Bạn cần đăng nhập lại để tiếp tục sử dụng.",
+  "emailLabel": "Email",
+  "passwordLabel": "Mật khẩu",
+  "fullNameLabel": "Họ và tên",
+  "phoneLabel": "Số điện thoại",
+  "showPassword": "Hiện mật khẩu",
+  "hidePassword": "Ẩn mật khẩu",
+  "profileTitle": "Hồ sơ",
+  "editProfile": "Sửa hồ sơ",
+  "changeAvatar": "Đổi ảnh đại diện",
+  "changePassword": "Đổi mật khẩu",
+  "language": "Ngôn ngữ",
+  "languageSystem": "Theo hệ thống",
+  "languageVi": "Tiếng Việt",
+  "languageEn": "English",
+  "phoneNotSet": "Chưa cập nhật",
+  "memberSince": "Ngày tham gia",
+  "roleBuyer": "Người mua",
+  "roleSeller": "Người bán",
+  "roleInspector": "Kiểm định viên",
+  "roleAdmin": "Quản trị viên",
+  "roleUnknown": "Người dùng",
+  "emailReadOnlyHelper": "Email dùng để đăng nhập nên không thể thay đổi.",
+  "profileUpdated": "Đã cập nhật hồ sơ",
+  "avatarPreviewLabel": "Ảnh đại diện",
+  "avatarHint": "JPG, PNG hoặc WebP, tối đa 5 MB.",
+  "chooseFromGallery": "Chọn từ thư viện",
+  "takePhoto": "Chụp ảnh",
+  "saveAvatar": "Lưu ảnh",
+  "removeAvatar": "Xóa ảnh đại diện",
+  "removeAvatarConfirmTitle": "Xóa ảnh đại diện?",
+  "removeAvatarConfirmMessage": "Ảnh của bạn sẽ được thay bằng chữ cái đầu tên.",
+  "avatarUpdated": "Đã cập nhật ảnh đại diện",
+  "avatarRemoved": "Đã xóa ảnh đại diện",
+  "currentPasswordLabel": "Mật khẩu hiện tại",
+  "newPasswordLabel": "Mật khẩu mới",
+  "confirmPasswordLabel": "Nhập lại mật khẩu mới",
+  "passwordLengthHelper": "Từ 8 đến 72 ký tự.",
+  "passwordRuleHelper": "Từ 8 đến 72 ký tự và khác mật khẩu hiện tại.",
+  "passwordChangedOtherDevices": "Các thiết bị khác sẽ được đăng xuất.",
+  "passwordChanged": "Đã đổi mật khẩu",
+  "changePasswordLocked": "Thử lại sau {seconds} giây",
+  "@changePasswordLocked": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "validationFullNameRequired": "Vui lòng nhập họ và tên.",
+  "validationFullNameTooLong": "Họ và tên tối đa 100 ký tự.",
+  "validationPhoneInvalid": "Số điện thoại phải bắt đầu bằng 0 hoặc +84, theo sau là 9 hoặc 10 chữ số.",
+  "validationEmailRequired": "Vui lòng nhập email.",
+  "validationEmailInvalid": "Email chưa đúng định dạng.",
+  "validationPasswordRequired": "Vui lòng nhập mật khẩu.",
+  "validationPasswordLength": "Mật khẩu phải từ 8 đến 72 ký tự.",
+  "validationPasswordSame": "Mật khẩu mới phải khác mật khẩu hiện tại.",
+  "validationPasswordMismatch": "Mật khẩu nhập lại chưa khớp.",
+  "errorNetwork": "Không có kết nối mạng. Hãy kiểm tra mạng rồi thử lại.",
+  "errorValidation": "Thông tin chưa hợp lệ. Hãy kiểm tra lại các ô bên trên.",
+  "errorFieldInvalid": "Giá trị chưa hợp lệ.",
+  "errorAvatarInvalid": "Ảnh không hợp lệ hoặc vượt quá 5 MB. Hãy chọn ảnh khác.",
+  "errorAvatarUnsupported": "Chỉ hỗ trợ ảnh JPG, PNG hoặc WebP. Hãy chọn ảnh khác.",
+  "errorAvatarTooLarge": "Ảnh vượt quá 5 MB. Hãy chọn ảnh nhỏ hơn.",
+  "errorPickImage": "Không mở được ảnh. Hãy kiểm tra quyền truy cập rồi thử lại.",
+  "errorUploadFailed": "Tải ảnh lên thất bại. Hãy thử lại.",
+  "errorCurrentPasswordIncorrect": "Mật khẩu hiện tại chưa đúng.",
+  "errorPasswordUnchanged": "Mật khẩu mới phải khác mật khẩu cũ.",
+  "errorInvalidCredentials": "Email hoặc mật khẩu chưa đúng.",
+  "errorSessionExpired": "Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.",
+  "errorUserNotFound": "Tài khoản không còn tồn tại.",
+  "errorInternal": "Hệ thống đang gặp sự cố. Hãy thử lại sau ít phút.",
+  "errorUnknown": "Đã có lỗi xảy ra. Hãy thử lại.",
+  "supportCode": "Mã hỗ trợ: {traceId}",
+  "@supportCode": {
+    "placeholders": {
+      "traceId": {
+        "type": "String"
+      }
+    }
+  },
+  "navMyListings": "Tin của tôi",
+  "navNotifications": "Thông báo",
+  "navQueue": "Hàng đợi",
+  "navClaimed": "Đang giữ",
+  "sellAction": "Đăng bán",
+  "adminWebNote": "Chức năng quản trị nằm ở cổng web.",
+  "loadMoreFailed": "Không tải thêm được. Chạm để thử lại.",
+  "optionalHint": "Không bắt buộc",
+  "edit": "Sửa",
+  "done": "Xong",
+  "comingSoon": "Mua hàng và đặt giá sẽ có ở phiên bản sau.",
+  "emptyBrowseTitle": "Chưa có sách nào",
+  "emptyBrowseMessage": "Sách đã kiểm định sẽ xuất hiện ở đây.",
+  "emptyMineTitle": "Bạn chưa có tin nào",
+  "emptyMineMessage": "Bấm Đăng bán để tạo tin đầu tiên.",
+  "emptyQueueTitle": "Hàng đợi trống",
+  "emptyQueueMessage": "Không có tin nào đang chờ kiểm định.",
+  "emptyClaimedTitle": "Bạn chưa giữ tin nào",
+  "emptyClaimedMessage": "Nhận tin từ hàng đợi để bắt đầu kiểm định.",
+  "emptyNotificationsTitle": "Chưa có thông báo",
+  "emptyNotificationsMessage": "Kết quả kiểm định sẽ hiện ở đây.",
+  "statusDraft": "Nháp",
+  "statusPendingInspection": "Chờ kiểm định",
+  "statusInInspection": "Đang kiểm định",
+  "statusRejected": "Bị từ chối",
+  "statusOnSale": "Đang bán",
+  "statusAuctioning": "Đang đấu giá",
+  "statusClosed": "Đã đóng",
+  "statusUnknown": "Không rõ",
+  "filterAll": "Tất cả",
+  "categoryAll": "Tất cả danh mục",
+  "conditionLikeNew": "Như mới",
+  "conditionLikeNewDesc": "Gần như chưa qua sử dụng, không có dấu hiệu đã đọc.",
+  "conditionVeryGood": "Rất tốt",
+  "conditionVeryGoodDesc": "Rất ít dấu hiệu sử dụng, không rách, không ghi chú.",
+  "conditionGood": "Tốt",
+  "conditionGoodDesc": "Có dấu hiệu sử dụng nhẹ, nội dung nguyên vẹn.",
+  "conditionFair": "Khá",
+  "conditionFairDesc": "Có vết ố, gấp góc hoặc ghi chú nhưng đọc được đầy đủ.",
+  "conditionPoor": "Cũ nhiều",
+  "conditionPoorDesc": "Hư hỏng rõ rệt nhưng nội dung vẫn đầy đủ.",
+  "coverPaperback": "Bìa mềm",
+  "coverHardcover": "Bìa cứng",
+  "imageFrontCover": "Bìa trước",
+  "imageBackCover": "Bìa sau",
+  "imageSpine": "Gáy sách",
+  "imageInnerPage": "Trang trong",
+  "imageExtra": "Ảnh thêm",
+  "saleFixedPrice": "Giá cố định",
+  "saleAuction": "Đấu giá",
+  "startOnApproval": "Ngay khi được duyệt",
+  "startScheduled": "Hẹn giờ",
+  "reasonBlurryPhotos": "Ảnh không đủ hoặc không rõ",
+  "reasonDescriptionMismatch": "Mô tả không khớp hiện trạng",
+  "reasonSuspectedPirated": "Nghi ngờ sách in lậu",
+  "reasonProhibitedPublication": "Xuất bản phẩm bị cấm lưu hành",
+  "reasonDamageBeyondThreshold": "Sách hư hỏng vượt ngưỡng chấp nhận",
+  "reasonWrongCatalogInfo": "Thông tin thư mục sai",
+  "reasonDuplicateListing": "Trùng lặp tin đăng",
+  "notificationsTitle": "Thông báo",
+  "markAllRead": "Đọc tất cả",
+  "unreadOnly": "Chưa đọc",
+  "notifListingApproved": "Tin đăng của bạn đã được duyệt",
+  "notifListingRejected": "Tin đăng của bạn bị từ chối",
+  "notifListingClosed": "Tin đăng của bạn đã bị đóng",
+  "wizardTitleNew": "Đăng bán sách",
+  "wizardTitleEdit": "Sửa tin đăng",
+  "wizardStepBook": "Thông tin sách",
+  "wizardStepPhotos": "Ảnh",
+  "wizardStepSale": "Cách bán",
+  "wizardStepReview": "Xem lại",
+  "wizardStepOf": "Bước {current}/{total}",
+  "@wizardStepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "next": "Tiếp",
+  "back": "Quay lại",
+  "submitForInspection": "Nộp kiểm định",
+  "draftSavedHint": "Bản nháp được lưu sau mỗi bước.",
+  "fieldTitle": "Tên sách",
+  "fieldAuthor": "Tác giả",
+  "fieldCategory": "Danh mục",
+  "fieldPublisher": "Nhà xuất bản",
+  "fieldIsbn": "ISBN",
+  "fieldYear": "Năm xuất bản",
+  "fieldLanguage": "Ngôn ngữ (mã 2 chữ cái)",
+  "fieldLanguageHelper": "Ví dụ: vi, en",
+  "fieldPages": "Số trang",
+  "fieldCover": "Loại bìa",
+  "fieldCondition": "Tình trạng sách",
+  "fieldConditionHelper": "Chọn mức gần đúng nhất. Kiểm định viên sẽ xác nhận.",
+  "fieldDescription": "Mô tả",
+  "fieldDescriptionHelper": "Tối thiểu {min} ký tự ({count}/{min})",
+  "@fieldDescriptionHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fieldDefects": "Ghi chú khuyết điểm",
+  "chooseCategory": "Chọn danh mục",
+  "categoryPickerTitle": "Chọn danh mục",
+  "validationFieldRequired": "Vui lòng nhập {field}.",
+  "@validationFieldRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "validationChooseCategory": "Vui lòng chọn danh mục.",
+  "validationChooseCondition": "Vui lòng chọn tình trạng sách.",
+  "validationIsbn": "ISBN chưa hợp lệ (ISBN-10 hoặc ISBN-13).",
+  "validationYearRange": "Năm từ {min} đến {max}.",
+  "@validationYearRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationPagesRange": "Số trang từ 1 đến 10000.",
+  "validationLanguage": "Nhập mã 2 chữ cái, ví dụ vi.",
+  "validationDescriptionMin": "Mô tả tối thiểu {min} ký tự.",
+  "@validationDescriptionMin": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationTooLong": "Tối đa {max} ký tự.",
+  "@validationTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "photosHint": "Cần {min} đến {max} ảnh, đủ 4 góc: bìa trước, bìa sau, gáy và trang trong.",
+  "@photosHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "photosRequired": "Bắt buộc",
+  "photosExtraTitle": "Ảnh thêm ({count}/{max})",
+  "@photosExtraTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "addPhoto": "Thêm ảnh",
+  "photoUploading": "Đang tải ảnh",
+  "photoFailed": "Tải ảnh thất bại",
+  "photoRetry": "Thử lại",
+  "removePhoto": "Xóa ảnh",
+  "photosWaiting": "Đang tải ảnh, vui lòng đợi.",
+  "photosMissing": "Còn thiếu ảnh bắt buộc.",
+  "photoSlotLabel": "{angle}, ảnh bắt buộc",
+  "@photoSlotLabel": {
+    "placeholders": {
+      "angle": {
+        "type": "String"
+      }
+    }
+  },
+  "photoSlotEmpty": "Chưa có ảnh",
+  "saleMethodLabel": "Cách bán",
+  "fieldPrice": "Giá bán (₫)",
+  "fieldQuantity": "Số lượng",
+  "fieldStartingPrice": "Giá khởi điểm (₫)",
+  "fieldMinIncrement": "Bước giá tối thiểu (₫)",
+  "minIncrementHelper": "Tối thiểu {amount}",
+  "@minIncrementHelper": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "fieldDuration": "Thời lượng phiên",
+  "durationDays": "{days} ngày",
+  "@durationDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "fieldStartMode": "Bắt đầu",
+  "fieldScheduledAt": "Thời điểm bắt đầu",
+  "pickDateTime": "Chọn ngày giờ",
+  "validationPriceRange": "Giá từ {min} đến {max}.",
+  "@validationPriceRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "validationQuantityRange": "Số lượng từ {min} đến {max}.",
+  "@validationQuantityRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationMinIncrement": "Bước giá tối thiểu là {amount}.",
+  "@validationMinIncrement": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "validationScheduleRequired": "Vui lòng chọn thời điểm bắt đầu.",
+  "validationScheduleFuture": "Thời điểm bắt đầu phải ở tương lai.",
+  "changeMethodTitle": "Đổi cách bán?",
+  "changeMethodMessage": "Cấu hình của cách bán còn lại sẽ bị xóa khi bạn lưu.",
+  "reviewBookSection": "Thông tin sách",
+  "reviewPhotosSection": "Ảnh",
+  "reviewSaleSection": "Cách bán",
+  "submitSuccessTitle": "Đã nộp kiểm định",
+  "submitSuccessMessage": "Dự kiến xử lý trong {hours} giờ. Bạn sẽ nhận thông báo khi có kết quả.",
+  "@submitSuccessMessage": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "incompleteTitle": "Tin đăng còn thiếu",
+  "incompleteMessage": "Hãy bổ sung các mục sau rồi nộp lại.",
+  "goToStep": "Đến bước này",
+  "missingImages": "Ảnh (đủ 4 góc)",
+  "missingSaleMethod": "Cách bán",
+  "missingPrice": "Giá bán",
+  "missingStartingPrice": "Giá khởi điểm",
+  "missingCategory": "Danh mục",
+  "myListingsTitle": "Tin của tôi",
+  "continueDraft": "Tiếp tục soạn",
+  "deleteListing": "Xóa tin",
+  "deleteListingTitle": "Xóa tin này?",
+  "deleteListingMessage": "Tin sẽ được đóng và không thể khôi phục.",
+  "listingDeleted": "Đã xóa tin",
+  "editAndResubmit": "Sửa và nộp lại",
+  "closeListing": "Đóng tin",
+  "resubmitsLeft": "Còn {count} lần nộp lại",
+  "@resubmitsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noResubmitsLeft": "Đã hết lượt nộp lại",
+  "estimatedProcessing": "Dự kiến xử lý trong {hours} giờ",
+  "@estimatedProcessing": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rejectedTitle": "Tin bị từ chối",
+  "closedTitle": "Tin đã bị đóng",
+  "reasonsLabel": "Lý do",
+  "inspectorNote": "Ghi chú của kiểm định viên",
+  "inspectionResult": "Kết quả kiểm định",
+  "inspectionApproved": "Đã duyệt",
+  "inspectionRejected": "Bị từ chối",
+  "inspectedOn": "Ngày kiểm định: {date}",
+  "@inspectedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "sellerSection": "Người bán",
+  "bookDetails": "Thông tin sách",
+  "detailAuthor": "Tác giả",
+  "detailPublisher": "Nhà xuất bản",
+  "detailYear": "Năm xuất bản",
+  "detailLanguage": "Ngôn ngữ",
+  "detailPages": "Số trang",
+  "detailCover": "Loại bìa",
+  "detailCondition": "Tình trạng",
+  "detailCategory": "Danh mục",
+  "detailQuantity": "Số lượng",
+  "auctionSection": "Thông tin đấu giá",
+  "startingPriceLabel": "Giá khởi điểm",
+  "minIncrementLabel": "Bước giá tối thiểu",
+  "auctionStarts": "Bắt đầu",
+  "auctionEnds": "Kết thúc",
+  "auctionDuration": "Thời lượng",
+  "startingFrom": "Từ {price}",
+  "@startingFrom": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "listingPhotoLabel": "{angle} của sách {title}",
+  "@listingPhotoLabel": {
+    "placeholders": {
+      "angle": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "description": "Mô tả",
+  "defectNotesTitle": "Khuyết điểm",
+  "submissionOf": "Lần nộp {n}/{max}",
+  "@submissionOf": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "queueTitle": "Hàng đợi kiểm định",
+  "claimedTitle": "Tin đang giữ",
+  "overdueTag": "Quá hạn",
+  "waitingHours": "Chờ {hours} giờ",
+  "@waitingHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "filterButton": "Bộ lọc",
+  "filterTitle": "Lọc hàng đợi",
+  "priceFrom": "Giá từ (₫)",
+  "priceTo": "Giá đến (₫)",
+  "applyFilter": "Áp dụng",
+  "clearFilter": "Xóa lọc",
+  "reviewTitle": "Kiểm định",
+  "claimExpiresIn": "Còn {time} để quyết định",
+  "@claimExpiresIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "claimExpired": "Khóa đã hết hạn. Hãy nhận lại tin để tiếp tục.",
+  "reclaim": "Nhận lại tin",
+  "release": "Nhả tin",
+  "releaseTitle": "Nhả tin này?",
+  "releaseMessage": "Tin sẽ quay lại hàng đợi cho kiểm định viên khác.",
+  "approve": "Duyệt",
+  "reject": "Từ chối",
+  "approveTitle": "Duyệt tin đăng",
+  "approveNoteLabel": "Ghi chú (không bắt buộc)",
+  "rejectTitle": "Từ chối tin đăng",
+  "rejectReasonsLabel": "Lý do (chọn ít nhất 1)",
+  "rejectNoteLabel": "Ghi chú cho người bán",
+  "rejectNoteHelper": "Tối thiểu {min} ký tự",
+  "@rejectNoteHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationRejectReasons": "Hãy chọn ít nhất một lý do.",
+  "validationRejectNote": "Ghi chú tối thiểu {min} ký tự.",
+  "@validationRejectNote": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "listingApproved": "Đã duyệt tin",
+  "listingRejected": "Đã từ chối tin",
+  "listingReleased": "Đã nhả tin",
+  "sellerDeclared": "Người bán khai báo",
+  "viewPhotos": "Xem ảnh gốc",
+  "inspectionHistory": "Lịch sử kiểm định",
+  "errorEmailTaken": "Email này đã được sử dụng.",
+  "errorAccountDisabled": "Tài khoản đã bị khóa. Hãy liên hệ quản trị viên.",
+  "errorListingIncomplete": "Tin đăng còn thiếu thông tin. Hãy bổ sung rồi nộp lại.",
+  "errorListingImageInvalid": "Có ảnh không hợp lệ. Hãy chọn lại ảnh đó.",
+  "errorListingNotFound": "Không tìm thấy tin đăng này.",
+  "errorListingInvalidState": "Trạng thái tin đã thay đổi. Đang tải lại tin.",
+  "errorSubmissionLimit": "Tin đã hết lượt nộp lại.",
+  "errorConcurrentUpdate": "Tin vừa được cập nhật ở nơi khác. Đang tải lại.",
+  "errorAlreadyClaimed": "Kiểm định viên khác đang giữ tin này.",
+  "errorClaimRequired": "Bạn không còn giữ tin này. Hãy nhận lại tin.",
+  "errorCategoryNotFound": "Danh mục không còn tồn tại.",
+  "errorNotificationNotFound": "Không tìm thấy thông báo này.",
+  "errorPhotoTooLarge": "Ảnh vượt quá {mb} MB. Hãy chọn ảnh nhỏ hơn.",
+  "@errorPhotoTooLarge": {
+    "placeholders": {
+      "mb": {
+        "type": "int"
+      }
+    }
+  },
+  "errorPhotosUploadPending": "Có ảnh chưa tải xong hoặc bị lỗi. Hãy thử lại ảnh đó."
+}

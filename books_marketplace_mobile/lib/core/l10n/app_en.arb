@@ -1,0 +1,552 @@
+{
+  "@@locale": "en",
+  "appName": "Book Marketplace",
+  "retry": "Try again",
+  "cancel": "Cancel",
+  "save": "Save",
+  "confirm": "Confirm",
+  "close": "Close",
+  "loading": "Loading",
+  "navHome": "Home",
+  "navProfile": "Profile",
+  "homePlaceholderTitle": "Coming soon",
+  "homePlaceholderMessage": "The home screen will arrive in a later version.",
+  "loginTitle": "Log in",
+  "loginSubtitle": "Welcome back to the used-book marketplace.",
+  "loginButton": "Log in",
+  "noAccountPrompt": "Don't have an account?",
+  "registerLink": "Sign up",
+  "registerTitle": "Create account",
+  "registerSubtitle": "It takes a minute to start buying and selling used books.",
+  "registerButton": "Sign up",
+  "haveAccountPrompt": "Already have an account?",
+  "loginLink": "Log in",
+  "roleLabel": "I want to",
+  "roleOptionBuyer": "Buy books",
+  "roleOptionSeller": "Sell books",
+  "logout": "Log out",
+  "logoutConfirmTitle": "Log out?",
+  "logoutConfirmMessage": "You will need to log in again to keep using the app.",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "fullNameLabel": "Full name",
+  "phoneLabel": "Phone number",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "profileTitle": "Profile",
+  "editProfile": "Edit profile",
+  "changeAvatar": "Change profile photo",
+  "changePassword": "Change password",
+  "language": "Language",
+  "languageSystem": "System default",
+  "languageVi": "Tiếng Việt",
+  "languageEn": "English",
+  "phoneNotSet": "Not set",
+  "memberSince": "Member since",
+  "roleBuyer": "Buyer",
+  "roleSeller": "Seller",
+  "roleInspector": "Inspector",
+  "roleAdmin": "Administrator",
+  "roleUnknown": "User",
+  "emailReadOnlyHelper": "Your email is used to log in, so it can't be changed.",
+  "profileUpdated": "Profile updated",
+  "avatarPreviewLabel": "Profile photo",
+  "avatarHint": "JPG, PNG or WebP, up to 5 MB.",
+  "chooseFromGallery": "Choose from library",
+  "takePhoto": "Take a photo",
+  "saveAvatar": "Save photo",
+  "removeAvatar": "Remove profile photo",
+  "removeAvatarConfirmTitle": "Remove profile photo?",
+  "removeAvatarConfirmMessage": "Your photo will be replaced by your initials.",
+  "avatarUpdated": "Profile photo updated",
+  "avatarRemoved": "Profile photo removed",
+  "currentPasswordLabel": "Current password",
+  "newPasswordLabel": "New password",
+  "confirmPasswordLabel": "Confirm new password",
+  "passwordLengthHelper": "8 to 72 characters.",
+  "passwordRuleHelper": "8 to 72 characters and different from your current password.",
+  "passwordChangedOtherDevices": "Other devices will be logged out.",
+  "passwordChanged": "Password changed",
+  "changePasswordLocked": "Try again in {seconds} s",
+  "@changePasswordLocked": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "validationFullNameRequired": "Please enter your full name.",
+  "validationFullNameTooLong": "Full name can be at most 100 characters.",
+  "validationPhoneInvalid": "Phone number must start with 0 or +84, followed by 9 or 10 digits.",
+  "validationEmailRequired": "Please enter your email.",
+  "validationEmailInvalid": "That email doesn't look right.",
+  "validationPasswordRequired": "Please enter your password.",
+  "validationPasswordLength": "Password must be 8 to 72 characters.",
+  "validationPasswordSame": "New password must differ from the current one.",
+  "validationPasswordMismatch": "The passwords don't match.",
+  "errorNetwork": "No connection. Check your network and try again.",
+  "errorValidation": "Some details aren't valid. Please review the fields above.",
+  "errorFieldInvalid": "This value isn't valid.",
+  "errorAvatarInvalid": "The photo is invalid or larger than 5 MB. Please choose another one.",
+  "errorAvatarUnsupported": "Only JPG, PNG or WebP photos are supported. Please choose another one.",
+  "errorAvatarTooLarge": "The photo is larger than 5 MB. Please choose a smaller one.",
+  "errorPickImage": "Couldn't open the photo. Check app permissions and try again.",
+  "errorUploadFailed": "Photo upload failed. Please try again.",
+  "errorCurrentPasswordIncorrect": "The current password is incorrect.",
+  "errorPasswordUnchanged": "New password must differ from the old one.",
+  "errorInvalidCredentials": "Incorrect email or password.",
+  "errorSessionExpired": "Your session has expired. Please log in again.",
+  "errorUserNotFound": "This account no longer exists.",
+  "errorInternal": "Something went wrong on our side. Please try again in a few minutes.",
+  "errorUnknown": "Something went wrong. Please try again.",
+  "supportCode": "Support code: {traceId}",
+  "@supportCode": {
+    "placeholders": {
+      "traceId": {
+        "type": "String"
+      }
+    }
+  },
+  "navMyListings": "My listings",
+  "navNotifications": "Notifications",
+  "navQueue": "Queue",
+  "navClaimed": "Claimed",
+  "sellAction": "Sell",
+  "adminWebNote": "Administration is available on the web portal.",
+  "loadMoreFailed": "Couldn't load more. Tap to retry.",
+  "optionalHint": "Optional",
+  "edit": "Edit",
+  "done": "Done",
+  "comingSoon": "Buying and bidding will arrive in a later version.",
+  "emptyBrowseTitle": "No books yet",
+  "emptyBrowseMessage": "Inspected books will appear here.",
+  "emptyMineTitle": "You have no listings yet",
+  "emptyMineMessage": "Tap Sell to create your first listing.",
+  "emptyQueueTitle": "The queue is empty",
+  "emptyQueueMessage": "No listings are waiting for inspection.",
+  "emptyClaimedTitle": "You aren't holding any listings",
+  "emptyClaimedMessage": "Claim a listing from the queue to start inspecting.",
+  "emptyNotificationsTitle": "No notifications yet",
+  "emptyNotificationsMessage": "Inspection results will appear here.",
+  "statusDraft": "Draft",
+  "statusPendingInspection": "Pending inspection",
+  "statusInInspection": "In inspection",
+  "statusRejected": "Rejected",
+  "statusOnSale": "On sale",
+  "statusAuctioning": "Auctioning",
+  "statusClosed": "Closed",
+  "statusUnknown": "Unknown",
+  "filterAll": "All",
+  "categoryAll": "All categories",
+  "conditionLikeNew": "Like new",
+  "conditionLikeNewDesc": "Almost unused, no sign of reading.",
+  "conditionVeryGood": "Very good",
+  "conditionVeryGoodDesc": "Very light wear, no tears or notes.",
+  "conditionGood": "Good",
+  "conditionGoodDesc": "Light wear, content intact.",
+  "conditionFair": "Fair",
+  "conditionFairDesc": "Stains, folded corners or notes, but fully readable.",
+  "conditionPoor": "Heavily used",
+  "conditionPoorDesc": "Clearly worn but content is complete.",
+  "coverPaperback": "Paperback",
+  "coverHardcover": "Hardcover",
+  "imageFrontCover": "Front cover",
+  "imageBackCover": "Back cover",
+  "imageSpine": "Spine",
+  "imageInnerPage": "Inner page",
+  "imageExtra": "Extra photo",
+  "saleFixedPrice": "Fixed price",
+  "saleAuction": "Auction",
+  "startOnApproval": "As soon as approved",
+  "startScheduled": "Scheduled",
+  "reasonBlurryPhotos": "Photos missing or blurry",
+  "reasonDescriptionMismatch": "Description doesn't match the book",
+  "reasonSuspectedPirated": "Suspected pirated copy",
+  "reasonProhibitedPublication": "Prohibited publication",
+  "reasonDamageBeyondThreshold": "Damage beyond the accepted level",
+  "reasonWrongCatalogInfo": "Incorrect catalog information",
+  "reasonDuplicateListing": "Duplicate listing",
+  "notificationsTitle": "Notifications",
+  "markAllRead": "Mark all read",
+  "unreadOnly": "Unread",
+  "notifListingApproved": "Your listing was approved",
+  "notifListingRejected": "Your listing was rejected",
+  "notifListingClosed": "Your listing was closed",
+  "wizardTitleNew": "Sell a book",
+  "wizardTitleEdit": "Edit listing",
+  "wizardStepBook": "Book info",
+  "wizardStepPhotos": "Photos",
+  "wizardStepSale": "Sale method",
+  "wizardStepReview": "Review",
+  "wizardStepOf": "Step {current} of {total}",
+  "@wizardStepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "next": "Next",
+  "back": "Back",
+  "submitForInspection": "Submit for inspection",
+  "draftSavedHint": "Your draft is saved after each step.",
+  "fieldTitle": "Title",
+  "fieldAuthor": "Author",
+  "fieldCategory": "Category",
+  "fieldPublisher": "Publisher",
+  "fieldIsbn": "ISBN",
+  "fieldYear": "Publication year",
+  "fieldLanguage": "Language (2-letter code)",
+  "fieldLanguageHelper": "For example: vi, en",
+  "fieldPages": "Pages",
+  "fieldCover": "Cover type",
+  "fieldCondition": "Book condition",
+  "fieldConditionHelper": "Pick the closest level. An inspector will confirm it.",
+  "fieldDescription": "Description",
+  "fieldDescriptionHelper": "At least {min} characters ({count}/{min})",
+  "@fieldDescriptionHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fieldDefects": "Defect notes",
+  "chooseCategory": "Choose a category",
+  "categoryPickerTitle": "Choose a category",
+  "validationFieldRequired": "Please enter {field}.",
+  "@validationFieldRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "validationChooseCategory": "Please choose a category.",
+  "validationChooseCondition": "Please choose the book condition.",
+  "validationIsbn": "Invalid ISBN (ISBN-10 or ISBN-13).",
+  "validationYearRange": "Year must be between {min} and {max}.",
+  "@validationYearRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationPagesRange": "Pages must be between 1 and 10000.",
+  "validationLanguage": "Enter a 2-letter code, for example vi.",
+  "validationDescriptionMin": "Description needs at least {min} characters.",
+  "@validationDescriptionMin": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationTooLong": "At most {max} characters.",
+  "@validationTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "photosHint": "You need {min} to {max} photos covering 4 angles: front cover, back cover, spine and an inner page.",
+  "@photosHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "photosRequired": "Required",
+  "photosExtraTitle": "Extra photos ({count}/{max})",
+  "@photosExtraTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "addPhoto": "Add photo",
+  "photoUploading": "Uploading photo",
+  "photoFailed": "Photo upload failed",
+  "photoRetry": "Retry",
+  "removePhoto": "Remove photo",
+  "photosWaiting": "Photos are still uploading, please wait.",
+  "photosMissing": "Some required photos are missing.",
+  "photoSlotLabel": "{angle}, required photo",
+  "@photoSlotLabel": {
+    "placeholders": {
+      "angle": {
+        "type": "String"
+      }
+    }
+  },
+  "photoSlotEmpty": "No photo yet",
+  "saleMethodLabel": "Sale method",
+  "fieldPrice": "Price (₫)",
+  "fieldQuantity": "Quantity",
+  "fieldStartingPrice": "Starting price (₫)",
+  "fieldMinIncrement": "Minimum bid increment (₫)",
+  "minIncrementHelper": "At least {amount}",
+  "@minIncrementHelper": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "fieldDuration": "Auction length",
+  "durationDays": "{days} days",
+  "@durationDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "fieldStartMode": "Start",
+  "fieldScheduledAt": "Start time",
+  "pickDateTime": "Pick date and time",
+  "validationPriceRange": "Price must be between {min} and {max}.",
+  "@validationPriceRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "validationQuantityRange": "Quantity must be between {min} and {max}.",
+  "@validationQuantityRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationMinIncrement": "Minimum increment is {amount}.",
+  "@validationMinIncrement": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "validationScheduleRequired": "Please pick a start time.",
+  "validationScheduleFuture": "The start time must be in the future.",
+  "changeMethodTitle": "Change sale method?",
+  "changeMethodMessage": "The other method's settings are removed when you save.",
+  "reviewBookSection": "Book info",
+  "reviewPhotosSection": "Photos",
+  "reviewSaleSection": "Sale method",
+  "submitSuccessTitle": "Submitted for inspection",
+  "submitSuccessMessage": "Expected within {hours} hours. You will be notified with the result.",
+  "@submitSuccessMessage": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "incompleteTitle": "Listing is incomplete",
+  "incompleteMessage": "Please complete the items below, then submit again.",
+  "goToStep": "Go to this step",
+  "missingImages": "Photos (all 4 angles)",
+  "missingSaleMethod": "Sale method",
+  "missingPrice": "Price",
+  "missingStartingPrice": "Starting price",
+  "missingCategory": "Category",
+  "myListingsTitle": "My listings",
+  "continueDraft": "Continue editing",
+  "deleteListing": "Delete listing",
+  "deleteListingTitle": "Delete this listing?",
+  "deleteListingMessage": "The listing will be closed and can't be restored.",
+  "listingDeleted": "Listing deleted",
+  "editAndResubmit": "Edit and resubmit",
+  "closeListing": "Close listing",
+  "resubmitsLeft": "{count} resubmissions left",
+  "@resubmitsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noResubmitsLeft": "No resubmissions left",
+  "estimatedProcessing": "Expected within {hours} hours",
+  "@estimatedProcessing": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rejectedTitle": "Listing rejected",
+  "closedTitle": "Listing closed",
+  "reasonsLabel": "Reasons",
+  "inspectorNote": "Inspector's note",
+  "inspectionResult": "Inspection result",
+  "inspectionApproved": "Approved",
+  "inspectionRejected": "Rejected",
+  "inspectedOn": "Inspected on {date}",
+  "@inspectedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "sellerSection": "Seller",
+  "bookDetails": "Book details",
+  "detailAuthor": "Author",
+  "detailPublisher": "Publisher",
+  "detailYear": "Year",
+  "detailLanguage": "Language",
+  "detailPages": "Pages",
+  "detailCover": "Cover",
+  "detailCondition": "Condition",
+  "detailCategory": "Category",
+  "detailQuantity": "Quantity",
+  "auctionSection": "Auction details",
+  "startingPriceLabel": "Starting price",
+  "minIncrementLabel": "Minimum increment",
+  "auctionStarts": "Starts",
+  "auctionEnds": "Ends",
+  "auctionDuration": "Length",
+  "startingFrom": "From {price}",
+  "@startingFrom": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "listingPhotoLabel": "{angle} of {title}",
+  "@listingPhotoLabel": {
+    "placeholders": {
+      "angle": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "description": "Description",
+  "defectNotesTitle": "Defects",
+  "submissionOf": "Submission {n} of {max}",
+  "@submissionOf": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "queueTitle": "Inspection queue",
+  "claimedTitle": "Claimed listings",
+  "overdueTag": "Overdue",
+  "waitingHours": "Waiting {hours} h",
+  "@waitingHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "filterButton": "Filters",
+  "filterTitle": "Filter queue",
+  "priceFrom": "Price from (₫)",
+  "priceTo": "Price to (₫)",
+  "applyFilter": "Apply",
+  "clearFilter": "Clear filters",
+  "reviewTitle": "Inspect",
+  "claimExpiresIn": "{time} left to decide",
+  "@claimExpiresIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "claimExpired": "Your claim expired. Claim the listing again to continue.",
+  "reclaim": "Claim again",
+  "release": "Release",
+  "releaseTitle": "Release this listing?",
+  "releaseMessage": "It goes back to the queue for other inspectors.",
+  "approve": "Approve",
+  "reject": "Reject",
+  "approveTitle": "Approve listing",
+  "approveNoteLabel": "Note (optional)",
+  "rejectTitle": "Reject listing",
+  "rejectReasonsLabel": "Reasons (choose at least 1)",
+  "rejectNoteLabel": "Note for the seller",
+  "rejectNoteHelper": "At least {min} characters",
+  "@rejectNoteHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationRejectReasons": "Choose at least one reason.",
+  "validationRejectNote": "The note needs at least {min} characters.",
+  "@validationRejectNote": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "listingApproved": "Listing approved",
+  "listingRejected": "Listing rejected",
+  "listingReleased": "Listing released",
+  "sellerDeclared": "Declared by the seller",
+  "viewPhotos": "View original photos",
+  "inspectionHistory": "Inspection history",
+  "errorEmailTaken": "This email is already in use.",
+  "errorAccountDisabled": "Your account is disabled. Please contact an administrator.",
+  "errorListingIncomplete": "The listing is incomplete. Please complete it and submit again.",
+  "errorListingImageInvalid": "One of the photos is invalid. Please choose it again.",
+  "errorListingNotFound": "This listing can't be found.",
+  "errorListingInvalidState": "The listing status changed. Reloading it.",
+  "errorSubmissionLimit": "This listing has no resubmissions left.",
+  "errorConcurrentUpdate": "The listing was just updated elsewhere. Reloading.",
+  "errorAlreadyClaimed": "Another inspector is holding this listing.",
+  "errorClaimRequired": "You no longer hold this listing. Claim it again.",
+  "errorCategoryNotFound": "This category no longer exists.",
+  "errorNotificationNotFound": "This notification can't be found.",
+  "errorPhotoTooLarge": "The photo is larger than {mb} MB. Please choose a smaller one.",
+  "@errorPhotoTooLarge": {
+    "placeholders": {
+      "mb": {
+        "type": "int"
+      }
+    }
+  },
+  "errorPhotosUploadPending": "Some photos are still uploading or failed. Retry them first."
+}
