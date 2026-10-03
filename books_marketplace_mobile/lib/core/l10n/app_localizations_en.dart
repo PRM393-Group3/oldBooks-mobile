@@ -2303,4 +2303,266 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get meDefaultAddress => 'Default address';
+
+  @override
+  String get sellTitle => 'Sell';
+
+  @override
+  String get sellModeFixed => 'Fixed price';
+
+  @override
+  String get sellModeAuction => 'Auction';
+
+  @override
+  String get sellAuctionNote =>
+      'Auction books are sent to the Oldbook warehouse within 5 days to be checked and re-photographed. After approval, registration stays open for at least 3 days and needs at least 3 players.';
+
+  @override
+  String get sellPhotos => 'Book photos';
+
+  @override
+  String sellPhotoCount(int n) {
+    return '$n/10 · at least 4';
+  }
+
+  @override
+  String get sellPhotoAdd => '+ add';
+
+  @override
+  String get sellFieldTitle => 'Title';
+
+  @override
+  String get sellFieldTitleHint => 'e.g. The Little Prince';
+
+  @override
+  String get sellFieldAuthor => 'Author';
+
+  @override
+  String get sellFieldAuthorHint => 'e.g. Antoine de Saint-Exupéry';
+
+  @override
+  String get sellFieldCategory => 'Category';
+
+  @override
+  String get sellFieldCondition => 'Condition';
+
+  @override
+  String get sellFieldPrice => 'Price (₫)';
+
+  @override
+  String get sellFieldPriceHint => 'Minimum 1,000';
+
+  @override
+  String get sellFieldStart => 'Starting price';
+
+  @override
+  String get sellFieldStartHint => '≥ 10,000';
+
+  @override
+  String get sellFieldStep => 'Bid step';
+
+  @override
+  String get sellFieldBuyNow => 'Buy-now price';
+
+  @override
+  String get sellFieldBuyNowOptional => '(optional, ≥ 1.5 × starting price)';
+
+  @override
+  String get sellBuyNowHintEmpty => 'Leave empty to skip';
+
+  @override
+  String sellBuyNowHint(String amount) {
+    return '≥ $amount';
+  }
+
+  @override
+  String get sellStepHintEmpty => '1–10% of start';
+
+  @override
+  String get sellDuration => 'Auction length';
+
+  @override
+  String get sellDuration1h => '1 hour';
+
+  @override
+  String get sellDuration1d => '1 day';
+
+  @override
+  String get sellDuration3d => '3 days';
+
+  @override
+  String get sellDuration7d => '7 days';
+
+  @override
+  String sellEarliestStart(String time) {
+    return 'Earliest start: $time (5 days to the warehouse + 3 days registration + 24 hours)';
+  }
+
+  @override
+  String get sellFieldDesc => 'Description & defects (if any)';
+
+  @override
+  String get sellFieldDescHint =>
+      'Publication year, publisher, notes, stained pages…';
+
+  @override
+  String get sellPreviewTitle => 'Estimate';
+
+  @override
+  String get sellPreviewPrice => 'Price';
+
+  @override
+  String get sellPreviewFee => 'Oldbook fee (5%)';
+
+  @override
+  String get sellPreviewReceive => 'You receive';
+
+  @override
+  String get sellPreviewShip => 'Shipping (paid by buyer)';
+
+  @override
+  String get sellPreviewPlayerFee => 'Player pays entry fee';
+
+  @override
+  String get sellPreviewPlayerDeposit => 'Player deposit';
+
+  @override
+  String get sellPreviewCommission => 'Oldbook commission (10% of winning bid)';
+
+  @override
+  String get sellPreviewReceiveAtStart =>
+      'You receive if sold at the starting price';
+
+  @override
+  String get sellSubmitSale => 'Submit for review';
+
+  @override
+  String get sellSubmitAuction => 'Create auction & get warehouse code';
+
+  @override
+  String sellErrPhotos(int n) {
+    return 'At least 4 photos needed (you have $n)';
+  }
+
+  @override
+  String get sellErrTitle => 'Enter the title';
+
+  @override
+  String get sellErrAuthor => 'Enter the author';
+
+  @override
+  String get sellErrPrice => 'Minimum price is 1,000 ₫';
+
+  @override
+  String get sellErrStart => 'Minimum starting price is 10,000 ₫';
+
+  @override
+  String sellErrStep(String lo, String hi) {
+    return 'Bid step must be between $lo and $hi';
+  }
+
+  @override
+  String sellErrBuyNow(String amount) {
+    return 'Minimum buy-now price is $amount';
+  }
+
+  @override
+  String get sellErrDesc => 'Enter a description';
+
+  @override
+  String get sellDoneSaleTitle => 'Submitted for review';
+
+  @override
+  String sellDoneSaleBody(String title) {
+    return 'Oldbook will review \"$title\" within 24 hours and notify you.';
+  }
+
+  @override
+  String get sellDoneAuctionTitle => 'Auction created';
+
+  @override
+  String get sellDoneAuctionBody =>
+      'Send the book to the warehouse within 5 days with the code below. The auction is cancelled if late. You pay shipping to the warehouse.';
+
+  @override
+  String get sellDoneCode => 'Warehouse code';
+
+  @override
+  String get sellDoneWarehouse =>
+      'Oldbook warehouse Hanoi · 25 Le Van Luong, Thanh Xuan, Hanoi';
+
+  @override
+  String get sellDoneView => 'View my listings';
+
+  @override
+  String get myListingsEmpty => 'You have no listings yet.';
+
+  @override
+  String get myListingStatusPublished => 'On sale';
+
+  @override
+  String get myListingStatusPending => 'Pending review';
+
+  @override
+  String get myListingStatusNeedsChanges => 'Needs changes';
+
+  @override
+  String get myListingStatusAwaitingInbound => 'Awaiting warehouse';
+
+  @override
+  String get myListingStatusSold => 'Sold';
+
+  @override
+  String myListingKindFixed(String price) {
+    return 'Fixed price · $price';
+  }
+
+  @override
+  String myListingKindAuction(String price) {
+    return 'Auction · start $price';
+  }
+
+  @override
+  String myListingNotePublished(int days, String views) {
+    return 'Posted $days days ago · $views views';
+  }
+
+  @override
+  String myListingNotePending(int hours) {
+    return 'Submitted $hours h ago · reviewed within 24 hours';
+  }
+
+  @override
+  String get myListingNotePendingNow =>
+      'Just submitted · reviewed within 24 hours';
+
+  @override
+  String myListingNoteNeedsChanges(String reason) {
+    return 'Admin: $reason';
+  }
+
+  @override
+  String myListingNoteInbound(String date, String code) {
+    return 'Send the book to the warehouse by $date · code $code';
+  }
+
+  @override
+  String myListingNoteSold(String amount) {
+    return 'Received $amount (after 5% fee, incl. shipping)';
+  }
+
+  @override
+  String get sellCatLiterature => 'Literature';
+
+  @override
+  String get sellCatHistory => 'History';
+
+  @override
+  String get sellCatChildren => 'Children';
+
+  @override
+  String get sellCatScience => 'Science';
+
+  @override
+  String get sellCatForeign => 'Foreign language';
 }

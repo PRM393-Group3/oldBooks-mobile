@@ -2,11 +2,11 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/util/image_picking.dart';
+import '../../../core/util/photo_picker.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_sheet.dart';
 import '../../../core/widgets/app_snackbar.dart';
@@ -15,14 +15,6 @@ import '../../sim/presentation/sim_text.dart';
 import '../domain/order.dart';
 
 const _maxEvidence = 10;
-const _maxEvidenceBytes = 5 * 1024 * 1024;
-
-/// Chọn một ảnh bằng chứng từ thư viện; `null` nếu hủy. Test ghi đè.
-final evidencePickerProvider = Provider<Future<PickedImage?> Function()>((ref) {
-  final picker = ImagePicker();
-  return () =>
-      pickImage(picker, ImageSource.gallery, maxBytes: _maxEvidenceBytes);
-});
 
 /// Mở khiếu nại cho đơn [orderId]: chọn lý do, mô tả và ít nhất một ảnh bằng
 /// chứng. Bằng chứng giữ cục bộ vì khiếu nại là mô phỏng.
@@ -56,7 +48,7 @@ class _ComplaintBodyState extends ConsumerState<_ComplaintBody> {
   Future<void> _addPhoto() async {
     if (_photos.length >= _maxEvidence) return;
     try {
-      final image = await ref.read(evidencePickerProvider)();
+      final image = await ref.read(photoPickerProvider)();
       if (image != null && mounted) {
         setState(() => _photos.add(image.bytes));
       }

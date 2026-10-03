@@ -11,9 +11,6 @@ import '../features/auth/presentation/login_screen.dart';
 import '../features/auth/presentation/register_screen.dart';
 import '../features/listings/presentation/browse/book_detail_screen.dart';
 import '../features/listings/presentation/browse/browse_screen.dart';
-import '../features/listings/presentation/seller/listing_detail_screen.dart';
-import '../features/listings/presentation/seller/my_listings_screen.dart';
-import '../features/listings/presentation/seller/wizard/listing_wizard_screen.dart';
 import '../features/notifications/presentation/notifications_screen.dart';
 import '../features/orders/presentation/order_detail_screen.dart';
 import '../features/orders/presentation/orders_screen.dart';
@@ -21,6 +18,8 @@ import '../features/profile/presentation/change_avatar_screen.dart';
 import '../features/profile/presentation/change_password_screen.dart';
 import '../features/profile/presentation/edit_profile_screen.dart';
 import '../features/profile/presentation/profile_screen.dart';
+import '../features/sell/presentation/my_listings_screen.dart';
+import '../features/sell/presentation/sell_screen.dart';
 import '../features/wallet/presentation/wallet_screen.dart';
 import 'app_shell.dart';
 
@@ -86,7 +85,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/sell',
-                pageBuilder: (_, _) => _tab(const MyListingsScreen()),
+                pageBuilder: (_, _) => _tab(const SellScreen()),
               ),
             ],
           ),
@@ -118,6 +117,11 @@ final routerProvider = Provider<GoRouter>((ref) {
                         ),
                       ),
                     ],
+                  ),
+                  GoRoute(
+                    path: 'listings',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const MyListingsScreen(),
                   ),
                   GoRoute(
                     path: 'edit',
@@ -161,23 +165,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/cart',
         parentNavigatorKey: rootKey,
         builder: (_, _) => const CartScreen(),
-      ),
-      GoRoute(
-        path: '/sell/new',
-        parentNavigatorKey: rootKey,
-        builder: (_, _) => const ListingWizardScreen(),
-      ),
-      GoRoute(
-        path: '/sell/listing/:id/edit',
-        parentNavigatorKey: rootKey,
-        builder: (_, state) =>
-            ListingWizardScreen(listingId: state.pathParameters['id']),
-      ),
-      GoRoute(
-        path: '/sell/listing/:id',
-        parentNavigatorKey: rootKey,
-        builder: (_, state) =>
-            ListingDetailScreen(listingId: state.pathParameters['id']!),
       ),
     ],
   );

@@ -14,8 +14,7 @@ import '../../../core/widgets/app_state_views.dart';
 import '../../../core/widgets/app_tag.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../auth/domain/user_role.dart';
-import '../../listings/application/listing_providers.dart';
-import '../../listings/domain/listing_enums.dart';
+import '../../sell/application/my_listings_provider.dart';
 import '../../notifications/application/notification_providers.dart';
 import '../../sim/application/sim_providers.dart';
 import '../application/profile_controller.dart';
@@ -168,7 +167,7 @@ class _ProfileBody extends ConsumerWidget {
               icon: Icons.inventory_2_outlined,
               title: l.meMyListings,
               subtitle: l.meMyListingsSub,
-              onTap: () => context.go('/sell'),
+              onTap: () => context.push('/me/listings'),
             ),
             AppMenuTile(
               icon: Icons.gavel_outlined,
@@ -247,12 +246,10 @@ class _StatTiles extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
     final orders = ref.watch(openOrderCountProvider);
-    final listings = ref.watch(listingSummaryProvider).value ?? const {};
-    final activeListings =
-        (listings[ListingStatus.onSale] ?? 0) +
-        (listings[ListingStatus.auctioning] ?? 0) +
-        (listings[ListingStatus.pendingInspection] ?? 0) +
-        (listings[ListingStatus.draft] ?? 0);
+    final activeListings = ref
+        .watch(myListingsProvider)
+        .where((m) => m.isActive)
+        .length;
     final auctions = ref
         .watch(auctionsProvider)
         .where((a) => a.registered && !a.status.isEnded)
@@ -288,7 +285,11 @@ class _StatTiles extends ConsumerWidget {
       children: [
         tile('$orders', l.meStatOpenOrders, () => context.push('/me/orders')),
         const SizedBox(width: AppSpacing.xs),
-        tile('$activeListings', l.meStatListings, () => context.go('/sell')),
+        tile(
+          '$activeListings',
+          l.meStatListings,
+          () => context.push('/me/listings'),
+        ),
         const SizedBox(width: AppSpacing.xs),
         tile(
           '$auctions',

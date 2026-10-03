@@ -4075,6 +4075,462 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Địa chỉ mặc định'**
   String get meDefaultAddress;
+
+  /// No description provided for @sellTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng bán'**
+  String get sellTitle;
+
+  /// No description provided for @sellModeFixed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bán giá cố định'**
+  String get sellModeFixed;
+
+  /// No description provided for @sellModeAuction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đấu giá'**
+  String get sellModeAuction;
+
+  /// No description provided for @sellAuctionNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sách đấu giá được gửi về kho Oldbook trong 5 ngày để kiểm tra và chụp ảnh lại. Sau khi duyệt, phiên mở đăng ký tối thiểu 3 ngày và cần ít nhất 3 người tham gia.'**
+  String get sellAuctionNote;
+
+  /// No description provided for @sellPhotos.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh sách'**
+  String get sellPhotos;
+
+  /// No description provided for @sellPhotoCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n}/10 · tối thiểu 4'**
+  String sellPhotoCount(int n);
+
+  /// No description provided for @sellPhotoAdd.
+  ///
+  /// In vi, this message translates to:
+  /// **'+ thêm'**
+  String get sellPhotoAdd;
+
+  /// No description provided for @sellFieldTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên sách'**
+  String get sellFieldTitle;
+
+  /// No description provided for @sellFieldTitleHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'VD: Số đỏ'**
+  String get sellFieldTitleHint;
+
+  /// No description provided for @sellFieldAuthor.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tác giả'**
+  String get sellFieldAuthor;
+
+  /// No description provided for @sellFieldAuthorHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'VD: Vũ Trọng Phụng'**
+  String get sellFieldAuthorHint;
+
+  /// No description provided for @sellFieldCategory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thể loại'**
+  String get sellFieldCategory;
+
+  /// No description provided for @sellFieldCondition.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tình trạng'**
+  String get sellFieldCondition;
+
+  /// No description provided for @sellFieldPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá bán (đ)'**
+  String get sellFieldPrice;
+
+  /// No description provided for @sellFieldPriceHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối thiểu 1.000'**
+  String get sellFieldPriceHint;
+
+  /// No description provided for @sellFieldStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá khởi điểm'**
+  String get sellFieldStart;
+
+  /// No description provided for @sellFieldStartHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'≥ 10.000'**
+  String get sellFieldStartHint;
+
+  /// No description provided for @sellFieldStep.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bước nhảy'**
+  String get sellFieldStep;
+
+  /// No description provided for @sellFieldBuyNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá mua ngay'**
+  String get sellFieldBuyNow;
+
+  /// No description provided for @sellFieldBuyNowOptional.
+  ///
+  /// In vi, this message translates to:
+  /// **'(tùy chọn, ≥ 1,5 × giá khởi điểm)'**
+  String get sellFieldBuyNowOptional;
+
+  /// No description provided for @sellBuyNowHintEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Để trống nếu không dùng'**
+  String get sellBuyNowHintEmpty;
+
+  /// No description provided for @sellBuyNowHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'≥ {amount}'**
+  String sellBuyNowHint(String amount);
+
+  /// No description provided for @sellStepHintEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'1–10% giá KĐ'**
+  String get sellStepHintEmpty;
+
+  /// No description provided for @sellDuration.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thời lượng phiên'**
+  String get sellDuration;
+
+  /// No description provided for @sellDuration1h.
+  ///
+  /// In vi, this message translates to:
+  /// **'1 giờ'**
+  String get sellDuration1h;
+
+  /// No description provided for @sellDuration1d.
+  ///
+  /// In vi, this message translates to:
+  /// **'1 ngày'**
+  String get sellDuration1d;
+
+  /// No description provided for @sellDuration3d.
+  ///
+  /// In vi, this message translates to:
+  /// **'3 ngày'**
+  String get sellDuration3d;
+
+  /// No description provided for @sellDuration7d.
+  ///
+  /// In vi, this message translates to:
+  /// **'7 ngày'**
+  String get sellDuration7d;
+
+  /// No description provided for @sellEarliestStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu sớm nhất: {time} (5 ngày gửi kho + 3 ngày đăng ký + 24 giờ)'**
+  String sellEarliestStart(String time);
+
+  /// No description provided for @sellFieldDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô tả & lỗi (nếu có)'**
+  String get sellFieldDesc;
+
+  /// No description provided for @sellFieldDescHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Năm xuất bản, NXB, ghi chú, trang bị ố…'**
+  String get sellFieldDescHint;
+
+  /// No description provided for @sellPreviewTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dự tính'**
+  String get sellPreviewTitle;
+
+  /// No description provided for @sellPreviewPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá bán'**
+  String get sellPreviewPrice;
+
+  /// No description provided for @sellPreviewFee.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí bán Oldbook (5%)'**
+  String get sellPreviewFee;
+
+  /// No description provided for @sellPreviewReceive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nhận'**
+  String get sellPreviewReceive;
+
+  /// No description provided for @sellPreviewShip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí ship (người mua trả)'**
+  String get sellPreviewShip;
+
+  /// No description provided for @sellPreviewPlayerFee.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người chơi trả phí tham gia'**
+  String get sellPreviewPlayerFee;
+
+  /// No description provided for @sellPreviewPlayerDeposit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người chơi đặt cọc'**
+  String get sellPreviewPlayerDeposit;
+
+  /// No description provided for @sellPreviewCommission.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoa hồng Oldbook (10% giá thắng)'**
+  String get sellPreviewCommission;
+
+  /// No description provided for @sellPreviewReceiveAtStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nhận nếu bán ở giá khởi điểm'**
+  String get sellPreviewReceiveAtStart;
+
+  /// No description provided for @sellSubmitSale.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi duyệt'**
+  String get sellSubmitSale;
+
+  /// No description provided for @sellSubmitAuction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo phiên & nhận mã gửi kho'**
+  String get sellSubmitAuction;
+
+  /// No description provided for @sellErrPhotos.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần ít nhất 4 ảnh (hiện có {n})'**
+  String sellErrPhotos(int n);
+
+  /// No description provided for @sellErrTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập tên sách'**
+  String get sellErrTitle;
+
+  /// No description provided for @sellErrAuthor.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập tác giả'**
+  String get sellErrAuthor;
+
+  /// No description provided for @sellErrPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá bán tối thiểu 1.000 đ'**
+  String get sellErrPrice;
+
+  /// No description provided for @sellErrStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá khởi điểm tối thiểu 10.000 đ'**
+  String get sellErrStart;
+
+  /// No description provided for @sellErrStep.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bước nhảy phải từ {lo} đến {hi}'**
+  String sellErrStep(String lo, String hi);
+
+  /// No description provided for @sellErrBuyNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá mua ngay tối thiểu {amount}'**
+  String sellErrBuyNow(String amount);
+
+  /// No description provided for @sellErrDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mô tả'**
+  String get sellErrDesc;
+
+  /// No description provided for @sellDoneSaleTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi duyệt'**
+  String get sellDoneSaleTitle;
+
+  /// No description provided for @sellDoneSaleBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Oldbook sẽ duyệt \"{title}\" trong 24 giờ và thông báo cho bạn.'**
+  String sellDoneSaleBody(String title);
+
+  /// No description provided for @sellDoneAuctionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tạo phiên đấu giá'**
+  String get sellDoneAuctionTitle;
+
+  /// No description provided for @sellDoneAuctionBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi sách về kho trong 5 ngày kèm mã dưới đây. Quá hạn phiên tự hủy. Phí ship gửi kho do bạn trả.'**
+  String get sellDoneAuctionBody;
+
+  /// No description provided for @sellDoneCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã nhập kho'**
+  String get sellDoneCode;
+
+  /// No description provided for @sellDoneWarehouse.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kho Oldbook HN · 25 Lê Văn Lương, Thanh Xuân, Hà Nội'**
+  String get sellDoneWarehouse;
+
+  /// No description provided for @sellDoneView.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem tin đăng của tôi'**
+  String get sellDoneView;
+
+  /// No description provided for @myListingsEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có tin đăng nào.'**
+  String get myListingsEmpty;
+
+  /// No description provided for @myListingStatusPublished.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang bán'**
+  String get myListingStatusPublished;
+
+  /// No description provided for @myListingStatusPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ duyệt'**
+  String get myListingStatusPending;
+
+  /// No description provided for @myListingStatusNeedsChanges.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần sửa'**
+  String get myListingStatusNeedsChanges;
+
+  /// No description provided for @myListingStatusAwaitingInbound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ gửi về kho'**
+  String get myListingStatusAwaitingInbound;
+
+  /// No description provided for @myListingStatusSold.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã bán'**
+  String get myListingStatusSold;
+
+  /// No description provided for @myListingKindFixed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bán thường · {price}'**
+  String myListingKindFixed(String price);
+
+  /// No description provided for @myListingKindAuction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đấu giá · khởi điểm {price}'**
+  String myListingKindAuction(String price);
+
+  /// No description provided for @myListingNotePublished.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng {days} ngày trước · {views} lượt xem'**
+  String myListingNotePublished(int days, String views);
+
+  /// No description provided for @myListingNotePending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi duyệt {hours} giờ trước · duyệt trong 24 giờ'**
+  String myListingNotePending(int hours);
+
+  /// No description provided for @myListingNotePendingNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vừa gửi duyệt · duyệt trong 24 giờ'**
+  String get myListingNotePendingNow;
+
+  /// No description provided for @myListingNoteNeedsChanges.
+  ///
+  /// In vi, this message translates to:
+  /// **'Admin: {reason}'**
+  String myListingNoteNeedsChanges(String reason);
+
+  /// No description provided for @myListingNoteInbound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi sách về kho trước {date} · mã {code}'**
+  String myListingNoteInbound(String date, String code);
+
+  /// No description provided for @myListingNoteSold.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận {amount} (sau phí 5%, gồm ship)'**
+  String myListingNoteSold(String amount);
+
+  /// No description provided for @sellCatLiterature.
+  ///
+  /// In vi, this message translates to:
+  /// **'Văn học'**
+  String get sellCatLiterature;
+
+  /// No description provided for @sellCatHistory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lịch sử'**
+  String get sellCatHistory;
+
+  /// No description provided for @sellCatChildren.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiếu nhi'**
+  String get sellCatChildren;
+
+  /// No description provided for @sellCatScience.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoa học'**
+  String get sellCatScience;
+
+  /// No description provided for @sellCatForeign.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngoại văn'**
+  String get sellCatForeign;
 }
 
 class _AppLocalizationsDelegate

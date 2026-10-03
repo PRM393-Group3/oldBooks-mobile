@@ -46,7 +46,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
       }
     }
     if (mounted && n.listingId != null) {
-      context.push('/sell/listing/${n.listingId}');
+      context.push('/home/book/${n.listingId}');
     }
   }
 

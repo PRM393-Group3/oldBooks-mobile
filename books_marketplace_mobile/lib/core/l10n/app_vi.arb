@@ -1548,5 +1548,188 @@
     }
   },
   "meNotificationsAllRead": "Đã đọc hết",
-  "meDefaultAddress": "Địa chỉ mặc định"
+  "meDefaultAddress": "Địa chỉ mặc định",
+  "sellTitle": "Đăng bán",
+  "sellModeFixed": "Bán giá cố định",
+  "sellModeAuction": "Đấu giá",
+  "sellAuctionNote": "Sách đấu giá được gửi về kho Oldbook trong 5 ngày để kiểm tra và chụp ảnh lại. Sau khi duyệt, phiên mở đăng ký tối thiểu 3 ngày và cần ít nhất 3 người tham gia.",
+  "sellPhotos": "Ảnh sách",
+  "sellPhotoCount": "{n}/10 · tối thiểu 4",
+  "@sellPhotoCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sellPhotoAdd": "+ thêm",
+  "sellFieldTitle": "Tên sách",
+  "sellFieldTitleHint": "VD: Số đỏ",
+  "sellFieldAuthor": "Tác giả",
+  "sellFieldAuthorHint": "VD: Vũ Trọng Phụng",
+  "sellFieldCategory": "Thể loại",
+  "sellFieldCondition": "Tình trạng",
+  "sellFieldPrice": "Giá bán (đ)",
+  "sellFieldPriceHint": "Tối thiểu 1.000",
+  "sellFieldStart": "Giá khởi điểm",
+  "sellFieldStartHint": "≥ 10.000",
+  "sellFieldStep": "Bước nhảy",
+  "sellFieldBuyNow": "Giá mua ngay",
+  "sellFieldBuyNowOptional": "(tùy chọn, ≥ 1,5 × giá khởi điểm)",
+  "sellBuyNowHintEmpty": "Để trống nếu không dùng",
+  "sellBuyNowHint": "≥ {amount}",
+  "@sellBuyNowHint": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "sellStepHintEmpty": "1–10% giá KĐ",
+  "sellDuration": "Thời lượng phiên",
+  "sellDuration1h": "1 giờ",
+  "sellDuration1d": "1 ngày",
+  "sellDuration3d": "3 ngày",
+  "sellDuration7d": "7 ngày",
+  "sellEarliestStart": "Bắt đầu sớm nhất: {time} (5 ngày gửi kho + 3 ngày đăng ký + 24 giờ)",
+  "@sellEarliestStart": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "sellFieldDesc": "Mô tả & lỗi (nếu có)",
+  "sellFieldDescHint": "Năm xuất bản, NXB, ghi chú, trang bị ố…",
+  "sellPreviewTitle": "Dự tính",
+  "sellPreviewPrice": "Giá bán",
+  "sellPreviewFee": "Phí bán Oldbook (5%)",
+  "sellPreviewReceive": "Bạn nhận",
+  "sellPreviewShip": "Phí ship (người mua trả)",
+  "sellPreviewPlayerFee": "Người chơi trả phí tham gia",
+  "sellPreviewPlayerDeposit": "Người chơi đặt cọc",
+  "sellPreviewCommission": "Hoa hồng Oldbook (10% giá thắng)",
+  "sellPreviewReceiveAtStart": "Bạn nhận nếu bán ở giá khởi điểm",
+  "sellSubmitSale": "Gửi duyệt",
+  "sellSubmitAuction": "Tạo phiên & nhận mã gửi kho",
+  "sellErrPhotos": "Cần ít nhất 4 ảnh (hiện có {n})",
+  "@sellErrPhotos": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sellErrTitle": "Nhập tên sách",
+  "sellErrAuthor": "Nhập tác giả",
+  "sellErrPrice": "Giá bán tối thiểu 1.000 đ",
+  "sellErrStart": "Giá khởi điểm tối thiểu 10.000 đ",
+  "sellErrStep": "Bước nhảy phải từ {lo} đến {hi}",
+  "@sellErrStep": {
+    "placeholders": {
+      "lo": {
+        "type": "String"
+      },
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "sellErrBuyNow": "Giá mua ngay tối thiểu {amount}",
+  "@sellErrBuyNow": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "sellErrDesc": "Nhập mô tả",
+  "sellDoneSaleTitle": "Đã gửi duyệt",
+  "sellDoneSaleBody": "Oldbook sẽ duyệt \"{title}\" trong 24 giờ và thông báo cho bạn.",
+  "@sellDoneSaleBody": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "sellDoneAuctionTitle": "Đã tạo phiên đấu giá",
+  "sellDoneAuctionBody": "Gửi sách về kho trong 5 ngày kèm mã dưới đây. Quá hạn phiên tự hủy. Phí ship gửi kho do bạn trả.",
+  "sellDoneCode": "Mã nhập kho",
+  "sellDoneWarehouse": "Kho Oldbook HN · 25 Lê Văn Lương, Thanh Xuân, Hà Nội",
+  "sellDoneView": "Xem tin đăng của tôi",
+  "myListingsEmpty": "Bạn chưa có tin đăng nào.",
+  "myListingStatusPublished": "Đang bán",
+  "myListingStatusPending": "Chờ duyệt",
+  "myListingStatusNeedsChanges": "Cần sửa",
+  "myListingStatusAwaitingInbound": "Chờ gửi về kho",
+  "myListingStatusSold": "Đã bán",
+  "myListingKindFixed": "Bán thường · {price}",
+  "@myListingKindFixed": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "myListingKindAuction": "Đấu giá · khởi điểm {price}",
+  "@myListingKindAuction": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "myListingNotePublished": "Đăng {days} ngày trước · {views} lượt xem",
+  "@myListingNotePublished": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "views": {
+        "type": "String"
+      }
+    }
+  },
+  "myListingNotePending": "Gửi duyệt {hours} giờ trước · duyệt trong 24 giờ",
+  "@myListingNotePending": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "myListingNotePendingNow": "Vừa gửi duyệt · duyệt trong 24 giờ",
+  "myListingNoteNeedsChanges": "Admin: {reason}",
+  "@myListingNoteNeedsChanges": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "myListingNoteInbound": "Gửi sách về kho trước {date} · mã {code}",
+  "@myListingNoteInbound": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "myListingNoteSold": "Đã nhận {amount} (sau phí 5%, gồm ship)",
+  "@myListingNoteSold": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "sellCatLiterature": "Văn học",
+  "sellCatHistory": "Lịch sử",
+  "sellCatChildren": "Thiếu nhi",
+  "sellCatScience": "Khoa học",
+  "sellCatForeign": "Ngoại văn"
 }

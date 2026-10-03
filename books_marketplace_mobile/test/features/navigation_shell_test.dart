@@ -38,26 +38,6 @@ void main() {
     expect(find.widgetWithText(ChoiceChip, 'Văn học'), findsOneWidget);
   });
 
-  testWidgets('nút + Bán mở Tin của tôi kèm nút Đăng bán', (tester) async {
-    final h = Harness(UserRole.seller);
-    h.listings.mineItems = [
-      fakeListing(
-        id: 'L2',
-        status: ListingStatus.rejected,
-        bookInfo: const BookInfo(title: 'Đắc nhân tâm'),
-      ),
-    ];
-    await h.pump(tester);
-
-    await tapSellTab(tester);
-    expect(find.text('Đắc nhân tâm'), findsOneWidget);
-    expect(find.text('Bị từ chối'), findsWidgets);
-    expect(
-      find.widgetWithText(FloatingActionButton, 'Đăng bán'),
-      findsOneWidget,
-    );
-  });
-
   testWidgets('Đấu giá và Ví mở đúng màn hình', (tester) async {
     final h = Harness(UserRole.buyer);
     await h.pump(tester);

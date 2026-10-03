@@ -8,7 +8,6 @@ import 'package:books_marketplace_mobile/features/listings/domain/listing.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_input.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_rules.dart';
-import 'package:books_marketplace_mobile/features/listings/presentation/seller/wizard/wizard_fields.dart';
 import 'package:books_marketplace_mobile/features/notifications/domain/app_notification.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -325,33 +324,6 @@ void main() {
       );
       expect(n.asRead().isRead, isTrue);
       expect(NotificationType.fromApi('Nope'), NotificationType.unknown);
-    });
-  });
-
-  group('wizard', () {
-    test('trường lỗi của server ánh xạ về đúng bước', () {
-      expect(stepForField('bookInfo.title'), WizardStep.book);
-      expect(stepForField('categoryId'), WizardStep.book);
-      expect(stepForField('images'), WizardStep.photos);
-      expect(stepForField('images[0].blobName'), WizardStep.photos);
-      expect(stepForField('saleMethod'), WizardStep.sale);
-      expect(stepForField('fixedPrice.price'), WizardStep.sale);
-      expect(stepForField('auction.startingPrice'), WizardStep.sale);
-    });
-
-    test('nhãn trường thiếu bằng tiếng Việt, trường lạ giữ nguyên', () {
-      final l = AppLocalizationsVi();
-      expect(labelForField(l, 'bookInfo.title'), 'Tên sách');
-      expect(labelForField(l, 'bookInfo.description'), 'Mô tả');
-      expect(labelForField(l, 'images'), 'Ảnh (đủ 4 góc)');
-      expect(labelForField(l, 'fixedPrice.price'), 'Giá bán');
-      expect(labelForField(l, 'weird.field'), 'weird.field');
-    });
-
-    test('khóa lỗi bỏ tiền tố và chữ thường', () {
-      expect(fieldKeys({'bookInfo.publicationYear': 'x'}), {
-        'publicationyear': 'x',
-      });
     });
   });
 

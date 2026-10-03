@@ -128,9 +128,10 @@ class BookCover extends StatelessWidget {
         child: ColoredBox(
           color: colors.primaryContainer,
           child: url == null
-              ? (hue == null
-                    ? placeholder
-                    : CustomPaint(painter: _HuePainter(hue!)))
+              ? CustomPaint(
+                  painter: _HuePainter(hue ?? (label.hashCode.abs() % 360)),
+                  child: hue == null && label.isEmpty ? placeholder : null,
+                )
               : Image.network(
                   url!,
                   fit: fit,

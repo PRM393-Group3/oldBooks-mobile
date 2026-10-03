@@ -2294,4 +2294,263 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get meDefaultAddress => 'Địa chỉ mặc định';
+
+  @override
+  String get sellTitle => 'Đăng bán';
+
+  @override
+  String get sellModeFixed => 'Bán giá cố định';
+
+  @override
+  String get sellModeAuction => 'Đấu giá';
+
+  @override
+  String get sellAuctionNote =>
+      'Sách đấu giá được gửi về kho Oldbook trong 5 ngày để kiểm tra và chụp ảnh lại. Sau khi duyệt, phiên mở đăng ký tối thiểu 3 ngày và cần ít nhất 3 người tham gia.';
+
+  @override
+  String get sellPhotos => 'Ảnh sách';
+
+  @override
+  String sellPhotoCount(int n) {
+    return '$n/10 · tối thiểu 4';
+  }
+
+  @override
+  String get sellPhotoAdd => '+ thêm';
+
+  @override
+  String get sellFieldTitle => 'Tên sách';
+
+  @override
+  String get sellFieldTitleHint => 'VD: Số đỏ';
+
+  @override
+  String get sellFieldAuthor => 'Tác giả';
+
+  @override
+  String get sellFieldAuthorHint => 'VD: Vũ Trọng Phụng';
+
+  @override
+  String get sellFieldCategory => 'Thể loại';
+
+  @override
+  String get sellFieldCondition => 'Tình trạng';
+
+  @override
+  String get sellFieldPrice => 'Giá bán (đ)';
+
+  @override
+  String get sellFieldPriceHint => 'Tối thiểu 1.000';
+
+  @override
+  String get sellFieldStart => 'Giá khởi điểm';
+
+  @override
+  String get sellFieldStartHint => '≥ 10.000';
+
+  @override
+  String get sellFieldStep => 'Bước nhảy';
+
+  @override
+  String get sellFieldBuyNow => 'Giá mua ngay';
+
+  @override
+  String get sellFieldBuyNowOptional => '(tùy chọn, ≥ 1,5 × giá khởi điểm)';
+
+  @override
+  String get sellBuyNowHintEmpty => 'Để trống nếu không dùng';
+
+  @override
+  String sellBuyNowHint(String amount) {
+    return '≥ $amount';
+  }
+
+  @override
+  String get sellStepHintEmpty => '1–10% giá KĐ';
+
+  @override
+  String get sellDuration => 'Thời lượng phiên';
+
+  @override
+  String get sellDuration1h => '1 giờ';
+
+  @override
+  String get sellDuration1d => '1 ngày';
+
+  @override
+  String get sellDuration3d => '3 ngày';
+
+  @override
+  String get sellDuration7d => '7 ngày';
+
+  @override
+  String sellEarliestStart(String time) {
+    return 'Bắt đầu sớm nhất: $time (5 ngày gửi kho + 3 ngày đăng ký + 24 giờ)';
+  }
+
+  @override
+  String get sellFieldDesc => 'Mô tả & lỗi (nếu có)';
+
+  @override
+  String get sellFieldDescHint => 'Năm xuất bản, NXB, ghi chú, trang bị ố…';
+
+  @override
+  String get sellPreviewTitle => 'Dự tính';
+
+  @override
+  String get sellPreviewPrice => 'Giá bán';
+
+  @override
+  String get sellPreviewFee => 'Phí bán Oldbook (5%)';
+
+  @override
+  String get sellPreviewReceive => 'Bạn nhận';
+
+  @override
+  String get sellPreviewShip => 'Phí ship (người mua trả)';
+
+  @override
+  String get sellPreviewPlayerFee => 'Người chơi trả phí tham gia';
+
+  @override
+  String get sellPreviewPlayerDeposit => 'Người chơi đặt cọc';
+
+  @override
+  String get sellPreviewCommission => 'Hoa hồng Oldbook (10% giá thắng)';
+
+  @override
+  String get sellPreviewReceiveAtStart => 'Bạn nhận nếu bán ở giá khởi điểm';
+
+  @override
+  String get sellSubmitSale => 'Gửi duyệt';
+
+  @override
+  String get sellSubmitAuction => 'Tạo phiên & nhận mã gửi kho';
+
+  @override
+  String sellErrPhotos(int n) {
+    return 'Cần ít nhất 4 ảnh (hiện có $n)';
+  }
+
+  @override
+  String get sellErrTitle => 'Nhập tên sách';
+
+  @override
+  String get sellErrAuthor => 'Nhập tác giả';
+
+  @override
+  String get sellErrPrice => 'Giá bán tối thiểu 1.000 đ';
+
+  @override
+  String get sellErrStart => 'Giá khởi điểm tối thiểu 10.000 đ';
+
+  @override
+  String sellErrStep(String lo, String hi) {
+    return 'Bước nhảy phải từ $lo đến $hi';
+  }
+
+  @override
+  String sellErrBuyNow(String amount) {
+    return 'Giá mua ngay tối thiểu $amount';
+  }
+
+  @override
+  String get sellErrDesc => 'Nhập mô tả';
+
+  @override
+  String get sellDoneSaleTitle => 'Đã gửi duyệt';
+
+  @override
+  String sellDoneSaleBody(String title) {
+    return 'Oldbook sẽ duyệt \"$title\" trong 24 giờ và thông báo cho bạn.';
+  }
+
+  @override
+  String get sellDoneAuctionTitle => 'Đã tạo phiên đấu giá';
+
+  @override
+  String get sellDoneAuctionBody =>
+      'Gửi sách về kho trong 5 ngày kèm mã dưới đây. Quá hạn phiên tự hủy. Phí ship gửi kho do bạn trả.';
+
+  @override
+  String get sellDoneCode => 'Mã nhập kho';
+
+  @override
+  String get sellDoneWarehouse =>
+      'Kho Oldbook HN · 25 Lê Văn Lương, Thanh Xuân, Hà Nội';
+
+  @override
+  String get sellDoneView => 'Xem tin đăng của tôi';
+
+  @override
+  String get myListingsEmpty => 'Bạn chưa có tin đăng nào.';
+
+  @override
+  String get myListingStatusPublished => 'Đang bán';
+
+  @override
+  String get myListingStatusPending => 'Chờ duyệt';
+
+  @override
+  String get myListingStatusNeedsChanges => 'Cần sửa';
+
+  @override
+  String get myListingStatusAwaitingInbound => 'Chờ gửi về kho';
+
+  @override
+  String get myListingStatusSold => 'Đã bán';
+
+  @override
+  String myListingKindFixed(String price) {
+    return 'Bán thường · $price';
+  }
+
+  @override
+  String myListingKindAuction(String price) {
+    return 'Đấu giá · khởi điểm $price';
+  }
+
+  @override
+  String myListingNotePublished(int days, String views) {
+    return 'Đăng $days ngày trước · $views lượt xem';
+  }
+
+  @override
+  String myListingNotePending(int hours) {
+    return 'Gửi duyệt $hours giờ trước · duyệt trong 24 giờ';
+  }
+
+  @override
+  String get myListingNotePendingNow => 'Vừa gửi duyệt · duyệt trong 24 giờ';
+
+  @override
+  String myListingNoteNeedsChanges(String reason) {
+    return 'Admin: $reason';
+  }
+
+  @override
+  String myListingNoteInbound(String date, String code) {
+    return 'Gửi sách về kho trước $date · mã $code';
+  }
+
+  @override
+  String myListingNoteSold(String amount) {
+    return 'Đã nhận $amount (sau phí 5%, gồm ship)';
+  }
+
+  @override
+  String get sellCatLiterature => 'Văn học';
+
+  @override
+  String get sellCatHistory => 'Lịch sử';
+
+  @override
+  String get sellCatChildren => 'Thiếu nhi';
+
+  @override
+  String get sellCatScience => 'Khoa học';
+
+  @override
+  String get sellCatForeign => 'Ngoại văn';
 }

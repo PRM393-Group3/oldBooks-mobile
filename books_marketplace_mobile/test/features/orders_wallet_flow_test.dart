@@ -4,7 +4,7 @@ import 'package:books_marketplace_mobile/core/util/image_picking.dart';
 import 'package:books_marketplace_mobile/features/auth/domain/user_role.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
-import 'package:books_marketplace_mobile/features/orders/presentation/complaint_sheet.dart';
+import 'package:books_marketplace_mobile/core/util/photo_picker.dart';
 import 'package:books_marketplace_mobile/features/sim/application/sim_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
@@ -195,7 +195,7 @@ void main() {
       await _pumpWithBook(
         tester,
         overrides: [
-          evidencePickerProvider.overrideWithValue(
+          photoPickerProvider.overrideWithValue(
             () async => PickedImage(_png, 'png', 'image/png'),
           ),
         ],
