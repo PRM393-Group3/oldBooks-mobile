@@ -148,8 +148,8 @@ void main() {
       await _open(tester);
       await tapTab(tester, 'Tôi');
       await tester.ensureVisible(find.text('Phiên tôi tham gia'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Phiên tôi tham gia'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Phiên tôi tham gia'));
       await tester.pumpAndSettle();
       expect(find.text('Đã thắng · 520.000 ₫'), findsOneWidget);
       expect(find.text('Đang dẫn đầu · 1.230.000 ₫'), findsNothing);

@@ -3,7 +3,7 @@ import 'package:books_marketplace_mobile/core/l10n/app_localizations_vi.dart';
 import 'package:books_marketplace_mobile/core/network/paged_result.dart';
 import 'package:books_marketplace_mobile/core/util/format.dart';
 import 'package:books_marketplace_mobile/core/validation/isbn.dart';
-import 'package:books_marketplace_mobile/features/inspection/domain/inspection.dart';
+import 'package:books_marketplace_mobile/features/listings/domain/reject_reason.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_input.dart';
@@ -298,35 +298,7 @@ void main() {
     });
   });
 
-  group('kiểm định, thông báo', () {
-    test('QueueItem: tin phẳng kèm số liệu, hoặc lồng trong listing', () {
-      final flat = QueueItem.fromJson({
-        'id': 'L1',
-        'status': 'PendingInspection',
-        'title': 'A',
-        'waitingHours': 19.5,
-        'isOverdue': true,
-      });
-      expect(flat.listing.id, 'L1');
-      expect(flat.isOverdue, isTrue);
-      expect(flat.waitingHours, 19.5);
-
-      final nested = QueueItem.fromJson({
-        'listing': {'id': 'L2', 'status': 'InInspection'},
-        'claimExpiresAt': '2026-09-19T09:00:00Z',
-      });
-      expect(nested.listing.id, 'L2');
-      expect(nested.claimExpiresAt!.isUtc, isTrue);
-    });
-
-    test('QueueFilter so sánh theo giá trị (khóa của family provider)', () {
-      expect(
-        const QueueFilter(categoryId: 'c', priceFrom: 1),
-        const QueueFilter(categoryId: 'c', priceFrom: 1),
-      );
-      expect(const QueueFilter().isEmpty, isTrue);
-    });
-
+  group('lý do từ chối, thông báo', () {
     test('RejectReason: nhãn theo mã, mã lạ trả nguyên mã', () {
       final l = AppLocalizationsVi();
       expect(

@@ -153,7 +153,9 @@ void main() {
     expect(find.text('Nhà giả kim'), findsWidgets, reason: 'mở chi tiết tin');
   });
 
-  testWidgets('không có thông báo backend vẫn thấy thông báo mô phỏng', (tester) async {
+  testWidgets('không có thông báo backend vẫn thấy thông báo mô phỏng', (
+    tester,
+  ) async {
     final h = Harness(UserRole.buyer);
     await h.pump(tester);
     await tester.tap(find.text('Thông báo'));

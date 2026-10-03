@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:books_marketplace_mobile/core/network/api_client.dart';
-import 'package:books_marketplace_mobile/features/inspection/data/inspection_repository.dart';
-import 'package:books_marketplace_mobile/features/inspection/domain/inspection.dart';
 import 'package:books_marketplace_mobile/features/listings/data/listing_repository.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_input.dart';
@@ -147,86 +145,6 @@ void main() {
       await ListingRepository(api).delete('L1');
       expect(seen.single.method, 'DELETE');
       expect(seen.single.path, '/listings/L1');
-    });
-  });
-
-  group('InspectionRepository', () {
-    test('queue gửi bộ lọc', () async {
-      setup((o) => jsonResponse(200, okBody(<dynamic>[])));
-      await InspectionRepository(api).queue(
-        filter: const QueueFilter(
-          categoryId: 'c',
-          priceFrom: 1000,
-          priceTo: 9000,
-        ),
-        page: 1,
-        pageSize: 20,
-      );
-      expect(seen.single.queryParameters, {
-        'categoryId': 'c',
-        'priceFrom': 1000,
-        'priceTo': 9000,
-        'page': 1,
-        'pageSize': 20,
-      });
-    });
-
-    test('claim, release, approve (không ghi chú), reject', () async {
-      setup(
-        (o) => o.path.endsWith('/release')
-            ? ResponseBody.fromString('', 204)
-            : jsonResponse(
-                200,
-                okBody({
-                  'id': 'L1',
-                  'status': 'InInspection',
-                  'decision': 'Approved',
-                }),
-              ),
-      );
-      final repo = InspectionRepository(api);
-
-      final claimed = await repo.claim('L1');
-      await repo.release('L1');
-      await repo.approve('L1');
-      await repo.approve('L1', note: '  tốt  ');
-      await repo.reject(
-        'L1',
-        reasons: [RejectReason.blurryPhotos, RejectReason.duplicateListing],
-        note: '  Ảnh mờ quá  ',
-      );
-
-      expect(claimed.status, ListingStatus.inInspection);
-      expect(seen.map((o) => o.path).toList(), [
-        '/inspections/L1/claim',
-        '/inspections/L1/release',
-        '/inspections/L1/approve',
-        '/inspections/L1/approve',
-        '/inspections/L1/reject',
-      ]);
-      expect(seen[2].data, <String, dynamic>{});
-      expect(seen[3].data, {'note': 'tốt'});
-      expect(seen[4].data, {
-        'reasonCodes': ['BlurryPhotos', 'DuplicateListing'],
-        'note': 'Ảnh mờ quá',
-      });
-    });
-
-    test('mine đọc claimExpiresAt', () async {
-      setup(
-        (o) => jsonResponse(
-          200,
-          okBody([
-            {
-              'id': 'L1',
-              'status': 'InInspection',
-              'claimExpiresAt': '2026-09-19T09:00:00Z',
-            },
-          ]),
-        ),
-      );
-      final items = await InspectionRepository(api).mine();
-      expect(items.single.claimExpiresAt, DateTime.utc(2026, 9, 19, 9));
     });
   });
 

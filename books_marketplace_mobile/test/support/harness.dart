@@ -4,7 +4,6 @@ import 'package:books_marketplace_mobile/core/network/api_client.dart';
 import 'package:books_marketplace_mobile/core/storage/storage_providers.dart';
 import 'package:books_marketplace_mobile/features/auth/domain/user_role.dart';
 import 'package:books_marketplace_mobile/features/categories/application/category_providers.dart';
-import 'package:books_marketplace_mobile/features/inspection/application/inspection_providers.dart';
 import 'package:books_marketplace_mobile/features/listings/application/listing_providers.dart';
 import 'package:books_marketplace_mobile/features/notifications/application/notification_providers.dart';
 import 'package:books_marketplace_mobile/features/profile/application/profile_controller.dart';
@@ -43,15 +42,13 @@ class Harness {
     : tokens = MemoryTokenStore(access: 'a', refresh: 'r'),
       listings = FakeListingRepository(),
       categories = FakeCategoryRepository(),
-      notifications = FakeNotificationRepository(),
-      inspection = FakeInspectionRepository();
+      notifications = FakeNotificationRepository();
 
   final UserRole role;
   final MemoryTokenStore tokens;
   final FakeListingRepository listings;
   final FakeCategoryRepository categories;
   final FakeNotificationRepository notifications;
-  final FakeInspectionRepository inspection;
 
   /// Bơm app đã đăng nhập với vai trò [role], ngôn ngữ tiếng Việt.
   Future<void> pump(
@@ -85,7 +82,6 @@ class Harness {
           listingRepositoryProvider.overrideWithValue(listings),
           categoryRepositoryProvider.overrideWithValue(categories),
           notificationRepositoryProvider.overrideWithValue(notifications),
-          inspectionRepositoryProvider.overrideWithValue(inspection),
           // Đồng hồ mô phỏng gần như đứng yên và không có đối thủ ảo, để
           // pumpAndSettle kết thúc và kết quả xác định.
           simTickIntervalProvider.overrideWithValue(const Duration(days: 1)),

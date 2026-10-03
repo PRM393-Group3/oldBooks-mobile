@@ -7,8 +7,6 @@ import 'package:books_marketplace_mobile/core/network/paged_result.dart';
 import 'package:books_marketplace_mobile/core/storage/token_store.dart';
 import 'package:books_marketplace_mobile/features/categories/data/category_repository.dart';
 import 'package:books_marketplace_mobile/features/categories/domain/category.dart';
-import 'package:books_marketplace_mobile/features/inspection/data/inspection_repository.dart';
-import 'package:books_marketplace_mobile/features/inspection/domain/inspection.dart';
 import 'package:books_marketplace_mobile/features/listings/data/listing_repository.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
@@ -357,67 +355,5 @@ class FakeNotificationRepository extends NotificationRepository {
     calls.add('readAll');
     items = [for (final n in items) n.asRead()];
     unread = 0;
-  }
-}
-
-class FakeInspectionRepository extends InspectionRepository {
-  FakeInspectionRepository() : super(ApiClient(Dio()));
-
-  List<QueueItem> queueItems = [];
-  Listing? claimable;
-  DateTime? claimExpiresAt;
-  ApiError? decisionError;
-  final calls = <String>[];
-
-  @override
-  Future<PagedResult<QueueItem>> queue({
-    QueueFilter filter = const QueueFilter(),
-    required int page,
-    required int pageSize,
-  }) async => PagedResult(
-    items: queueItems,
-    page: page,
-    pageSize: pageSize,
-    totalCount: queueItems.length,
-  );
-
-  @override
-  Future<List<QueueItem>> mine() async => claimable == null
-      ? const []
-      : [QueueItem(listing: claimable!, claimExpiresAt: claimExpiresAt)];
-
-  @override
-  Future<Listing> claim(String listingId) async {
-    calls.add('claim:$listingId');
-    return claimable ?? fakeListing(id: listingId);
-  }
-
-  @override
-  Future<void> release(String listingId) async => calls.add('release');
-
-  @override
-  Future<InspectionSummary> approve(String listingId, {String? note}) async {
-    calls.add('approve:${note ?? ''}');
-    if (decisionError != null) throw decisionError!;
-    return InspectionSummary(
-      decision: 'Approved',
-      reasonCodes: const [],
-      decidedAt: DateTime.now(),
-    );
-  }
-
-  @override
-  Future<InspectionSummary> reject(
-    String listingId, {
-    required List<RejectReason> reasons,
-    required String note,
-  }) async {
-    calls.add('reject:${reasons.map((r) => r.api).join(',')}:$note');
-    if (decisionError != null) throw decisionError!;
-    return InspectionSummary(
-      decision: 'Rejected',
-      reasonCodes: [for (final r in reasons) r.api],
-      decidedAt: DateTime.now(),
-    );
   }
 }

@@ -4,7 +4,7 @@ import '../../../../core/theme/app_dimens.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../../../../core/util/format.dart';
 import '../../../../core/widgets/app_tag.dart';
-import '../../../inspection/domain/inspection.dart';
+import '../../domain/reject_reason.dart';
 import '../../domain/listing.dart';
 
 /// Khối kết quả kiểm định: ngang hàng với giá và ảnh, không phải nhãn phụ
