@@ -95,18 +95,28 @@ class PreviewAuthRepository extends AuthRepository {
   }
 
   @override
+  Future<void> sendOtp({required String phone}) async {}
+
+  @override
   Future<AuthSession> login({
-    required String email,
+    required String phone,
     required String password,
   }) => _ok();
 
   @override
   Future<AuthSession> register({
-    required String email,
+    required String phone,
+    required String otp,
     required String password,
     required String fullName,
-    required UserRole role,
   }) => _ok();
+
+  @override
+  Future<void> resetPassword({
+    required String phone,
+    required String otp,
+    required String newPassword,
+  }) async {}
 
   @override
   Future<void> logout() => _store.clear();

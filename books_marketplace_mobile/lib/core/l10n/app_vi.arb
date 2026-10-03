@@ -94,7 +94,7 @@
   "errorUploadFailed": "Tải ảnh lên thất bại. Hãy thử lại.",
   "errorCurrentPasswordIncorrect": "Mật khẩu hiện tại chưa đúng.",
   "errorPasswordUnchanged": "Mật khẩu mới phải khác mật khẩu cũ.",
-  "errorInvalidCredentials": "Email hoặc mật khẩu chưa đúng.",
+  "errorInvalidCredentials": "Số điện thoại hoặc mật khẩu chưa đúng.",
   "errorSessionExpired": "Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.",
   "errorUserNotFound": "Tài khoản không còn tồn tại.",
   "errorInternal": "Hệ thống đang gặp sự cố. Hãy thử lại sau ít phút.",
@@ -1731,5 +1731,53 @@
   "sellCatHistory": "Lịch sử",
   "sellCatChildren": "Thiếu nhi",
   "sellCatScience": "Khoa học",
-  "sellCatForeign": "Ngoại văn"
+  "sellCatForeign": "Ngoại văn",
+  "validationPhoneRequired": "Vui lòng nhập số điện thoại.",
+  "validationOtpInvalid": "Mã OTP gồm 6 chữ số.",
+  "validationPasswordLetterDigit": "Mật khẩu cần có cả chữ và số.",
+  "passwordHelperLetterDigit": "Ít nhất 8 ký tự, gồm chữ và số",
+  "otpLabel": "Mã OTP",
+  "otpSend": "Gửi mã",
+  "otpResendIn": "Gửi lại sau {n}s",
+  "@otpResendIn": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "otpSentTo": "Đã gửi mã OTP tới {phone}",
+  "@otpSentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "forgotLink": "Quên mật khẩu?",
+  "forgotTitle": "Quên mật khẩu",
+  "forgotSubtitle": "Nhập số điện thoại để nhận mã xác thực và đặt mật khẩu mới.",
+  "forgotSubmit": "Đặt lại mật khẩu",
+  "forgotDone": "Đã đặt lại mật khẩu. Hãy đăng nhập.",
+  "backToLogin": "Quay lại đăng nhập",
+  "errOtpInvalid": "Mã OTP chưa đúng.",
+  "errOtpExpired": "Mã OTP đã hết hạn. Hãy gửi lại mã.",
+  "errRateLimited": "Bạn thao tác quá nhanh. Hãy thử lại sau ít phút.",
+  "errAccountLocked": "Tài khoản của bạn đang bị khóa.",
+  "errInsufficientBalance": "Số dư ví không đủ.",
+  "errBidTooLow": "Giá thấp hơn mức tối thiểu hiện tại.",
+  "errAlreadyLeading": "Bạn đang dẫn đầu phiên này.",
+  "errAuctionEnded": "Phiên đã kết thúc.",
+  "errAuctionNotLive": "Phiên chưa diễn ra.",
+  "errBuyNowUnavailable": "Không còn mua ngay được.",
+  "errNotRegistered": "Bạn chưa đăng ký phiên này.",
+  "errRegistrationClosed": "Đăng ký đã đóng.",
+  "errSellerCannotBid": "Người bán không thể tham gia phiên của mình.",
+  "errListingNotAvailable": "Sách này không còn bán.",
+  "errComplaintWindowClosed": "Đã quá hạn khiếu nại.",
+  "errWithdrawBelowMin": "Số tiền rút thấp hơn mức tối thiểu.",
+  "errForbidden": "Bạn không có quyền thực hiện thao tác này.",
+  "errNotFound": "Không tìm thấy nội dung này.",
+  "errInvalidState": "Không thể thực hiện ở trạng thái hiện tại.",
+  "errUpstream": "Dịch vụ đối tác đang gặp sự cố. Hãy thử lại sau."
 }

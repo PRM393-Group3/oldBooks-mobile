@@ -286,7 +286,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get errorPasswordUnchanged => 'Mật khẩu mới phải khác mật khẩu cũ.';
 
   @override
-  String get errorInvalidCredentials => 'Email hoặc mật khẩu chưa đúng.';
+  String get errorInvalidCredentials =>
+      'Số điện thoại hoặc mật khẩu chưa đúng.';
 
   @override
   String get errorSessionExpired =>
@@ -2553,4 +2554,113 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get sellCatForeign => 'Ngoại văn';
+
+  @override
+  String get validationPhoneRequired => 'Vui lòng nhập số điện thoại.';
+
+  @override
+  String get validationOtpInvalid => 'Mã OTP gồm 6 chữ số.';
+
+  @override
+  String get validationPasswordLetterDigit => 'Mật khẩu cần có cả chữ và số.';
+
+  @override
+  String get passwordHelperLetterDigit => 'Ít nhất 8 ký tự, gồm chữ và số';
+
+  @override
+  String get otpLabel => 'Mã OTP';
+
+  @override
+  String get otpSend => 'Gửi mã';
+
+  @override
+  String otpResendIn(int n) {
+    return 'Gửi lại sau ${n}s';
+  }
+
+  @override
+  String otpSentTo(String phone) {
+    return 'Đã gửi mã OTP tới $phone';
+  }
+
+  @override
+  String get forgotLink => 'Quên mật khẩu?';
+
+  @override
+  String get forgotTitle => 'Quên mật khẩu';
+
+  @override
+  String get forgotSubtitle =>
+      'Nhập số điện thoại để nhận mã xác thực và đặt mật khẩu mới.';
+
+  @override
+  String get forgotSubmit => 'Đặt lại mật khẩu';
+
+  @override
+  String get forgotDone => 'Đã đặt lại mật khẩu. Hãy đăng nhập.';
+
+  @override
+  String get backToLogin => 'Quay lại đăng nhập';
+
+  @override
+  String get errOtpInvalid => 'Mã OTP chưa đúng.';
+
+  @override
+  String get errOtpExpired => 'Mã OTP đã hết hạn. Hãy gửi lại mã.';
+
+  @override
+  String get errRateLimited =>
+      'Bạn thao tác quá nhanh. Hãy thử lại sau ít phút.';
+
+  @override
+  String get errAccountLocked => 'Tài khoản của bạn đang bị khóa.';
+
+  @override
+  String get errInsufficientBalance => 'Số dư ví không đủ.';
+
+  @override
+  String get errBidTooLow => 'Giá thấp hơn mức tối thiểu hiện tại.';
+
+  @override
+  String get errAlreadyLeading => 'Bạn đang dẫn đầu phiên này.';
+
+  @override
+  String get errAuctionEnded => 'Phiên đã kết thúc.';
+
+  @override
+  String get errAuctionNotLive => 'Phiên chưa diễn ra.';
+
+  @override
+  String get errBuyNowUnavailable => 'Không còn mua ngay được.';
+
+  @override
+  String get errNotRegistered => 'Bạn chưa đăng ký phiên này.';
+
+  @override
+  String get errRegistrationClosed => 'Đăng ký đã đóng.';
+
+  @override
+  String get errSellerCannotBid =>
+      'Người bán không thể tham gia phiên của mình.';
+
+  @override
+  String get errListingNotAvailable => 'Sách này không còn bán.';
+
+  @override
+  String get errComplaintWindowClosed => 'Đã quá hạn khiếu nại.';
+
+  @override
+  String get errWithdrawBelowMin => 'Số tiền rút thấp hơn mức tối thiểu.';
+
+  @override
+  String get errForbidden => 'Bạn không có quyền thực hiện thao tác này.';
+
+  @override
+  String get errNotFound => 'Không tìm thấy nội dung này.';
+
+  @override
+  String get errInvalidState => 'Không thể thực hiện ở trạng thái hiện tại.';
+
+  @override
+  String get errUpstream => 'Dịch vụ đối tác đang gặp sự cố. Hãy thử lại sau.';
 }

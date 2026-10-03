@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/network/network_providers.dart';
 import '../../../core/storage/storage_providers.dart';
 import '../data/auth_repository.dart';
-import '../domain/user_role.dart';
 
 enum AuthStatus { authenticated, unauthenticated }
 
@@ -29,29 +28,40 @@ class AuthController extends Notifier<AuthStatus> {
         : AuthStatus.unauthenticated;
   }
 
-  Future<void> login({required String email, required String password}) async {
+  Future<void> sendOtp(String phone) =>
+      ref.read(authRepositoryProvider).sendOtp(phone: phone);
+
+  Future<void> login({required String phone, required String password}) async {
     await ref
         .read(authRepositoryProvider)
-        .login(email: email, password: password);
+        .login(phone: phone, password: password);
     state = AuthStatus.authenticated;
   }
 
   Future<void> register({
-    required String email,
+    required String phone,
+    required String otp,
     required String password,
     required String fullName,
-    required UserRole role,
   }) async {
     await ref
         .read(authRepositoryProvider)
         .register(
-          email: email,
+          phone: phone,
+          otp: otp,
           password: password,
           fullName: fullName,
-          role: role,
         );
     state = AuthStatus.authenticated;
   }
+
+  Future<void> resetPassword({
+    required String phone,
+    required String otp,
+    required String newPassword,
+  }) => ref
+      .read(authRepositoryProvider)
+      .resetPassword(phone: phone, otp: otp, newPassword: newPassword);
 
   Future<void> logout() async {
     await ref.read(authRepositoryProvider).logout();

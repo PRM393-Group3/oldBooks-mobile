@@ -289,7 +289,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'New password must differ from the old one.';
 
   @override
-  String get errorInvalidCredentials => 'Incorrect email or password.';
+  String get errorInvalidCredentials =>
+      'Phone number or password is incorrect.';
 
   @override
   String get errorSessionExpired =>
@@ -2565,4 +2566,115 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sellCatForeign => 'Foreign language';
+
+  @override
+  String get validationPhoneRequired => 'Please enter your phone number.';
+
+  @override
+  String get validationOtpInvalid => 'The OTP has 6 digits.';
+
+  @override
+  String get validationPasswordLetterDigit =>
+      'The password needs both letters and digits.';
+
+  @override
+  String get passwordHelperLetterDigit =>
+      'At least 8 characters with letters and digits';
+
+  @override
+  String get otpLabel => 'OTP code';
+
+  @override
+  String get otpSend => 'Send code';
+
+  @override
+  String otpResendIn(int n) {
+    return 'Resend in ${n}s';
+  }
+
+  @override
+  String otpSentTo(String phone) {
+    return 'OTP sent to $phone';
+  }
+
+  @override
+  String get forgotLink => 'Forgot password?';
+
+  @override
+  String get forgotTitle => 'Forgot password';
+
+  @override
+  String get forgotSubtitle =>
+      'Enter your phone number to get a code and set a new password.';
+
+  @override
+  String get forgotSubmit => 'Reset password';
+
+  @override
+  String get forgotDone => 'Password reset. Please sign in.';
+
+  @override
+  String get backToLogin => 'Back to sign in';
+
+  @override
+  String get errOtpInvalid => 'The OTP is incorrect.';
+
+  @override
+  String get errOtpExpired => 'The OTP has expired. Request a new one.';
+
+  @override
+  String get errRateLimited => 'Too many attempts. Try again in a few minutes.';
+
+  @override
+  String get errAccountLocked => 'Your account is locked.';
+
+  @override
+  String get errInsufficientBalance => 'Your wallet balance is not enough.';
+
+  @override
+  String get errBidTooLow => 'Your bid is below the current minimum.';
+
+  @override
+  String get errAlreadyLeading => 'You are already leading this auction.';
+
+  @override
+  String get errAuctionEnded => 'The auction has ended.';
+
+  @override
+  String get errAuctionNotLive => 'The auction is not live yet.';
+
+  @override
+  String get errBuyNowUnavailable => 'Buy now is no longer available.';
+
+  @override
+  String get errNotRegistered => 'You have not registered for this auction.';
+
+  @override
+  String get errRegistrationClosed => 'Registration is closed.';
+
+  @override
+  String get errSellerCannotBid =>
+      'Sellers cannot take part in their own auction.';
+
+  @override
+  String get errListingNotAvailable => 'This book is no longer available.';
+
+  @override
+  String get errComplaintWindowClosed => 'The complaint window has closed.';
+
+  @override
+  String get errWithdrawBelowMin => 'The withdrawal is below the minimum.';
+
+  @override
+  String get errForbidden => 'You are not allowed to do this.';
+
+  @override
+  String get errNotFound => 'Not found.';
+
+  @override
+  String get errInvalidState => 'Not possible in the current state.';
+
+  @override
+  String get errUpstream =>
+      'A partner service is having trouble. Try again later.';
 }

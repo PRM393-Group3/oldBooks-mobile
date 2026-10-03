@@ -94,7 +94,7 @@
   "errorUploadFailed": "Photo upload failed. Please try again.",
   "errorCurrentPasswordIncorrect": "The current password is incorrect.",
   "errorPasswordUnchanged": "New password must differ from the old one.",
-  "errorInvalidCredentials": "Incorrect email or password.",
+  "errorInvalidCredentials": "Phone number or password is incorrect.",
   "errorSessionExpired": "Your session has expired. Please log in again.",
   "errorUserNotFound": "This account no longer exists.",
   "errorInternal": "Something went wrong on our side. Please try again in a few minutes.",
@@ -1731,5 +1731,53 @@
   "sellCatHistory": "History",
   "sellCatChildren": "Children",
   "sellCatScience": "Science",
-  "sellCatForeign": "Foreign language"
+  "sellCatForeign": "Foreign language",
+  "validationPhoneRequired": "Please enter your phone number.",
+  "validationOtpInvalid": "The OTP has 6 digits.",
+  "validationPasswordLetterDigit": "The password needs both letters and digits.",
+  "passwordHelperLetterDigit": "At least 8 characters with letters and digits",
+  "otpLabel": "OTP code",
+  "otpSend": "Send code",
+  "otpResendIn": "Resend in {n}s",
+  "@otpResendIn": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "otpSentTo": "OTP sent to {phone}",
+  "@otpSentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "forgotLink": "Forgot password?",
+  "forgotTitle": "Forgot password",
+  "forgotSubtitle": "Enter your phone number to get a code and set a new password.",
+  "forgotSubmit": "Reset password",
+  "forgotDone": "Password reset. Please sign in.",
+  "backToLogin": "Back to sign in",
+  "errOtpInvalid": "The OTP is incorrect.",
+  "errOtpExpired": "The OTP has expired. Request a new one.",
+  "errRateLimited": "Too many attempts. Try again in a few minutes.",
+  "errAccountLocked": "Your account is locked.",
+  "errInsufficientBalance": "Your wallet balance is not enough.",
+  "errBidTooLow": "Your bid is below the current minimum.",
+  "errAlreadyLeading": "You are already leading this auction.",
+  "errAuctionEnded": "The auction has ended.",
+  "errAuctionNotLive": "The auction is not live yet.",
+  "errBuyNowUnavailable": "Buy now is no longer available.",
+  "errNotRegistered": "You have not registered for this auction.",
+  "errRegistrationClosed": "Registration is closed.",
+  "errSellerCannotBid": "Sellers cannot take part in their own auction.",
+  "errListingNotAvailable": "This book is no longer available.",
+  "errComplaintWindowClosed": "The complaint window has closed.",
+  "errWithdrawBelowMin": "The withdrawal is below the minimum.",
+  "errForbidden": "You are not allowed to do this.",
+  "errNotFound": "Not found.",
+  "errInvalidState": "Not possible in the current state.",
+  "errUpstream": "A partner service is having trouble. Try again later."
 }

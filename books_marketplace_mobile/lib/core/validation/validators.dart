@@ -15,6 +15,20 @@ class Validators {
   static const passwordMax = 72;
   static const fullNameMax = 100;
 
+  FormFieldValidator<String> get phoneRequired => (value) {
+    final v = value?.trim() ?? '';
+    if (v.isEmpty) return l.validationPhoneRequired;
+    if (!_phone.hasMatch(v)) return l.validationPhoneInvalid;
+    return null;
+  };
+
+  static final _otp = RegExp(r'^\d{6}$');
+
+  FormFieldValidator<String> get otp => (value) {
+    if (!_otp.hasMatch(value?.trim() ?? '')) return l.validationOtpInvalid;
+    return null;
+  };
+
   FormFieldValidator<String> get email => (value) {
     final v = value?.trim() ?? '';
     if (v.isEmpty) return l.validationEmailRequired;
@@ -34,6 +48,17 @@ class Validators {
     if (v.isEmpty) return l.validationPasswordRequired;
     if (v.length < passwordMin || v.length > passwordMax) {
       return l.validationPasswordLength;
+    }
+    return null;
+  };
+
+  /// Mật khẩu đăng ký theo BE-SRS: 8 ký tự trở lên, có cả chữ và số.
+  FormFieldValidator<String> get registerPassword => (value) {
+    final base = newPassword(value);
+    if (base != null) return base;
+    final v = value!;
+    if (!RegExp(r'[A-Za-z]').hasMatch(v) || !RegExp(r'\d').hasMatch(v)) {
+      return l.validationPasswordLetterDigit;
     }
     return null;
   };

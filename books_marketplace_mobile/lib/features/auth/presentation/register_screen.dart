@@ -12,8 +12,8 @@ import '../../../core/widgets/app_page.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../application/auth_controller.dart';
-import '../domain/user_role.dart';
 import 'auth_header.dart';
+import 'otp_field.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -25,17 +25,18 @@ class RegisterScreen extends ConsumerStatefulWidget {
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _fullName = TextEditingController();
-  final _email = TextEditingController();
+  final _phone = TextEditingController();
+  final _otp = TextEditingController();
   final _password = TextEditingController();
 
-  UserRole _role = UserRole.buyer;
   bool _loading = false;
   Map<String, String> _serverErrors = const {};
 
   @override
   void dispose() {
     _fullName.dispose();
-    _email.dispose();
+    _phone.dispose();
+    _otp.dispose();
     _password.dispose();
     super.dispose();
   }
@@ -51,10 +52,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       await ref
           .read(authControllerProvider.notifier)
           .register(
-            email: _email.text.trim(),
+            phone: _phone.text.trim(),
+            otp: _otp.text.trim(),
             password: _password.text,
             fullName: _fullName.text.trim(),
-            role: _role,
           );
     } on ApiError catch (e) {
       if (!mounted) return;
@@ -104,16 +105,35 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               ),
               const SizedBox(height: AppSpacing.md),
               AppTextField(
-                label: l.emailLabel,
-                controller: _email,
-                keyboardType: TextInputType.emailAddress,
+                label: l.phoneLabel,
+                controller: _phone,
+                keyboardType: TextInputType.phone,
                 textInputAction: TextInputAction.next,
-                autofillHints: const [AutofillHints.email],
-                validator: v.email,
-                errorText: _serverErrors['email'],
+                autofillHints: const [AutofillHints.telephoneNumber],
+                validator: v.phoneRequired,
+                errorText: _serverErrors['phone'],
                 enabled: !_loading,
-                prefixIcon: Icons.mail_outline,
-                onChanged: (_) => _clearError('email'),
+                prefixIcon: Icons.phone_outlined,
+                onChanged: (_) => _clearError('phone'),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              OtpField(
+                controller: _otp,
+                enabled: !_loading,
+                errorText: _serverErrors['otp'],
+                validatePhone: () => v.phoneRequired(_phone.text) == null,
+                onSend: () async {
+                  await ref
+                      .read(authControllerProvider.notifier)
+                      .sendOtp(_phone.text.trim());
+                  if (context.mounted) {
+                    AppSnackbar.show(
+                      context,
+                      l.otpSentTo(_phone.text.trim()),
+                      type: AppSnackbarType.success,
+                    );
+                  }
+                },
               ),
               const SizedBox(height: AppSpacing.md),
               AppTextField(
@@ -122,35 +142,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 isPassword: true,
                 textInputAction: TextInputAction.done,
                 autofillHints: const [AutofillHints.newPassword],
-                helperText: l.passwordLengthHelper,
-                validator: v.newPassword,
+                helperText: l.passwordHelperLetterDigit,
+                validator: v.registerPassword,
                 errorText: _serverErrors['password'],
                 enabled: !_loading,
                 prefixIcon: Icons.lock_outline,
                 onChanged: (_) => _clearError('password'),
                 onSubmitted: (_) => _submit(),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Text(l.roleLabel, style: context.text.labelMedium),
-              const SizedBox(height: AppSpacing.xs),
-              SegmentedButton<UserRole>(
-                showSelectedIcon: false,
-                segments: [
-                  ButtonSegment(
-                    value: UserRole.buyer,
-                    label: Text(l.roleOptionBuyer),
-                    icon: const Icon(Icons.shopping_bag_outlined),
-                  ),
-                  ButtonSegment(
-                    value: UserRole.seller,
-                    label: Text(l.roleOptionSeller),
-                    icon: const Icon(Icons.sell_outlined),
-                  ),
-                ],
-                selected: {_role},
-                onSelectionChanged: _loading
-                    ? null
-                    : (selection) => setState(() => _role = selection.first),
               ),
               const SizedBox(height: AppSpacing.lg),
               Wrap(

@@ -33,8 +33,9 @@ class AuthSession {
 class SessionUser {
   const SessionUser({
     required this.id,
-    required this.email,
     required this.fullName,
+    this.email = '',
+    this.phone = '',
     required this.role,
   });
 
@@ -42,14 +43,16 @@ class SessionUser {
     final j = json as Map<String, dynamic>;
     return SessionUser(
       id: j['id'] as String,
-      email: j['email'] as String,
-      fullName: j['fullName'] as String,
+      email: (j['email'] as String?) ?? '',
+      phone: (j['phone'] as String?) ?? '',
+      fullName: (j['fullName'] as String?) ?? '',
       role: UserRole.fromApi(j['role'] as String?),
     );
   }
 
   final String id;
   final String email;
+  final String phone;
   final String fullName;
   final UserRole role;
 }

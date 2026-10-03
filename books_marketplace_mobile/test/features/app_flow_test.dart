@@ -30,8 +30,11 @@ class _FakeAuthRepository extends AuthRepository {
   int logins = 0;
 
   @override
+  Future<void> sendOtp({required String phone}) async {}
+
+  @override
   Future<AuthSession> login({
-    required String email,
+    required String phone,
     required String password,
   }) async {
     logins++;
@@ -147,7 +150,7 @@ void main() {
     await tester.tap(find.widgetWithText(FilledButton, 'Đăng nhập'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Vui lòng nhập email.'), findsOneWidget);
+    expect(find.text('Vui lòng nhập số điện thoại.'), findsOneWidget);
     expect(find.text('Vui lòng nhập mật khẩu.'), findsOneWidget);
     expect(app.auth.logins, 0);
   });
@@ -157,12 +160,12 @@ void main() {
   ) async {
     await _pumpApp(tester);
 
-    await tester.enterText(find.byType(TextFormField).at(0), 'a@b.co');
+    await tester.enterText(find.byType(TextFormField).at(0), '0912345678');
     await tester.enterText(find.byType(TextFormField).at(1), 'sai-mat-khau');
     await tester.tap(find.widgetWithText(FilledButton, 'Đăng nhập'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Email hoặc mật khẩu chưa đúng.'), findsOneWidget);
+    expect(find.text('Số điện thoại hoặc mật khẩu chưa đúng.'), findsOneWidget);
     expect(find.text('Chào mừng bạn quay lại chợ sách cũ.'), findsOneWidget);
   });
 
@@ -171,7 +174,7 @@ void main() {
   ) async {
     await _pumpApp(tester);
 
-    await tester.enterText(find.byType(TextFormField).at(0), 'a@b.co');
+    await tester.enterText(find.byType(TextFormField).at(0), '0912345678');
     await tester.enterText(find.byType(TextFormField).at(1), 'Passw0rd!');
     await tester.tap(find.widgetWithText(FilledButton, 'Đăng nhập'));
     await tester.pumpAndSettle();
@@ -263,5 +266,54 @@ void main() {
 
     expect(find.text('Edit profile'), findsOneWidget);
     expect(find.text('Sửa hồ sơ'), findsNothing);
+  });
+
+  testWidgets(
+    'đăng ký bằng SĐT: cần số hợp lệ, OTP 6 số, mật khẩu có chữ và số',
+    (tester) async {
+      await _pumpApp(tester);
+      await tester.tap(find.text('Đăng ký'));
+      await tester.pumpAndSettle();
+      expect(find.text('Mã OTP'), findsOneWidget);
+      expect(find.text('Gửi mã'), findsOneWidget);
+
+      await tester.tap(find.widgetWithText(FilledButton, 'Đăng ký'));
+      await tester.pumpAndSettle();
+      expect(find.text('Vui lòng nhập họ và tên.'), findsOneWidget);
+      expect(find.text('Vui lòng nhập số điện thoại.'), findsOneWidget);
+      expect(find.text('Mã OTP gồm 6 chữ số.'), findsOneWidget);
+
+      await tester.enterText(find.byType(TextFormField).at(0), 'Nguyen Van A');
+      await tester.enterText(find.byType(TextFormField).at(1), '0912345678');
+      await tester.enterText(find.byType(TextFormField).at(2), '123456');
+      await tester.enterText(find.byType(TextFormField).at(3), 'chiconchu');
+      await tester.tap(find.widgetWithText(FilledButton, 'Đăng ký'));
+      await tester.pumpAndSettle();
+      expect(find.text('Mật khẩu cần có cả chữ và số.'), findsOneWidget);
+    },
+  );
+
+  testWidgets('gửi mã OTP: cần SĐT hợp lệ, rồi đếm ngược gửi lại', (
+    tester,
+  ) async {
+    await _pumpApp(tester);
+    await tester.tap(find.text('Quên mật khẩu?'));
+    await tester.pumpAndSettle();
+    expect(find.text('Quên mật khẩu'), findsOneWidget);
+
+    await tester.tap(find.text('Gửi mã'));
+    await tester.pump();
+    expect(
+      find.text('Gửi mã'),
+      findsOneWidget,
+      reason: 'chưa có SĐT thì không gửi',
+    );
+
+    await tester.enterText(find.byType(TextFormField).at(0), '0912345678');
+    await tester.tap(find.text('Gửi mã'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(find.text('Gửi lại sau 60s'), findsOneWidget);
+    expect(find.text('Đã gửi mã OTP tới 0912345678'), findsOneWidget);
   });
 }

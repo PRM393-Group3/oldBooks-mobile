@@ -7,6 +7,7 @@ import '../features/auctions/presentation/auctions_screen.dart';
 import '../features/auctions/presentation/my_auctions_screen.dart';
 import '../features/auth/application/auth_controller.dart';
 import '../features/cart/presentation/cart_screen.dart';
+import '../features/auth/presentation/forgot_password_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/auth/presentation/register_screen.dart';
 import '../features/listings/presentation/browse/book_detail_screen.dart';
@@ -23,7 +24,7 @@ import '../features/sell/presentation/sell_screen.dart';
 import '../features/wallet/presentation/wallet_screen.dart';
 import 'app_shell.dart';
 
-const _authPaths = {'/login', '/register'};
+const _authPaths = {'/login', '/register', '/forgot-password'};
 
 Page<void> _tab(Widget child) => NoTransitionPage<void>(child: child);
 
@@ -51,6 +52,10 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: '/login', builder: (_, _) => const LoginScreen()),
       GoRoute(path: '/register', builder: (_, _) => const RegisterScreen()),
+      GoRoute(
+        path: '/forgot-password',
+        builder: (_, _) => const ForgotPasswordScreen(),
+      ),
       // Thứ tự nhánh khớp `appTabs` trong nav_config.dart.
       StatefulShellRoute.indexedStack(
         builder: (_, _, shell) => AppShell(navigationShell: shell),

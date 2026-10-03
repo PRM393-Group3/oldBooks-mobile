@@ -3,8 +3,8 @@ import '../../auth/domain/user_role.dart';
 class Profile {
   const Profile({
     required this.id,
-    required this.email,
     required this.fullName,
+    this.email = '',
     required this.role,
     required this.createdAt,
     this.phoneNumber,
@@ -15,9 +15,9 @@ class Profile {
     final j = json as Map<String, dynamic>;
     return Profile(
       id: j['id'] as String,
-      email: j['email'] as String,
-      fullName: j['fullName'] as String,
-      phoneNumber: j['phoneNumber'] as String?,
+      email: (j['email'] as String?) ?? '',
+      fullName: (j['fullName'] as String?) ?? '',
+      phoneNumber: (j['phoneNumber'] ?? j['phone']) as String?,
       avatarUrl: j['avatarUrl'] as String?,
       role: UserRole.fromApi(j['role'] as String?),
       createdAt: DateTime.parse(j['createdAt'] as String),

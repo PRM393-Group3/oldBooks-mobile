@@ -623,7 +623,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorInvalidCredentials.
   ///
   /// In vi, this message translates to:
-  /// **'Email hoặc mật khẩu chưa đúng.'**
+  /// **'Số điện thoại hoặc mật khẩu chưa đúng.'**
   String get errorInvalidCredentials;
 
   /// No description provided for @errorSessionExpired.
@@ -4531,6 +4531,210 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Ngoại văn'**
   String get sellCatForeign;
+
+  /// No description provided for @validationPhoneRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng nhập số điện thoại.'**
+  String get validationPhoneRequired;
+
+  /// No description provided for @validationOtpInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã OTP gồm 6 chữ số.'**
+  String get validationOtpInvalid;
+
+  /// No description provided for @validationPasswordLetterDigit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu cần có cả chữ và số.'**
+  String get validationPasswordLetterDigit;
+
+  /// No description provided for @passwordHelperLetterDigit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ít nhất 8 ký tự, gồm chữ và số'**
+  String get passwordHelperLetterDigit;
+
+  /// No description provided for @otpLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã OTP'**
+  String get otpLabel;
+
+  /// No description provided for @otpSend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi mã'**
+  String get otpSend;
+
+  /// No description provided for @otpResendIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi lại sau {n}s'**
+  String otpResendIn(int n);
+
+  /// No description provided for @otpSentTo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi mã OTP tới {phone}'**
+  String otpSentTo(String phone);
+
+  /// No description provided for @forgotLink.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quên mật khẩu?'**
+  String get forgotLink;
+
+  /// No description provided for @forgotTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quên mật khẩu'**
+  String get forgotTitle;
+
+  /// No description provided for @forgotSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập số điện thoại để nhận mã xác thực và đặt mật khẩu mới.'**
+  String get forgotSubtitle;
+
+  /// No description provided for @forgotSubmit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt lại mật khẩu'**
+  String get forgotSubmit;
+
+  /// No description provided for @forgotDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đặt lại mật khẩu. Hãy đăng nhập.'**
+  String get forgotDone;
+
+  /// No description provided for @backToLogin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại đăng nhập'**
+  String get backToLogin;
+
+  /// No description provided for @errOtpInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã OTP chưa đúng.'**
+  String get errOtpInvalid;
+
+  /// No description provided for @errOtpExpired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã OTP đã hết hạn. Hãy gửi lại mã.'**
+  String get errOtpExpired;
+
+  /// No description provided for @errRateLimited.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn thao tác quá nhanh. Hãy thử lại sau ít phút.'**
+  String get errRateLimited;
+
+  /// No description provided for @errAccountLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản của bạn đang bị khóa.'**
+  String get errAccountLocked;
+
+  /// No description provided for @errInsufficientBalance.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư ví không đủ.'**
+  String get errInsufficientBalance;
+
+  /// No description provided for @errBidTooLow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá thấp hơn mức tối thiểu hiện tại.'**
+  String get errBidTooLow;
+
+  /// No description provided for @errAlreadyLeading.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang dẫn đầu phiên này.'**
+  String get errAlreadyLeading;
+
+  /// No description provided for @errAuctionEnded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên đã kết thúc.'**
+  String get errAuctionEnded;
+
+  /// No description provided for @errAuctionNotLive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên chưa diễn ra.'**
+  String get errAuctionNotLive;
+
+  /// No description provided for @errBuyNowUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không còn mua ngay được.'**
+  String get errBuyNowUnavailable;
+
+  /// No description provided for @errNotRegistered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa đăng ký phiên này.'**
+  String get errNotRegistered;
+
+  /// No description provided for @errRegistrationClosed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký đã đóng.'**
+  String get errRegistrationClosed;
+
+  /// No description provided for @errSellerCannotBid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người bán không thể tham gia phiên của mình.'**
+  String get errSellerCannotBid;
+
+  /// No description provided for @errListingNotAvailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sách này không còn bán.'**
+  String get errListingNotAvailable;
+
+  /// No description provided for @errComplaintWindowClosed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã quá hạn khiếu nại.'**
+  String get errComplaintWindowClosed;
+
+  /// No description provided for @errWithdrawBelowMin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền rút thấp hơn mức tối thiểu.'**
+  String get errWithdrawBelowMin;
+
+  /// No description provided for @errForbidden.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn không có quyền thực hiện thao tác này.'**
+  String get errForbidden;
+
+  /// No description provided for @errNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy nội dung này.'**
+  String get errNotFound;
+
+  /// No description provided for @errInvalidState.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể thực hiện ở trạng thái hiện tại.'**
+  String get errInvalidState;
+
+  /// No description provided for @errUpstream.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dịch vụ đối tác đang gặp sự cố. Hãy thử lại sau.'**
+  String get errUpstream;
 }
 
 class _AppLocalizationsDelegate

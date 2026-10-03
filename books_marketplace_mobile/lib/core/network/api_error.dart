@@ -25,6 +25,32 @@ abstract final class ApiErrorCode {
   static const categoryNotFound = 'CATEGORY_NOT_FOUND';
   static const notificationNotFound = 'NOTIFICATION_NOT_FOUND';
 
+  // Mã lỗi theo BE-SRS v1.1, mục 7.
+  static const validationError = 'VALIDATION_ERROR';
+  static const unauthenticated = 'UNAUTHENTICATED';
+  static const forbidden = 'FORBIDDEN';
+  static const accountLocked = 'ACCOUNT_LOCKED';
+  static const notFound = 'NOT_FOUND';
+  static const invalidState = 'INVALID_STATE';
+  static const idempotencyConflict = 'IDEMPOTENCY_CONFLICT';
+  static const listingNotAvailable = 'LISTING_NOT_AVAILABLE';
+  static const insufficientBalance = 'INSUFFICIENT_BALANCE';
+  static const otpInvalid = 'OTP_INVALID';
+  static const otpExpired = 'OTP_EXPIRED';
+  static const auctionNotRegistered = 'AUCTION_NOT_REGISTERED';
+  static const auctionRegistrationClosed = 'AUCTION_REGISTRATION_CLOSED';
+  static const auctionSellerCannotBid = 'AUCTION_SELLER_CANNOT_BID';
+  static const bidTooLow = 'BID_TOO_LOW';
+  static const alreadyLeading = 'ALREADY_LEADING';
+  static const auctionEnded = 'AUCTION_ENDED';
+  static const auctionNotLive = 'AUCTION_NOT_LIVE';
+  static const buyNowUnavailable = 'BUY_NOW_UNAVAILABLE';
+  static const complaintWindowClosed = 'COMPLAINT_WINDOW_CLOSED';
+  static const withdrawBelowMinimum = 'WITHDRAW_BELOW_MINIMUM';
+  static const rateLimited = 'RATE_LIMITED';
+  static const upstreamError = 'UPSTREAM_ERROR';
+  static const serviceUnavailable = 'SERVICE_UNAVAILABLE';
+
   /// Sinh ở client.
   static const network = 'CLIENT_NETWORK_ERROR';
   static const uploadFailed = 'CLIENT_UPLOAD_FAILED';
@@ -59,12 +85,19 @@ class ApiError implements Exception {
           (error is Map ? error['code'] : null)?.toString() ??
           ApiErrorCode.unknown,
       message: (error is Map ? error['message'] : null)?.toString() ?? '',
-      traceId: body['traceId']?.toString() ?? '',
+      traceId:
+          body['traceId']?.toString() ??
+          (error is Map ? error['request_id']?.toString() : null) ??
+          '',
       fieldErrors: {
         if (details is List)
           for (final d in details)
             if (d is Map && d['field'] != null)
               d['field'].toString(): (d['message'] ?? '').toString(),
+        // BE-SRS: details có thể là object { trường: thông điệp }.
+        if (details is Map)
+          for (final e in details.entries)
+            if (e.value is String) e.key.toString(): e.value as String,
       },
     );
   }
@@ -74,7 +107,7 @@ class ApiError implements Exception {
     final response = e.response;
     final data = response?.data;
     if (response != null) {
-      if (data is Map && data['success'] == false) {
+      if (data is Map && (data['success'] == false || data['error'] is Map)) {
         return ApiError.fromBody(response.statusCode ?? 0, data);
       }
       return ApiError(
@@ -97,11 +130,15 @@ class ApiError implements Exception {
 
   /// Phiên đăng nhập không còn dùng được, cần về màn hình đăng nhập.
   bool get isSessionLost =>
-      code == ApiErrorCode.unauthorized || code == ApiErrorCode.userNotFound;
+      code == ApiErrorCode.unauthorized ||
+      code == ApiErrorCode.unauthenticated ||
+      code == ApiErrorCode.userNotFound;
 
   /// Trạng thái tin đã đổi ở nơi khác: cần tải lại tin rồi cập nhật giao diện.
   bool get needsReload =>
       code == ApiErrorCode.listingInvalidState ||
+      code == ApiErrorCode.invalidState ||
+      code == ApiErrorCode.listingNotAvailable ||
       code == ApiErrorCode.listingConcurrentUpdate ||
       code == ApiErrorCode.claimRequired ||
       code == ApiErrorCode.listingAlreadyClaimed;

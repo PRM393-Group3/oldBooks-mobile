@@ -23,7 +23,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _email = TextEditingController();
+  final _phone = TextEditingController();
   final _password = TextEditingController();
 
   bool _loading = false;
@@ -31,7 +31,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void dispose() {
-    _email.dispose();
+    _phone.dispose();
     _password.dispose();
     super.dispose();
   }
@@ -46,7 +46,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     try {
       await ref
           .read(authControllerProvider.notifier)
-          .login(email: _email.text.trim(), password: _password.text);
+          .login(phone: _phone.text.trim(), password: _password.text);
     } on ApiError catch (e) {
       if (!mounted) return;
       setState(() => _serverErrors = e.localizedFieldErrors(l));
@@ -75,16 +75,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: [
               AuthHeader(title: l.loginTitle, subtitle: l.loginSubtitle),
               AppTextField(
-                label: l.emailLabel,
-                controller: _email,
-                keyboardType: TextInputType.emailAddress,
+                label: l.phoneLabel,
+                controller: _phone,
+                keyboardType: TextInputType.phone,
                 textInputAction: TextInputAction.next,
-                autofillHints: const [AutofillHints.username],
-                validator: v.email,
-                errorText: _serverErrors['email'],
+                autofillHints: const [AutofillHints.telephoneNumber],
+                validator: v.phoneRequired,
+                errorText: _serverErrors['phone'],
                 enabled: !_loading,
-                prefixIcon: Icons.mail_outline,
-                onChanged: (_) => _clearError('email'),
+                prefixIcon: Icons.phone_outlined,
+                onChanged: (_) => _clearError('phone'),
               ),
               const SizedBox(height: AppSpacing.md),
               AppTextField(
@@ -100,7 +100,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 onChanged: (_) => _clearError('password'),
                 onSubmitted: (_) => _submit(),
               ),
-              const SizedBox(height: AppSpacing.lg),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: _loading
+                      ? null
+                      : () => context.go('/forgot-password'),
+                  child: Text(l.forgotLink),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
               Wrap(
                 alignment: WrapAlignment.center,
                 crossAxisAlignment: WrapCrossAlignment.center,
