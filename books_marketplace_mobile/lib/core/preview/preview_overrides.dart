@@ -23,7 +23,6 @@ import '../../features/profile/data/profile_repository.dart';
 import '../../features/profile/domain/profile.dart';
 import '../network/api_client.dart';
 import '../network/paged_result.dart';
-import '../storage/storage_providers.dart';
 import '../storage/token_store.dart';
 
 /// Token giả luôn "đã đăng nhập" để vào thẳng app khi xem trước giao diện.
@@ -352,7 +351,7 @@ class PreviewNotificationRepository extends NotificationRepository {
 List<Override> previewOverrides(TokenStore tokens) {
   final api = ApiClient(Dio());
   return [
-    tokenStoreProvider.overrideWithValue(tokens),
+    // tokenStoreProvider do main.dart đã override; không override lại ở đây.
     authRepositoryProvider.overrideWithValue(
       PreviewAuthRepository(api, tokens),
     ),
