@@ -3,6 +3,7 @@ import '../../../core/util/format.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_tag.dart';
 import '../../orders/domain/order.dart';
+import '../../notifications/domain/sim_notification.dart';
 import '../../wallet/domain/wallet_txn.dart';
 import '../application/sim_state.dart';
 
@@ -137,3 +138,43 @@ AppSnackbarType simToastType(SimToastKind k) => switch (k) {
   SimToastKind.movedToStorage => AppSnackbarType.error,
   _ => AppSnackbarType.info,
 };
+
+/// Tiêu đề và nội dung của thông báo mô phỏng theo ngôn ngữ hiện tại.
+({String title, String body}) simNotificationText(
+  AppLocalizations l,
+  String locale,
+  SimNotification n,
+) {
+  final arg = n.arg ?? '';
+  final amount = formatVnd(n.amount ?? 0, locale);
+  return switch (n.kind) {
+    SimNotificationKind.auctionBuyNowCountdown => (
+      title: l.simNotifBuyNowTitle(arg),
+      body: l.simNotifBuyNowBody,
+    ),
+    SimNotificationKind.orderDelivered => (
+      title: l.simNotifDeliveredTitle(arg),
+      body: l.simNotifDeliveredBody,
+    ),
+    SimNotificationKind.auctionFilled => (
+      title: l.simNotifFilledTitle(arg),
+      body: l.simNotifFilledBody(amount),
+    ),
+    SimNotificationKind.topupOk => (
+      title: l.simNotifTopupTitle,
+      body: l.simNotifTopupBody(amount),
+    ),
+    SimNotificationKind.auctionRegistered => (
+      title: l.simNotifRegisteredTitle,
+      body: l.simNotifRegisteredBody(arg, amount),
+    ),
+    SimNotificationKind.outbid => (
+      title: l.simNotifOutbidTitle,
+      body: l.simNotifOutbidBody(arg, amount),
+    ),
+    SimNotificationKind.auctionWon => (
+      title: l.simNotifWonTitle(arg),
+      body: l.simNotifWonBody(amount),
+    ),
+  };
+}

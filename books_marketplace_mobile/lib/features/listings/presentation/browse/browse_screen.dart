@@ -55,7 +55,7 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
     final state = ref.watch(provider);
     final notifier = ref.read(provider.notifier);
     final categories = ref.watch(categoryTreeProvider).value ?? const [];
-    final unread = ref.watch(unreadCountProvider).value ?? 0;
+    final unread = ref.watch(totalUnreadProvider);
     final cartCount = ref.watch(cartCountProvider);
     final reserved = ref.watch(reservedListingIdsProvider);
     final q = normalizeSearch(_query);

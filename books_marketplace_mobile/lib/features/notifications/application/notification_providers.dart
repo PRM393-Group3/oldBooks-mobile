@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/network/network_providers.dart';
 import '../../../core/network/paged_result.dart';
 import '../../../core/paging/paged_notifier.dart';
+import '../../sim/application/sim_providers.dart';
 import '../data/notification_repository.dart';
 import '../domain/app_notification.dart';
 
@@ -33,6 +34,13 @@ final notificationsProvider = AsyncNotifierProvider.autoDispose
 /// foreground và sau khi đọc; không polling nền.
 final unreadCountProvider = FutureProvider.autoDispose<int>(
   (ref) => ref.watch(notificationRepositoryProvider).unreadCount(),
+);
+
+/// Tổng chưa đọc: thông báo từ backend cộng thông báo mô phỏng (đơn, ví, đấu giá).
+final totalUnreadProvider = Provider.autoDispose<int>(
+  (ref) =>
+      (ref.watch(unreadCountProvider).value ?? 0) +
+      ref.watch(simUnreadCountProvider),
 );
 
 class NotificationActions {

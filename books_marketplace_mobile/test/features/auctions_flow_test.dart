@@ -133,9 +133,8 @@ void main() {
     expect(c.read(availableBalanceProvider), 1250000 - 40000);
 
     // Tắt thông báo "đã đăng ký" đang che nút ở đáy màn hình.
-    ScaffoldMessenger.of(
-      tester.element(find.byType(Scaffold).first),
-    ).clearSnackBars();
+    ScaffoldMessenger.of(tester.element(find.byType(Scaffold).first))
+        .clearSnackBars();
     await tester.pumpAndSettle();
     await tester.tap(find.text('Hủy đăng ký'));
     await tester.pumpAndSettle();
@@ -148,7 +147,9 @@ void main() {
     (tester) async {
       await _open(tester);
       await tapTab(tester, 'Tôi');
-      await tester.tap(find.text('Phiên tôi tham gia'));
+      await tester.ensureVisible(find.text('Phiên tôi tham gia'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Phiên tôi tham gia'));
       await tester.pumpAndSettle();
       expect(find.text('Đã thắng · 520.000 ₫'), findsOneWidget);
       expect(find.text('Đang dẫn đầu · 1.230.000 ₫'), findsNothing);

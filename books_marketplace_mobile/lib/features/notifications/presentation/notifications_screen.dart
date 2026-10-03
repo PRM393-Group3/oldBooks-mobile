@@ -10,6 +10,8 @@ import '../../../core/widgets/app_page.dart';
 import '../../../core/widgets/app_paged_list.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_state_views.dart';
+import '../../sim/application/sim_providers.dart';
+import '../../sim/presentation/sim_text.dart';
 import '../application/notification_providers.dart';
 import '../domain/app_notification.dart';
 
@@ -27,6 +29,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   bool _unreadOnly = false;
 
   Future<void> _markAll() async {
+    ref.read(simProvider.notifier).markAllNotificationsRead();
     try {
       await ref.read(notificationActionsProvider).markAllRead();
     } on ApiError catch (e) {
@@ -43,7 +46,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
       }
     }
     if (mounted && n.listingId != null) {
-      context.push('/listings/${n.listingId}');
+      context.push('/sell/listing/${n.listingId}');
     }
   }
 
@@ -53,6 +56,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     final provider = notificationsProvider(_unreadOnly);
     final state = ref.watch(provider);
     final notifier = ref.read(provider.notifier);
+    final sim = ref.watch(simNotificationsProvider);
+    final simNow = ref.watch(simNowProvider);
+    final locale = Localizations.localeOf(context).toString();
 
     return AppPage(
       title: l.notificationsTitle,
@@ -65,29 +71,47 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           ref.invalidate(unreadCountProvider);
           await notifier.reload();
         },
-        header: Padding(
-          padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-          child: Wrap(
-            spacing: AppSpacing.xs,
-            children: [
-              ChoiceChip(
-                label: Text(l.filterAll),
-                selected: !_unreadOnly,
-                onSelected: (_) => setState(() => _unreadOnly = false),
+        header: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              child: Wrap(
+                spacing: AppSpacing.xs,
+                children: [
+                  ChoiceChip(
+                    label: Text(l.filterAll),
+                    selected: !_unreadOnly,
+                    onSelected: (_) => setState(() => _unreadOnly = false),
+                  ),
+                  ChoiceChip(
+                    label: Text(l.unreadOnly),
+                    selected: _unreadOnly,
+                    onSelected: (_) => setState(() => _unreadOnly = true),
+                  ),
+                ],
               ),
-              ChoiceChip(
-                label: Text(l.unreadOnly),
-                selected: _unreadOnly,
-                onSelected: (_) => setState(() => _unreadOnly = true),
+            ),
+            for (final n in sim)
+              if (!_unreadOnly || !n.read)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+                  child: _SimNotificationTile(
+                    title: simNotificationText(l, locale, n).title,
+                    body: simNotificationText(l, locale, n).body,
+                    ago: agoText(l, simNow, n.time),
+                    read: n.read,
+                  ),
+                ),
+          ],
+        ),
+        empty: sim.isNotEmpty
+            ? const SizedBox.shrink()
+            : AppEmptyView(
+                icon: Icons.notifications_none,
+                title: l.emptyNotificationsTitle,
+                message: l.emptyNotificationsMessage,
               ),
-            ],
-          ),
-        ),
-        empty: AppEmptyView(
-          icon: Icons.notifications_none,
-          title: l.emptyNotificationsTitle,
-          message: l.emptyNotificationsMessage,
-        ),
         separator: const SizedBox(height: AppSpacing.xs),
         itemBuilder: (context, n) =>
             _NotificationTile(notification: n, onTap: () => _open(n)),
@@ -195,6 +219,81 @@ class _NotificationTile extends StatelessWidget {
                   ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Thông báo mô phỏng (đơn, ví, đấu giá): chỉ hiển thị, không có màn đích.
+class _SimNotificationTile extends StatelessWidget {
+  const _SimNotificationTile({
+    required this.title,
+    required this.body,
+    required this.ago,
+    required this.read,
+  });
+
+  final String title;
+  final String body;
+  final String ago;
+  final bool read;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return Semantics(
+      label: title,
+      child: Material(
+        color: read ? colors.surface : colors.primaryContainer,
+        shape: RoundedRectangleBorder(
+          borderRadius: AppRadius.lgAll,
+          side: BorderSide(color: colors.divider),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.sm),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: context.text.titleMedium?.copyWith(
+                        fontWeight: read ? FontWeight.w500 : FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      body,
+                      style: context.text.bodySmall?.copyWith(
+                        color: colors.textSecondary,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      ago,
+                      style: context.text.labelSmall?.copyWith(
+                        color: colors.textMuted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (!read)
+                Container(
+                  width: 10,
+                  height: 10,
+                  margin: const EdgeInsets.only(top: 6),
+                  decoration: BoxDecoration(
+                    color: colors.auction,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+            ],
           ),
         ),
       ),

@@ -2212,4 +2212,95 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeSeeAll => 'See all';
+
+  @override
+  String simNotifBuyNowTitle(String arg) {
+    return 'Auction \"$arg\" is in the buy-now countdown';
+  }
+
+  @override
+  String get simNotifBuyNowBody =>
+      'Someone bought now. Bid higher to reset the 30-minute countdown.';
+
+  @override
+  String simNotifDeliveredTitle(String arg) {
+    return 'Order $arg delivered';
+  }
+
+  @override
+  String get simNotifDeliveredBody =>
+      'You have 3 days to check the book and file a complaint if needed.';
+
+  @override
+  String simNotifFilledTitle(String arg) {
+    return 'Auction \"$arg\" is full';
+  }
+
+  @override
+  String simNotifFilledBody(String amount) {
+    return 'It starts in a few hours. Your $amount deposit stays held.';
+  }
+
+  @override
+  String get simNotifTopupTitle => 'Top-up successful';
+
+  @override
+  String simNotifTopupBody(String amount) {
+    return '+$amount was added to your wallet.';
+  }
+
+  @override
+  String get simNotifRegisteredTitle => 'Registration successful';
+
+  @override
+  String simNotifRegisteredBody(String arg, String amount) {
+    return '\"$arg\" · $amount held';
+  }
+
+  @override
+  String get simNotifOutbidTitle => 'You were outbid';
+
+  @override
+  String simNotifOutbidBody(String arg, String amount) {
+    return '\"$arg\" · new price $amount. Your held funds were released.';
+  }
+
+  @override
+  String simNotifWonTitle(String arg) {
+    return 'You won \"$arg\"';
+  }
+
+  @override
+  String simNotifWonBody(String amount) {
+    return 'Winning price $amount. A delivery order was created in My orders.';
+  }
+
+  @override
+  String get meStatOpenOrders => 'Open orders';
+
+  @override
+  String get meStatListings => 'Active listings';
+
+  @override
+  String get meStatAuctions => 'Auctions joined';
+
+  @override
+  String get meMyListings => 'My listings';
+
+  @override
+  String get meMyListingsSub => 'Review status, needs changes, sold';
+
+  @override
+  String get meMyAuctionsSub => 'Registered, leading, won';
+
+  @override
+  String meNotificationsSub(int n) {
+    return '$n unread';
+  }
+
+  @override
+  String get meNotificationsAllRead => 'All read';
+
+  @override
+  String get meDefaultAddress => 'Default address';
 }

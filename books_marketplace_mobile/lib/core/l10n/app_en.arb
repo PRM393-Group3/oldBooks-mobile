@@ -1449,5 +1449,104 @@
   "myAucOutbid": "Outbid",
   "myAucRegistered": "Registered",
   "homeLiveAuctions": "Live auctions",
-  "homeSeeAll": "See all"
+  "homeSeeAll": "See all",
+  "simNotifBuyNowTitle": "Auction \"{arg}\" is in the buy-now countdown",
+  "@simNotifBuyNowTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifBuyNowBody": "Someone bought now. Bid higher to reset the 30-minute countdown.",
+  "simNotifDeliveredTitle": "Order {arg} delivered",
+  "@simNotifDeliveredTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifDeliveredBody": "You have 3 days to check the book and file a complaint if needed.",
+  "simNotifFilledTitle": "Auction \"{arg}\" is full",
+  "@simNotifFilledTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifFilledBody": "It starts in a few hours. Your {amount} deposit stays held.",
+  "@simNotifFilledBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifTopupTitle": "Top-up successful",
+  "simNotifTopupBody": "+{amount} was added to your wallet.",
+  "@simNotifTopupBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifRegisteredTitle": "Registration successful",
+  "simNotifRegisteredBody": "\"{arg}\" · {amount} held",
+  "@simNotifRegisteredBody": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifOutbidTitle": "You were outbid",
+  "simNotifOutbidBody": "\"{arg}\" · new price {amount}. Your held funds were released.",
+  "@simNotifOutbidBody": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifWonTitle": "You won \"{arg}\"",
+  "@simNotifWonTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifWonBody": "Winning price {amount}. A delivery order was created in My orders.",
+  "@simNotifWonBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "meStatOpenOrders": "Open orders",
+  "meStatListings": "Active listings",
+  "meStatAuctions": "Auctions joined",
+  "meMyListings": "My listings",
+  "meMyListingsSub": "Review status, needs changes, sold",
+  "meMyAuctionsSub": "Registered, leading, won",
+  "meNotificationsSub": "{n} unread",
+  "@meNotificationsSub": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "meNotificationsAllRead": "All read",
+  "meDefaultAddress": "Default address"
 }

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/widgets/app_avatar.dart';
+import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_dialog.dart';
 import '../../../core/widgets/app_page.dart';
 import '../../../core/widgets/app_section.dart';
@@ -13,6 +14,10 @@ import '../../../core/widgets/app_state_views.dart';
 import '../../../core/widgets/app_tag.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../auth/domain/user_role.dart';
+import '../../listings/application/listing_providers.dart';
+import '../../listings/domain/listing_enums.dart';
+import '../../notifications/application/notification_providers.dart';
+import '../../sim/application/sim_providers.dart';
 import '../application/profile_controller.dart';
 import '../domain/profile.dart';
 import 'language_sheet.dart';
@@ -59,19 +64,21 @@ class _ProfileBody extends ConsumerWidget {
     final localeName = Localizations.localeOf(context).toString();
     final joined = DateFormat.yMMMMd(localeName)
         .format(profile.createdAt.toLocal());
+    final unread = ref.watch(totalUnreadProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Thẻ hero: nền gradient lavender nhạt, avatar viền gradient.
+        // Thẻ hồ sơ: nền thẻ, viền 1px.
         Container(
           padding: const EdgeInsets.symmetric(
             vertical: AppSpacing.lg,
             horizontal: AppSpacing.md,
           ),
           decoration: BoxDecoration(
-            gradient: colors.heroGradient,
+            color: colors.surface,
             borderRadius: AppRadius.lgAll,
+            border: Border.all(color: colors.divider),
           ),
           child: Column(
             children: [
@@ -130,7 +137,9 @@ class _ProfileBody extends ConsumerWidget {
             ),
           ),
         ],
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: AppSpacing.md),
+        const _StatTiles(),
+        const SizedBox(height: AppSpacing.md),
         AppSection(
           children: [
             AppInfoRow(
@@ -152,13 +161,34 @@ class _ProfileBody extends ConsumerWidget {
             AppMenuTile(
               icon: Icons.receipt_long_outlined,
               title: l.meMyOrders,
+              subtitle: l.meMyOrdersSub,
               onTap: () => context.push('/me/orders'),
+            ),
+            AppMenuTile(
+              icon: Icons.inventory_2_outlined,
+              title: l.meMyListings,
+              subtitle: l.meMyListingsSub,
+              onTap: () => context.go('/sell'),
             ),
             AppMenuTile(
               icon: Icons.gavel_outlined,
               title: l.myAuctionsTitle,
+              subtitle: l.meMyAuctionsSub,
               onTap: () => context.push('/auctions/mine'),
             ),
+            AppMenuTile(
+              icon: Icons.notifications_none,
+              title: l.notificationsTitle,
+              subtitle: unread > 0
+                  ? l.meNotificationsSub(unread)
+                  : l.meNotificationsAllRead,
+              onTap: () => context.push('/notifications'),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.md),
+        AppSection(
+          children: [
             AppMenuTile(
               icon: Icons.edit_outlined,
               title: l.editProfile,
@@ -204,6 +234,67 @@ class _ProfileBody extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: AppSpacing.lg),
+      ],
+    );
+  }
+}
+
+/// Ba ô số liệu: đơn đang mua, tin đang đăng, phiên đang tham gia.
+class _StatTiles extends ConsumerWidget {
+  const _StatTiles();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final orders = ref.watch(openOrderCountProvider);
+    final listings = ref.watch(listingSummaryProvider).value ?? const {};
+    final activeListings =
+        (listings[ListingStatus.onSale] ?? 0) +
+        (listings[ListingStatus.auctioning] ?? 0) +
+        (listings[ListingStatus.pendingInspection] ?? 0) +
+        (listings[ListingStatus.draft] ?? 0);
+    final auctions = ref
+        .watch(auctionsProvider)
+        .where((a) => a.registered && !a.status.isEnded)
+        .length;
+
+    Widget tile(String value, String label, VoidCallback onTap) => Expanded(
+      child: AppCard(
+        padding: const EdgeInsets.all(12),
+        onTap: onTap,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              value,
+              style: context.text.titleLarge?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            Text(
+              label,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: context.text.labelSmall?.copyWith(
+                color: context.colors.textMuted,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    return Row(
+      children: [
+        tile('$orders', l.meStatOpenOrders, () => context.push('/me/orders')),
+        const SizedBox(width: AppSpacing.xs),
+        tile('$activeListings', l.meStatListings, () => context.go('/sell')),
+        const SizedBox(width: AppSpacing.xs),
+        tile(
+          '$auctions',
+          l.meStatAuctions,
+          () => context.push('/auctions/mine'),
+        ),
       ],
     );
   }

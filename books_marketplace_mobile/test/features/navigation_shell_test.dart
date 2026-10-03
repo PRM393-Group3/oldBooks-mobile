@@ -98,11 +98,16 @@ void main() {
     final h = Harness(UserRole.seller);
     h.notifications.unread = 3;
     await h.pump(tester);
-    expect(find.text('3'), findsOneWidget);
+    // 3 chưa đọc từ backend cộng 2 thông báo mô phỏng chưa đọc.
+    expect(find.text('5'), findsOneWidget);
 
     final h0 = Harness(UserRole.seller);
     await h0.pump(tester);
-    expect(find.text('3'), findsNothing);
+    expect(
+      find.text('2'),
+      findsOneWidget,
+      reason: 'chỉ còn thông báo mô phỏng',
+    );
   });
 
   testWidgets('thông báo: tiêu đề bản địa hóa, chạm để đánh dấu đã đọc', (
@@ -148,11 +153,13 @@ void main() {
     expect(find.text('Nhà giả kim'), findsWidgets, reason: 'mở chi tiết tin');
   });
 
-  testWidgets('thông báo rỗng hiện trạng thái trống', (tester) async {
+  testWidgets('không có thông báo backend vẫn thấy thông báo mô phỏng', (tester) async {
     final h = Harness(UserRole.buyer);
     await h.pump(tester);
     await tester.tap(find.text('Thông báo'));
     await tester.pumpAndSettle();
-    expect(find.text('Chưa có thông báo'), findsOneWidget);
+    // Không có thông báo từ backend; vẫn thấy các thông báo mô phỏng.
+    expect(find.text('Nạp tiền thành công'), findsOneWidget);
+    expect(find.text('Đơn OB-24790 đã giao'), findsOneWidget);
   });
 }

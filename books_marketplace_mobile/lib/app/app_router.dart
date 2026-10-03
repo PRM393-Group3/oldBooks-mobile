@@ -162,21 +162,19 @@ final routerProvider = Provider<GoRouter>((ref) {
         parentNavigatorKey: rootKey,
         builder: (_, _) => const CartScreen(),
       ),
-      // `/listings/new` phải đứng trước `:id`. Đường dẫn giữ nguyên `/listings`
-      // tới lát 5 (restyle wizard), khi đó chuyển sang `/sell/...`.
       GoRoute(
-        path: '/listings/new',
+        path: '/sell/new',
         parentNavigatorKey: rootKey,
         builder: (_, _) => const ListingWizardScreen(),
       ),
       GoRoute(
-        path: '/listings/:id/edit',
+        path: '/sell/listing/:id/edit',
         parentNavigatorKey: rootKey,
         builder: (_, state) =>
             ListingWizardScreen(listingId: state.pathParameters['id']),
       ),
       GoRoute(
-        path: '/listings/:id',
+        path: '/sell/listing/:id',
         parentNavigatorKey: rootKey,
         builder: (_, state) =>
             ListingDetailScreen(listingId: state.pathParameters['id']!),

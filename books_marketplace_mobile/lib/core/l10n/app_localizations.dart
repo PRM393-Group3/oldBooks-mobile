@@ -3937,6 +3937,144 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xem tất cả'**
   String get homeSeeAll;
+
+  /// No description provided for @simNotifBuyNowTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên \"{arg}\" đang đếm ngược mua ngay'**
+  String simNotifBuyNowTitle(String arg);
+
+  /// No description provided for @simNotifBuyNowBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có người bấm mua ngay. Trả giá cao hơn để đặt lại đếm ngược 30 phút.'**
+  String get simNotifBuyNowBody;
+
+  /// No description provided for @simNotifDeliveredTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn {arg} đã giao'**
+  String simNotifDeliveredTitle(String arg);
+
+  /// No description provided for @simNotifDeliveredBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn có 3 ngày để kiểm tra sách và khiếu nại nếu có vấn đề.'**
+  String get simNotifDeliveredBody;
+
+  /// No description provided for @simNotifFilledTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên \"{arg}\" đã đủ người'**
+  String simNotifFilledTitle(String arg);
+
+  /// No description provided for @simNotifFilledBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên bắt đầu sau vài giờ. Cọc {amount} tiếp tục được giữ.'**
+  String simNotifFilledBody(String amount);
+
+  /// No description provided for @simNotifTopupTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp tiền thành công'**
+  String get simNotifTopupTitle;
+
+  /// No description provided for @simNotifTopupBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{amount} đã vào ví.'**
+  String simNotifTopupBody(String amount);
+
+  /// No description provided for @simNotifRegisteredTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký thành công'**
+  String get simNotifRegisteredTitle;
+
+  /// No description provided for @simNotifRegisteredBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'\"{arg}\" · đã giữ {amount}'**
+  String simNotifRegisteredBody(String arg, String amount);
+
+  /// No description provided for @simNotifOutbidTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã bị vượt giá'**
+  String get simNotifOutbidTitle;
+
+  /// No description provided for @simNotifOutbidBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'\"{arg}\" · giá mới {amount}. Tiền giữ đã được nhả về ví.'**
+  String simNotifOutbidBody(String arg, String amount);
+
+  /// No description provided for @simNotifWonTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã thắng phiên \"{arg}\"'**
+  String simNotifWonTitle(String arg);
+
+  /// No description provided for @simNotifWonBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá thắng {amount}. Đơn giao hàng đã được tạo trong Đơn mua.'**
+  String simNotifWonBody(String amount);
+
+  /// No description provided for @meStatOpenOrders.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn đang mua'**
+  String get meStatOpenOrders;
+
+  /// No description provided for @meStatListings.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tin đang đăng'**
+  String get meStatListings;
+
+  /// No description provided for @meStatAuctions.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên tham gia'**
+  String get meStatAuctions;
+
+  /// No description provided for @meMyListings.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tin đăng của tôi'**
+  String get meMyListings;
+
+  /// No description provided for @meMyListingsSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trạng thái duyệt, cần sửa, đã bán'**
+  String get meMyListingsSub;
+
+  /// No description provided for @meMyAuctionsSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đăng ký, đang dẫn đầu, đã thắng'**
+  String get meMyAuctionsSub;
+
+  /// No description provided for @meNotificationsSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} chưa đọc'**
+  String meNotificationsSub(int n);
+
+  /// No description provided for @meNotificationsAllRead.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đọc hết'**
+  String get meNotificationsAllRead;
+
+  /// No description provided for @meDefaultAddress.
+  ///
+  /// In vi, this message translates to:
+  /// **'Địa chỉ mặc định'**
+  String get meDefaultAddress;
 }
 
 class _AppLocalizationsDelegate

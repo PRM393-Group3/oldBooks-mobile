@@ -43,7 +43,7 @@ class _MyListingsScreenState extends ConsumerState<MyListingsScreen> {
       title: l.myListingsTitle,
       scrollable: false,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.push('/listings/new'),
+        onPressed: () => context.push('/sell/new'),
         icon: const Icon(Icons.add),
         label: Text(l.sellAction),
       ),
@@ -82,8 +82,8 @@ class _MyListingsScreenState extends ConsumerState<MyListingsScreen> {
           listing: listing,
           onTap: () => context.push(
             listing.status == ListingStatus.draft
-                ? '/listings/${listing.id}/edit'
-                : '/listings/${listing.id}',
+                ? '/sell/listing/${listing.id}/edit'
+                : '/sell/listing/${listing.id}',
           ),
         ),
       ),

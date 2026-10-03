@@ -2203,4 +2203,95 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get homeSeeAll => 'Xem tất cả';
+
+  @override
+  String simNotifBuyNowTitle(String arg) {
+    return 'Phiên \"$arg\" đang đếm ngược mua ngay';
+  }
+
+  @override
+  String get simNotifBuyNowBody =>
+      'Có người bấm mua ngay. Trả giá cao hơn để đặt lại đếm ngược 30 phút.';
+
+  @override
+  String simNotifDeliveredTitle(String arg) {
+    return 'Đơn $arg đã giao';
+  }
+
+  @override
+  String get simNotifDeliveredBody =>
+      'Bạn có 3 ngày để kiểm tra sách và khiếu nại nếu có vấn đề.';
+
+  @override
+  String simNotifFilledTitle(String arg) {
+    return 'Phiên \"$arg\" đã đủ người';
+  }
+
+  @override
+  String simNotifFilledBody(String amount) {
+    return 'Phiên bắt đầu sau vài giờ. Cọc $amount tiếp tục được giữ.';
+  }
+
+  @override
+  String get simNotifTopupTitle => 'Nạp tiền thành công';
+
+  @override
+  String simNotifTopupBody(String amount) {
+    return '+$amount đã vào ví.';
+  }
+
+  @override
+  String get simNotifRegisteredTitle => 'Đăng ký thành công';
+
+  @override
+  String simNotifRegisteredBody(String arg, String amount) {
+    return '\"$arg\" · đã giữ $amount';
+  }
+
+  @override
+  String get simNotifOutbidTitle => 'Bạn đã bị vượt giá';
+
+  @override
+  String simNotifOutbidBody(String arg, String amount) {
+    return '\"$arg\" · giá mới $amount. Tiền giữ đã được nhả về ví.';
+  }
+
+  @override
+  String simNotifWonTitle(String arg) {
+    return 'Bạn đã thắng phiên \"$arg\"';
+  }
+
+  @override
+  String simNotifWonBody(String amount) {
+    return 'Giá thắng $amount. Đơn giao hàng đã được tạo trong Đơn mua.';
+  }
+
+  @override
+  String get meStatOpenOrders => 'Đơn đang mua';
+
+  @override
+  String get meStatListings => 'Tin đang đăng';
+
+  @override
+  String get meStatAuctions => 'Phiên tham gia';
+
+  @override
+  String get meMyListings => 'Tin đăng của tôi';
+
+  @override
+  String get meMyListingsSub => 'Trạng thái duyệt, cần sửa, đã bán';
+
+  @override
+  String get meMyAuctionsSub => 'Đã đăng ký, đang dẫn đầu, đã thắng';
+
+  @override
+  String meNotificationsSub(int n) {
+    return '$n chưa đọc';
+  }
+
+  @override
+  String get meNotificationsAllRead => 'Đã đọc hết';
+
+  @override
+  String get meDefaultAddress => 'Địa chỉ mặc định';
 }

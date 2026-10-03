@@ -1449,5 +1449,104 @@
   "myAucOutbid": "Đã bị vượt giá",
   "myAucRegistered": "Đã đăng ký",
   "homeLiveAuctions": "Đang đấu giá",
-  "homeSeeAll": "Xem tất cả"
+  "homeSeeAll": "Xem tất cả",
+  "simNotifBuyNowTitle": "Phiên \"{arg}\" đang đếm ngược mua ngay",
+  "@simNotifBuyNowTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifBuyNowBody": "Có người bấm mua ngay. Trả giá cao hơn để đặt lại đếm ngược 30 phút.",
+  "simNotifDeliveredTitle": "Đơn {arg} đã giao",
+  "@simNotifDeliveredTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifDeliveredBody": "Bạn có 3 ngày để kiểm tra sách và khiếu nại nếu có vấn đề.",
+  "simNotifFilledTitle": "Phiên \"{arg}\" đã đủ người",
+  "@simNotifFilledTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifFilledBody": "Phiên bắt đầu sau vài giờ. Cọc {amount} tiếp tục được giữ.",
+  "@simNotifFilledBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifTopupTitle": "Nạp tiền thành công",
+  "simNotifTopupBody": "+{amount} đã vào ví.",
+  "@simNotifTopupBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifRegisteredTitle": "Đăng ký thành công",
+  "simNotifRegisteredBody": "\"{arg}\" · đã giữ {amount}",
+  "@simNotifRegisteredBody": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifOutbidTitle": "Bạn đã bị vượt giá",
+  "simNotifOutbidBody": "\"{arg}\" · giá mới {amount}. Tiền giữ đã được nhả về ví.",
+  "@simNotifOutbidBody": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifWonTitle": "Bạn đã thắng phiên \"{arg}\"",
+  "@simNotifWonTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifWonBody": "Giá thắng {amount}. Đơn giao hàng đã được tạo trong Đơn mua.",
+  "@simNotifWonBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "meStatOpenOrders": "Đơn đang mua",
+  "meStatListings": "Tin đang đăng",
+  "meStatAuctions": "Phiên tham gia",
+  "meMyListings": "Tin đăng của tôi",
+  "meMyListingsSub": "Trạng thái duyệt, cần sửa, đã bán",
+  "meMyAuctionsSub": "Đã đăng ký, đang dẫn đầu, đã thắng",
+  "meNotificationsSub": "{n} chưa đọc",
+  "@meNotificationsSub": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "meNotificationsAllRead": "Đã đọc hết",
+  "meDefaultAddress": "Địa chỉ mặc định"
 }

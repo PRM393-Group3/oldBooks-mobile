@@ -77,7 +77,7 @@ class _Detail extends ConsumerWidget {
       bottom = AppButton(
         label: l.continueDraft,
         icon: Icons.edit_outlined,
-        onPressed: () => context.push('/listings/${listing.id}/edit'),
+        onPressed: () => context.push('/sell/listing/${listing.id}/edit'),
       );
     } else if (isOwner && listing.status == ListingStatus.rejected) {
       bottom = Column(
@@ -96,7 +96,7 @@ class _Detail extends ConsumerWidget {
             label: l.editAndResubmit,
             icon: Icons.edit_outlined,
             onPressed: listing.submissionsLeft > 0
-                ? () => context.push('/listings/${listing.id}/edit')
+                ? () => context.push('/sell/listing/${listing.id}/edit')
                 : null,
           ),
         ],
