@@ -91,17 +91,17 @@ void main() {
     expect(tabFinder('Khám phá'), findsOneWidget);
   });
 
-  testWidgets('badge thông báo chưa đọc hiện ở nút chuông, ẩn khi bằng 0', (
+  testWidgets('badge thông báo chưa đọc hiện ở nút Thông báo, ẩn khi bằng 0', (
     tester,
   ) async {
     final h = Harness(UserRole.seller);
     h.notifications.unread = 3;
     await h.pump(tester);
-    expect(find.widgetWithText(Badge, '3'), findsOneWidget);
+    expect(find.text('3'), findsOneWidget);
 
     final h0 = Harness(UserRole.seller);
     await h0.pump(tester);
-    expect(find.widgetWithText(Badge, '3'), findsNothing);
+    expect(find.text('3'), findsNothing);
   });
 
   testWidgets('thông báo: tiêu đề bản địa hóa, chạm để đánh dấu đã đọc', (
@@ -126,7 +126,7 @@ void main() {
     );
     await h.pump(tester);
 
-    await tester.tap(find.byIcon(Icons.notifications_none));
+    await tester.tap(find.text('Thông báo'));
     await tester.pumpAndSettle();
     expect(find.text('Tin đăng của bạn bị từ chối'), findsOneWidget);
     expect(
@@ -150,7 +150,7 @@ void main() {
   testWidgets('thông báo rỗng hiện trạng thái trống', (tester) async {
     final h = Harness(UserRole.buyer);
     await h.pump(tester);
-    await tester.tap(find.byIcon(Icons.notifications_none));
+    await tester.tap(find.text('Thông báo'));
     await tester.pumpAndSettle();
     expect(find.text('Chưa có thông báo'), findsOneWidget);
   });

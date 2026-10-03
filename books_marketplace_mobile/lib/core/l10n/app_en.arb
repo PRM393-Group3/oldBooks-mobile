@@ -555,5 +555,42 @@
       }
     }
   },
-  "errorPhotosUploadPending": "Some photos are still uploading or failed. Retry them first."
+  "errorPhotosUploadPending": "Some photos are still uploading or failed. Retry them first.",
+  "brandName": "Oldbook",
+  "cartButton": "Cart · {count}",
+  "@cartButton": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cartTitle": "Cart",
+  "searchHint": "Title, author, ISBN",
+  "resultsNew": "New listings",
+  "resultsSearch": "Search results",
+  "resultsCount": "{count} books",
+  "@resultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noSearchResults": "No matching books. Try removing accents or changing the category.",
+  "addToCart": "Add to cart",
+  "inCart": "In cart",
+  "buyNow": "Buy now",
+  "addedToCart": "Added to cart",
+  "alreadyInCart": "Already in your cart",
+  "shipPlus": "+ shipping {price}",
+  "@shipPlus": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "escrowNote": "Your payment is held in the Oldbook wallet until you confirm delivery. You have 3 days to file a complaint after delivery.",
+  "auctionListingNote": "This book is sold by auction."
 }

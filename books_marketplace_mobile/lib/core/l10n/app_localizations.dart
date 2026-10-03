@@ -2095,6 +2095,102 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Có ảnh chưa tải xong hoặc bị lỗi. Hãy thử lại ảnh đó.'**
   String get errorPhotosUploadPending;
+
+  /// No description provided for @brandName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Oldbook'**
+  String get brandName;
+
+  /// No description provided for @cartButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giỏ · {count}'**
+  String cartButton(int count);
+
+  /// No description provided for @cartTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giỏ hàng'**
+  String get cartTitle;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên sách, tác giả, ISBN'**
+  String get searchHint;
+
+  /// No description provided for @resultsNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mới đăng'**
+  String get resultsNew;
+
+  /// No description provided for @resultsSearch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết quả tìm kiếm'**
+  String get resultsSearch;
+
+  /// No description provided for @resultsCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} cuốn'**
+  String resultsCount(int count);
+
+  /// No description provided for @noSearchResults.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy sách phù hợp. Thử bỏ dấu hoặc đổi thể loại.'**
+  String get noSearchResults;
+
+  /// No description provided for @addToCart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm vào giỏ'**
+  String get addToCart;
+
+  /// No description provided for @inCart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã trong giỏ'**
+  String get inCart;
+
+  /// No description provided for @buyNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua ngay'**
+  String get buyNow;
+
+  /// No description provided for @addedToCart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thêm vào giỏ'**
+  String get addedToCart;
+
+  /// No description provided for @alreadyInCart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sách đã có trong giỏ'**
+  String get alreadyInCart;
+
+  /// No description provided for @shipPlus.
+  ///
+  /// In vi, this message translates to:
+  /// **'+ ship {price}'**
+  String shipPlus(String price);
+
+  /// No description provided for @escrowNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền được giữ trong ví Oldbook đến khi bạn xác nhận nhận hàng. Có 3 ngày để khiếu nại sau khi giao.'**
+  String get escrowNote;
+
+  /// No description provided for @auctionListingNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sách này bán theo hình thức đấu giá.'**
+  String get auctionListingNote;
 }
 
 class _AppLocalizationsDelegate

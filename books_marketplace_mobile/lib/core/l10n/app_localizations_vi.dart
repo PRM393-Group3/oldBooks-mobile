@@ -1094,4 +1094,60 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get errorPhotosUploadPending =>
       'Có ảnh chưa tải xong hoặc bị lỗi. Hãy thử lại ảnh đó.';
+
+  @override
+  String get brandName => 'Oldbook';
+
+  @override
+  String cartButton(int count) {
+    return 'Giỏ · $count';
+  }
+
+  @override
+  String get cartTitle => 'Giỏ hàng';
+
+  @override
+  String get searchHint => 'Tên sách, tác giả, ISBN';
+
+  @override
+  String get resultsNew => 'Mới đăng';
+
+  @override
+  String get resultsSearch => 'Kết quả tìm kiếm';
+
+  @override
+  String resultsCount(int count) {
+    return '$count cuốn';
+  }
+
+  @override
+  String get noSearchResults =>
+      'Không tìm thấy sách phù hợp. Thử bỏ dấu hoặc đổi thể loại.';
+
+  @override
+  String get addToCart => 'Thêm vào giỏ';
+
+  @override
+  String get inCart => 'Đã trong giỏ';
+
+  @override
+  String get buyNow => 'Mua ngay';
+
+  @override
+  String get addedToCart => 'Đã thêm vào giỏ';
+
+  @override
+  String get alreadyInCart => 'Sách đã có trong giỏ';
+
+  @override
+  String shipPlus(String price) {
+    return '+ ship $price';
+  }
+
+  @override
+  String get escrowNote =>
+      'Tiền được giữ trong ví Oldbook đến khi bạn xác nhận nhận hàng. Có 3 ngày để khiếu nại sau khi giao.';
+
+  @override
+  String get auctionListingNote => 'Sách này bán theo hình thức đấu giá.';
 }

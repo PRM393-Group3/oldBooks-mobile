@@ -6,6 +6,7 @@ import '../core/theme/theme_context.dart';
 import '../features/auth/application/auth_controller.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/auth/presentation/register_screen.dart';
+import '../features/listings/presentation/browse/book_detail_screen.dart';
 import '../features/listings/presentation/browse/browse_screen.dart';
 import '../features/listings/presentation/seller/listing_detail_screen.dart';
 import '../features/listings/presentation/seller/my_listings_screen.dart';
@@ -55,6 +56,16 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/home',
                 pageBuilder: (_, _) => _tab(const BrowseScreen()),
+                routes: [
+                  // Mở phủ lên thanh điều hướng dưới.
+                  GoRoute(
+                    path: 'book/:id',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, state) => BookDetailScreen(
+                      listingId: state.pathParameters['id']!,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -125,6 +136,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/notifications',
         parentNavigatorKey: rootKey,
         builder: (_, _) => const NotificationsScreen(),
+      ),
+      // Tạm là màn "Sắp có" tới lát 2 (Giỏ, Thanh toán, Đơn hàng).
+      GoRoute(
+        path: '/cart',
+        parentNavigatorKey: rootKey,
+        builder: (context, _) => ComingSoonScreen(
+          title: context.l10n.cartTitle,
+          icon: Icons.shopping_bag_outlined,
+        ),
       ),
       // `/listings/new` phải đứng trước `:id`. Đường dẫn giữ nguyên `/listings`
       // tới lát 5 (restyle wizard), khi đó chuyển sang `/sell/...`.

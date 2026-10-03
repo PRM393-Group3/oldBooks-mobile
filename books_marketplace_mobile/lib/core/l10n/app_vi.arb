@@ -555,5 +555,42 @@
       }
     }
   },
-  "errorPhotosUploadPending": "Có ảnh chưa tải xong hoặc bị lỗi. Hãy thử lại ảnh đó."
+  "errorPhotosUploadPending": "Có ảnh chưa tải xong hoặc bị lỗi. Hãy thử lại ảnh đó.",
+  "brandName": "Oldbook",
+  "cartButton": "Giỏ · {count}",
+  "@cartButton": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cartTitle": "Giỏ hàng",
+  "searchHint": "Tên sách, tác giả, ISBN",
+  "resultsNew": "Mới đăng",
+  "resultsSearch": "Kết quả tìm kiếm",
+  "resultsCount": "{count} cuốn",
+  "@resultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noSearchResults": "Không tìm thấy sách phù hợp. Thử bỏ dấu hoặc đổi thể loại.",
+  "addToCart": "Thêm vào giỏ",
+  "inCart": "Đã trong giỏ",
+  "buyNow": "Mua ngay",
+  "addedToCart": "Đã thêm vào giỏ",
+  "alreadyInCart": "Sách đã có trong giỏ",
+  "shipPlus": "+ ship {price}",
+  "@shipPlus": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "escrowNote": "Tiền được giữ trong ví Oldbook đến khi bạn xác nhận nhận hàng. Có 3 ngày để khiếu nại sau khi giao.",
+  "auctionListingNote": "Sách này bán theo hình thức đấu giá."
 }

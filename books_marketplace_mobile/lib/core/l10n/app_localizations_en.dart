@@ -1099,4 +1099,60 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorPhotosUploadPending =>
       'Some photos are still uploading or failed. Retry them first.';
+
+  @override
+  String get brandName => 'Oldbook';
+
+  @override
+  String cartButton(int count) {
+    return 'Cart · $count';
+  }
+
+  @override
+  String get cartTitle => 'Cart';
+
+  @override
+  String get searchHint => 'Title, author, ISBN';
+
+  @override
+  String get resultsNew => 'New listings';
+
+  @override
+  String get resultsSearch => 'Search results';
+
+  @override
+  String resultsCount(int count) {
+    return '$count books';
+  }
+
+  @override
+  String get noSearchResults =>
+      'No matching books. Try removing accents or changing the category.';
+
+  @override
+  String get addToCart => 'Add to cart';
+
+  @override
+  String get inCart => 'In cart';
+
+  @override
+  String get buyNow => 'Buy now';
+
+  @override
+  String get addedToCart => 'Added to cart';
+
+  @override
+  String get alreadyInCart => 'Already in your cart';
+
+  @override
+  String shipPlus(String price) {
+    return '+ shipping $price';
+  }
+
+  @override
+  String get escrowNote =>
+      'Your payment is held in the Oldbook wallet until you confirm delivery. You have 3 days to file a complaint after delivery.';
+
+  @override
+  String get auctionListingNote => 'This book is sold by auction.';
 }

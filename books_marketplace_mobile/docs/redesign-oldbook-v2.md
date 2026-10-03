@@ -106,6 +106,14 @@ Trường hợp biên: món trong giỏ bị bán mất lúc thanh toán thì b�
 - `features/inspection/` không còn truy cập được từ router; test của nó đã xóa, mã nguồn xóa ở lát 7 cùng `role_provider.dart`.
 - Chưa so sánh bằng mắt với prototype trên máy ảo vì backend không chạy ở môi trường này (không đăng nhập được); đã kiểm bằng `flutter analyze` và `flutter test`.
 
+**Lát 1 (Khám phá và Chi tiết sách):**
+- Tìm kiếm lọc trên các lô đã tải (backend `GET /listings` chưa có tham số tìm kiếm), bỏ dấu tiếng Việt khi so khớp tên, tác giả, ISBN. Cần backend hỗ trợ tìm kiếm thì mới tìm được trên toàn bộ kho.
+- Dải "Đang đấu giá" ở Khám phá chưa có; thêm ở lát 4.
+- Chi tiết sách mở ở `/home/book/:id` (phủ lên thanh tab). Không hiển thị đánh giá người bán và số đơn hoàn tất vì `ListingDto` chưa có các trường này.
+- Tin đấu giá chỉ xem thông tin, không có nút giỏ; đặt giá thật ở tab Đấu giá.
+- Giỏ hàng mới có phần nền (thêm, xóa, đếm, chặn trùng) trong `features/cart/`, mock trong bộ nhớ. `/cart` tạm là màn "Sắp có"; "Mua ngay" thêm vào giỏ rồi mở `/cart`. Màn giỏ, thanh toán, đơn hàng ở lát 2.
+- Phí ship giả định nằm ở `features/cart/domain/fees.dart`.
+
 ## 6. Rủi ro
 
 - Khối lượng lớn (8 lát); giảm bằng commit riêng từng lát và duyệt từng bước.
