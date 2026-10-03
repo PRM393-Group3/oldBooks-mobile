@@ -1779,5 +1779,42 @@
   "errForbidden": "You are not allowed to do this.",
   "errNotFound": "Not found.",
   "errInvalidState": "Not possible in the current state.",
-  "errUpstream": "A partner service is having trouble. Try again later."
+  "errUpstream": "A partner service is having trouble. Try again later.",
+  "addrTitle": "Address book",
+  "addrSub": "Delivery addresses, set a default",
+  "addrEmpty": "You have no addresses yet.",
+  "addrAdd": "Add address",
+  "addrEdit": "Edit address",
+  "addrDefault": "Default",
+  "addrSetDefault": "Set as default",
+  "addrDelete": "Delete",
+  "addrDeleteTitle": "Delete this address?",
+  "addrRecipient": "Recipient",
+  "addrPhone": "Phone",
+  "addrProvince": "Province/City",
+  "addrDistrict": "District",
+  "addrWard": "Ward",
+  "addrDetail": "Street address",
+  "addrSave": "Save address",
+  "addrRequired": "Please fill this in.",
+  "addrNone": "No delivery address yet",
+  "bankTitle": "Bank accounts",
+  "bankSub": "Receive withdrawals (up to 3)",
+  "bankEmpty": "You have not saved a bank account.",
+  "bankAdd": "Add account",
+  "bankName": "Bank",
+  "bankNumber": "Account number",
+  "bankHolder": "Account holder",
+  "bankHolderNote": "The holder name must match your profile name.",
+  "bankLimit": "You can save up to 3 accounts.",
+  "bankSave": "Save account",
+  "bankDeleteTitle": "Remove this account?",
+  "bankMasked": "•••• {last}",
+  "@bankMasked": {
+    "placeholders": {
+      "last": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -15,6 +15,8 @@ import '../features/listings/presentation/browse/browse_screen.dart';
 import '../features/notifications/presentation/notifications_screen.dart';
 import '../features/orders/presentation/order_detail_screen.dart';
 import '../features/orders/presentation/orders_screen.dart';
+import '../features/profile/presentation/addresses_screen.dart';
+import '../features/profile/presentation/bank_accounts_screen.dart';
 import '../features/profile/presentation/change_avatar_screen.dart';
 import '../features/profile/presentation/change_password_screen.dart';
 import '../features/profile/presentation/edit_profile_screen.dart';
@@ -127,6 +129,16 @@ final routerProvider = Provider<GoRouter>((ref) {
                     path: 'listings',
                     parentNavigatorKey: rootKey,
                     builder: (_, _) => const MyListingsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'addresses',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const AddressesScreen(),
+                  ),
+                  GoRoute(
+                    path: 'bank-accounts',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const BankAccountsScreen(),
                   ),
                   GoRoute(
                     path: 'edit',

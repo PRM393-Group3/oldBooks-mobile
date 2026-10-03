@@ -2677,4 +2677,96 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errUpstream =>
       'A partner service is having trouble. Try again later.';
+
+  @override
+  String get addrTitle => 'Address book';
+
+  @override
+  String get addrSub => 'Delivery addresses, set a default';
+
+  @override
+  String get addrEmpty => 'You have no addresses yet.';
+
+  @override
+  String get addrAdd => 'Add address';
+
+  @override
+  String get addrEdit => 'Edit address';
+
+  @override
+  String get addrDefault => 'Default';
+
+  @override
+  String get addrSetDefault => 'Set as default';
+
+  @override
+  String get addrDelete => 'Delete';
+
+  @override
+  String get addrDeleteTitle => 'Delete this address?';
+
+  @override
+  String get addrRecipient => 'Recipient';
+
+  @override
+  String get addrPhone => 'Phone';
+
+  @override
+  String get addrProvince => 'Province/City';
+
+  @override
+  String get addrDistrict => 'District';
+
+  @override
+  String get addrWard => 'Ward';
+
+  @override
+  String get addrDetail => 'Street address';
+
+  @override
+  String get addrSave => 'Save address';
+
+  @override
+  String get addrRequired => 'Please fill this in.';
+
+  @override
+  String get addrNone => 'No delivery address yet';
+
+  @override
+  String get bankTitle => 'Bank accounts';
+
+  @override
+  String get bankSub => 'Receive withdrawals (up to 3)';
+
+  @override
+  String get bankEmpty => 'You have not saved a bank account.';
+
+  @override
+  String get bankAdd => 'Add account';
+
+  @override
+  String get bankName => 'Bank';
+
+  @override
+  String get bankNumber => 'Account number';
+
+  @override
+  String get bankHolder => 'Account holder';
+
+  @override
+  String get bankHolderNote => 'The holder name must match your profile name.';
+
+  @override
+  String get bankLimit => 'You can save up to 3 accounts.';
+
+  @override
+  String get bankSave => 'Save account';
+
+  @override
+  String get bankDeleteTitle => 'Remove this account?';
+
+  @override
+  String bankMasked(String last) {
+    return '•••• $last';
+  }
 }

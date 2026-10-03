@@ -4735,6 +4735,186 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Dịch vụ đối tác đang gặp sự cố. Hãy thử lại sau.'**
   String get errUpstream;
+
+  /// No description provided for @addrTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sổ địa chỉ'**
+  String get addrTitle;
+
+  /// No description provided for @addrSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Địa chỉ giao hàng, đặt mặc định'**
+  String get addrSub;
+
+  /// No description provided for @addrEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có địa chỉ nào.'**
+  String get addrEmpty;
+
+  /// No description provided for @addrAdd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm địa chỉ'**
+  String get addrAdd;
+
+  /// No description provided for @addrEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa địa chỉ'**
+  String get addrEdit;
+
+  /// No description provided for @addrDefault.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mặc định'**
+  String get addrDefault;
+
+  /// No description provided for @addrSetDefault.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt làm mặc định'**
+  String get addrSetDefault;
+
+  /// No description provided for @addrDelete.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa'**
+  String get addrDelete;
+
+  /// No description provided for @addrDeleteTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa địa chỉ này?'**
+  String get addrDeleteTitle;
+
+  /// No description provided for @addrRecipient.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người nhận'**
+  String get addrRecipient;
+
+  /// No description provided for @addrPhone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số điện thoại'**
+  String get addrPhone;
+
+  /// No description provided for @addrProvince.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỉnh/Thành phố'**
+  String get addrProvince;
+
+  /// No description provided for @addrDistrict.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quận/Huyện'**
+  String get addrDistrict;
+
+  /// No description provided for @addrWard.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phường/Xã'**
+  String get addrWard;
+
+  /// No description provided for @addrDetail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số nhà, tên đường'**
+  String get addrDetail;
+
+  /// No description provided for @addrSave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu địa chỉ'**
+  String get addrSave;
+
+  /// No description provided for @addrRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng nhập thông tin này.'**
+  String get addrRequired;
+
+  /// No description provided for @addrNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có địa chỉ giao hàng'**
+  String get addrNone;
+
+  /// No description provided for @bankTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản ngân hàng'**
+  String get bankTitle;
+
+  /// No description provided for @bankSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận tiền khi rút từ ví (tối đa 3)'**
+  String get bankSub;
+
+  /// No description provided for @bankEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa lưu tài khoản ngân hàng nào.'**
+  String get bankEmpty;
+
+  /// No description provided for @bankAdd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm tài khoản'**
+  String get bankAdd;
+
+  /// No description provided for @bankName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngân hàng'**
+  String get bankName;
+
+  /// No description provided for @bankNumber.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tài khoản'**
+  String get bankNumber;
+
+  /// No description provided for @bankHolder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên chủ tài khoản'**
+  String get bankHolder;
+
+  /// No description provided for @bankHolderNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên chủ tài khoản phải trùng họ tên trong hồ sơ.'**
+  String get bankHolderNote;
+
+  /// No description provided for @bankLimit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ lưu tối đa 3 tài khoản.'**
+  String get bankLimit;
+
+  /// No description provided for @bankSave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu tài khoản'**
+  String get bankSave;
+
+  /// No description provided for @bankDeleteTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa tài khoản này?'**
+  String get bankDeleteTitle;
+
+  /// No description provided for @bankMasked.
+  ///
+  /// In vi, this message translates to:
+  /// **'•••• {last}'**
+  String bankMasked(String last);
 }
 
 class _AppLocalizationsDelegate

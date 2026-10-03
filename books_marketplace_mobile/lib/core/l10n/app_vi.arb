@@ -1779,5 +1779,42 @@
   "errForbidden": "Bạn không có quyền thực hiện thao tác này.",
   "errNotFound": "Không tìm thấy nội dung này.",
   "errInvalidState": "Không thể thực hiện ở trạng thái hiện tại.",
-  "errUpstream": "Dịch vụ đối tác đang gặp sự cố. Hãy thử lại sau."
+  "errUpstream": "Dịch vụ đối tác đang gặp sự cố. Hãy thử lại sau.",
+  "addrTitle": "Sổ địa chỉ",
+  "addrSub": "Địa chỉ giao hàng, đặt mặc định",
+  "addrEmpty": "Bạn chưa có địa chỉ nào.",
+  "addrAdd": "Thêm địa chỉ",
+  "addrEdit": "Sửa địa chỉ",
+  "addrDefault": "Mặc định",
+  "addrSetDefault": "Đặt làm mặc định",
+  "addrDelete": "Xóa",
+  "addrDeleteTitle": "Xóa địa chỉ này?",
+  "addrRecipient": "Người nhận",
+  "addrPhone": "Số điện thoại",
+  "addrProvince": "Tỉnh/Thành phố",
+  "addrDistrict": "Quận/Huyện",
+  "addrWard": "Phường/Xã",
+  "addrDetail": "Số nhà, tên đường",
+  "addrSave": "Lưu địa chỉ",
+  "addrRequired": "Vui lòng nhập thông tin này.",
+  "addrNone": "Chưa có địa chỉ giao hàng",
+  "bankTitle": "Tài khoản ngân hàng",
+  "bankSub": "Nhận tiền khi rút từ ví (tối đa 3)",
+  "bankEmpty": "Bạn chưa lưu tài khoản ngân hàng nào.",
+  "bankAdd": "Thêm tài khoản",
+  "bankName": "Ngân hàng",
+  "bankNumber": "Số tài khoản",
+  "bankHolder": "Tên chủ tài khoản",
+  "bankHolderNote": "Tên chủ tài khoản phải trùng họ tên trong hồ sơ.",
+  "bankLimit": "Chỉ lưu tối đa 3 tài khoản.",
+  "bankSave": "Lưu tài khoản",
+  "bankDeleteTitle": "Xóa tài khoản này?",
+  "bankMasked": "•••• {last}",
+  "@bankMasked": {
+    "placeholders": {
+      "last": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -15,6 +15,7 @@ import '../../../core/widgets/app_tag.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../auth/domain/user_role.dart';
 import '../../sell/application/my_listings_provider.dart';
+import '../application/address_providers.dart';
 import '../../notifications/application/notification_providers.dart';
 import '../../sim/application/sim_providers.dart';
 import '../application/profile_controller.dart';
@@ -189,6 +190,18 @@ class _ProfileBody extends ConsumerWidget {
         AppSection(
           children: [
             AppMenuTile(
+              icon: Icons.location_on_outlined,
+              title: l.addrTitle,
+              subtitle: l.addrSub,
+              onTap: () => context.push('/me/addresses'),
+            ),
+            AppMenuTile(
+              icon: Icons.account_balance_outlined,
+              title: l.bankTitle,
+              subtitle: l.bankSub,
+              onTap: () => context.push('/me/bank-accounts'),
+            ),
+            AppMenuTile(
               icon: Icons.edit_outlined,
               title: l.editProfile,
               onTap: () => context.push('/me/edit'),
@@ -210,6 +223,8 @@ class _ProfileBody extends ConsumerWidget {
             ),
           ],
         ),
+        const SizedBox(height: AppSpacing.md),
+        const _DefaultAddressCard(),
         const SizedBox(height: AppSpacing.md),
         AppSection(
           children: [
@@ -297,6 +312,44 @@ class _StatTiles extends ConsumerWidget {
           () => context.push('/auctions/mine'),
         ),
       ],
+    );
+  }
+}
+
+/// Địa chỉ mặc định, dẫn tới sổ địa chỉ.
+class _DefaultAddressCard extends ConsumerWidget {
+  const _DefaultAddressCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final colors = context.colors;
+    final a = ref.watch(defaultAddressProvider);
+    return AppCard(
+      onTap: () => context.push('/me/addresses'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l.meDefaultAddress,
+            style: context.text.labelSmall?.copyWith(color: colors.textMuted),
+          ),
+          const SizedBox(height: 3),
+          Text(
+            a == null ? l.addrNone : '${a.recipient} · ${a.phone}',
+            style: context.text.labelLarge,
+          ),
+          if (a != null) ...[
+            const SizedBox(height: 2),
+            Text(
+              a.fullLine,
+              style: context.text.bodySmall?.copyWith(
+                color: colors.textSecondary,
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

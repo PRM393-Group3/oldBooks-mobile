@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/util/format.dart';
 import '../../../core/widgets/app_card.dart';
+import '../../profile/application/address_providers.dart';
+import '../../profile/domain/address.dart';
 import '../../sim/application/sim_providers.dart';
 import '../../sim/presentation/sim_text.dart';
 import '../domain/wallet_txn.dart';
@@ -23,6 +26,7 @@ class WalletScreen extends ConsumerWidget {
     final held = ref.watch(heldBalanceProvider);
     final txns = ref.watch(walletTxnsProvider);
     final now = ref.watch(simNowProvider);
+    final banks = ref.watch(bankAccountsProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -71,6 +75,7 @@ class WalletScreen extends ConsumerWidget {
             for (final t in txns) _TxnRow(txn: t, now: now, locale: locale),
             const SizedBox(height: AppSpacing.md),
             AppCard(
+              onTap: () => context.push('/me/bank-accounts'),
               child: Row(
                 children: [
                   Expanded(
@@ -85,10 +90,18 @@ class WalletScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          'Vietcombank •••• 4821',
+                          banks.isEmpty
+                              ? l.bankEmpty
+                              : '${banks.first.bank} ${l.bankMasked(banks.first.last4)}',
                           style: context.text.labelLarge,
                         ),
                       ],
+                    ),
+                  ),
+                  Text(
+                    '${banks.length}/$maxBankAccounts',
+                    style: context.text.labelSmall?.copyWith(
+                      color: colors.textMuted,
                     ),
                   ),
                 ],

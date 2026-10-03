@@ -11,7 +11,7 @@ import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_page.dart';
 import '../../../core/widgets/app_sheet.dart';
 import '../../listings/presentation/widgets/book_tile.dart';
-import '../../profile/application/profile_controller.dart';
+import '../../profile/application/address_providers.dart';
 import '../../sim/application/sim_providers.dart';
 import '../../sim/application/sim_state.dart';
 import '../../sim/domain/rules.dart';
@@ -106,7 +106,7 @@ class CartScreen extends ConsumerWidget {
     final items = ref.watch(cartProvider);
     final reserved = ref.watch(reservedListingIdsProvider);
     final balance = ref.watch(availableBalanceProvider);
-    final profile = ref.watch(profileControllerProvider).value;
+    final address = ref.watch(defaultAddressProvider);
 
     final available = [
       for (final i in items)
@@ -193,31 +193,37 @@ class CartScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-            if (profile != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 14),
-                child: AppCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 14),
+              child: AppCard(
+                onTap: () => context.push('/me/addresses'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l.cartShipTo,
+                      style: context.text.labelSmall?.copyWith(
+                        color: colors.textMuted,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      address == null
+                          ? l.addrNone
+                          : '${address.recipient} · ${address.phone}',
+                      style: context.text.labelLarge,
+                    ),
+                    if (address != null)
                       Text(
-                        l.cartShipTo,
-                        style: context.text.labelSmall?.copyWith(
-                          color: colors.textMuted,
+                        address.fullLine,
+                        style: context.text.bodySmall?.copyWith(
+                          color: colors.textSecondary,
                         ),
                       ),
-                      const SizedBox(height: 3),
-                      Text(
-                        [
-                          profile.fullName,
-                          if (profile.phoneNumber != null) profile.phoneNumber!,
-                        ].join(' · '),
-                        style: context.text.labelLarge,
-                      ),
-                    ],
-                  ),
+                  ],
                 ),
               ),
+            ),
             _SummaryRow(
               label: l.cartSubtotal(available.length),
               value: formatVnd(subtotal, locale),

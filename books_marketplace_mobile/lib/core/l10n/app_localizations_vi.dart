@@ -2663,4 +2663,97 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get errUpstream => 'Dịch vụ đối tác đang gặp sự cố. Hãy thử lại sau.';
+
+  @override
+  String get addrTitle => 'Sổ địa chỉ';
+
+  @override
+  String get addrSub => 'Địa chỉ giao hàng, đặt mặc định';
+
+  @override
+  String get addrEmpty => 'Bạn chưa có địa chỉ nào.';
+
+  @override
+  String get addrAdd => 'Thêm địa chỉ';
+
+  @override
+  String get addrEdit => 'Sửa địa chỉ';
+
+  @override
+  String get addrDefault => 'Mặc định';
+
+  @override
+  String get addrSetDefault => 'Đặt làm mặc định';
+
+  @override
+  String get addrDelete => 'Xóa';
+
+  @override
+  String get addrDeleteTitle => 'Xóa địa chỉ này?';
+
+  @override
+  String get addrRecipient => 'Người nhận';
+
+  @override
+  String get addrPhone => 'Số điện thoại';
+
+  @override
+  String get addrProvince => 'Tỉnh/Thành phố';
+
+  @override
+  String get addrDistrict => 'Quận/Huyện';
+
+  @override
+  String get addrWard => 'Phường/Xã';
+
+  @override
+  String get addrDetail => 'Số nhà, tên đường';
+
+  @override
+  String get addrSave => 'Lưu địa chỉ';
+
+  @override
+  String get addrRequired => 'Vui lòng nhập thông tin này.';
+
+  @override
+  String get addrNone => 'Chưa có địa chỉ giao hàng';
+
+  @override
+  String get bankTitle => 'Tài khoản ngân hàng';
+
+  @override
+  String get bankSub => 'Nhận tiền khi rút từ ví (tối đa 3)';
+
+  @override
+  String get bankEmpty => 'Bạn chưa lưu tài khoản ngân hàng nào.';
+
+  @override
+  String get bankAdd => 'Thêm tài khoản';
+
+  @override
+  String get bankName => 'Ngân hàng';
+
+  @override
+  String get bankNumber => 'Số tài khoản';
+
+  @override
+  String get bankHolder => 'Tên chủ tài khoản';
+
+  @override
+  String get bankHolderNote =>
+      'Tên chủ tài khoản phải trùng họ tên trong hồ sơ.';
+
+  @override
+  String get bankLimit => 'Chỉ lưu tối đa 3 tài khoản.';
+
+  @override
+  String get bankSave => 'Lưu tài khoản';
+
+  @override
+  String get bankDeleteTitle => 'Xóa tài khoản này?';
+
+  @override
+  String bankMasked(String last) {
+    return '•••• $last';
+  }
 }
