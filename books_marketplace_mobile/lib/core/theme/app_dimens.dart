@@ -17,10 +17,10 @@ abstract final class AppSpacing {
 
 /// Bo góc.
 abstract final class AppRadius {
-  static const double sm = 12; // chip nhỏ
-  static const double md = 16; // ô nhập, biểu tượng thương hiệu
-  static const double lg = 24; // thẻ, sheet, dialog
-  static const double full = 999; // nút, badge, avatar (dạng viên thuốc)
+  static const double sm = 10; // chip nhỏ, nút nhỏ
+  static const double md = 14; // nút, ô nhập, biểu tượng thương hiệu
+  static const double lg = 18; // thẻ, sheet, dialog
+  static const double full = 999; // badge, avatar, nút tròn
 
   static BorderRadius get smAll => BorderRadius.circular(sm);
   static BorderRadius get mdAll => BorderRadius.circular(md);

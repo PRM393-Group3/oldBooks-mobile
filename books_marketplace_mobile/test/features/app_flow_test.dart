@@ -124,9 +124,9 @@ Future<({MemoryTokenStore tokens, _FakeAuthRepository auth})> _pumpApp(
   return (tokens: tokens, auth: auth);
 }
 
-/// Sau đăng nhập app vào Trang chủ theo vai trò; các test hồ sơ mở tab Hồ sơ.
+/// Sau đăng nhập app vào Khám phá; các test hồ sơ mở tab Tôi.
 Future<void> _openProfileTab(WidgetTester tester) async {
-  await tester.tap(find.text('Hồ sơ').last);
+  await tester.tap(find.text('Tôi').last);
   await tester.pumpAndSettle();
 }
 

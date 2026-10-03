@@ -308,6 +308,27 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get navExplore => 'Khám phá';
+
+  @override
+  String get navAuctions => 'Đấu giá';
+
+  @override
+  String get navSell => 'Bán';
+
+  @override
+  String get navWallet => 'Ví';
+
+  @override
+  String get navMe => 'Tôi';
+
+  @override
+  String get comingSoonTitle => 'Sắp có';
+
+  @override
+  String get comingSoonBody => 'Tính năng này đang được xây dựng.';
+
+  @override
   String get navMyListings => 'Tin của tôi';
 
   @override

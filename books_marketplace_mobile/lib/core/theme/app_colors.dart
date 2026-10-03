@@ -94,10 +94,9 @@ class AppColors extends ThemeExtension<AppColors> {
     colors: [heroStart, heroEnd],
   );
 
-  /// Bóng đổ mềm cho thẻ và thanh điều hướng nổi.
-  List<BoxShadow> get softShadow => [
-    BoxShadow(color: shadow, blurRadius: 24, offset: const Offset(0, 8)),
-  ];
+  /// Prototype không dùng bóng đổ (thẻ phân tách bằng viền 1px). Giữ getter
+  /// để các widget gọi nó không phải sửa; trả về danh sách rỗng.
+  List<BoxShadow> get softShadow => const [];
 
   static const AppColors light = AppColors(
     primary: AppPalette.brand,

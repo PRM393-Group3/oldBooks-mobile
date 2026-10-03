@@ -656,6 +656,48 @@ abstract class AppLocalizations {
   /// **'Mã hỗ trợ: {traceId}'**
   String supportCode(String traceId);
 
+  /// No description provided for @navExplore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khám phá'**
+  String get navExplore;
+
+  /// No description provided for @navAuctions.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đấu giá'**
+  String get navAuctions;
+
+  /// No description provided for @navSell.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bán'**
+  String get navSell;
+
+  /// No description provided for @navWallet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví'**
+  String get navWallet;
+
+  /// No description provided for @navMe.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tôi'**
+  String get navMe;
+
+  /// No description provided for @comingSoonTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sắp có'**
+  String get comingSoonTitle;
+
+  /// No description provided for @comingSoonBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tính năng này đang được xây dựng.'**
+  String get comingSoonBody;
+
   /// No description provided for @navMyListings.
   ///
   /// In vi, this message translates to:

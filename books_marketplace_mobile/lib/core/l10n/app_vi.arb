@@ -107,6 +107,13 @@
       }
     }
   },
+  "navExplore": "Khám phá",
+  "navAuctions": "Đấu giá",
+  "navSell": "Bán",
+  "navWallet": "Ví",
+  "navMe": "Tôi",
+  "comingSoonTitle": "Sắp có",
+  "comingSoonBody": "Tính năng này đang được xây dựng.",
   "navMyListings": "Tin của tôi",
   "navNotifications": "Thông báo",
   "navQueue": "Hàng đợi",

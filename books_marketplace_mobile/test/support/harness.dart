@@ -1,4 +1,5 @@
 import 'package:books_marketplace_mobile/app/app.dart';
+import 'package:books_marketplace_mobile/core/widgets/app_bottom_nav.dart';
 import 'package:books_marketplace_mobile/core/network/api_client.dart';
 import 'package:books_marketplace_mobile/core/storage/storage_providers.dart';
 import 'package:books_marketplace_mobile/features/auth/domain/user_role.dart';
@@ -85,10 +86,23 @@ class Harness {
   }
 }
 
+/// Tab của thanh điều hướng dưới theo nhãn (không gồm nút "+" Bán).
+Finder tabFinder(String label) =>
+    find.descendant(of: find.byType(AppBottomNav), matching: find.text(label));
+
 /// Bấm một tab của thanh điều hướng dưới theo nhãn.
 Future<void> tapTab(WidgetTester tester, String label) async {
+  await tester.tap(tabFinder(label));
+  await tester.pumpAndSettle();
+}
+
+/// Bấm nút "+" Bán ở giữa thanh điều hướng.
+Future<void> tapSellTab(WidgetTester tester) async {
   await tester.tap(
-    find.descendant(of: find.byType(NavigationBar), matching: find.text(label)),
+    find.descendant(
+      of: find.byType(AppBottomNav),
+      matching: find.byIcon(Icons.add),
+    ),
   );
   await tester.pumpAndSettle();
 }

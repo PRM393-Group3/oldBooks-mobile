@@ -10,17 +10,22 @@ class AppNavItem {
     required this.selectedIcon,
     required this.label,
     this.badgeCount = 0,
+    this.isAction = false,
   });
 
   final IconData icon;
   final IconData selectedIcon;
   final String label;
 
-  /// > 0 thì hiện chấm số (ví dụ thông báo chưa đọc).
+  /// > 0 thì hiện chấm số (ví dụ số phiên đấu giá sắp kết thúc).
   final int badgeCount;
+
+  /// Mục hành động chính: vẽ thành nút tròn nổi bật, không có nhãn chữ
+  /// (nút "+" Bán ở giữa theo prototype).
+  final bool isAction;
 }
 
-/// Thanh điều hướng dưới dạng viên thuốc nổi, bóng đổ mềm.
+/// Thanh điều hướng dưới cố định: nền thẻ, viền trên 1px, không bóng đổ.
 class AppBottomNav extends StatelessWidget {
   const AppBottomNav({
     super.key,
@@ -36,52 +41,99 @@ class AppBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    return SafeArea(
-      top: false,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
-          AppSpacing.xs,
-          AppSpacing.md,
-          AppSpacing.sm,
+    return Material(
+      color: colors.surface,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: colors.divider)),
         ),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.full),
-            boxShadow: colors.softShadow,
-          ),
-          child: Material(
-            color: colors.surface,
-            clipBehavior: Clip.antiAlias,
-            shape: StadiumBorder(side: BorderSide(color: colors.divider)),
-            // SafeArea ngoài đã lo vùng an toàn; tránh cộng dồn hai lần.
-            child: MediaQuery.removePadding(
-              context: context,
-              removeBottom: true,
-              child: NavigationBar(
-                selectedIndex: currentIndex,
-                onDestinationSelected: onSelected,
-                destinations: [
-                  for (final item in items)
-                    NavigationDestination(
-                      icon: _badged(item, Icon(item.icon)),
-                      selectedIcon: _badged(item, Icon(item.selectedIcon)),
-                      label: item.label,
+        child: SafeArea(
+          top: false,
+          child: SizedBox(
+            height: 64,
+            child: Row(
+              children: [
+                for (var i = 0; i < items.length; i++)
+                  Expanded(
+                    child: _NavButton(
+                      item: items[i],
+                      selected: i == currentIndex,
+                      onTap: () => onSelected(i),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _badged(AppNavItem item, Widget icon) {
-    if (item.badgeCount <= 0) return icon;
-    return Badge(
-      label: Text(item.badgeCount > 99 ? '99+' : '${item.badgeCount}'),
-      child: icon,
+class _NavButton extends StatelessWidget {
+  const _NavButton({
+    required this.item,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final AppNavItem item;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final color = selected ? colors.primary : colors.textSecondary;
+
+    final Widget content;
+    if (item.isAction) {
+      content = Container(
+        width: AppSizes.minTouchTarget,
+        height: AppSizes.minTouchTarget,
+        decoration: BoxDecoration(
+          color: colors.primary,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(item.icon, color: colors.onPrimary, size: 28),
+      );
+    } else {
+      final icon = Icon(selected ? item.selectedIcon : item.icon, color: color);
+      content = Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          item.badgeCount > 0
+              ? Badge(
+                  label: Text(
+                    item.badgeCount > 99 ? '99+' : '${item.badgeCount}',
+                  ),
+                  child: icon,
+                )
+              : icon,
+          const SizedBox(height: AppSpacing.xxs),
+          Text(
+            item.label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: context.text.labelSmall?.copyWith(
+              color: color,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: item.label,
+      excludeSemantics: true,
+      child: InkResponse(
+        onTap: onTap,
+        radius: 32,
+        child: Center(child: content),
+      ),
     );
   }
 }

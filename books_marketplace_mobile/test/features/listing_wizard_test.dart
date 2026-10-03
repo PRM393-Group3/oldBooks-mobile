@@ -22,7 +22,7 @@ void main() {
       final h = Harness(UserRole.seller);
       await h.pump(tester);
 
-      await tapTab(tester, 'Tin của tôi');
+      await tapSellTab(tester);
       await tester.tap(find.widgetWithText(FloatingActionButton, 'Đăng bán'));
       await tester.pumpAndSettle();
       expect(find.text('Đăng bán sách'), findsOneWidget);
@@ -104,7 +104,7 @@ void main() {
       h.listings.stored = rejected;
       await h.pump(tester);
 
-      await tapTab(tester, 'Tin của tôi');
+      await tapSellTab(tester);
       await tester.tap(find.text('Nhà giả kim'));
       await tester.pumpAndSettle();
       expect(find.text('Còn 3 lần nộp lại'), findsOneWidget);
@@ -173,7 +173,7 @@ void main() {
     );
     await h.pump(tester);
 
-    await tapTab(tester, 'Tin của tôi');
+    await tapSellTab(tester);
     await tester.tap(find.text('Nhà giả kim'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sửa và nộp lại'));

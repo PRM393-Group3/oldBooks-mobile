@@ -81,7 +81,7 @@ class _ProfileBody extends ConsumerWidget {
                 size: AppSizes.avatarLarge,
                 showEditBadge: true,
                 semanticLabel: l.changeAvatar,
-                onTap: () => context.push('/profile/avatar'),
+                onTap: () => context.push('/me/avatar'),
               ),
               const SizedBox(height: AppSpacing.md),
               Text(
@@ -152,17 +152,17 @@ class _ProfileBody extends ConsumerWidget {
             AppMenuTile(
               icon: Icons.edit_outlined,
               title: l.editProfile,
-              onTap: () => context.push('/profile/edit'),
+              onTap: () => context.push('/me/edit'),
             ),
             AppMenuTile(
               icon: Icons.photo_camera_outlined,
               title: l.changeAvatar,
-              onTap: () => context.push('/profile/avatar'),
+              onTap: () => context.push('/me/avatar'),
             ),
             AppMenuTile(
               icon: Icons.lock_outline,
               title: l.changePassword,
-              onTap: () => context.push('/profile/password'),
+              onTap: () => context.push('/me/password'),
             ),
             AppMenuTile(
               icon: Icons.language,

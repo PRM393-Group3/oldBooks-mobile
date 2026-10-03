@@ -107,6 +107,13 @@
       }
     }
   },
+  "navExplore": "Explore",
+  "navAuctions": "Auctions",
+  "navSell": "Sell",
+  "navWallet": "Wallet",
+  "navMe": "Me",
+  "comingSoonTitle": "Coming soon",
+  "comingSoonBody": "This feature is under construction.",
   "navMyListings": "My listings",
   "navNotifications": "Notifications",
   "navQueue": "Queue",

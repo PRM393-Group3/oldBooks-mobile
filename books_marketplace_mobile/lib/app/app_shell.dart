@@ -4,18 +4,15 @@ import 'package:go_router/go_router.dart';
 
 import '../core/theme/theme_context.dart';
 import '../core/widgets/app_bottom_nav.dart';
-import '../core/widgets/app_page.dart';
-import '../core/widgets/app_state_views.dart';
 import '../features/notifications/application/notification_providers.dart';
-import '../features/profile/application/profile_controller.dart';
-import '../features/profile/application/role_provider.dart';
 import 'nav_config.dart';
 
-/// Khung có thanh điều hướng dưới; các tab đổi theo vai trò lấy từ hồ sơ.
+/// Khung có thanh điều hướng dưới 5 tab; mỗi tab giữ stack riêng nhờ
+/// [StatefulNavigationShell].
 class AppShell extends ConsumerStatefulWidget {
-  const AppShell({super.key, required this.child});
+  const AppShell({super.key, required this.navigationShell});
 
-  final Widget child;
+  final StatefulNavigationShell navigationShell;
 
   @override
   ConsumerState<AppShell> createState() => _AppShellState();
@@ -35,7 +32,7 @@ class _AppShellState extends ConsumerState<AppShell>
     super.dispose();
   }
 
-  /// Quay lại foreground thì làm mới badge (không polling nền).
+  /// Quay lại foreground thì làm mới badge thông báo (không polling nền).
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
@@ -46,46 +43,25 @@ class _AppShellState extends ConsumerState<AppShell>
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final role = ref.watch(currentRoleProvider);
+    final shell = widget.navigationShell;
 
-    return role.when(
-      loading: () => const Scaffold(body: AppLoadingView()),
-      error: (e, _) => AppPage(
-        scrollable: false,
-        child: AppErrorView(
-          error: e,
-          onRetry: () => ref.invalidate(profileControllerProvider),
-        ),
+    return Scaffold(
+      body: shell,
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: shell.currentIndex,
+        // Chạm lại tab đang mở thì về gốc stack của tab đó.
+        onSelected: (i) =>
+            shell.goBranch(i, initialLocation: i == shell.currentIndex),
+        items: [
+          for (final t in appTabs)
+            AppNavItem(
+              icon: t.icon,
+              selectedIcon: t.selectedIcon,
+              label: t.label(l),
+              isAction: t.isAction,
+            ),
+        ],
       ),
-      data: (role) {
-        final tabs = tabsFor(role);
-        final location = GoRouterState.of(context).uri.path;
-        final index = tabs
-            .indexWhere((t) => location.startsWith(t.path))
-            .clamp(0, tabs.length - 1);
-        final unread = tabs.any((t) => t.showsUnreadBadge)
-            ? (ref.watch(unreadCountProvider).value ?? 0)
-            : 0;
-
-        return Scaffold(
-          body: widget.child,
-          bottomNavigationBar: tabs.length < 2
-              ? null
-              : AppBottomNav(
-                  currentIndex: index,
-                  onSelected: (i) => context.go(tabs[i].path),
-                  items: [
-                    for (final t in tabs)
-                      AppNavItem(
-                        icon: t.icon,
-                        selectedIcon: t.selectedIcon,
-                        label: t.label(l),
-                        badgeCount: t.showsUnreadBadge ? unread : 0,
-                      ),
-                  ],
-                ),
-        );
-      },
     );
   }
 }

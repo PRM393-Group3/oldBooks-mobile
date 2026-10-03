@@ -311,6 +311,27 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get navExplore => 'Explore';
+
+  @override
+  String get navAuctions => 'Auctions';
+
+  @override
+  String get navSell => 'Sell';
+
+  @override
+  String get navWallet => 'Wallet';
+
+  @override
+  String get navMe => 'Me';
+
+  @override
+  String get comingSoonTitle => 'Coming soon';
+
+  @override
+  String get comingSoonBody => 'This feature is under construction.';
+
+  @override
   String get navMyListings => 'My listings';
 
   @override

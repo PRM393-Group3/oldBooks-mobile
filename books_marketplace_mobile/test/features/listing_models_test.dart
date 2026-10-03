@@ -3,7 +3,6 @@ import 'package:books_marketplace_mobile/core/l10n/app_localizations_vi.dart';
 import 'package:books_marketplace_mobile/core/network/paged_result.dart';
 import 'package:books_marketplace_mobile/core/util/format.dart';
 import 'package:books_marketplace_mobile/core/validation/isbn.dart';
-import 'package:books_marketplace_mobile/features/auth/domain/user_role.dart';
 import 'package:books_marketplace_mobile/features/inspection/domain/inspection.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
@@ -384,40 +383,17 @@ void main() {
     });
   });
 
-  group('điều hướng theo vai trò', () {
-    List<String> paths(UserRole r) => tabsFor(r).map((t) => t.path).toList();
-
-    test('mỗi vai trò có đúng tab, không quá 5', () {
-      expect(paths(UserRole.buyer), ['/home', '/notifications', '/profile']);
-      expect(paths(UserRole.seller), [
-        '/home',
-        '/listings/mine',
-        '/notifications',
-        '/profile',
-      ]);
-      expect(paths(UserRole.inspector), [
-        '/inspection/queue',
-        '/inspection/mine',
-        '/notifications',
-        '/profile',
-      ]);
-      expect(paths(UserRole.admin), ['/profile']);
-      for (final r in UserRole.values) {
-        expect(tabsFor(r).length, lessThanOrEqualTo(5));
-      }
-    });
-
-    test('màn hình mặc định theo vai trò', () {
-      expect(homePathFor(UserRole.buyer), '/home');
-      expect(homePathFor(UserRole.seller), '/home');
-      expect(homePathFor(UserRole.inspector), '/inspection/queue');
-      expect(homePathFor(UserRole.admin), '/profile');
-    });
-
-    test('chỉ tab thông báo có badge', () {
-      final badged = tabsFor(UserRole.seller).where((t) => t.showsUnreadBadge);
-      expect(badged.map((t) => t.path), ['/notifications']);
-    });
+  test('thanh điều hướng: 5 tab cố định, nút Bán ở giữa', () {
+    expect(appTabs.map((t) => t.path), [
+      '/home',
+      '/auctions',
+      '/sell',
+      '/wallet',
+      '/me',
+    ]);
+    expect(appTabs.length, lessThanOrEqualTo(5));
+    expect(appTabs.where((t) => t.isAction).map((t) => t.path), ['/sell']);
+    expect(appTabs[appTabs.length ~/ 2].isAction, isTrue);
   });
 
   test('định dạng tiền và đồng hồ', () {

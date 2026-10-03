@@ -41,8 +41,8 @@ abstract final class AppTheme {
       );
     }
 
-    // Nút dạng viên thuốc.
-    const buttonShape = StadiumBorder();
+    // Nút bo vuông mềm như prototype.
+    final buttonShape = RoundedRectangleBorder(borderRadius: AppRadius.mdAll);
     const buttonSize = Size(64, AppSizes.buttonHeight);
     const buttonPadding = EdgeInsets.symmetric(horizontal: AppSpacing.lg);
 
@@ -125,12 +125,12 @@ abstract final class AppTheme {
           foregroundColor: c.textSecondary,
           selectedForegroundColor: c.onPrimaryContainer,
           selectedBackgroundColor: c.primaryContainer,
-          shape: const StadiumBorder(),
+          shape: RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
           side: BorderSide(color: c.border),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
-        // Nền do AppBottomNav vẽ (thanh nổi bo tròn).
+        // AppBottomNav tự vẽ; giữ theme để NavigationBar lẻ (nếu có) cùng tông.
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         indicatorColor: c.primaryContainer,

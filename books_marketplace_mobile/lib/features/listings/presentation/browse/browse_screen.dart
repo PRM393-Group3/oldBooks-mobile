@@ -8,6 +8,7 @@ import '../../../../core/widgets/app_page.dart';
 import '../../../../core/widgets/app_paged_list.dart';
 import '../../../../core/widgets/app_state_views.dart';
 import '../../../categories/application/category_providers.dart';
+import '../../../notifications/application/notification_providers.dart';
 import '../../application/listing_providers.dart';
 import '../widgets/listing_card.dart';
 
@@ -29,9 +30,22 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
     final state = ref.watch(provider);
     final notifier = ref.read(provider.notifier);
     final categories = ref.watch(categoryTreeProvider).value ?? const [];
+    final unread = ref.watch(unreadCountProvider).value ?? 0;
 
     return AppPage(
-      title: l.navHome,
+      title: l.navExplore,
+      // Tạm thời: lát 1 thay bằng đầu trang Khám phá theo prototype.
+      actions: [
+        IconButton(
+          tooltip: l.notificationsTitle,
+          onPressed: () => context.push('/notifications'),
+          icon: Badge(
+            isLabelVisible: unread > 0,
+            label: Text(unread > 99 ? '99+' : '$unread'),
+            child: const Icon(Icons.notifications_none),
+          ),
+        ),
+      ],
       scrollable: false,
       child: AppPagedList(
         value: state,
