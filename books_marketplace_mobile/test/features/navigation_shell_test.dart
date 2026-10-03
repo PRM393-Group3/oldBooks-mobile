@@ -58,16 +58,14 @@ void main() {
     );
   });
 
-  testWidgets('Đấu giá và Ví hiện màn hình chờ cho tới khi làm xong', (
-    tester,
-  ) async {
+  testWidgets('Đấu giá hiện màn hình chờ, Ví mở màn Ví Oldbook', (tester) async {
     final h = Harness(UserRole.buyer);
     await h.pump(tester);
 
     await tapTab(tester, 'Đấu giá');
     expect(find.text('Sắp có'), findsOneWidget);
     await tapTab(tester, 'Ví');
-    expect(find.text('Sắp có'), findsOneWidget);
+    expect(find.text('Ví Oldbook'), findsOneWidget);
   });
 
   testWidgets('Admin cũng thấy đủ 5 tab và ghi chú cổng web ở tab Tôi', (

@@ -150,6 +150,11 @@ class _ProfileBody extends ConsumerWidget {
         AppSection(
           children: [
             AppMenuTile(
+              icon: Icons.receipt_long_outlined,
+              title: l.meMyOrders,
+              onTap: () => context.push('/me/orders'),
+            ),
+            AppMenuTile(
               icon: Icons.edit_outlined,
               title: l.editProfile,
               onTap: () => context.push('/me/edit'),

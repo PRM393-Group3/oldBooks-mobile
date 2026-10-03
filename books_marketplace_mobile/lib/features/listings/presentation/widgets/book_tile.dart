@@ -98,12 +98,16 @@ class BookCover extends StatelessWidget {
     required this.label,
     this.radius = AppRadius.sm,
     this.fit = BoxFit.cover,
+    this.hue,
   });
 
   final String? url;
   final String label;
   final double radius;
   final BoxFit fit;
+
+  /// Màu bìa thay thế (0 đến 360) cho dữ liệu mẫu không có ảnh.
+  final int? hue;
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +128,9 @@ class BookCover extends StatelessWidget {
         child: ColoredBox(
           color: colors.primaryContainer,
           child: url == null
-              ? placeholder
+              ? (hue == null
+                    ? placeholder
+                    : CustomPaint(painter: _HuePainter(hue!)))
               : Image.network(
                   url!,
                   fit: fit,
@@ -165,4 +171,32 @@ class BookBadge extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Bìa vẽ sọc chéo hai tông cùng một màu, giống bìa mẫu của prototype.
+class _HuePainter extends CustomPainter {
+  _HuePainter(this.hue);
+
+  final int hue;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final a = HSLColor.fromAHSL(1, hue.toDouble() % 360, 0.35, 0.87).toColor();
+    final b = HSLColor.fromAHSL(1, hue.toDouble() % 360, 0.40, 0.82).toColor();
+    canvas.drawRect(Offset.zero & size, Paint()..color = a);
+    final paint = Paint()
+      ..color = b
+      ..strokeWidth = 7;
+    const gap = 14.0;
+    for (var x = -size.height; x < size.width + size.height; x += gap) {
+      canvas.drawLine(
+        Offset(x, size.height),
+        Offset(x + size.height, 0),
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_HuePainter old) => old.hue != hue;
 }

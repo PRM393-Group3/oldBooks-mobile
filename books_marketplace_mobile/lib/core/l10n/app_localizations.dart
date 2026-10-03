@@ -2191,6 +2191,1212 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Sách này bán theo hình thức đấu giá.'**
   String get auctionListingNote;
+
+  /// No description provided for @toastOrderCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hủy đơn, hoàn {amount}'**
+  String toastOrderCancelled(String amount);
+
+  /// No description provided for @toastOrderCompleted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn hoàn tất · cảm ơn bạn!'**
+  String get toastOrderCompleted;
+
+  /// No description provided for @toastComplaintOpened.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã mở khiếu nại · tiền bị khóa'**
+  String get toastComplaintOpened;
+
+  /// No description provided for @toastOfferAccepted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận hoàn {amount}'**
+  String toastOfferAccepted(String amount);
+
+  /// No description provided for @toastNoBooks.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có sách khả dụng trong giỏ'**
+  String get toastNoBooks;
+
+  /// No description provided for @toastSellerShipped.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người bán đã nhập mã vận đơn'**
+  String get toastSellerShipped;
+
+  /// No description provided for @toastDeliveryFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao thất bại lần {n}'**
+  String toastDeliveryFailed(int n);
+
+  /// No description provided for @toastMovedToStorage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao thất bại lần 5 · sách vào lưu kho'**
+  String get toastMovedToStorage;
+
+  /// No description provided for @toastTopupOk.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp thành công +{amount}'**
+  String toastTopupOk(String amount);
+
+  /// No description provided for @toastWithdrawRequested.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi yêu cầu rút {amount}'**
+  String toastWithdrawRequested(String amount);
+
+  /// No description provided for @toastRated.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đánh giá {n} sao'**
+  String toastRated(int n);
+
+  /// No description provided for @toastRegistered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đăng ký · giữ {amount}'**
+  String toastRegistered(String amount);
+
+  /// No description provided for @toastUnregistered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hủy đăng ký, hoàn {amount}'**
+  String toastUnregistered(String amount);
+
+  /// No description provided for @toastLeading.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang dẫn đầu với {amount}'**
+  String toastLeading(String amount);
+
+  /// No description provided for @toastBuyNowStarted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã mua ngay · đếm ngược 30 phút bắt đầu'**
+  String get toastBuyNowStarted;
+
+  /// No description provided for @toastOutbid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã bị vượt giá ở \"{title}\" · {amount}'**
+  String toastOutbid(String title, String amount);
+
+  /// No description provided for @toastAuctionWon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã thắng \"{title}\" với giá {amount}'**
+  String toastAuctionWon(String title, String amount);
+
+  /// No description provided for @txnTopupVietQr.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp tiền qua VietQR'**
+  String get txnTopupVietQr;
+
+  /// No description provided for @txnHoldOrder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giữ tiền đơn {arg}'**
+  String txnHoldOrder(String arg);
+
+  /// No description provided for @txnHoldOrders.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giữ tiền {n} đơn hàng'**
+  String txnHoldOrders(int n);
+
+  /// No description provided for @txnHoldAuctionRegistration.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký phiên \"{arg}\"'**
+  String txnHoldAuctionRegistration(String arg);
+
+  /// No description provided for @txnHoldBid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trả giá \"{arg}\"'**
+  String txnHoldBid(String arg);
+
+  /// No description provided for @txnHoldBuyNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua ngay \"{arg}\"'**
+  String txnHoldBuyNow(String arg);
+
+  /// No description provided for @txnHoldRedelivery.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí giao lại {arg}'**
+  String txnHoldRedelivery(String arg);
+
+  /// No description provided for @txnReleaseOrderCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn tiền hủy đơn {arg}'**
+  String txnReleaseOrderCancelled(String arg);
+
+  /// No description provided for @txnReleaseAuctionUnregistered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hủy đăng ký \"{arg}\"'**
+  String txnReleaseAuctionUnregistered(String arg);
+
+  /// No description provided for @txnReleaseAuctionDeposit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn cọc phiên \"{arg}\"'**
+  String txnReleaseAuctionDeposit(String arg);
+
+  /// No description provided for @txnPayoutSale.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận tiền bán \"{arg}\"'**
+  String txnPayoutSale(String arg);
+
+  /// No description provided for @txnCaptureOrder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thanh toán đơn {arg} (từ tiền giữ)'**
+  String txnCaptureOrder(String arg);
+
+  /// No description provided for @txnRefundAgreement.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn tiền thỏa thuận {arg}'**
+  String txnRefundAgreement(String arg);
+
+  /// No description provided for @txnRefundVerdict.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn tiền theo phán quyết {arg}'**
+  String txnRefundVerdict(String arg);
+
+  /// No description provided for @txnWithdrawRequest.
+  ///
+  /// In vi, this message translates to:
+  /// **'Yêu cầu rút về Vietcombank · chờ duyệt'**
+  String get txnWithdrawRequest;
+
+  /// No description provided for @txnTypeTopup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp tiền'**
+  String get txnTypeTopup;
+
+  /// No description provided for @txnTypeHold.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giữ tiền'**
+  String get txnTypeHold;
+
+  /// No description provided for @txnTypeRelease.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhả tiền'**
+  String get txnTypeRelease;
+
+  /// No description provided for @txnTypePayout.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận tiền'**
+  String get txnTypePayout;
+
+  /// No description provided for @txnTypeRefund.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn tiền'**
+  String get txnTypeRefund;
+
+  /// No description provided for @txnTypeCapture.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chốt thanh toán'**
+  String get txnTypeCapture;
+
+  /// No description provided for @txnTypeWithdraw.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rút tiền'**
+  String get txnTypeWithdraw;
+
+  /// No description provided for @orderStatusPaidAwaitingShipment.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ người bán gửi'**
+  String get orderStatusPaidAwaitingShipment;
+
+  /// No description provided for @orderStatusShipped.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang vận chuyển'**
+  String get orderStatusShipped;
+
+  /// No description provided for @orderStatusDelivered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã giao'**
+  String get orderStatusDelivered;
+
+  /// No description provided for @orderStatusCompleted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn tất'**
+  String get orderStatusCompleted;
+
+  /// No description provided for @orderStatusCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hủy'**
+  String get orderStatusCancelled;
+
+  /// No description provided for @orderStatusRefunded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hoàn tiền'**
+  String get orderStatusRefunded;
+
+  /// No description provided for @orderStatusPartiallyRefunded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn một phần'**
+  String get orderStatusPartiallyRefunded;
+
+  /// No description provided for @orderStatusDisputed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang khiếu nại'**
+  String get orderStatusDisputed;
+
+  /// No description provided for @orderStatusReadyToShip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ kho xuất'**
+  String get orderStatusReadyToShip;
+
+  /// No description provided for @orderStatusInDelivery.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang giao'**
+  String get orderStatusInDelivery;
+
+  /// No description provided for @orderStatusInStorage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu kho'**
+  String get orderStatusInStorage;
+
+  /// No description provided for @orderStatusPickedUp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận tại kho'**
+  String get orderStatusPickedUp;
+
+  /// No description provided for @orderKindSale.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bán thường'**
+  String get orderKindSale;
+
+  /// No description provided for @orderKindAuction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đấu giá'**
+  String get orderKindAuction;
+
+  /// No description provided for @ordersTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn mua'**
+  String get ordersTitle;
+
+  /// No description provided for @orderTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn {arg}'**
+  String orderTitle(String arg);
+
+  /// No description provided for @ordersEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có đơn mua nào.'**
+  String get ordersEmpty;
+
+  /// No description provided for @noteShipBy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người bán gửi trước {date}'**
+  String noteShipBy(String date);
+
+  /// No description provided for @noteComplaintLeft.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {time} để khiếu nại'**
+  String noteComplaintLeft(String time);
+
+  /// No description provided for @noteDeliveryAttempt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lần giao {n}/5 · {carrier}'**
+  String noteDeliveryAttempt(int n, String carrier);
+
+  /// No description provided for @noteStorage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu kho {days} ngày · 5.000 đ/ngày trừ vào cọc'**
+  String noteStorage(int days);
+
+  /// No description provided for @notePacking.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kho đang đóng gói'**
+  String get notePacking;
+
+  /// No description provided for @noteFundsLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền đang bị khóa'**
+  String get noteFundsLocked;
+
+  /// No description provided for @headPaidAwaitingShipment.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ người bán gửi hàng'**
+  String get headPaidAwaitingShipment;
+
+  /// No description provided for @headShipped.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sách đang trên đường đến'**
+  String get headShipped;
+
+  /// No description provided for @headDelivered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã nhận được sách?'**
+  String get headDelivered;
+
+  /// No description provided for @headCompleted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn đã hoàn tất'**
+  String get headCompleted;
+
+  /// No description provided for @headDisputed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khiếu nại đang được xử lý'**
+  String get headDisputed;
+
+  /// No description provided for @headCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn đã hủy'**
+  String get headCancelled;
+
+  /// No description provided for @headRefunded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hoàn tiền'**
+  String get headRefunded;
+
+  /// No description provided for @headPartiallyRefunded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hoàn tiền một phần'**
+  String get headPartiallyRefunded;
+
+  /// No description provided for @headReadyToShip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kho đang chuẩn bị giao'**
+  String get headReadyToShip;
+
+  /// No description provided for @headInDelivery.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang giao sách đấu giá'**
+  String get headInDelivery;
+
+  /// No description provided for @headInStorage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sách đang được lưu kho'**
+  String get headInStorage;
+
+  /// No description provided for @headPickedUp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận tại kho'**
+  String get headPickedUp;
+
+  /// No description provided for @detailNotePaid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người bán phải gửi trước {date}. Quá hạn đơn tự hủy và hoàn 100%. Bạn có thể hủy miễn phí đến khi người bán gửi.'**
+  String detailNotePaid(String date);
+
+  /// No description provided for @detailNoteShipped.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bấm \"Đã nhận được hàng\" khi sách đến tay để bắt đầu 3 ngày kiểm tra.'**
+  String get detailNoteShipped;
+
+  /// No description provided for @detailNoteDelivered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn còn {time} để khiếu nại. Hết hạn, đơn tự hoàn tất và tiền chuyển cho người bán.'**
+  String detailNoteDelivered(String time);
+
+  /// No description provided for @detailNoteCompleted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người bán đã nhận tiền sau khi trừ phí.'**
+  String get detailNoteCompleted;
+
+  /// No description provided for @detailNoteDisputed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền bị khóa đến khi có thỏa thuận hoặc phán quyết.'**
+  String get detailNoteDisputed;
+
+  /// No description provided for @detailNoteCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Toàn bộ tiền giữ đã được nhả về ví.'**
+  String get detailNoteCancelled;
+
+  /// No description provided for @detailNoteRefunded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền hoàn đã vào ví.'**
+  String get detailNoteRefunded;
+
+  /// No description provided for @detailNotePartiallyRefunded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phần hoàn đã vào ví, phần còn lại chuyển người bán.'**
+  String get detailNotePartiallyRefunded;
+
+  /// No description provided for @detailNoteReadyToShip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí ship {amount} đã được giữ. Kho chụp ảnh đóng gói trước khi giao.'**
+  String detailNoteReadyToShip(String amount);
+
+  /// No description provided for @detailNoteInDelivery.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lần giao {n}/5. Sau 5 lần thất bại, sách vào lưu kho (5.000 đ/ngày, tối đa 30 ngày).'**
+  String detailNoteInDelivery(int n);
+
+  /// No description provided for @detailNoteInStorage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao thất bại 5 lần. Phí lưu kho trừ vào cọc. Chọn nhận tại kho hoặc giao lại.'**
+  String get detailNoteInStorage;
+
+  /// No description provided for @stepSaleOrdered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đặt · tiền được giữ'**
+  String get stepSaleOrdered;
+
+  /// No description provided for @stepSaleShipped.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người bán đã gửi'**
+  String get stepSaleShipped;
+
+  /// No description provided for @stepDelivered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã giao'**
+  String get stepDelivered;
+
+  /// No description provided for @stepSaleCompleted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn tất · tiền chuyển cho người bán'**
+  String get stepSaleCompleted;
+
+  /// No description provided for @stepAuctionWon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thắng phiên · kho nhận lệnh xuất'**
+  String get stepAuctionWon;
+
+  /// No description provided for @stepAuctionInDelivery.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang giao'**
+  String get stepAuctionInDelivery;
+
+  /// No description provided for @stepAuctionReceived.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận hàng'**
+  String get stepAuctionReceived;
+
+  /// No description provided for @stepAuctionCompleted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn tất · hoàn cọc'**
+  String get stepAuctionCompleted;
+
+  /// No description provided for @stepCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hủy · tiền đã hoàn về ví'**
+  String get stepCancelled;
+
+  /// No description provided for @stepNext.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp theo'**
+  String get stepNext;
+
+  /// No description provided for @moneyBookPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền sách'**
+  String get moneyBookPrice;
+
+  /// No description provided for @moneyWinPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá thắng'**
+  String get moneyWinPrice;
+
+  /// No description provided for @moneyShipping.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí ship'**
+  String get moneyShipping;
+
+  /// No description provided for @moneyTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng'**
+  String get moneyTotal;
+
+  /// No description provided for @moneyNoteAuction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá thắng đã được chốt vào tài khoản trung gian. Cọc hoàn khi bạn nhận sách.'**
+  String get moneyNoteAuction;
+
+  /// No description provided for @moneyNoteSettled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã quyết toán.'**
+  String get moneyNoteSettled;
+
+  /// No description provided for @moneyNoteHeld.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang giữ trong ví đến khi đơn hoàn tất.'**
+  String get moneyNoteHeld;
+
+  /// No description provided for @shipNoTracking.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có mã vận đơn'**
+  String get shipNoTracking;
+
+  /// No description provided for @shipFromWarehouse.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao từ kho Oldbook'**
+  String get shipFromWarehouse;
+
+  /// No description provided for @reviewSeller.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đánh giá người bán'**
+  String get reviewSeller;
+
+  /// No description provided for @reviewNoteNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đánh giá trong 14 ngày sau khi hoàn tất.'**
+  String get reviewNoteNew;
+
+  /// No description provided for @reviewNoteEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn có thể sửa đánh giá một lần trong 7 ngày.'**
+  String get reviewNoteEdit;
+
+  /// No description provided for @starLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} sao'**
+  String starLabel(int n);
+
+  /// No description provided for @actSimSellerShip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô phỏng: người bán gửi hàng'**
+  String get actSimSellerShip;
+
+  /// No description provided for @actCancelOrder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hủy đơn · hoàn {amount}'**
+  String actCancelOrder(String amount);
+
+  /// No description provided for @actReceived.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận được hàng'**
+  String get actReceived;
+
+  /// No description provided for @actSimWarehouseShip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô phỏng: kho xuất hàng'**
+  String get actSimWarehouseShip;
+
+  /// No description provided for @actSimDeliverOk.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô phỏng: giao thành công'**
+  String get actSimDeliverOk;
+
+  /// No description provided for @actSimDeliverFail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô phỏng: giao thất bại'**
+  String get actSimDeliverFail;
+
+  /// No description provided for @actPickUp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đến nhận tại kho'**
+  String get actPickUp;
+
+  /// No description provided for @actRedeliver.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao lại · thêm {amount}'**
+  String actRedeliver(String amount);
+
+  /// No description provided for @actCompleteOrder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hài lòng, hoàn tất đơn'**
+  String get actCompleteOrder;
+
+  /// No description provided for @actComplaint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khiếu nại'**
+  String get actComplaint;
+
+  /// No description provided for @actSimSellerOffer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô phỏng: người bán đề xuất hoàn 50%'**
+  String get actSimSellerOffer;
+
+  /// No description provided for @actAcceptOffer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chấp nhận hoàn {amount}'**
+  String actAcceptOffer(String amount);
+
+  /// No description provided for @actEscalate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ chối, chuyển Oldbook phân xử'**
+  String get actEscalate;
+
+  /// No description provided for @actSimAdmin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô phỏng: admin phán hoàn 100%'**
+  String get actSimAdmin;
+
+  /// No description provided for @actNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có thao tác nào cần làm.'**
+  String get actNone;
+
+  /// No description provided for @complaintCardTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khiếu nại · {status}'**
+  String complaintCardTitle(String status);
+
+  /// No description provided for @complaintStatusOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ người bán phản hồi'**
+  String get complaintStatusOpen;
+
+  /// No description provided for @complaintStatusSellerResponded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người bán đã đề xuất'**
+  String get complaintStatusSellerResponded;
+
+  /// No description provided for @complaintStatusEscalated.
+  ///
+  /// In vi, this message translates to:
+  /// **'Oldbook đang phân xử'**
+  String get complaintStatusEscalated;
+
+  /// No description provided for @complaintStatusAgreed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thỏa thuận'**
+  String get complaintStatusAgreed;
+
+  /// No description provided for @complaintStatusResolved.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã phán quyết'**
+  String get complaintStatusResolved;
+
+  /// No description provided for @complaintTextOpenSale.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người bán có 2 ngày để phản hồi, quá hạn sẽ chuyển Oldbook phân xử.'**
+  String get complaintTextOpenSale;
+
+  /// No description provided for @complaintTextOpenAuction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khiếu nại đấu giá được chuyển thẳng cho Oldbook.'**
+  String get complaintTextOpenAuction;
+
+  /// No description provided for @complaintTextSellerResponded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người bán đề xuất hoàn {amount}. Bạn đồng ý hoặc chuyển Oldbook phân xử.'**
+  String complaintTextSellerResponded(String amount);
+
+  /// No description provided for @complaintTextEscalatedSale.
+  ///
+  /// In vi, this message translates to:
+  /// **'Admin xem bằng chứng hai bên và ra phán quyết.'**
+  String get complaintTextEscalatedSale;
+
+  /// No description provided for @complaintTextEscalatedAuction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Admin xem bằng chứng hai bên, ảnh nhập/xuất kho và ra phán quyết.'**
+  String get complaintTextEscalatedAuction;
+
+  /// No description provided for @complaintTextAgreed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hoàn {amount} theo thỏa thuận.'**
+  String complaintTextAgreed(String amount);
+
+  /// No description provided for @complaintTextResolved.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn toàn bộ theo phán quyết.'**
+  String get complaintTextResolved;
+
+  /// No description provided for @complaintSheetTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở khiếu nại'**
+  String get complaintSheetTitle;
+
+  /// No description provided for @complaintSheetNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền sẽ bị khóa đến khi khiếu nại được giải quyết.'**
+  String get complaintSheetNote;
+
+  /// No description provided for @complaintReasonNotAsDescribed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đúng mô tả'**
+  String get complaintReasonNotAsDescribed;
+
+  /// No description provided for @complaintReasonDamaged.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sách bị hư hỏng'**
+  String get complaintReasonDamaged;
+
+  /// No description provided for @complaintReasonWrongItem.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao sai sách'**
+  String get complaintReasonWrongItem;
+
+  /// No description provided for @complaintReasonOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lý do khác'**
+  String get complaintReasonOther;
+
+  /// No description provided for @complaintDescribeHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô tả vấn đề'**
+  String get complaintDescribeHint;
+
+  /// No description provided for @complaintAddEvidence.
+  ///
+  /// In vi, this message translates to:
+  /// **'+ Thêm ảnh bằng chứng ({n}/10)'**
+  String complaintAddEvidence(int n);
+
+  /// No description provided for @complaintSubmit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi khiếu nại'**
+  String get complaintSubmit;
+
+  /// No description provided for @complaintNeedReasonAndPhoto.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn lý do và thêm ít nhất 1 ảnh'**
+  String get complaintNeedReasonAndPhoto;
+
+  /// No description provided for @cartEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giỏ hàng trống.'**
+  String get cartEmpty;
+
+  /// No description provided for @cartSeller.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người bán: {name}'**
+  String cartSeller(String name);
+
+  /// No description provided for @cartUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không còn khả dụng · đã bán'**
+  String get cartUnavailable;
+
+  /// No description provided for @cartRemove.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa'**
+  String get cartRemove;
+
+  /// No description provided for @cartShipTo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao đến'**
+  String get cartShipTo;
+
+  /// No description provided for @cartSubtotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền sách ({n} cuốn)'**
+  String cartSubtotal(int n);
+
+  /// No description provided for @cartShippingFee.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí ship (mỗi đơn {amount})'**
+  String cartShippingFee(String amount);
+
+  /// No description provided for @cartBalance.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư ví khả dụng'**
+  String get cartBalance;
+
+  /// No description provided for @cartNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi cuốn tạo một đơn riêng với người bán. Bạn có thể hủy đơn miễn phí khi người bán chưa gửi hàng.'**
+  String get cartNote;
+
+  /// No description provided for @cartPayTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng thanh toán'**
+  String get cartPayTotal;
+
+  /// No description provided for @cartPlaceOrder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt hàng · thanh toán bằng ví'**
+  String get cartPlaceOrder;
+
+  /// No description provided for @cartInsufficient.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư không đủ · nạp thêm'**
+  String get cartInsufficient;
+
+  /// No description provided for @cartNoAvailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có sách khả dụng'**
+  String get cartNoAvailable;
+
+  /// No description provided for @insufficientTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư không đủ'**
+  String get insufficientTitle;
+
+  /// No description provided for @insufficientBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần thêm {need} để tiếp tục. Số dư khả dụng hiện tại: {avail}.'**
+  String insufficientBody(String need, String avail);
+
+  /// No description provided for @insufficientTopup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp {amount}'**
+  String insufficientTopup(String amount);
+
+  /// No description provided for @sheetClose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng'**
+  String get sheetClose;
+
+  /// No description provided for @sheetLater.
+  ///
+  /// In vi, this message translates to:
+  /// **'Để sau'**
+  String get sheetLater;
+
+  /// No description provided for @orderPlacedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt hàng thành công'**
+  String get orderPlacedTitle;
+
+  /// No description provided for @orderPlacedBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã giữ {amount} từ ví cho {n} đơn. Người bán có 2 ngày làm việc để gửi hàng, nếu không đơn tự hủy và hoàn tiền.'**
+  String orderPlacedBody(String amount, int n);
+
+  /// No description provided for @orderPlacedView.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem đơn hàng'**
+  String get orderPlacedView;
+
+  /// No description provided for @orderPlacedKeepShopping.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục mua'**
+  String get orderPlacedKeepShopping;
+
+  /// No description provided for @walletTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví Oldbook'**
+  String get walletTitle;
+
+  /// No description provided for @walletAvailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư khả dụng'**
+  String get walletAvailable;
+
+  /// No description provided for @walletHeld.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang giữ'**
+  String get walletHeld;
+
+  /// No description provided for @walletTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng'**
+  String get walletTotal;
+
+  /// No description provided for @walletTopup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp tiền'**
+  String get walletTopup;
+
+  /// No description provided for @walletWithdraw.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rút tiền'**
+  String get walletWithdraw;
+
+  /// No description provided for @walletNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền đang giữ dùng cho đơn hàng chưa hoàn tất, tiền cọc đấu giá và lượt trả giá đang dẫn đầu. Mọi giao dịch đi qua ví, không chuyển trực tiếp giữa người dùng.'**
+  String get walletNote;
+
+  /// No description provided for @walletHistory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lịch sử giao dịch'**
+  String get walletHistory;
+
+  /// No description provided for @walletNoTransactions.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có giao dịch.'**
+  String get walletNoTransactions;
+
+  /// No description provided for @walletPayoutAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản nhận tiền'**
+  String get walletPayoutAccount;
+
+  /// No description provided for @topupSheetTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp tiền vào ví'**
+  String get topupSheetTitle;
+
+  /// No description provided for @topupSheetNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thanh toán qua VietQR. Yêu cầu hết hạn sau 30 phút nếu chưa thanh toán.'**
+  String get topupSheetNote;
+
+  /// No description provided for @topupCreateCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo mã thanh toán · {amount}'**
+  String topupCreateCode(String amount);
+
+  /// No description provided for @topupScanTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét mã để thanh toán'**
+  String get topupScanTitle;
+
+  /// No description provided for @topupQrLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'mã VietQR'**
+  String get topupQrLabel;
+
+  /// No description provided for @topupTransferContent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nội dung: OLDBOOK NAP 7K2Q9 · hết hạn sau 30:00'**
+  String get topupTransferContent;
+
+  /// No description provided for @topupConfirmNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư chỉ được cộng khi cổng thanh toán xác nhận.'**
+  String get topupConfirmNote;
+
+  /// No description provided for @topupSimConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô phỏng: cổng thanh toán xác nhận'**
+  String get topupSimConfirm;
+
+  /// No description provided for @withdrawSheetTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rút tiền'**
+  String get withdrawSheetTitle;
+
+  /// No description provided for @withdrawAmountHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền (tối thiểu 50.000 đ)'**
+  String get withdrawAmountHint;
+
+  /// No description provided for @withdrawHintAvailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khả dụng: {amount}'**
+  String withdrawHintAvailable(String amount);
+
+  /// No description provided for @withdrawHintMin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối thiểu 50.000 đ'**
+  String get withdrawHintMin;
+
+  /// No description provided for @withdrawHintOver.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vượt số dư khả dụng ({amount})'**
+  String withdrawHintOver(String amount);
+
+  /// No description provided for @withdrawHintHold.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sẽ giữ {amount} chờ duyệt'**
+  String withdrawHintHold(String amount);
+
+  /// No description provided for @withdrawNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền được giữ ngay và chuyển khoản sau khi Oldbook duyệt. Tên chủ tài khoản phải trùng họ tên hồ sơ.'**
+  String get withdrawNote;
+
+  /// No description provided for @withdrawSubmit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi yêu cầu rút'**
+  String get withdrawSubmit;
+
+  /// No description provided for @remainingDaysHours.
+  ///
+  /// In vi, this message translates to:
+  /// **'{days} ngày {hours} giờ'**
+  String remainingDaysHours(int days, int hours);
+
+  /// No description provided for @agoNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'vừa xong'**
+  String get agoNow;
+
+  /// No description provided for @agoMinutes.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} phút trước'**
+  String agoMinutes(int n);
+
+  /// No description provided for @agoHours.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} giờ trước'**
+  String agoHours(int n);
+
+  /// No description provided for @agoDays.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} ngày trước'**
+  String agoDays(int n);
+
+  /// No description provided for @meMyOrders.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn mua'**
+  String get meMyOrders;
+
+  /// No description provided for @meMyOrdersSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Theo dõi giao hàng, xác nhận nhận hàng, khiếu nại'**
+  String get meMyOrdersSub;
 }
 
 class _AppLocalizationsDelegate

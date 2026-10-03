@@ -1155,4 +1155,739 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get auctionListingNote => 'This book is sold by auction.';
+
+  @override
+  String toastOrderCancelled(String amount) {
+    return 'Order cancelled, $amount refunded';
+  }
+
+  @override
+  String get toastOrderCompleted => 'Order completed · thank you!';
+
+  @override
+  String get toastComplaintOpened => 'Complaint opened · funds are locked';
+
+  @override
+  String toastOfferAccepted(String amount) {
+    return '$amount refunded to you';
+  }
+
+  @override
+  String get toastNoBooks => 'No available books in your cart';
+
+  @override
+  String get toastSellerShipped => 'The seller entered a tracking code';
+
+  @override
+  String toastDeliveryFailed(int n) {
+    return 'Delivery attempt $n failed';
+  }
+
+  @override
+  String get toastMovedToStorage =>
+      'Fifth delivery failed · the book moved to storage';
+
+  @override
+  String toastTopupOk(String amount) {
+    return 'Top-up successful +$amount';
+  }
+
+  @override
+  String toastWithdrawRequested(String amount) {
+    return 'Withdrawal of $amount requested';
+  }
+
+  @override
+  String toastRated(int n) {
+    return 'Rated $n stars';
+  }
+
+  @override
+  String toastRegistered(String amount) {
+    return 'Registered · $amount held';
+  }
+
+  @override
+  String toastUnregistered(String amount) {
+    return 'Registration cancelled, $amount refunded';
+  }
+
+  @override
+  String toastLeading(String amount) {
+    return 'You are leading with $amount';
+  }
+
+  @override
+  String get toastBuyNowStarted =>
+      'Bought now · the 30-minute countdown has started';
+
+  @override
+  String toastOutbid(String title, String amount) {
+    return 'You were outbid on \"$title\" · $amount';
+  }
+
+  @override
+  String toastAuctionWon(String title, String amount) {
+    return 'You won \"$title\" at $amount';
+  }
+
+  @override
+  String get txnTopupVietQr => 'Top-up via VietQR';
+
+  @override
+  String txnHoldOrder(String arg) {
+    return 'Hold for order $arg';
+  }
+
+  @override
+  String txnHoldOrders(int n) {
+    return 'Hold for $n orders';
+  }
+
+  @override
+  String txnHoldAuctionRegistration(String arg) {
+    return 'Registration for \"$arg\"';
+  }
+
+  @override
+  String txnHoldBid(String arg) {
+    return 'Bid on \"$arg\"';
+  }
+
+  @override
+  String txnHoldBuyNow(String arg) {
+    return 'Buy now \"$arg\"';
+  }
+
+  @override
+  String txnHoldRedelivery(String arg) {
+    return 'Redelivery fee $arg';
+  }
+
+  @override
+  String txnReleaseOrderCancelled(String arg) {
+    return 'Refund for cancelled order $arg';
+  }
+
+  @override
+  String txnReleaseAuctionUnregistered(String arg) {
+    return 'Registration cancelled \"$arg\"';
+  }
+
+  @override
+  String txnReleaseAuctionDeposit(String arg) {
+    return 'Deposit returned for \"$arg\"';
+  }
+
+  @override
+  String txnPayoutSale(String arg) {
+    return 'Sale proceeds for \"$arg\"';
+  }
+
+  @override
+  String txnCaptureOrder(String arg) {
+    return 'Payment for order $arg (from held funds)';
+  }
+
+  @override
+  String txnRefundAgreement(String arg) {
+    return 'Agreed refund for $arg';
+  }
+
+  @override
+  String txnRefundVerdict(String arg) {
+    return 'Refund by verdict for $arg';
+  }
+
+  @override
+  String get txnWithdrawRequest =>
+      'Withdrawal to Vietcombank · pending approval';
+
+  @override
+  String get txnTypeTopup => 'Top-up';
+
+  @override
+  String get txnTypeHold => 'Hold';
+
+  @override
+  String get txnTypeRelease => 'Release';
+
+  @override
+  String get txnTypePayout => 'Payout';
+
+  @override
+  String get txnTypeRefund => 'Refund';
+
+  @override
+  String get txnTypeCapture => 'Capture';
+
+  @override
+  String get txnTypeWithdraw => 'Withdrawal';
+
+  @override
+  String get orderStatusPaidAwaitingShipment => 'Awaiting shipment';
+
+  @override
+  String get orderStatusShipped => 'In transit';
+
+  @override
+  String get orderStatusDelivered => 'Delivered';
+
+  @override
+  String get orderStatusCompleted => 'Completed';
+
+  @override
+  String get orderStatusCancelled => 'Cancelled';
+
+  @override
+  String get orderStatusRefunded => 'Refunded';
+
+  @override
+  String get orderStatusPartiallyRefunded => 'Partially refunded';
+
+  @override
+  String get orderStatusDisputed => 'Disputed';
+
+  @override
+  String get orderStatusReadyToShip => 'Ready to ship';
+
+  @override
+  String get orderStatusInDelivery => 'Out for delivery';
+
+  @override
+  String get orderStatusInStorage => 'In storage';
+
+  @override
+  String get orderStatusPickedUp => 'Picked up';
+
+  @override
+  String get orderKindSale => 'Fixed price';
+
+  @override
+  String get orderKindAuction => 'Auction';
+
+  @override
+  String get ordersTitle => 'My orders';
+
+  @override
+  String orderTitle(String arg) {
+    return 'Order $arg';
+  }
+
+  @override
+  String get ordersEmpty => 'You have no orders yet.';
+
+  @override
+  String noteShipBy(String date) {
+    return 'Seller ships by $date';
+  }
+
+  @override
+  String noteComplaintLeft(String time) {
+    return '$time left to file a complaint';
+  }
+
+  @override
+  String noteDeliveryAttempt(int n, String carrier) {
+    return 'Attempt $n/5 · $carrier';
+  }
+
+  @override
+  String noteStorage(int days) {
+    return 'In storage $days days · 5,000 ₫/day deducted from deposit';
+  }
+
+  @override
+  String get notePacking => 'The warehouse is packing';
+
+  @override
+  String get noteFundsLocked => 'Funds are locked';
+
+  @override
+  String get headPaidAwaitingShipment => 'Waiting for the seller to ship';
+
+  @override
+  String get headShipped => 'Your book is on its way';
+
+  @override
+  String get headDelivered => 'Did you receive the book?';
+
+  @override
+  String get headCompleted => 'Order completed';
+
+  @override
+  String get headDisputed => 'Complaint in progress';
+
+  @override
+  String get headCancelled => 'Order cancelled';
+
+  @override
+  String get headRefunded => 'Refunded';
+
+  @override
+  String get headPartiallyRefunded => 'Partially refunded';
+
+  @override
+  String get headReadyToShip => 'The warehouse is preparing your order';
+
+  @override
+  String get headInDelivery => 'Your auction book is being delivered';
+
+  @override
+  String get headInStorage => 'Your book is in storage';
+
+  @override
+  String get headPickedUp => 'Picked up at the warehouse';
+
+  @override
+  String detailNotePaid(String date) {
+    return 'The seller must ship by $date. Past that the order is cancelled and fully refunded. You can cancel for free until the seller ships.';
+  }
+
+  @override
+  String get detailNoteShipped =>
+      'Tap \"I received the book\" when it arrives to start the 3-day inspection window.';
+
+  @override
+  String detailNoteDelivered(String time) {
+    return 'You have $time to file a complaint. After that the order completes and the seller is paid.';
+  }
+
+  @override
+  String get detailNoteCompleted => 'The seller has been paid after fees.';
+
+  @override
+  String get detailNoteDisputed =>
+      'Funds stay locked until an agreement or a verdict.';
+
+  @override
+  String get detailNoteCancelled =>
+      'All held funds were released to your wallet.';
+
+  @override
+  String get detailNoteRefunded => 'The refund is in your wallet.';
+
+  @override
+  String get detailNotePartiallyRefunded =>
+      'The refunded part is in your wallet, the rest went to the seller.';
+
+  @override
+  String detailNoteReadyToShip(String amount) {
+    return 'Shipping fee $amount is held. The warehouse photographs the package before delivery.';
+  }
+
+  @override
+  String detailNoteInDelivery(int n) {
+    return 'Attempt $n/5. After 5 failed attempts the book goes to storage (5,000 ₫/day, up to 30 days).';
+  }
+
+  @override
+  String get detailNoteInStorage =>
+      'Delivery failed 5 times. Storage fees are deducted from your deposit. Pick it up or ask for redelivery.';
+
+  @override
+  String get stepSaleOrdered => 'Ordered · funds held';
+
+  @override
+  String get stepSaleShipped => 'Seller shipped';
+
+  @override
+  String get stepDelivered => 'Delivered';
+
+  @override
+  String get stepSaleCompleted => 'Completed · seller paid';
+
+  @override
+  String get stepAuctionWon => 'Won the auction · warehouse notified';
+
+  @override
+  String get stepAuctionInDelivery => 'In delivery';
+
+  @override
+  String get stepAuctionReceived => 'Received';
+
+  @override
+  String get stepAuctionCompleted => 'Completed · deposit returned';
+
+  @override
+  String get stepCancelled => 'Cancelled · refunded to your wallet';
+
+  @override
+  String get stepNext => 'Next';
+
+  @override
+  String get moneyBookPrice => 'Book price';
+
+  @override
+  String get moneyWinPrice => 'Winning bid';
+
+  @override
+  String get moneyShipping => 'Shipping';
+
+  @override
+  String get moneyTotal => 'Total';
+
+  @override
+  String get moneyNoteAuction =>
+      'The winning bid is held in escrow. Your deposit is returned when you receive the book.';
+
+  @override
+  String get moneyNoteSettled => 'Settled.';
+
+  @override
+  String get moneyNoteHeld => 'Held in your wallet until the order completes.';
+
+  @override
+  String get shipNoTracking => 'No tracking code yet';
+
+  @override
+  String get shipFromWarehouse => 'Shipped from the Oldbook warehouse';
+
+  @override
+  String get reviewSeller => 'Rate the seller';
+
+  @override
+  String get reviewNoteNew => 'Rate within 14 days of completion.';
+
+  @override
+  String get reviewNoteEdit => 'You can edit your rating once within 7 days.';
+
+  @override
+  String starLabel(int n) {
+    return '$n stars';
+  }
+
+  @override
+  String get actSimSellerShip => 'Simulate: seller ships';
+
+  @override
+  String actCancelOrder(String amount) {
+    return 'Cancel order · refund $amount';
+  }
+
+  @override
+  String get actReceived => 'I received the book';
+
+  @override
+  String get actSimWarehouseShip => 'Simulate: warehouse ships';
+
+  @override
+  String get actSimDeliverOk => 'Simulate: delivery succeeded';
+
+  @override
+  String get actSimDeliverFail => 'Simulate: delivery failed';
+
+  @override
+  String get actPickUp => 'Pick up at the warehouse';
+
+  @override
+  String actRedeliver(String amount) {
+    return 'Redeliver · extra $amount';
+  }
+
+  @override
+  String get actCompleteOrder => 'Satisfied, complete the order';
+
+  @override
+  String get actComplaint => 'File a complaint';
+
+  @override
+  String get actSimSellerOffer => 'Simulate: seller offers a 50% refund';
+
+  @override
+  String actAcceptOffer(String amount) {
+    return 'Accept $amount refund';
+  }
+
+  @override
+  String get actEscalate => 'Decline, escalate to Oldbook';
+
+  @override
+  String get actSimAdmin => 'Simulate: admin rules a full refund';
+
+  @override
+  String get actNone => 'Nothing to do right now.';
+
+  @override
+  String complaintCardTitle(String status) {
+    return 'Complaint · $status';
+  }
+
+  @override
+  String get complaintStatusOpen => 'Waiting for the seller';
+
+  @override
+  String get complaintStatusSellerResponded => 'Seller made an offer';
+
+  @override
+  String get complaintStatusEscalated => 'Oldbook is reviewing';
+
+  @override
+  String get complaintStatusAgreed => 'Agreed';
+
+  @override
+  String get complaintStatusResolved => 'Resolved';
+
+  @override
+  String get complaintTextOpenSale =>
+      'The seller has 2 days to respond, otherwise Oldbook steps in.';
+
+  @override
+  String get complaintTextOpenAuction =>
+      'Auction complaints go straight to Oldbook.';
+
+  @override
+  String complaintTextSellerResponded(String amount) {
+    return 'The seller offered a $amount refund. Accept it or escalate to Oldbook.';
+  }
+
+  @override
+  String get complaintTextEscalatedSale =>
+      'An admin reviews both sides\' evidence and rules.';
+
+  @override
+  String get complaintTextEscalatedAuction =>
+      'An admin reviews both sides\' evidence and the warehouse in/out photos, then rules.';
+
+  @override
+  String complaintTextAgreed(String amount) {
+    return '$amount refunded by agreement.';
+  }
+
+  @override
+  String get complaintTextResolved => 'Fully refunded by verdict.';
+
+  @override
+  String get complaintSheetTitle => 'File a complaint';
+
+  @override
+  String get complaintSheetNote =>
+      'Funds stay locked until the complaint is resolved.';
+
+  @override
+  String get complaintReasonNotAsDescribed => 'Not as described';
+
+  @override
+  String get complaintReasonDamaged => 'Damaged';
+
+  @override
+  String get complaintReasonWrongItem => 'Wrong book';
+
+  @override
+  String get complaintReasonOther => 'Other';
+
+  @override
+  String get complaintDescribeHint => 'Describe the problem';
+
+  @override
+  String complaintAddEvidence(int n) {
+    return '+ Add evidence photos ($n/10)';
+  }
+
+  @override
+  String get complaintSubmit => 'Submit complaint';
+
+  @override
+  String get complaintNeedReasonAndPhoto =>
+      'Choose a reason and add at least 1 photo';
+
+  @override
+  String get cartEmpty => 'Your cart is empty.';
+
+  @override
+  String cartSeller(String name) {
+    return 'Seller: $name';
+  }
+
+  @override
+  String get cartUnavailable => 'No longer available · sold';
+
+  @override
+  String get cartRemove => 'Remove';
+
+  @override
+  String get cartShipTo => 'Deliver to';
+
+  @override
+  String cartSubtotal(int n) {
+    return 'Books ($n)';
+  }
+
+  @override
+  String cartShippingFee(String amount) {
+    return 'Shipping ($amount per order)';
+  }
+
+  @override
+  String get cartBalance => 'Available wallet balance';
+
+  @override
+  String get cartNote =>
+      'Each book becomes a separate order with its seller. You can cancel for free until the seller ships.';
+
+  @override
+  String get cartPayTotal => 'Total';
+
+  @override
+  String get cartPlaceOrder => 'Place order · pay with wallet';
+
+  @override
+  String get cartInsufficient => 'Not enough balance · top up';
+
+  @override
+  String get cartNoAvailable => 'No available books';
+
+  @override
+  String get insufficientTitle => 'Not enough balance';
+
+  @override
+  String insufficientBody(String need, String avail) {
+    return 'You need $need more to continue. Available balance: $avail.';
+  }
+
+  @override
+  String insufficientTopup(String amount) {
+    return 'Top up $amount';
+  }
+
+  @override
+  String get sheetClose => 'Close';
+
+  @override
+  String get sheetLater => 'Not now';
+
+  @override
+  String get orderPlacedTitle => 'Order placed';
+
+  @override
+  String orderPlacedBody(String amount, int n) {
+    return '$amount was held from your wallet for $n orders. Sellers have 2 working days to ship, otherwise the order is cancelled and refunded.';
+  }
+
+  @override
+  String get orderPlacedView => 'View orders';
+
+  @override
+  String get orderPlacedKeepShopping => 'Keep shopping';
+
+  @override
+  String get walletTitle => 'Oldbook wallet';
+
+  @override
+  String get walletAvailable => 'Available balance';
+
+  @override
+  String get walletHeld => 'Held';
+
+  @override
+  String get walletTotal => 'Total';
+
+  @override
+  String get walletTopup => 'Top up';
+
+  @override
+  String get walletWithdraw => 'Withdraw';
+
+  @override
+  String get walletNote =>
+      'Held funds cover unfinished orders, auction deposits and your leading bids. Every payment goes through the wallet, never directly between users.';
+
+  @override
+  String get walletHistory => 'Transactions';
+
+  @override
+  String get walletNoTransactions => 'No transactions yet.';
+
+  @override
+  String get walletPayoutAccount => 'Payout account';
+
+  @override
+  String get topupSheetTitle => 'Top up your wallet';
+
+  @override
+  String get topupSheetNote =>
+      'Pay via VietQR. The request expires after 30 minutes if unpaid.';
+
+  @override
+  String topupCreateCode(String amount) {
+    return 'Create payment code · $amount';
+  }
+
+  @override
+  String get topupScanTitle => 'Scan to pay';
+
+  @override
+  String get topupQrLabel => 'VietQR code';
+
+  @override
+  String get topupTransferContent =>
+      'Reference: OLDBOOK NAP 7K2Q9 · expires in 30:00';
+
+  @override
+  String get topupConfirmNote =>
+      'Your balance is credited only when the payment gateway confirms.';
+
+  @override
+  String get topupSimConfirm => 'Simulate: payment gateway confirms';
+
+  @override
+  String get withdrawSheetTitle => 'Withdraw';
+
+  @override
+  String get withdrawAmountHint => 'Amount (minimum 50,000 ₫)';
+
+  @override
+  String withdrawHintAvailable(String amount) {
+    return 'Available: $amount';
+  }
+
+  @override
+  String get withdrawHintMin => 'Minimum 50,000 ₫';
+
+  @override
+  String withdrawHintOver(String amount) {
+    return 'Exceeds available balance ($amount)';
+  }
+
+  @override
+  String withdrawHintHold(String amount) {
+    return '$amount will be held pending approval';
+  }
+
+  @override
+  String get withdrawNote =>
+      'The amount is held now and transferred after Oldbook approves. The account holder name must match your profile name.';
+
+  @override
+  String get withdrawSubmit => 'Request withdrawal';
+
+  @override
+  String remainingDaysHours(int days, int hours) {
+    return '${days}d ${hours}h';
+  }
+
+  @override
+  String get agoNow => 'just now';
+
+  @override
+  String agoMinutes(int n) {
+    return '$n min ago';
+  }
+
+  @override
+  String agoHours(int n) {
+    return '$n h ago';
+  }
+
+  @override
+  String agoDays(int n) {
+    return '$n d ago';
+  }
+
+  @override
+  String get meMyOrders => 'My orders';
+
+  @override
+  String get meMyOrdersSub =>
+      'Track deliveries, confirm receipt, file complaints';
 }

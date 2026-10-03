@@ -12,7 +12,7 @@ import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/app_state_views.dart';
 import '../../../cart/application/cart_providers.dart';
 import '../../../cart/domain/cart_item.dart';
-import '../../../cart/domain/fees.dart';
+import '../../../sim/domain/rules.dart';
 import '../../application/listing_providers.dart';
 import '../../domain/listing.dart';
 import '../../domain/listing_enums.dart';

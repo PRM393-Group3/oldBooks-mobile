@@ -8,11 +8,14 @@ import 'package:books_marketplace_mobile/features/inspection/application/inspect
 import 'package:books_marketplace_mobile/features/listings/application/listing_providers.dart';
 import 'package:books_marketplace_mobile/features/notifications/application/notification_providers.dart';
 import 'package:books_marketplace_mobile/features/profile/application/profile_controller.dart';
+import 'package:books_marketplace_mobile/features/sim/application/sim_providers.dart';
 import 'package:books_marketplace_mobile/features/profile/data/profile_repository.dart';
 import 'package:books_marketplace_mobile/features/profile/domain/profile.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,7 +54,11 @@ class Harness {
   final FakeInspectionRepository inspection;
 
   /// Bơm app đã đăng nhập với vai trò [role], ngôn ngữ tiếng Việt.
-  Future<void> pump(WidgetTester tester, {bool settle = true}) async {
+  Future<void> pump(
+    WidgetTester tester, {
+    bool settle = true,
+    List<Override> overrides = const [],
+  }) async {
     // Cửa sổ test mặc định (800x600, cỡ desktop) làm các trang cuộn dài hoặc
     // bottom sheet bị lệch tọa độ khi tap. Đặt cỡ gần điện thoại thật.
     final originalSize = tester.view.physicalSize;
@@ -63,6 +70,7 @@ class Harness {
       tester.view.devicePixelRatio = originalRatio;
     });
 
+    await loadAppFonts();
     SharedPreferences.setMockInitialValues({'app_locale': 'vi'});
     final prefs = await SharedPreferences.getInstance();
     await tester.pumpWidget(
@@ -78,6 +86,11 @@ class Harness {
           categoryRepositoryProvider.overrideWithValue(categories),
           notificationRepositoryProvider.overrideWithValue(notifications),
           inspectionRepositoryProvider.overrideWithValue(inspection),
+          // Đồng hồ mô phỏng gần như đứng yên và không có đối thủ ảo, để
+          // pumpAndSettle kết thúc và kết quả xác định.
+          simTickIntervalProvider.overrideWithValue(const Duration(days: 1)),
+          simulateRivalsProvider.overrideWithValue(false),
+          ...overrides,
         ],
         child: const App(),
       ),
@@ -105,4 +118,34 @@ Future<void> tapSellTab(WidgetTester tester) async {
     ),
   );
   await tester.pumpAndSettle();
+}
+
+/// Kho mô phỏng của app đang chạy trong [tester], để chuẩn bị hoặc kiểm tra
+/// trạng thái ngoài giao diện.
+ProviderContainer simContainer(WidgetTester tester) =>
+    ProviderScope.containerOf(tester.element(find.byType(MaterialApp)));
+
+var _fontsLoaded = false;
+
+/// Nạp font thật của app. Mặc định `flutter test` dùng font Ahem (mỗi ký tự là
+/// một ô vuông rộng 1em) nên bố cục và lỗi tràn chữ không phản ánh máy thật.
+Future<void> loadAppFonts() async {
+  if (_fontsLoaded) return;
+  Future<void> family(String name, List<String> files) async {
+    final loader = FontLoader(name);
+    for (final f in files) {
+      loader.addFont(rootBundle.load('assets/fonts/$f'));
+    }
+    await loader.load();
+  }
+
+  await family('BeVietnamPro', [
+    'BeVietnamPro-Regular.ttf',
+    'BeVietnamPro-Medium.ttf',
+    'BeVietnamPro-SemiBold.ttf',
+    'BeVietnamPro-Bold.ttf',
+  ]);
+  await family('Newsreader', ['Newsreader.ttf']);
+  await family('JetBrainsMono', ['JetBrainsMono.ttf']);
+  _fontsLoaded = true;
 }

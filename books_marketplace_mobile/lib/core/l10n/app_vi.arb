@@ -592,5 +592,609 @@
     }
   },
   "escrowNote": "Tiền được giữ trong ví Oldbook đến khi bạn xác nhận nhận hàng. Có 3 ngày để khiếu nại sau khi giao.",
-  "auctionListingNote": "Sách này bán theo hình thức đấu giá."
+  "auctionListingNote": "Sách này bán theo hình thức đấu giá.",
+  "toastOrderCancelled": "Đã hủy đơn, hoàn {amount}",
+  "@toastOrderCancelled": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastOrderCompleted": "Đơn hoàn tất · cảm ơn bạn!",
+  "toastComplaintOpened": "Đã mở khiếu nại · tiền bị khóa",
+  "toastOfferAccepted": "Đã nhận hoàn {amount}",
+  "@toastOfferAccepted": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastNoBooks": "Không có sách khả dụng trong giỏ",
+  "toastSellerShipped": "Người bán đã nhập mã vận đơn",
+  "toastDeliveryFailed": "Giao thất bại lần {n}",
+  "@toastDeliveryFailed": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "toastMovedToStorage": "Giao thất bại lần 5 · sách vào lưu kho",
+  "toastTopupOk": "Nạp thành công +{amount}",
+  "@toastTopupOk": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastWithdrawRequested": "Đã gửi yêu cầu rút {amount}",
+  "@toastWithdrawRequested": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastRated": "Đã đánh giá {n} sao",
+  "@toastRated": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "toastRegistered": "Đã đăng ký · giữ {amount}",
+  "@toastRegistered": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastUnregistered": "Đã hủy đăng ký, hoàn {amount}",
+  "@toastUnregistered": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastLeading": "Bạn đang dẫn đầu với {amount}",
+  "@toastLeading": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastBuyNowStarted": "Đã mua ngay · đếm ngược 30 phút bắt đầu",
+  "toastOutbid": "Bạn đã bị vượt giá ở \"{title}\" · {amount}",
+  "@toastOutbid": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastAuctionWon": "Bạn đã thắng \"{title}\" với giá {amount}",
+  "@toastAuctionWon": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "txnTopupVietQr": "Nạp tiền qua VietQR",
+  "txnHoldOrder": "Giữ tiền đơn {arg}",
+  "@txnHoldOrder": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnHoldOrders": "Giữ tiền {n} đơn hàng",
+  "@txnHoldOrders": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "txnHoldAuctionRegistration": "Đăng ký phiên \"{arg}\"",
+  "@txnHoldAuctionRegistration": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnHoldBid": "Trả giá \"{arg}\"",
+  "@txnHoldBid": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnHoldBuyNow": "Mua ngay \"{arg}\"",
+  "@txnHoldBuyNow": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnHoldRedelivery": "Phí giao lại {arg}",
+  "@txnHoldRedelivery": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnReleaseOrderCancelled": "Hoàn tiền hủy đơn {arg}",
+  "@txnReleaseOrderCancelled": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnReleaseAuctionUnregistered": "Hủy đăng ký \"{arg}\"",
+  "@txnReleaseAuctionUnregistered": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnReleaseAuctionDeposit": "Hoàn cọc phiên \"{arg}\"",
+  "@txnReleaseAuctionDeposit": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnPayoutSale": "Nhận tiền bán \"{arg}\"",
+  "@txnPayoutSale": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnCaptureOrder": "Thanh toán đơn {arg} (từ tiền giữ)",
+  "@txnCaptureOrder": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnRefundAgreement": "Hoàn tiền thỏa thuận {arg}",
+  "@txnRefundAgreement": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnRefundVerdict": "Hoàn tiền theo phán quyết {arg}",
+  "@txnRefundVerdict": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnWithdrawRequest": "Yêu cầu rút về Vietcombank · chờ duyệt",
+  "txnTypeTopup": "Nạp tiền",
+  "txnTypeHold": "Giữ tiền",
+  "txnTypeRelease": "Nhả tiền",
+  "txnTypePayout": "Nhận tiền",
+  "txnTypeRefund": "Hoàn tiền",
+  "txnTypeCapture": "Chốt thanh toán",
+  "txnTypeWithdraw": "Rút tiền",
+  "orderStatusPaidAwaitingShipment": "Chờ người bán gửi",
+  "orderStatusShipped": "Đang vận chuyển",
+  "orderStatusDelivered": "Đã giao",
+  "orderStatusCompleted": "Hoàn tất",
+  "orderStatusCancelled": "Đã hủy",
+  "orderStatusRefunded": "Đã hoàn tiền",
+  "orderStatusPartiallyRefunded": "Hoàn một phần",
+  "orderStatusDisputed": "Đang khiếu nại",
+  "orderStatusReadyToShip": "Chờ kho xuất",
+  "orderStatusInDelivery": "Đang giao",
+  "orderStatusInStorage": "Lưu kho",
+  "orderStatusPickedUp": "Đã nhận tại kho",
+  "orderKindSale": "Bán thường",
+  "orderKindAuction": "Đấu giá",
+  "ordersTitle": "Đơn mua",
+  "orderTitle": "Đơn {arg}",
+  "@orderTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "ordersEmpty": "Bạn chưa có đơn mua nào.",
+  "noteShipBy": "Người bán gửi trước {date}",
+  "@noteShipBy": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noteComplaintLeft": "Còn {time} để khiếu nại",
+  "@noteComplaintLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "noteDeliveryAttempt": "Lần giao {n}/5 · {carrier}",
+  "@noteDeliveryAttempt": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "carrier": {
+        "type": "String"
+      }
+    }
+  },
+  "noteStorage": "Lưu kho {days} ngày · 5.000 đ/ngày trừ vào cọc",
+  "@noteStorage": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "notePacking": "Kho đang đóng gói",
+  "noteFundsLocked": "Tiền đang bị khóa",
+  "headPaidAwaitingShipment": "Chờ người bán gửi hàng",
+  "headShipped": "Sách đang trên đường đến",
+  "headDelivered": "Bạn đã nhận được sách?",
+  "headCompleted": "Đơn đã hoàn tất",
+  "headDisputed": "Khiếu nại đang được xử lý",
+  "headCancelled": "Đơn đã hủy",
+  "headRefunded": "Đã hoàn tiền",
+  "headPartiallyRefunded": "Đã hoàn tiền một phần",
+  "headReadyToShip": "Kho đang chuẩn bị giao",
+  "headInDelivery": "Đang giao sách đấu giá",
+  "headInStorage": "Sách đang được lưu kho",
+  "headPickedUp": "Đã nhận tại kho",
+  "detailNotePaid": "Người bán phải gửi trước {date}. Quá hạn đơn tự hủy và hoàn 100%. Bạn có thể hủy miễn phí đến khi người bán gửi.",
+  "@detailNotePaid": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "detailNoteShipped": "Bấm \"Đã nhận được hàng\" khi sách đến tay để bắt đầu 3 ngày kiểm tra.",
+  "detailNoteDelivered": "Bạn còn {time} để khiếu nại. Hết hạn, đơn tự hoàn tất và tiền chuyển cho người bán.",
+  "@detailNoteDelivered": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "detailNoteCompleted": "Người bán đã nhận tiền sau khi trừ phí.",
+  "detailNoteDisputed": "Tiền bị khóa đến khi có thỏa thuận hoặc phán quyết.",
+  "detailNoteCancelled": "Toàn bộ tiền giữ đã được nhả về ví.",
+  "detailNoteRefunded": "Tiền hoàn đã vào ví.",
+  "detailNotePartiallyRefunded": "Phần hoàn đã vào ví, phần còn lại chuyển người bán.",
+  "detailNoteReadyToShip": "Phí ship {amount} đã được giữ. Kho chụp ảnh đóng gói trước khi giao.",
+  "@detailNoteReadyToShip": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "detailNoteInDelivery": "Lần giao {n}/5. Sau 5 lần thất bại, sách vào lưu kho (5.000 đ/ngày, tối đa 30 ngày).",
+  "@detailNoteInDelivery": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "detailNoteInStorage": "Giao thất bại 5 lần. Phí lưu kho trừ vào cọc. Chọn nhận tại kho hoặc giao lại.",
+  "stepSaleOrdered": "Đã đặt · tiền được giữ",
+  "stepSaleShipped": "Người bán đã gửi",
+  "stepDelivered": "Đã giao",
+  "stepSaleCompleted": "Hoàn tất · tiền chuyển cho người bán",
+  "stepAuctionWon": "Thắng phiên · kho nhận lệnh xuất",
+  "stepAuctionInDelivery": "Đang giao",
+  "stepAuctionReceived": "Đã nhận hàng",
+  "stepAuctionCompleted": "Hoàn tất · hoàn cọc",
+  "stepCancelled": "Đã hủy · tiền đã hoàn về ví",
+  "stepNext": "Tiếp theo",
+  "moneyBookPrice": "Tiền sách",
+  "moneyWinPrice": "Giá thắng",
+  "moneyShipping": "Phí ship",
+  "moneyTotal": "Tổng",
+  "moneyNoteAuction": "Giá thắng đã được chốt vào tài khoản trung gian. Cọc hoàn khi bạn nhận sách.",
+  "moneyNoteSettled": "Đã quyết toán.",
+  "moneyNoteHeld": "Đang giữ trong ví đến khi đơn hoàn tất.",
+  "shipNoTracking": "Chưa có mã vận đơn",
+  "shipFromWarehouse": "Giao từ kho Oldbook",
+  "reviewSeller": "Đánh giá người bán",
+  "reviewNoteNew": "Đánh giá trong 14 ngày sau khi hoàn tất.",
+  "reviewNoteEdit": "Bạn có thể sửa đánh giá một lần trong 7 ngày.",
+  "starLabel": "{n} sao",
+  "@starLabel": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "actSimSellerShip": "Mô phỏng: người bán gửi hàng",
+  "actCancelOrder": "Hủy đơn · hoàn {amount}",
+  "@actCancelOrder": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "actReceived": "Đã nhận được hàng",
+  "actSimWarehouseShip": "Mô phỏng: kho xuất hàng",
+  "actSimDeliverOk": "Mô phỏng: giao thành công",
+  "actSimDeliverFail": "Mô phỏng: giao thất bại",
+  "actPickUp": "Đến nhận tại kho",
+  "actRedeliver": "Giao lại · thêm {amount}",
+  "@actRedeliver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "actCompleteOrder": "Hài lòng, hoàn tất đơn",
+  "actComplaint": "Khiếu nại",
+  "actSimSellerOffer": "Mô phỏng: người bán đề xuất hoàn 50%",
+  "actAcceptOffer": "Chấp nhận hoàn {amount}",
+  "@actAcceptOffer": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "actEscalate": "Từ chối, chuyển Oldbook phân xử",
+  "actSimAdmin": "Mô phỏng: admin phán hoàn 100%",
+  "actNone": "Không có thao tác nào cần làm.",
+  "complaintCardTitle": "Khiếu nại · {status}",
+  "@complaintCardTitle": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "complaintStatusOpen": "Chờ người bán phản hồi",
+  "complaintStatusSellerResponded": "Người bán đã đề xuất",
+  "complaintStatusEscalated": "Oldbook đang phân xử",
+  "complaintStatusAgreed": "Đã thỏa thuận",
+  "complaintStatusResolved": "Đã phán quyết",
+  "complaintTextOpenSale": "Người bán có 2 ngày để phản hồi, quá hạn sẽ chuyển Oldbook phân xử.",
+  "complaintTextOpenAuction": "Khiếu nại đấu giá được chuyển thẳng cho Oldbook.",
+  "complaintTextSellerResponded": "Người bán đề xuất hoàn {amount}. Bạn đồng ý hoặc chuyển Oldbook phân xử.",
+  "@complaintTextSellerResponded": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "complaintTextEscalatedSale": "Admin xem bằng chứng hai bên và ra phán quyết.",
+  "complaintTextEscalatedAuction": "Admin xem bằng chứng hai bên, ảnh nhập/xuất kho và ra phán quyết.",
+  "complaintTextAgreed": "Đã hoàn {amount} theo thỏa thuận.",
+  "@complaintTextAgreed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "complaintTextResolved": "Hoàn toàn bộ theo phán quyết.",
+  "complaintSheetTitle": "Mở khiếu nại",
+  "complaintSheetNote": "Tiền sẽ bị khóa đến khi khiếu nại được giải quyết.",
+  "complaintReasonNotAsDescribed": "Không đúng mô tả",
+  "complaintReasonDamaged": "Sách bị hư hỏng",
+  "complaintReasonWrongItem": "Giao sai sách",
+  "complaintReasonOther": "Lý do khác",
+  "complaintDescribeHint": "Mô tả vấn đề",
+  "complaintAddEvidence": "+ Thêm ảnh bằng chứng ({n}/10)",
+  "@complaintAddEvidence": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "complaintSubmit": "Gửi khiếu nại",
+  "complaintNeedReasonAndPhoto": "Chọn lý do và thêm ít nhất 1 ảnh",
+  "cartEmpty": "Giỏ hàng trống.",
+  "cartSeller": "Người bán: {name}",
+  "@cartSeller": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cartUnavailable": "Không còn khả dụng · đã bán",
+  "cartRemove": "Xóa",
+  "cartShipTo": "Giao đến",
+  "cartSubtotal": "Tiền sách ({n} cuốn)",
+  "@cartSubtotal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "cartShippingFee": "Phí ship (mỗi đơn {amount})",
+  "@cartShippingFee": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "cartBalance": "Số dư ví khả dụng",
+  "cartNote": "Mỗi cuốn tạo một đơn riêng với người bán. Bạn có thể hủy đơn miễn phí khi người bán chưa gửi hàng.",
+  "cartPayTotal": "Tổng thanh toán",
+  "cartPlaceOrder": "Đặt hàng · thanh toán bằng ví",
+  "cartInsufficient": "Số dư không đủ · nạp thêm",
+  "cartNoAvailable": "Không có sách khả dụng",
+  "insufficientTitle": "Số dư không đủ",
+  "insufficientBody": "Cần thêm {need} để tiếp tục. Số dư khả dụng hiện tại: {avail}.",
+  "@insufficientBody": {
+    "placeholders": {
+      "need": {
+        "type": "String"
+      },
+      "avail": {
+        "type": "String"
+      }
+    }
+  },
+  "insufficientTopup": "Nạp {amount}",
+  "@insufficientTopup": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "sheetClose": "Đóng",
+  "sheetLater": "Để sau",
+  "orderPlacedTitle": "Đặt hàng thành công",
+  "orderPlacedBody": "Đã giữ {amount} từ ví cho {n} đơn. Người bán có 2 ngày làm việc để gửi hàng, nếu không đơn tự hủy và hoàn tiền.",
+  "@orderPlacedBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "orderPlacedView": "Xem đơn hàng",
+  "orderPlacedKeepShopping": "Tiếp tục mua",
+  "walletTitle": "Ví Oldbook",
+  "walletAvailable": "Số dư khả dụng",
+  "walletHeld": "Đang giữ",
+  "walletTotal": "Tổng",
+  "walletTopup": "Nạp tiền",
+  "walletWithdraw": "Rút tiền",
+  "walletNote": "Tiền đang giữ dùng cho đơn hàng chưa hoàn tất, tiền cọc đấu giá và lượt trả giá đang dẫn đầu. Mọi giao dịch đi qua ví, không chuyển trực tiếp giữa người dùng.",
+  "walletHistory": "Lịch sử giao dịch",
+  "walletNoTransactions": "Chưa có giao dịch.",
+  "walletPayoutAccount": "Tài khoản nhận tiền",
+  "topupSheetTitle": "Nạp tiền vào ví",
+  "topupSheetNote": "Thanh toán qua VietQR. Yêu cầu hết hạn sau 30 phút nếu chưa thanh toán.",
+  "topupCreateCode": "Tạo mã thanh toán · {amount}",
+  "@topupCreateCode": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "topupScanTitle": "Quét mã để thanh toán",
+  "topupQrLabel": "mã VietQR",
+  "topupTransferContent": "Nội dung: OLDBOOK NAP 7K2Q9 · hết hạn sau 30:00",
+  "topupConfirmNote": "Số dư chỉ được cộng khi cổng thanh toán xác nhận.",
+  "topupSimConfirm": "Mô phỏng: cổng thanh toán xác nhận",
+  "withdrawSheetTitle": "Rút tiền",
+  "withdrawAmountHint": "Số tiền (tối thiểu 50.000 đ)",
+  "withdrawHintAvailable": "Khả dụng: {amount}",
+  "@withdrawHintAvailable": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawHintMin": "Tối thiểu 50.000 đ",
+  "withdrawHintOver": "Vượt số dư khả dụng ({amount})",
+  "@withdrawHintOver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawHintHold": "Sẽ giữ {amount} chờ duyệt",
+  "@withdrawHintHold": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawNote": "Số tiền được giữ ngay và chuyển khoản sau khi Oldbook duyệt. Tên chủ tài khoản phải trùng họ tên hồ sơ.",
+  "withdrawSubmit": "Gửi yêu cầu rút",
+  "remainingDaysHours": "{days} ngày {hours} giờ",
+  "@remainingDaysHours": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "agoNow": "vừa xong",
+  "agoMinutes": "{n} phút trước",
+  "@agoMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "agoHours": "{n} giờ trước",
+  "@agoHours": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "agoDays": "{n} ngày trước",
+  "@agoDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "meMyOrders": "Đơn mua",
+  "meMyOrdersSub": "Theo dõi giao hàng, xác nhận nhận hàng, khiếu nại"
 }

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/theme/theme_context.dart';
 import '../features/auth/application/auth_controller.dart';
+import '../features/cart/presentation/cart_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/auth/presentation/register_screen.dart';
 import '../features/listings/presentation/browse/book_detail_screen.dart';
@@ -12,10 +13,13 @@ import '../features/listings/presentation/seller/listing_detail_screen.dart';
 import '../features/listings/presentation/seller/my_listings_screen.dart';
 import '../features/listings/presentation/seller/wizard/listing_wizard_screen.dart';
 import '../features/notifications/presentation/notifications_screen.dart';
+import '../features/orders/presentation/order_detail_screen.dart';
+import '../features/orders/presentation/orders_screen.dart';
 import '../features/profile/presentation/change_avatar_screen.dart';
 import '../features/profile/presentation/change_password_screen.dart';
 import '../features/profile/presentation/edit_profile_screen.dart';
 import '../features/profile/presentation/profile_screen.dart';
+import '../features/wallet/presentation/wallet_screen.dart';
 import 'app_shell.dart';
 import 'coming_soon_screen.dart';
 
@@ -94,12 +98,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/wallet',
-                pageBuilder: (context, _) => _tab(
-                  ComingSoonScreen(
-                    title: context.l10n.navWallet,
-                    icon: Icons.account_balance_wallet_outlined,
-                  ),
-                ),
+                pageBuilder: (_, _) => _tab(const WalletScreen()),
               ),
             ],
           ),
@@ -110,6 +109,20 @@ final routerProvider = Provider<GoRouter>((ref) {
                 pageBuilder: (_, _) => _tab(const ProfileScreen()),
                 routes: [
                   // Mở phủ lên thanh điều hướng dưới.
+                  GoRoute(
+                    path: 'orders',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const OrdersScreen(),
+                    routes: [
+                      GoRoute(
+                        path: ':id',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, state) => OrderDetailScreen(
+                          orderId: state.pathParameters['id']!,
+                        ),
+                      ),
+                    ],
+                  ),
                   GoRoute(
                     path: 'edit',
                     parentNavigatorKey: rootKey,
@@ -137,14 +150,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         parentNavigatorKey: rootKey,
         builder: (_, _) => const NotificationsScreen(),
       ),
-      // Tạm là màn "Sắp có" tới lát 2 (Giỏ, Thanh toán, Đơn hàng).
       GoRoute(
         path: '/cart',
         parentNavigatorKey: rootKey,
-        builder: (context, _) => ComingSoonScreen(
-          title: context.l10n.cartTitle,
-          icon: Icons.shopping_bag_outlined,
-        ),
+        builder: (_, _) => const CartScreen(),
       ),
       // `/listings/new` phải đứng trước `:id`. Đường dẫn giữ nguyên `/listings`
       // tới lát 5 (restyle wizard), khi đó chuyển sang `/sell/...`.

@@ -26,6 +26,15 @@ class CartNotifier extends Notifier<List<CartItem>> {
     state = _repo.items;
   }
 
+  /// Bỏ các món đã đặt mua khỏi giỏ.
+  void removeAll(Iterable<String> listingIds) {
+    final ids = listingIds.toSet();
+    for (final id in ids) {
+      _repo.remove(id);
+    }
+    state = _repo.items;
+  }
+
   void clear() {
     _repo.clear();
     state = _repo.items;
