@@ -1880,4 +1880,327 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get meMyOrdersSub =>
       'Theo dõi giao hàng, xác nhận nhận hàng, khiếu nại';
+
+  @override
+  String get aucTitle => 'Đấu giá';
+
+  @override
+  String get aucSubtitle =>
+      'Sách đã được kiểm tra tại kho Oldbook trước khi lên sàn';
+
+  @override
+  String get aucTabLive => 'Đang diễn ra';
+
+  @override
+  String get aucTabRegister => 'Đăng ký';
+
+  @override
+  String get aucTabUpcoming => 'Sắp tới';
+
+  @override
+  String get aucTabEnded => 'Đã xong';
+
+  @override
+  String get aucEmpty => 'Chưa có phiên nào ở trạng thái này.';
+
+  @override
+  String get aucStatusLive => 'Đang diễn ra';
+
+  @override
+  String get aucStatusBuyNow => 'Đếm ngược mua ngay';
+
+  @override
+  String get aucStatusRegistration => 'Đang mở đăng ký';
+
+  @override
+  String get aucStatusConfirmed => 'Sắp diễn ra';
+
+  @override
+  String get aucStatusEnded => 'Đã kết thúc';
+
+  @override
+  String get aucStatusNoBid => 'Không có lượt';
+
+  @override
+  String get aucRegisteredTag => 'Đã đăng ký';
+
+  @override
+  String aucParticipants(int n) {
+    return '$n người tham gia';
+  }
+
+  @override
+  String aucParticipantsMin(int n, String min) {
+    return '$n/$min người tối thiểu';
+  }
+
+  @override
+  String get aucPriceStarting => 'Giá khởi điểm';
+
+  @override
+  String get aucPriceCurrent => 'Giá hiện tại';
+
+  @override
+  String get aucPriceWinning => 'Giá thắng';
+
+  @override
+  String get aucTimerEndsIn => 'Kết thúc sau';
+
+  @override
+  String get aucTimerCountdown => 'Đếm ngược';
+
+  @override
+  String get aucTimerRegCloses => 'Đóng đăng ký sau';
+
+  @override
+  String get aucTimerStartsIn => 'Bắt đầu sau';
+
+  @override
+  String get aucTimerEndedAt => 'Kết thúc lúc';
+
+  @override
+  String get aucSubLive =>
+      'Lượt trả giá trong 2 phút cuối sẽ gia hạn phiên thêm 2 phút.';
+
+  @override
+  String aucSubCountdown(String time) {
+    return 'Đã có người mua ngay. Mỗi lượt cao hơn đặt lại 30 phút · kết thúc muộn nhất $time.';
+  }
+
+  @override
+  String aucSubRegistration(String time, String min) {
+    return 'Phiên bắt đầu $time · cần tối thiểu $min người.';
+  }
+
+  @override
+  String aucSubConfirmed(String time) {
+    return 'Đã đủ người · bắt đầu $time.';
+  }
+
+  @override
+  String get aucLeaderMe => 'Bạn đang dẫn đầu';
+
+  @override
+  String aucLeaderOther(String name) {
+    return 'Dẫn đầu: $name';
+  }
+
+  @override
+  String get aucNoBids => 'Chưa có lượt trả giá';
+
+  @override
+  String get aucExtendedBanner =>
+      'Phiên vừa được gia hạn thêm 2 phút (chống bắn tỉa)';
+
+  @override
+  String get aucStatStart => 'Giá khởi điểm';
+
+  @override
+  String get aucStatStep => 'Bước nhảy';
+
+  @override
+  String get aucStatBuyNow => 'Giá mua ngay';
+
+  @override
+  String get aucStatFeeDeposit => 'Phí tham gia · Cọc';
+
+  @override
+  String get aucNone => 'Không có';
+
+  @override
+  String get aucBidHistory => 'Lịch sử trả giá';
+
+  @override
+  String aucBidCount(int n) {
+    return '$n lượt';
+  }
+
+  @override
+  String get aucBidYou => 'Bạn';
+
+  @override
+  String get aucNoBidsYet =>
+      'Chưa có lượt trả giá. Lượt đầu tiên phải từ giá khởi điểm.';
+
+  @override
+  String aucSellerLine(String seller, String part) {
+    return 'Người bán: $seller · $part';
+  }
+
+  @override
+  String get aucHoldLabel => 'Giữ phí tham gia + cọc';
+
+  @override
+  String get aucRegister => 'Đăng ký tham gia';
+
+  @override
+  String get aucRegisteredTitle => 'Bạn đã đăng ký';
+
+  @override
+  String aucRegisteredSub(String amount) {
+    return 'Đang giữ $amount · hủy được trước khi đóng';
+  }
+
+  @override
+  String get aucUnregister => 'Hủy đăng ký';
+
+  @override
+  String get aucFilledTitle => 'Phiên đã đủ người';
+
+  @override
+  String aucFilledSub(String amount) {
+    return 'Phí tham gia đã thu, cọc $amount tiếp tục được giữ. Chúng tôi sẽ nhắc bạn 1 giờ trước khi bắt đầu.';
+  }
+
+  @override
+  String get aucWatchTitle => 'Bạn đang theo dõi phiên này';
+
+  @override
+  String get aucWatchSub =>
+      'Đăng ký đã đóng 24 giờ trước giờ bắt đầu. Chỉ người đã đăng ký mới được trả giá.';
+
+  @override
+  String get aucLeadingTitle => 'Bạn đang dẫn đầu';
+
+  @override
+  String aucLeadingSub(String amount) {
+    return '$amount đang được giữ trong ví · sẽ nhả nếu bị vượt giá';
+  }
+
+  @override
+  String aucMinimum(String amount) {
+    return 'Tối thiểu $amount';
+  }
+
+  @override
+  String get aucBid => 'Trả giá';
+
+  @override
+  String aucBuyNowButton(String amount) {
+    return 'Mua ngay $amount';
+  }
+
+  @override
+  String get aucEndedWon => 'Bạn đã thắng phiên này';
+
+  @override
+  String get aucEndedLost => 'Bạn không thắng phiên này';
+
+  @override
+  String get aucEndedGeneric => 'Phiên đã kết thúc';
+
+  @override
+  String aucEndedWonText(String amount) {
+    return 'Đơn giao hàng đã được tạo trong Đơn mua. Cọc $amount hoàn khi bạn nhận sách.';
+  }
+
+  @override
+  String aucEndedLostText(String amount) {
+    return 'Cọc $amount đã được nhả về ví.';
+  }
+
+  @override
+  String aucEndedOtherText(String amount) {
+    return 'Giá thắng $amount.';
+  }
+
+  @override
+  String get aucNotFound => 'Không tìm thấy phiên này.';
+
+  @override
+  String get aucErrEnded => 'Phiên đã kết thúc, không thể trả giá.';
+
+  @override
+  String get aucErrTooLow => 'Giá thấp hơn mức tối thiểu hiện tại.';
+
+  @override
+  String get aucErrState => 'Không thể thực hiện ở trạng thái hiện tại.';
+
+  @override
+  String get regSheetTitle => 'Đăng ký tham gia phiên';
+
+  @override
+  String get regFee => 'Phí tham gia (2% giá khởi điểm, 10.000–100.000 đ)';
+
+  @override
+  String get regDeposit => 'Tiền cọc (10% giá khởi điểm)';
+
+  @override
+  String get regHold => 'Tạm giữ từ ví';
+
+  @override
+  String get regBalance => 'Số dư khả dụng';
+
+  @override
+  String get regNote1 =>
+      '• Phí tham gia chỉ thu khi phiên đủ 3 người; không đủ người sẽ hoàn toàn bộ.';
+
+  @override
+  String get regNote2 =>
+      '• Cọc hoàn khi phiên kết thúc (người thua) hoặc khi bạn nhận hàng (người thắng). Phí lưu kho 5.000 đ/ngày trừ vào cọc nếu không nhận hàng.';
+
+  @override
+  String regNote3(String time) {
+    return '• Hủy đăng ký miễn phí trước $time.';
+  }
+
+  @override
+  String regConfirm(String amount) {
+    return 'Xác nhận · giữ $amount';
+  }
+
+  @override
+  String get regInsufficient => 'Số dư không đủ · nạp thêm';
+
+  @override
+  String buyNowTitle(String amount) {
+    return 'Mua ngay với giá $amount?';
+  }
+
+  @override
+  String buyNowNote1(String amount) {
+    return '• $amount được giữ từ ví và bạn trở thành người dẫn đầu.';
+  }
+
+  @override
+  String get buyNowNote2 =>
+      '• Phiên chuyển sang đếm ngược 30 phút. Mỗi lượt trả giá cao hơn sẽ đặt lại 30 phút.';
+
+  @override
+  String get buyNowNote3 =>
+      '• Phiên kết thúc chậm nhất 24 giờ sau khi bấm mua ngay.';
+
+  @override
+  String get buyNowConfirm => 'Xác nhận mua ngay';
+
+  @override
+  String get myAuctionsTitle => 'Phiên tôi tham gia';
+
+  @override
+  String get myAuctionsEmpty => 'Bạn chưa đăng ký phiên nào.';
+
+  @override
+  String myAucWon(String amount) {
+    return 'Đã thắng · $amount';
+  }
+
+  @override
+  String myAucLeading(String amount) {
+    return 'Đang dẫn đầu · $amount';
+  }
+
+  @override
+  String get myAucLost => 'Không thắng';
+
+  @override
+  String get myAucOutbid => 'Đã bị vượt giá';
+
+  @override
+  String get myAucRegistered => 'Đã đăng ký';
+
+  @override
+  String get homeLiveAuctions => 'Đang đấu giá';
+
+  @override
+  String get homeSeeAll => 'Xem tất cả';
 }

@@ -116,9 +116,8 @@ void main() {
     simContainer(tester).read(simProvider.notifier).withdraw(1150000);
     await tester.pump(); // thông báo "đã gửi yêu cầu rút" xuất hiện
     // Tắt nó đi để không che nút đặt hàng.
-    ScaffoldMessenger.of(
-      tester.element(find.byType(Scaffold).first),
-    ).clearSnackBars();
+    ScaffoldMessenger.of(tester.element(find.byType(Scaffold).first))
+        .clearSnackBars();
     await tester.pumpAndSettle();
     expect(find.text('Số dư không đủ · nạp thêm'), findsOneWidget);
 

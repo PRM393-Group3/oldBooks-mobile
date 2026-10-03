@@ -1196,5 +1196,258 @@
     }
   },
   "meMyOrders": "My orders",
-  "meMyOrdersSub": "Track deliveries, confirm receipt, file complaints"
+  "meMyOrdersSub": "Track deliveries, confirm receipt, file complaints",
+  "aucTitle": "Auctions",
+  "aucSubtitle": "Books are checked at the Oldbook warehouse before listing",
+  "aucTabLive": "Live",
+  "aucTabRegister": "Register",
+  "aucTabUpcoming": "Upcoming",
+  "aucTabEnded": "Ended",
+  "aucEmpty": "No auctions in this state yet.",
+  "aucStatusLive": "Live",
+  "aucStatusBuyNow": "Buy-now countdown",
+  "aucStatusRegistration": "Registration open",
+  "aucStatusConfirmed": "Starting soon",
+  "aucStatusEnded": "Ended",
+  "aucStatusNoBid": "No bids",
+  "aucRegisteredTag": "Registered",
+  "aucParticipants": "{n} participants",
+  "@aucParticipants": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "aucParticipantsMin": "{n}/{min} minimum players",
+  "@aucParticipantsMin": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "aucPriceStarting": "Starting price",
+  "aucPriceCurrent": "Current price",
+  "aucPriceWinning": "Winning price",
+  "aucTimerEndsIn": "Ends in",
+  "aucTimerCountdown": "Countdown",
+  "aucTimerRegCloses": "Registration closes in",
+  "aucTimerStartsIn": "Starts in",
+  "aucTimerEndedAt": "Ended at",
+  "aucSubLive": "A bid in the last 2 minutes extends the auction by 2 minutes.",
+  "aucSubCountdown": "Someone bought now. Each higher bid resets 30 minutes · ends by {time} at the latest.",
+  "@aucSubCountdown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aucSubRegistration": "Starts {time} · needs at least {min} players.",
+  "@aucSubRegistration": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "aucSubConfirmed": "Enough players · starts {time}.",
+  "@aucSubConfirmed": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aucLeaderMe": "You are leading",
+  "aucLeaderOther": "Leading: {name}",
+  "@aucLeaderOther": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "aucNoBids": "No bids yet",
+  "aucExtendedBanner": "The auction was just extended by 2 minutes (anti-sniping)",
+  "aucStatStart": "Starting price",
+  "aucStatStep": "Bid step",
+  "aucStatBuyNow": "Buy-now price",
+  "aucStatFeeDeposit": "Entry fee · Deposit",
+  "aucNone": "None",
+  "aucBidHistory": "Bid history",
+  "aucBidCount": "{n} bids",
+  "@aucBidCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "aucBidYou": "You",
+  "aucNoBidsYet": "No bids yet. The first bid must be at least the starting price.",
+  "aucSellerLine": "Seller: {seller} · {part}",
+  "@aucSellerLine": {
+    "placeholders": {
+      "seller": {
+        "type": "String"
+      },
+      "part": {
+        "type": "String"
+      }
+    }
+  },
+  "aucHoldLabel": "Entry fee + deposit held",
+  "aucRegister": "Register",
+  "aucRegisteredTitle": "You are registered",
+  "aucRegisteredSub": "Holding {amount} · you can cancel before it closes",
+  "@aucRegisteredSub": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucUnregister": "Cancel registration",
+  "aucFilledTitle": "The auction is full",
+  "aucFilledSub": "The entry fee was charged and the {amount} deposit stays held. We will remind you 1 hour before it starts.",
+  "@aucFilledSub": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucWatchTitle": "You are watching this auction",
+  "aucWatchSub": "Registration closed 24 hours before the start. Only registered players can bid.",
+  "aucLeadingTitle": "You are leading",
+  "aucLeadingSub": "{amount} is held in your wallet · released if you are outbid",
+  "@aucLeadingSub": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucMinimum": "Minimum {amount}",
+  "@aucMinimum": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucBid": "Place bid",
+  "aucBuyNowButton": "Buy now {amount}",
+  "@aucBuyNowButton": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucEndedWon": "You won this auction",
+  "aucEndedLost": "You did not win this auction",
+  "aucEndedGeneric": "The auction has ended",
+  "aucEndedWonText": "A delivery order was created in My orders. Your {amount} deposit is returned when you receive the book.",
+  "@aucEndedWonText": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucEndedLostText": "Your {amount} deposit was released to your wallet.",
+  "@aucEndedLostText": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucEndedOtherText": "Winning price {amount}.",
+  "@aucEndedOtherText": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucNotFound": "Auction not found.",
+  "aucErrEnded": "The auction has ended, bidding is closed.",
+  "aucErrTooLow": "Your bid is below the current minimum.",
+  "aucErrState": "Not possible in the current state.",
+  "regSheetTitle": "Register for the auction",
+  "regFee": "Entry fee (2% of start, 10,000–100,000 ₫)",
+  "regDeposit": "Deposit (10% of start)",
+  "regHold": "Held from wallet",
+  "regBalance": "Available balance",
+  "regNote1": "• The entry fee is charged only when 3 players join; otherwise it is fully refunded.",
+  "regNote2": "• The deposit is returned when the auction ends (losers) or when you receive the book (winner). A 5,000 ₫/day storage fee is deducted if you do not collect it.",
+  "regNote3": "• Cancel for free before {time}.",
+  "@regNote3": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "regConfirm": "Confirm · hold {amount}",
+  "@regConfirm": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "regInsufficient": "Not enough balance · top up",
+  "buyNowTitle": "Buy now for {amount}?",
+  "@buyNowTitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "buyNowNote1": "• {amount} is held from your wallet and you become the leader.",
+  "@buyNowNote1": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "buyNowNote2": "• The auction switches to a 30-minute countdown. Each higher bid resets it to 30 minutes.",
+  "buyNowNote3": "• The auction ends within 24 hours of buying now.",
+  "buyNowConfirm": "Confirm buy now",
+  "myAuctionsTitle": "My auctions",
+  "myAuctionsEmpty": "You have not registered for any auction.",
+  "myAucWon": "Won · {amount}",
+  "@myAucWon": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "myAucLeading": "Leading · {amount}",
+  "@myAucLeading": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "myAucLost": "Did not win",
+  "myAucOutbid": "Outbid",
+  "myAucRegistered": "Registered",
+  "homeLiveAuctions": "Live auctions",
+  "homeSeeAll": "See all"
 }

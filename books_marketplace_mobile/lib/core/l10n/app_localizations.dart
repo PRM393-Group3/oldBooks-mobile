@@ -3397,6 +3397,546 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Theo dõi giao hàng, xác nhận nhận hàng, khiếu nại'**
   String get meMyOrdersSub;
+
+  /// No description provided for @aucTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đấu giá'**
+  String get aucTitle;
+
+  /// No description provided for @aucSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sách đã được kiểm tra tại kho Oldbook trước khi lên sàn'**
+  String get aucSubtitle;
+
+  /// No description provided for @aucTabLive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang diễn ra'**
+  String get aucTabLive;
+
+  /// No description provided for @aucTabRegister.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký'**
+  String get aucTabRegister;
+
+  /// No description provided for @aucTabUpcoming.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sắp tới'**
+  String get aucTabUpcoming;
+
+  /// No description provided for @aucTabEnded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã xong'**
+  String get aucTabEnded;
+
+  /// No description provided for @aucEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có phiên nào ở trạng thái này.'**
+  String get aucEmpty;
+
+  /// No description provided for @aucStatusLive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang diễn ra'**
+  String get aucStatusLive;
+
+  /// No description provided for @aucStatusBuyNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đếm ngược mua ngay'**
+  String get aucStatusBuyNow;
+
+  /// No description provided for @aucStatusRegistration.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang mở đăng ký'**
+  String get aucStatusRegistration;
+
+  /// No description provided for @aucStatusConfirmed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sắp diễn ra'**
+  String get aucStatusConfirmed;
+
+  /// No description provided for @aucStatusEnded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã kết thúc'**
+  String get aucStatusEnded;
+
+  /// No description provided for @aucStatusNoBid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có lượt'**
+  String get aucStatusNoBid;
+
+  /// No description provided for @aucRegisteredTag.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đăng ký'**
+  String get aucRegisteredTag;
+
+  /// No description provided for @aucParticipants.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} người tham gia'**
+  String aucParticipants(int n);
+
+  /// No description provided for @aucParticipantsMin.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n}/{min} người tối thiểu'**
+  String aucParticipantsMin(int n, String min);
+
+  /// No description provided for @aucPriceStarting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá khởi điểm'**
+  String get aucPriceStarting;
+
+  /// No description provided for @aucPriceCurrent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá hiện tại'**
+  String get aucPriceCurrent;
+
+  /// No description provided for @aucPriceWinning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá thắng'**
+  String get aucPriceWinning;
+
+  /// No description provided for @aucTimerEndsIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết thúc sau'**
+  String get aucTimerEndsIn;
+
+  /// No description provided for @aucTimerCountdown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đếm ngược'**
+  String get aucTimerCountdown;
+
+  /// No description provided for @aucTimerRegCloses.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng đăng ký sau'**
+  String get aucTimerRegCloses;
+
+  /// No description provided for @aucTimerStartsIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu sau'**
+  String get aucTimerStartsIn;
+
+  /// No description provided for @aucTimerEndedAt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết thúc lúc'**
+  String get aucTimerEndedAt;
+
+  /// No description provided for @aucSubLive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lượt trả giá trong 2 phút cuối sẽ gia hạn phiên thêm 2 phút.'**
+  String get aucSubLive;
+
+  /// No description provided for @aucSubCountdown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã có người mua ngay. Mỗi lượt cao hơn đặt lại 30 phút · kết thúc muộn nhất {time}.'**
+  String aucSubCountdown(String time);
+
+  /// No description provided for @aucSubRegistration.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên bắt đầu {time} · cần tối thiểu {min} người.'**
+  String aucSubRegistration(String time, String min);
+
+  /// No description provided for @aucSubConfirmed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đủ người · bắt đầu {time}.'**
+  String aucSubConfirmed(String time);
+
+  /// No description provided for @aucLeaderMe.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang dẫn đầu'**
+  String get aucLeaderMe;
+
+  /// No description provided for @aucLeaderOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dẫn đầu: {name}'**
+  String aucLeaderOther(String name);
+
+  /// No description provided for @aucNoBids.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có lượt trả giá'**
+  String get aucNoBids;
+
+  /// No description provided for @aucExtendedBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên vừa được gia hạn thêm 2 phút (chống bắn tỉa)'**
+  String get aucExtendedBanner;
+
+  /// No description provided for @aucStatStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá khởi điểm'**
+  String get aucStatStart;
+
+  /// No description provided for @aucStatStep.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bước nhảy'**
+  String get aucStatStep;
+
+  /// No description provided for @aucStatBuyNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá mua ngay'**
+  String get aucStatBuyNow;
+
+  /// No description provided for @aucStatFeeDeposit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí tham gia · Cọc'**
+  String get aucStatFeeDeposit;
+
+  /// No description provided for @aucNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có'**
+  String get aucNone;
+
+  /// No description provided for @aucBidHistory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lịch sử trả giá'**
+  String get aucBidHistory;
+
+  /// No description provided for @aucBidCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} lượt'**
+  String aucBidCount(int n);
+
+  /// No description provided for @aucBidYou.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn'**
+  String get aucBidYou;
+
+  /// No description provided for @aucNoBidsYet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có lượt trả giá. Lượt đầu tiên phải từ giá khởi điểm.'**
+  String get aucNoBidsYet;
+
+  /// No description provided for @aucSellerLine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người bán: {seller} · {part}'**
+  String aucSellerLine(String seller, String part);
+
+  /// No description provided for @aucHoldLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giữ phí tham gia + cọc'**
+  String get aucHoldLabel;
+
+  /// No description provided for @aucRegister.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký tham gia'**
+  String get aucRegister;
+
+  /// No description provided for @aucRegisteredTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã đăng ký'**
+  String get aucRegisteredTitle;
+
+  /// No description provided for @aucRegisteredSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang giữ {amount} · hủy được trước khi đóng'**
+  String aucRegisteredSub(String amount);
+
+  /// No description provided for @aucUnregister.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hủy đăng ký'**
+  String get aucUnregister;
+
+  /// No description provided for @aucFilledTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên đã đủ người'**
+  String get aucFilledTitle;
+
+  /// No description provided for @aucFilledSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí tham gia đã thu, cọc {amount} tiếp tục được giữ. Chúng tôi sẽ nhắc bạn 1 giờ trước khi bắt đầu.'**
+  String aucFilledSub(String amount);
+
+  /// No description provided for @aucWatchTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang theo dõi phiên này'**
+  String get aucWatchTitle;
+
+  /// No description provided for @aucWatchSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký đã đóng 24 giờ trước giờ bắt đầu. Chỉ người đã đăng ký mới được trả giá.'**
+  String get aucWatchSub;
+
+  /// No description provided for @aucLeadingTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang dẫn đầu'**
+  String get aucLeadingTitle;
+
+  /// No description provided for @aucLeadingSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'{amount} đang được giữ trong ví · sẽ nhả nếu bị vượt giá'**
+  String aucLeadingSub(String amount);
+
+  /// No description provided for @aucMinimum.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối thiểu {amount}'**
+  String aucMinimum(String amount);
+
+  /// No description provided for @aucBid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trả giá'**
+  String get aucBid;
+
+  /// No description provided for @aucBuyNowButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua ngay {amount}'**
+  String aucBuyNowButton(String amount);
+
+  /// No description provided for @aucEndedWon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã thắng phiên này'**
+  String get aucEndedWon;
+
+  /// No description provided for @aucEndedLost.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn không thắng phiên này'**
+  String get aucEndedLost;
+
+  /// No description provided for @aucEndedGeneric.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên đã kết thúc'**
+  String get aucEndedGeneric;
+
+  /// No description provided for @aucEndedWonText.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn giao hàng đã được tạo trong Đơn mua. Cọc {amount} hoàn khi bạn nhận sách.'**
+  String aucEndedWonText(String amount);
+
+  /// No description provided for @aucEndedLostText.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cọc {amount} đã được nhả về ví.'**
+  String aucEndedLostText(String amount);
+
+  /// No description provided for @aucEndedOtherText.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá thắng {amount}.'**
+  String aucEndedOtherText(String amount);
+
+  /// No description provided for @aucNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy phiên này.'**
+  String get aucNotFound;
+
+  /// No description provided for @aucErrEnded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên đã kết thúc, không thể trả giá.'**
+  String get aucErrEnded;
+
+  /// No description provided for @aucErrTooLow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá thấp hơn mức tối thiểu hiện tại.'**
+  String get aucErrTooLow;
+
+  /// No description provided for @aucErrState.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể thực hiện ở trạng thái hiện tại.'**
+  String get aucErrState;
+
+  /// No description provided for @regSheetTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký tham gia phiên'**
+  String get regSheetTitle;
+
+  /// No description provided for @regFee.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí tham gia (2% giá khởi điểm, 10.000–100.000 đ)'**
+  String get regFee;
+
+  /// No description provided for @regDeposit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền cọc (10% giá khởi điểm)'**
+  String get regDeposit;
+
+  /// No description provided for @regHold.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạm giữ từ ví'**
+  String get regHold;
+
+  /// No description provided for @regBalance.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư khả dụng'**
+  String get regBalance;
+
+  /// No description provided for @regNote1.
+  ///
+  /// In vi, this message translates to:
+  /// **'• Phí tham gia chỉ thu khi phiên đủ 3 người; không đủ người sẽ hoàn toàn bộ.'**
+  String get regNote1;
+
+  /// No description provided for @regNote2.
+  ///
+  /// In vi, this message translates to:
+  /// **'• Cọc hoàn khi phiên kết thúc (người thua) hoặc khi bạn nhận hàng (người thắng). Phí lưu kho 5.000 đ/ngày trừ vào cọc nếu không nhận hàng.'**
+  String get regNote2;
+
+  /// No description provided for @regNote3.
+  ///
+  /// In vi, this message translates to:
+  /// **'• Hủy đăng ký miễn phí trước {time}.'**
+  String regNote3(String time);
+
+  /// No description provided for @regConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận · giữ {amount}'**
+  String regConfirm(String amount);
+
+  /// No description provided for @regInsufficient.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư không đủ · nạp thêm'**
+  String get regInsufficient;
+
+  /// No description provided for @buyNowTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua ngay với giá {amount}?'**
+  String buyNowTitle(String amount);
+
+  /// No description provided for @buyNowNote1.
+  ///
+  /// In vi, this message translates to:
+  /// **'• {amount} được giữ từ ví và bạn trở thành người dẫn đầu.'**
+  String buyNowNote1(String amount);
+
+  /// No description provided for @buyNowNote2.
+  ///
+  /// In vi, this message translates to:
+  /// **'• Phiên chuyển sang đếm ngược 30 phút. Mỗi lượt trả giá cao hơn sẽ đặt lại 30 phút.'**
+  String get buyNowNote2;
+
+  /// No description provided for @buyNowNote3.
+  ///
+  /// In vi, this message translates to:
+  /// **'• Phiên kết thúc chậm nhất 24 giờ sau khi bấm mua ngay.'**
+  String get buyNowNote3;
+
+  /// No description provided for @buyNowConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận mua ngay'**
+  String get buyNowConfirm;
+
+  /// No description provided for @myAuctionsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên tôi tham gia'**
+  String get myAuctionsTitle;
+
+  /// No description provided for @myAuctionsEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa đăng ký phiên nào.'**
+  String get myAuctionsEmpty;
+
+  /// No description provided for @myAucWon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thắng · {amount}'**
+  String myAucWon(String amount);
+
+  /// No description provided for @myAucLeading.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang dẫn đầu · {amount}'**
+  String myAucLeading(String amount);
+
+  /// No description provided for @myAucLost.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thắng'**
+  String get myAucLost;
+
+  /// No description provided for @myAucOutbid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã bị vượt giá'**
+  String get myAucOutbid;
+
+  /// No description provided for @myAucRegistered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đăng ký'**
+  String get myAucRegistered;
+
+  /// No description provided for @homeLiveAuctions.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang đấu giá'**
+  String get homeLiveAuctions;
+
+  /// No description provided for @homeSeeAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem tất cả'**
+  String get homeSeeAll;
 }
 
 class _AppLocalizationsDelegate

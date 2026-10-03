@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/theme/theme_context.dart';
+import '../features/auctions/presentation/auction_detail_screen.dart';
+import '../features/auctions/presentation/auctions_screen.dart';
+import '../features/auctions/presentation/my_auctions_screen.dart';
 import '../features/auth/application/auth_controller.dart';
 import '../features/cart/presentation/cart_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
@@ -21,7 +23,6 @@ import '../features/profile/presentation/edit_profile_screen.dart';
 import '../features/profile/presentation/profile_screen.dart';
 import '../features/wallet/presentation/wallet_screen.dart';
 import 'app_shell.dart';
-import 'coming_soon_screen.dart';
 
 const _authPaths = {'/login', '/register'};
 
@@ -77,12 +78,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/auctions',
-                pageBuilder: (context, _) => _tab(
-                  ComingSoonScreen(
-                    title: context.l10n.navAuctions,
-                    icon: Icons.gavel_outlined,
-                  ),
-                ),
+                pageBuilder: (_, _) => _tab(const AuctionsScreen()),
               ),
             ],
           ),
@@ -149,6 +145,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/notifications',
         parentNavigatorKey: rootKey,
         builder: (_, _) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: '/auctions/mine',
+        parentNavigatorKey: rootKey,
+        builder: (_, _) => const MyAuctionsScreen(),
+      ),
+      GoRoute(
+        path: '/auctions/:id',
+        parentNavigatorKey: rootKey,
+        builder: (_, state) =>
+            AuctionDetailScreen(auctionId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: '/cart',

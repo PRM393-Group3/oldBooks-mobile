@@ -1890,4 +1890,326 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get meMyOrdersSub =>
       'Track deliveries, confirm receipt, file complaints';
+
+  @override
+  String get aucTitle => 'Auctions';
+
+  @override
+  String get aucSubtitle =>
+      'Books are checked at the Oldbook warehouse before listing';
+
+  @override
+  String get aucTabLive => 'Live';
+
+  @override
+  String get aucTabRegister => 'Register';
+
+  @override
+  String get aucTabUpcoming => 'Upcoming';
+
+  @override
+  String get aucTabEnded => 'Ended';
+
+  @override
+  String get aucEmpty => 'No auctions in this state yet.';
+
+  @override
+  String get aucStatusLive => 'Live';
+
+  @override
+  String get aucStatusBuyNow => 'Buy-now countdown';
+
+  @override
+  String get aucStatusRegistration => 'Registration open';
+
+  @override
+  String get aucStatusConfirmed => 'Starting soon';
+
+  @override
+  String get aucStatusEnded => 'Ended';
+
+  @override
+  String get aucStatusNoBid => 'No bids';
+
+  @override
+  String get aucRegisteredTag => 'Registered';
+
+  @override
+  String aucParticipants(int n) {
+    return '$n participants';
+  }
+
+  @override
+  String aucParticipantsMin(int n, String min) {
+    return '$n/$min minimum players';
+  }
+
+  @override
+  String get aucPriceStarting => 'Starting price';
+
+  @override
+  String get aucPriceCurrent => 'Current price';
+
+  @override
+  String get aucPriceWinning => 'Winning price';
+
+  @override
+  String get aucTimerEndsIn => 'Ends in';
+
+  @override
+  String get aucTimerCountdown => 'Countdown';
+
+  @override
+  String get aucTimerRegCloses => 'Registration closes in';
+
+  @override
+  String get aucTimerStartsIn => 'Starts in';
+
+  @override
+  String get aucTimerEndedAt => 'Ended at';
+
+  @override
+  String get aucSubLive =>
+      'A bid in the last 2 minutes extends the auction by 2 minutes.';
+
+  @override
+  String aucSubCountdown(String time) {
+    return 'Someone bought now. Each higher bid resets 30 minutes · ends by $time at the latest.';
+  }
+
+  @override
+  String aucSubRegistration(String time, String min) {
+    return 'Starts $time · needs at least $min players.';
+  }
+
+  @override
+  String aucSubConfirmed(String time) {
+    return 'Enough players · starts $time.';
+  }
+
+  @override
+  String get aucLeaderMe => 'You are leading';
+
+  @override
+  String aucLeaderOther(String name) {
+    return 'Leading: $name';
+  }
+
+  @override
+  String get aucNoBids => 'No bids yet';
+
+  @override
+  String get aucExtendedBanner =>
+      'The auction was just extended by 2 minutes (anti-sniping)';
+
+  @override
+  String get aucStatStart => 'Starting price';
+
+  @override
+  String get aucStatStep => 'Bid step';
+
+  @override
+  String get aucStatBuyNow => 'Buy-now price';
+
+  @override
+  String get aucStatFeeDeposit => 'Entry fee · Deposit';
+
+  @override
+  String get aucNone => 'None';
+
+  @override
+  String get aucBidHistory => 'Bid history';
+
+  @override
+  String aucBidCount(int n) {
+    return '$n bids';
+  }
+
+  @override
+  String get aucBidYou => 'You';
+
+  @override
+  String get aucNoBidsYet =>
+      'No bids yet. The first bid must be at least the starting price.';
+
+  @override
+  String aucSellerLine(String seller, String part) {
+    return 'Seller: $seller · $part';
+  }
+
+  @override
+  String get aucHoldLabel => 'Entry fee + deposit held';
+
+  @override
+  String get aucRegister => 'Register';
+
+  @override
+  String get aucRegisteredTitle => 'You are registered';
+
+  @override
+  String aucRegisteredSub(String amount) {
+    return 'Holding $amount · you can cancel before it closes';
+  }
+
+  @override
+  String get aucUnregister => 'Cancel registration';
+
+  @override
+  String get aucFilledTitle => 'The auction is full';
+
+  @override
+  String aucFilledSub(String amount) {
+    return 'The entry fee was charged and the $amount deposit stays held. We will remind you 1 hour before it starts.';
+  }
+
+  @override
+  String get aucWatchTitle => 'You are watching this auction';
+
+  @override
+  String get aucWatchSub =>
+      'Registration closed 24 hours before the start. Only registered players can bid.';
+
+  @override
+  String get aucLeadingTitle => 'You are leading';
+
+  @override
+  String aucLeadingSub(String amount) {
+    return '$amount is held in your wallet · released if you are outbid';
+  }
+
+  @override
+  String aucMinimum(String amount) {
+    return 'Minimum $amount';
+  }
+
+  @override
+  String get aucBid => 'Place bid';
+
+  @override
+  String aucBuyNowButton(String amount) {
+    return 'Buy now $amount';
+  }
+
+  @override
+  String get aucEndedWon => 'You won this auction';
+
+  @override
+  String get aucEndedLost => 'You did not win this auction';
+
+  @override
+  String get aucEndedGeneric => 'The auction has ended';
+
+  @override
+  String aucEndedWonText(String amount) {
+    return 'A delivery order was created in My orders. Your $amount deposit is returned when you receive the book.';
+  }
+
+  @override
+  String aucEndedLostText(String amount) {
+    return 'Your $amount deposit was released to your wallet.';
+  }
+
+  @override
+  String aucEndedOtherText(String amount) {
+    return 'Winning price $amount.';
+  }
+
+  @override
+  String get aucNotFound => 'Auction not found.';
+
+  @override
+  String get aucErrEnded => 'The auction has ended, bidding is closed.';
+
+  @override
+  String get aucErrTooLow => 'Your bid is below the current minimum.';
+
+  @override
+  String get aucErrState => 'Not possible in the current state.';
+
+  @override
+  String get regSheetTitle => 'Register for the auction';
+
+  @override
+  String get regFee => 'Entry fee (2% of start, 10,000–100,000 ₫)';
+
+  @override
+  String get regDeposit => 'Deposit (10% of start)';
+
+  @override
+  String get regHold => 'Held from wallet';
+
+  @override
+  String get regBalance => 'Available balance';
+
+  @override
+  String get regNote1 =>
+      '• The entry fee is charged only when 3 players join; otherwise it is fully refunded.';
+
+  @override
+  String get regNote2 =>
+      '• The deposit is returned when the auction ends (losers) or when you receive the book (winner). A 5,000 ₫/day storage fee is deducted if you do not collect it.';
+
+  @override
+  String regNote3(String time) {
+    return '• Cancel for free before $time.';
+  }
+
+  @override
+  String regConfirm(String amount) {
+    return 'Confirm · hold $amount';
+  }
+
+  @override
+  String get regInsufficient => 'Not enough balance · top up';
+
+  @override
+  String buyNowTitle(String amount) {
+    return 'Buy now for $amount?';
+  }
+
+  @override
+  String buyNowNote1(String amount) {
+    return '• $amount is held from your wallet and you become the leader.';
+  }
+
+  @override
+  String get buyNowNote2 =>
+      '• The auction switches to a 30-minute countdown. Each higher bid resets it to 30 minutes.';
+
+  @override
+  String get buyNowNote3 => '• The auction ends within 24 hours of buying now.';
+
+  @override
+  String get buyNowConfirm => 'Confirm buy now';
+
+  @override
+  String get myAuctionsTitle => 'My auctions';
+
+  @override
+  String get myAuctionsEmpty => 'You have not registered for any auction.';
+
+  @override
+  String myAucWon(String amount) {
+    return 'Won · $amount';
+  }
+
+  @override
+  String myAucLeading(String amount) {
+    return 'Leading · $amount';
+  }
+
+  @override
+  String get myAucLost => 'Did not win';
+
+  @override
+  String get myAucOutbid => 'Outbid';
+
+  @override
+  String get myAucRegistered => 'Registered';
+
+  @override
+  String get homeLiveAuctions => 'Live auctions';
+
+  @override
+  String get homeSeeAll => 'See all';
 }

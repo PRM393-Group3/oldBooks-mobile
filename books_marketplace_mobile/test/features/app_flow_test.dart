@@ -1,3 +1,4 @@
+import 'package:books_marketplace_mobile/features/sim/application/sim_providers.dart';
 import 'package:books_marketplace_mobile/app/app.dart';
 import 'package:books_marketplace_mobile/core/network/api_client.dart';
 import 'package:books_marketplace_mobile/core/network/api_error.dart';
@@ -115,6 +116,8 @@ Future<({MemoryTokenStore tokens, _FakeAuthRepository auth})> _pumpApp(
         notificationRepositoryProvider.overrideWithValue(
           FakeNotificationRepository(),
         ),
+        simTickIntervalProvider.overrideWithValue(const Duration(days: 1)),
+        simulateRivalsProvider.overrideWithValue(false),
       ],
       child: const App(),
     ),

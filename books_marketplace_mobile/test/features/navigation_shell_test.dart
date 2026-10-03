@@ -58,12 +58,15 @@ void main() {
     );
   });
 
-  testWidgets('Đấu giá hiện màn hình chờ, Ví mở màn Ví Oldbook', (tester) async {
+  testWidgets('Đấu giá và Ví mở đúng màn hình', (tester) async {
     final h = Harness(UserRole.buyer);
     await h.pump(tester);
 
     await tapTab(tester, 'Đấu giá');
-    expect(find.text('Sắp có'), findsOneWidget);
+    expect(
+      find.text('Sách đã được kiểm tra tại kho Oldbook trước khi lên sàn'),
+      findsOneWidget,
+    );
     await tapTab(tester, 'Ví');
     expect(find.text('Ví Oldbook'), findsOneWidget);
   });

@@ -1196,5 +1196,258 @@
     }
   },
   "meMyOrders": "Đơn mua",
-  "meMyOrdersSub": "Theo dõi giao hàng, xác nhận nhận hàng, khiếu nại"
+  "meMyOrdersSub": "Theo dõi giao hàng, xác nhận nhận hàng, khiếu nại",
+  "aucTitle": "Đấu giá",
+  "aucSubtitle": "Sách đã được kiểm tra tại kho Oldbook trước khi lên sàn",
+  "aucTabLive": "Đang diễn ra",
+  "aucTabRegister": "Đăng ký",
+  "aucTabUpcoming": "Sắp tới",
+  "aucTabEnded": "Đã xong",
+  "aucEmpty": "Chưa có phiên nào ở trạng thái này.",
+  "aucStatusLive": "Đang diễn ra",
+  "aucStatusBuyNow": "Đếm ngược mua ngay",
+  "aucStatusRegistration": "Đang mở đăng ký",
+  "aucStatusConfirmed": "Sắp diễn ra",
+  "aucStatusEnded": "Đã kết thúc",
+  "aucStatusNoBid": "Không có lượt",
+  "aucRegisteredTag": "Đã đăng ký",
+  "aucParticipants": "{n} người tham gia",
+  "@aucParticipants": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "aucParticipantsMin": "{n}/{min} người tối thiểu",
+  "@aucParticipantsMin": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "aucPriceStarting": "Giá khởi điểm",
+  "aucPriceCurrent": "Giá hiện tại",
+  "aucPriceWinning": "Giá thắng",
+  "aucTimerEndsIn": "Kết thúc sau",
+  "aucTimerCountdown": "Đếm ngược",
+  "aucTimerRegCloses": "Đóng đăng ký sau",
+  "aucTimerStartsIn": "Bắt đầu sau",
+  "aucTimerEndedAt": "Kết thúc lúc",
+  "aucSubLive": "Lượt trả giá trong 2 phút cuối sẽ gia hạn phiên thêm 2 phút.",
+  "aucSubCountdown": "Đã có người mua ngay. Mỗi lượt cao hơn đặt lại 30 phút · kết thúc muộn nhất {time}.",
+  "@aucSubCountdown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aucSubRegistration": "Phiên bắt đầu {time} · cần tối thiểu {min} người.",
+  "@aucSubRegistration": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "aucSubConfirmed": "Đã đủ người · bắt đầu {time}.",
+  "@aucSubConfirmed": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aucLeaderMe": "Bạn đang dẫn đầu",
+  "aucLeaderOther": "Dẫn đầu: {name}",
+  "@aucLeaderOther": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "aucNoBids": "Chưa có lượt trả giá",
+  "aucExtendedBanner": "Phiên vừa được gia hạn thêm 2 phút (chống bắn tỉa)",
+  "aucStatStart": "Giá khởi điểm",
+  "aucStatStep": "Bước nhảy",
+  "aucStatBuyNow": "Giá mua ngay",
+  "aucStatFeeDeposit": "Phí tham gia · Cọc",
+  "aucNone": "Không có",
+  "aucBidHistory": "Lịch sử trả giá",
+  "aucBidCount": "{n} lượt",
+  "@aucBidCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "aucBidYou": "Bạn",
+  "aucNoBidsYet": "Chưa có lượt trả giá. Lượt đầu tiên phải từ giá khởi điểm.",
+  "aucSellerLine": "Người bán: {seller} · {part}",
+  "@aucSellerLine": {
+    "placeholders": {
+      "seller": {
+        "type": "String"
+      },
+      "part": {
+        "type": "String"
+      }
+    }
+  },
+  "aucHoldLabel": "Giữ phí tham gia + cọc",
+  "aucRegister": "Đăng ký tham gia",
+  "aucRegisteredTitle": "Bạn đã đăng ký",
+  "aucRegisteredSub": "Đang giữ {amount} · hủy được trước khi đóng",
+  "@aucRegisteredSub": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucUnregister": "Hủy đăng ký",
+  "aucFilledTitle": "Phiên đã đủ người",
+  "aucFilledSub": "Phí tham gia đã thu, cọc {amount} tiếp tục được giữ. Chúng tôi sẽ nhắc bạn 1 giờ trước khi bắt đầu.",
+  "@aucFilledSub": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucWatchTitle": "Bạn đang theo dõi phiên này",
+  "aucWatchSub": "Đăng ký đã đóng 24 giờ trước giờ bắt đầu. Chỉ người đã đăng ký mới được trả giá.",
+  "aucLeadingTitle": "Bạn đang dẫn đầu",
+  "aucLeadingSub": "{amount} đang được giữ trong ví · sẽ nhả nếu bị vượt giá",
+  "@aucLeadingSub": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucMinimum": "Tối thiểu {amount}",
+  "@aucMinimum": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucBid": "Trả giá",
+  "aucBuyNowButton": "Mua ngay {amount}",
+  "@aucBuyNowButton": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucEndedWon": "Bạn đã thắng phiên này",
+  "aucEndedLost": "Bạn không thắng phiên này",
+  "aucEndedGeneric": "Phiên đã kết thúc",
+  "aucEndedWonText": "Đơn giao hàng đã được tạo trong Đơn mua. Cọc {amount} hoàn khi bạn nhận sách.",
+  "@aucEndedWonText": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucEndedLostText": "Cọc {amount} đã được nhả về ví.",
+  "@aucEndedLostText": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucEndedOtherText": "Giá thắng {amount}.",
+  "@aucEndedOtherText": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucNotFound": "Không tìm thấy phiên này.",
+  "aucErrEnded": "Phiên đã kết thúc, không thể trả giá.",
+  "aucErrTooLow": "Giá thấp hơn mức tối thiểu hiện tại.",
+  "aucErrState": "Không thể thực hiện ở trạng thái hiện tại.",
+  "regSheetTitle": "Đăng ký tham gia phiên",
+  "regFee": "Phí tham gia (2% giá khởi điểm, 10.000–100.000 đ)",
+  "regDeposit": "Tiền cọc (10% giá khởi điểm)",
+  "regHold": "Tạm giữ từ ví",
+  "regBalance": "Số dư khả dụng",
+  "regNote1": "• Phí tham gia chỉ thu khi phiên đủ 3 người; không đủ người sẽ hoàn toàn bộ.",
+  "regNote2": "• Cọc hoàn khi phiên kết thúc (người thua) hoặc khi bạn nhận hàng (người thắng). Phí lưu kho 5.000 đ/ngày trừ vào cọc nếu không nhận hàng.",
+  "regNote3": "• Hủy đăng ký miễn phí trước {time}.",
+  "@regNote3": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "regConfirm": "Xác nhận · giữ {amount}",
+  "@regConfirm": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "regInsufficient": "Số dư không đủ · nạp thêm",
+  "buyNowTitle": "Mua ngay với giá {amount}?",
+  "@buyNowTitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "buyNowNote1": "• {amount} được giữ từ ví và bạn trở thành người dẫn đầu.",
+  "@buyNowNote1": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "buyNowNote2": "• Phiên chuyển sang đếm ngược 30 phút. Mỗi lượt trả giá cao hơn sẽ đặt lại 30 phút.",
+  "buyNowNote3": "• Phiên kết thúc chậm nhất 24 giờ sau khi bấm mua ngay.",
+  "buyNowConfirm": "Xác nhận mua ngay",
+  "myAuctionsTitle": "Phiên tôi tham gia",
+  "myAuctionsEmpty": "Bạn chưa đăng ký phiên nào.",
+  "myAucWon": "Đã thắng · {amount}",
+  "@myAucWon": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "myAucLeading": "Đang dẫn đầu · {amount}",
+  "@myAucLeading": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "myAucLost": "Không thắng",
+  "myAucOutbid": "Đã bị vượt giá",
+  "myAucRegistered": "Đã đăng ký",
+  "homeLiveAuctions": "Đang đấu giá",
+  "homeSeeAll": "Xem tất cả"
 }

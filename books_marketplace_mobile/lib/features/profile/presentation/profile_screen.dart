@@ -155,6 +155,11 @@ class _ProfileBody extends ConsumerWidget {
               onTap: () => context.push('/me/orders'),
             ),
             AppMenuTile(
+              icon: Icons.gavel_outlined,
+              title: l.myAuctionsTitle,
+              onTap: () => context.push('/auctions/mine'),
+            ),
+            AppMenuTile(
               icon: Icons.edit_outlined,
               title: l.editProfile,
               onTap: () => context.push('/me/edit'),

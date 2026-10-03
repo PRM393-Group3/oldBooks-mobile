@@ -8,6 +8,7 @@ import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../../../../core/util/search.dart';
 import '../../../../core/widgets/app_state_views.dart';
+import '../../../auctions/presentation/live_auction_strip.dart';
 import '../../../cart/application/cart_providers.dart';
 import '../../../categories/application/category_providers.dart';
 import '../../../notifications/application/notification_providers.dart';
@@ -104,6 +105,8 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
                     SliverToBoxAdapter(child: header),
+                    if (q.isEmpty)
+                      const SliverToBoxAdapter(child: LiveAuctionStrip()),
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(
