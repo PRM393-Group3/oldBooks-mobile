@@ -12,8 +12,10 @@ import '../../../core/widgets/app_page.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../application/auth_controller.dart';
+import '../data/auth_repository.dart';
 import 'auth_header.dart';
 import 'otp_field.dart';
+import 'password_rules.dart';
 
 /// Quên mật khẩu: xác thực bằng OTP rồi đặt mật khẩu mới (FR-AUTH-05).
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
@@ -102,16 +104,19 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               errorText: _serverErrors['otp'],
               validatePhone: () => v.phoneRequired(_phone.text) == null,
               onSend: () async {
-                await ref
+                final expiresIn = await ref
                     .read(authControllerProvider.notifier)
-                    .sendOtp(_phone.text.trim());
+                    .sendOtp(_phone.text.trim(), OtpPurpose.resetPassword);
+                // Không khẳng định đã gửi: số chưa đăng ký vẫn nhận 200 nhưng
+                // server không gửi SMS để không lộ số nào có tài khoản.
                 if (context.mounted) {
                   AppSnackbar.show(
                     context,
-                    l.otpSentTo(_phone.text.trim()),
-                    type: AppSnackbarType.success,
+                    l.forgotOtpNotice,
+                    type: AppSnackbarType.info,
                   );
                 }
+                return expiresIn;
               },
             ),
             const SizedBox(height: AppSpacing.md),
@@ -127,6 +132,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               prefixIcon: Icons.lock_outline,
               onSubmitted: (_) => _submit(),
             ),
+            PasswordRules(controller: _password),
             const SizedBox(height: AppSpacing.lg),
             Center(
               child: TextButton(

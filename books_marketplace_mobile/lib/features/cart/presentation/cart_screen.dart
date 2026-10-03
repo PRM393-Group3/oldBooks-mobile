@@ -2,51 +2,120 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/network/api_error.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/util/format.dart';
+import '../../../core/util/idempotency.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_page.dart';
 import '../../../core/widgets/app_sheet.dart';
+import '../../../core/widgets/app_snackbar.dart';
+import '../../../core/widgets/app_state_views.dart';
 import '../../listings/presentation/widgets/book_tile.dart';
+import '../../orders/application/order_providers.dart';
+import '../../orders/domain/sale_order.dart';
 import '../../profile/application/address_providers.dart';
-import '../../sim/application/sim_providers.dart';
-import '../../sim/application/sim_state.dart';
-import '../../sim/domain/rules.dart';
-import '../../wallet/presentation/wallet_sheets.dart';
+import '../../profile/domain/address.dart';
+import '../../sell/application/sell_rules_provider.dart';
+import '../../wallet/application/wallet_providers.dart';
+import '../../wallet/presentation/topup_sheet.dart';
 import '../application/cart_providers.dart';
-import '../domain/cart_item.dart';
 
-/// Giỏ hàng: danh sách món, tổng tiền và nút đặt hàng thanh toán bằng ví.
-class CartScreen extends ConsumerWidget {
+/// Giỏ hàng (lưu ở server): danh sách món, địa chỉ nhận, tổng tiền và đặt hàng
+/// bằng số dư ví. Mỗi tin tạo một đơn riêng; tất cả hoặc không gì cả.
+class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});
 
-  Future<void> _placeOrder(
-    BuildContext context,
-    WidgetRef ref,
-    List<CartItem> available,
-  ) async {
-    final outcome = ref.read(simProvider.notifier).placeOrder(available);
-    switch (outcome) {
-      case SimOk():
-        final total = available.fold<int>(
-          0,
-          (t, i) => t + i.price + shippingFeeFixedPrice,
-        );
-        ref
-            .read(cartProvider.notifier)
-            .removeAll(available.map((i) => i.listingId));
-        await _showPlaced(context, total, available.length);
-      case SimInsufficient(:final needed):
-        await showInsufficientSheet(context, needed);
-      case SimRejected():
-        break;
+  @override
+  ConsumerState<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends ConsumerState<CartScreen> {
+  String? _addressId;
+  bool _busy = false;
+
+  /// Tin server báo không còn bán (`LISTING_NOT_AVAILABLE`), đánh dấu thêm.
+  Set<String> _flagged = const {};
+
+  /// Một key cho mỗi lần bấm "Đặt hàng"; giữ khi thử lại do mạng lỗi, đổi khi
+  /// danh sách tin hoặc địa chỉ đổi (nội dung khác thì phải là hành động mới).
+  String? _key;
+  String? _keyFor;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ref.read(cartProvider.notifier).reload();
+      ref.read(walletProvider.notifier).refresh();
+    });
+  }
+
+  Future<void> _place(List<CartLine> lines, Address address) async {
+    if (_busy) return;
+    final l = context.l10n;
+    final ids = [for (final i in lines) i.listingId];
+    final signature = '${address.id}:${ids.join(',')}';
+    if (_keyFor != signature) {
+      _key = null;
+      _keyFor = signature;
+    }
+    final key = _key ??= newIdempotencyKey();
+
+    setState(() {
+      _busy = true;
+      _flagged = const {};
+    });
+    try {
+      final orders = await ref
+          .read(orderRepositoryProvider)
+          .checkout(
+            listingIds: ids,
+            addressId: address.id,
+            idempotencyKey: key,
+          );
+      _key = null;
+      ref.read(cartProvider.notifier).reload();
+      ref.read(walletProvider.notifier).refresh();
+      ref.invalidate(walletTransactionsProvider);
+      refreshOrders(ref);
+      if (!mounted) return;
+      final total = orders.fold<int>(0, (t, o) => t + o.totalAmount);
+      await _showPlaced(total, orders.length);
+    } on ApiError catch (e) {
+      if (!mounted) return;
+      switch (e.code) {
+        case ApiErrorCode.listingNotAvailable:
+          setState(() => _flagged = e.detailMessages.toSet());
+          ref.read(cartProvider.notifier).reload();
+          AppSnackbar.show(
+            context,
+            l.ckSomeUnavailable,
+            type: AppSnackbarType.error,
+          );
+        case ApiErrorCode.insufficientBalance:
+          await showWalletInsufficientSheet(
+            context,
+            required: e.detailAmount('required') ?? 0,
+            available: e.detailAmount('available') ?? 0,
+          );
+        case ApiErrorCode.orderOwnListing:
+          ref.read(cartProvider.notifier).reload();
+          AppSnackbar.apiError(context, e);
+        default:
+          AppSnackbar.apiError(context, e);
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
     }
   }
 
-  Future<void> _showPlaced(BuildContext context, int total, int count) {
+  Future<void> _showPlaced(int total, int count) {
     final router = GoRouter.of(context);
     return showAppSheet<void>(
       context,
@@ -65,10 +134,10 @@ class CartScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
-            AppSheetTitle(l.orderPlacedTitle, center: true),
+            AppSheetTitle(l.ckPlacedTitle, center: true),
             const SizedBox(height: AppSpacing.xs),
             Text(
-              l.orderPlacedBody(formatVnd(total, locale), count),
+              l.ckPlacedBody(formatVnd(total, locale), count),
               textAlign: TextAlign.center,
               style: context.text.bodyMedium?.copyWith(
                 color: colors.textSecondary,
@@ -77,7 +146,7 @@ class CartScreen extends ConsumerWidget {
             ),
             const SizedBox(height: AppSpacing.md),
             AppButton(
-              label: l.orderPlacedView,
+              label: l.ckViewOrders,
               onPressed: () {
                 Navigator.of(sheet).pop();
                 router.go('/me/orders');
@@ -85,7 +154,7 @@ class CartScreen extends ConsumerWidget {
             ),
             const SizedBox(height: AppSpacing.xs),
             AppButton(
-              label: l.orderPlacedKeepShopping,
+              label: l.ckKeepShopping,
               variant: AppButtonVariant.text,
               onPressed: () {
                 Navigator.of(sheet).pop();
@@ -98,95 +167,166 @@ class CartScreen extends ConsumerWidget {
     );
   }
 
+  Future<void> _pickAddress(List<Address> addresses) async {
+    final picked = await showAppSheet<String>(
+      context,
+      builder: (sheet) {
+        final l = context.l10n;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            AppSheetTitle(l.ckPickAddress),
+            RadioGroup<String>(
+              groupValue: _addressId,
+              onChanged: (v) => Navigator.of(sheet).pop(v),
+              child: Column(
+                children: [
+                  for (final a in addresses)
+                    RadioListTile<String>(
+                      value: a.id,
+                      contentPadding: EdgeInsets.zero,
+                      title: Text('${a.recipient} · ${a.phone}'),
+                      subtitle: Text(a.fullLine),
+                    ),
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(sheet).pop();
+                context.push('/me/addresses');
+              },
+              child: Text(l.ckAddAddress),
+            ),
+          ],
+        );
+      },
+    );
+    if (picked != null && mounted) setState(() => _addressId = picked);
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final l = context.l10n;
     final colors = context.colors;
     final locale = Localizations.localeOf(context).toString();
-    final items = ref.watch(cartProvider);
-    final reserved = ref.watch(reservedListingIdsProvider);
-    final balance = ref.watch(availableBalanceProvider);
-    final address = ref.watch(defaultAddressProvider);
+    final cart = ref.watch(cartProvider);
+    final addresses = ref.watch(addressesProvider).value ?? const <Address>[];
+    final balance = ref.watch(walletProvider).value?.available ?? 0;
+    final shippingFee = ref.watch(sellRulesProvider).shippingSale;
 
-    final available = [
-      for (final i in items)
-        if (!reserved.contains(i.listingId)) i,
+    final data = cart.value ?? const CartData();
+    final lines = [
+      for (final i in data.items)
+        if (i.isAvailable && !_flagged.contains(i.listingId)) i,
     ];
-    final subtotal = available.fold<int>(0, (t, i) => t + i.price);
-    final shipping = available.length * shippingFeeFixedPrice;
+    Address? address;
+    for (final a in addresses) {
+      if (a.id == _addressId) address = a;
+    }
+    address ??= ref.watch(defaultAddressProvider);
+
+    final subtotal = lines.fold<int>(0, (t, i) => t + i.price);
+    final shipping = lines.length * shippingFee;
     final total = subtotal + shipping;
     final enough = balance >= total;
 
-    final buttonLabel = available.isEmpty
-        ? l.cartNoAvailable
+    final buttonLabel = lines.isEmpty
+        ? l.ckPlaceEmpty
+        : address == null
+        ? l.ckNeedAddress
         : enough
-        ? l.cartPlaceOrder
-        : l.cartInsufficient;
+        ? l.ckPlace
+        : l.ckInsufficient;
 
-    return _ClearSnackBarsOnOpen(
-      child: AppPage(
-        title: l.cartTitle,
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.screen + 4,
-          AppSpacing.md,
-          AppSpacing.screen + 4,
-          AppSpacing.lg,
-        ),
-        bottom: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              children: [
-                Text(
-                  l.cartPayTotal,
-                  style: context.text.bodyMedium?.copyWith(
-                    color: colors.textSecondary,
-                  ),
+    return AppPage(
+      title: l.cartTitle,
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.screen + 4,
+        AppSpacing.md,
+        AppSpacing.screen + 4,
+        AppSpacing.lg,
+      ),
+      bottom: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text(
+                l.ckTotal,
+                style: context.text.bodyMedium?.copyWith(
+                  color: colors.textSecondary,
                 ),
-                Text(
-                  formatVnd(total, locale),
-                  style: context.text.headlineMedium?.copyWith(
-                    fontFamily: AppTypography.fontFamily,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                  ),
+              ),
+              Text(
+                formatVnd(total, locale),
+                style: context.text.headlineMedium?.copyWith(
+                  fontFamily: AppTypography.fontFamily,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
                 ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            AppButton(
-              label: buttonLabel,
-              onPressed: available.isEmpty
-                  ? null
-                  : () => _placeOrder(context, ref, available),
-            ),
-          ],
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton(
+            label: buttonLabel,
+            loading: _busy,
+            onPressed: lines.isEmpty || address == null
+                ? null
+                : enough
+                ? () => _place(lines, address!)
+                : () => showWalletInsufficientSheet(
+                    context,
+                    required: total,
+                    available: balance,
+                  ),
+          ),
+        ],
+      ),
+      child: cart.when(
+        skipLoadingOnReload: true,
+        loading: () => const Padding(
+          padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
+          child: AppLoadingView(),
         ),
-        child: Column(
+        error: (error, _) => AppErrorView(
+          error: error,
+          onRetry: () => ref.read(cartProvider.notifier).reload(),
+        ),
+        data: (_) => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            for (final item in items)
+            for (final item in data.items)
               Padding(
                 padding: const EdgeInsets.only(bottom: 14),
                 child: _CartRow(
                   item: item,
-                  unavailable: reserved.contains(item.listingId),
+                  unavailable:
+                      !item.isAvailable || _flagged.contains(item.listingId),
                   priceText: formatVnd(item.price, locale),
-                  onRemove: () =>
-                      ref.read(cartProvider.notifier).remove(item.listingId),
+                  onRemove: () async {
+                    try {
+                      await ref
+                          .read(cartProvider.notifier)
+                          .remove(item.listingId);
+                    } on ApiError catch (e) {
+                      if (context.mounted) AppSnackbar.apiError(context, e);
+                    }
+                  },
                 ),
               ),
-            if (items.isEmpty)
+            if (data.items.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 40,
                   horizontal: AppSpacing.sm,
                 ),
                 child: Text(
-                  l.cartEmpty,
+                  l.ckEmpty,
                   textAlign: TextAlign.center,
                   style: context.text.bodyMedium?.copyWith(
                     color: colors.textMuted,
@@ -196,12 +336,14 @@ class CartScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 14),
               child: AppCard(
-                onTap: () => context.push('/me/addresses'),
+                onTap: addresses.isEmpty
+                    ? () => context.push('/me/addresses')
+                    : () => _pickAddress(addresses),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l.cartShipTo,
+                      l.ckAddress,
                       style: context.text.labelSmall?.copyWith(
                         color: colors.textMuted,
                       ),
@@ -209,7 +351,7 @@ class CartScreen extends ConsumerWidget {
                     const SizedBox(height: 3),
                     Text(
                       address == null
-                          ? l.addrNone
+                          ? l.ckNoAddress
                           : '${address.recipient} · ${address.phone}',
                       style: context.text.labelLarge,
                     ),
@@ -225,26 +367,24 @@ class CartScreen extends ConsumerWidget {
               ),
             ),
             _SummaryRow(
-              label: l.cartSubtotal(available.length),
+              label: '${l.ckSubtotal} (${lines.length})',
               value: formatVnd(subtotal, locale),
             ),
             const SizedBox(height: AppSpacing.xs),
             _SummaryRow(
-              label: l.cartShippingFee(
-                formatVnd(shippingFeeFixedPrice, locale),
-              ),
+              label: l.ckShipping(lines.length, formatVnd(shippingFee, locale)),
               value: formatVnd(shipping, locale),
             ),
             const SizedBox(height: AppSpacing.xs),
             _SummaryRow(
-              label: l.cartBalance,
+              label: l.ckBalance,
               value: formatVnd(balance, locale),
               valueColor: enough ? colors.success : colors.error,
               bold: true,
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              l.cartNote,
+              l.escrowNote,
               style: context.text.labelSmall?.copyWith(
                 color: colors.textMuted,
                 height: 1.5,
@@ -255,29 +395,6 @@ class CartScreen extends ConsumerWidget {
       ),
     );
   }
-}
-
-/// Thông báo "Đã thêm vào giỏ" từ màn chi tiết không được che nút đặt hàng.
-class _ClearSnackBarsOnOpen extends StatefulWidget {
-  const _ClearSnackBarsOnOpen({required this.child});
-
-  final Widget child;
-
-  @override
-  State<_ClearSnackBarsOnOpen> createState() => _ClearSnackBarsOnOpenState();
-}
-
-class _ClearSnackBarsOnOpenState extends State<_ClearSnackBarsOnOpen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) ScaffoldMessenger.of(context).clearSnackBars();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) => widget.child;
 }
 
 class _SummaryRow extends StatelessWidget {
@@ -328,7 +445,7 @@ class _CartRow extends StatelessWidget {
     required this.onRemove,
   });
 
-  final CartItem item;
+  final CartLine item;
   final bool unavailable;
   final String priceText;
   final VoidCallback onRemove;
@@ -348,7 +465,7 @@ class _CartRow extends StatelessWidget {
               width: 56,
               height: 76,
               child: BookCover(
-                url: item.coverUrl,
+                url: item.thumbnailUrl,
                 label: item.title,
                 radius: 6,
               ),
@@ -368,16 +485,16 @@ class _CartRow extends StatelessWidget {
                       height: 1.2,
                     ),
                   ),
-                  if (item.sellerName != null && item.sellerName!.isNotEmpty)
+                  if (item.author != null)
                     Text(
-                      l.cartSeller(item.sellerName!),
+                      item.author!,
                       style: context.text.labelSmall?.copyWith(
                         color: colors.textMuted,
                       ),
                     ),
                   if (unavailable)
                     Text(
-                      l.cartUnavailable,
+                      l.ckUnavailable,
                       style: context.text.labelSmall?.copyWith(
                         color: colors.error,
                         fontWeight: FontWeight.w600,
@@ -399,7 +516,7 @@ class _CartRow extends StatelessWidget {
                           minimumSize: const Size(48, 36),
                           foregroundColor: colors.textMuted,
                         ),
-                        child: Text(l.cartRemove),
+                        child: Text(l.ckRemove),
                       ),
                     ],
                   ),

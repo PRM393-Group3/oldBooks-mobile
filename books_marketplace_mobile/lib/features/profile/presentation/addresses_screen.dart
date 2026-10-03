@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/network/api_error.dart';
+
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/validation/validators.dart';
@@ -9,6 +11,7 @@ import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_dialog.dart';
 import '../../../core/widgets/app_page.dart';
 import '../../../core/widgets/app_sheet.dart';
+import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_state_views.dart';
 import '../../../core/widgets/app_tag.dart';
 import '../../../core/widgets/app_text_field.dart';
@@ -23,7 +26,7 @@ class AddressesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
     final colors = context.colors;
-    final list = ref.watch(addressesProvider);
+    final state = ref.watch(addressesProvider);
     final notifier = ref.read(addressesProvider.notifier);
 
     return AppPage(
@@ -34,83 +37,104 @@ class AddressesScreen extends ConsumerWidget {
         icon: Icons.add,
         onPressed: () => showAddressSheet(context),
       ),
-      child: list.isEmpty
-          ? AppEmptyView(icon: Icons.location_on_outlined, title: l.addrEmpty)
-          : ListView.separated(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.screen + 4,
-                AppSpacing.md,
-                AppSpacing.screen + 4,
-                AppSpacing.md,
-              ),
-              itemCount: list.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 12),
-              itemBuilder: (context, i) {
-                final a = list[i];
-                return AppCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              '${a.recipient} · ${a.phone}',
-                              style: context.text.labelLarge,
+      child: state.when(
+        skipLoadingOnReload: true,
+        loading: () => const AppLoadingView(),
+        error: (error, _) =>
+            AppErrorView(error: error, onRetry: notifier.reload),
+        data: (list) => list.isEmpty
+            ? AppEmptyView(icon: Icons.location_on_outlined, title: l.addrEmpty)
+            : ListView.separated(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.screen + 4,
+                  AppSpacing.md,
+                  AppSpacing.screen + 4,
+                  AppSpacing.md,
+                ),
+                itemCount: list.length,
+                separatorBuilder: (_, _) => const SizedBox(height: 12),
+                itemBuilder: (context, i) {
+                  final a = list[i];
+                  return AppCard(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '${a.recipient} · ${a.phone}',
+                                style: context.text.labelLarge,
+                              ),
                             ),
-                          ),
-                          if (a.isDefault)
-                            AppTag(
-                              label: l.addrDefault,
-                              tone: AppTagTone.success,
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        a.fullLine,
-                        style: context.text.bodySmall?.copyWith(
-                          color: colors.textSecondary,
+                            if (a.isDefault)
+                              AppTag(
+                                label: l.addrDefault,
+                                tone: AppTagTone.success,
+                              ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: AppSpacing.xs),
-                      Wrap(
-                        spacing: AppSpacing.xs,
-                        children: [
-                          TextButton(
-                            onPressed: () =>
-                                showAddressSheet(context, existing: a),
-                            child: Text(l.addrEdit),
+                        const SizedBox(height: 4),
+                        Text(
+                          a.fullLine,
+                          style: context.text.bodySmall?.copyWith(
+                            color: colors.textSecondary,
                           ),
-                          if (!a.isDefault)
+                        ),
+                        const SizedBox(height: AppSpacing.xs),
+                        Wrap(
+                          spacing: AppSpacing.xs,
+                          children: [
                             TextButton(
-                              onPressed: () => notifier.setDefault(a.id),
-                              child: Text(l.addrSetDefault),
+                              onPressed: () =>
+                                  showAddressSheet(context, existing: a),
+                              child: Text(l.addrEdit),
                             ),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              foregroundColor: colors.error,
+                            if (!a.isDefault)
+                              TextButton(
+                                onPressed: () =>
+                                    _run(context, () => notifier.setDefault(a)),
+                                child: Text(l.addrSetDefault),
+                              ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor: colors.error,
+                              ),
+                              onPressed: () async {
+                                final ok = await showConfirmDialog(
+                                  context,
+                                  title: l.addrDeleteTitle,
+                                  message: a.fullLine,
+                                  confirmLabel: l.addrDelete,
+                                  destructive: true,
+                                );
+                                if (ok && context.mounted) {
+                                  await _run(
+                                    context,
+                                    () => notifier.remove(a.id),
+                                  );
+                                }
+                              },
+                              child: Text(l.addrDelete),
                             ),
-                            onPressed: () async {
-                              final ok = await showConfirmDialog(
-                                context,
-                                title: l.addrDeleteTitle,
-                                message: a.fullLine,
-                                confirmLabel: l.addrDelete,
-                                destructive: true,
-                              );
-                              if (ok) notifier.remove(a.id);
-                            },
-                            child: Text(l.addrDelete),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+      ),
     );
+  }
+}
+
+/// Chạy một thao tác ghi, hiện lỗi API dưới dạng snackbar.
+Future<void> _run(BuildContext context, Future<void> Function() action) async {
+  try {
+    await action();
+  } on ApiError catch (e) {
+    if (context.mounted) AppSnackbar.apiError(context, e);
   }
 }
 
@@ -157,23 +181,53 @@ class _AddressFormState extends ConsumerState<_AddressForm> {
     super.dispose();
   }
 
-  void _save() {
-    if (!_key.currentState!.validate()) return;
+  bool _saving = false;
+  bool _makeDefault = false;
+  Map<String, String> _serverErrors = const {};
+
+  /// Tên trường JSON của server → tên trường trong form.
+  static const _fieldMap = {'recipientName': 'recipient'};
+
+  Future<void> _save() async {
+    if (_saving || !_key.currentState!.validate()) return;
+    final l = context.l10n;
     final notifier = ref.read(addressesProvider.notifier);
     final base = widget.existing;
-    notifier.upsert(
-      Address(
-        id: base?.id ?? notifier.newId(),
-        recipient: _recipient.text.trim(),
-        phone: _phone.text.trim(),
-        province: _province.text.trim(),
-        district: _district.text.trim(),
-        ward: _ward.text.trim(),
-        detail: _detail.text.trim(),
-        isDefault: base?.isDefault ?? false,
-      ),
+    final address = Address(
+      id: base?.id ?? '',
+      recipient: _recipient.text,
+      phone: _phone.text,
+      province: _province.text,
+      district: _district.text,
+      ward: _ward.text,
+      detail: _detail.text,
+      // Server không cho bỏ cờ mặc định của địa chỉ mặc định duy nhất, nên cứ
+      // giữ cờ hiện tại; chỉ bật thêm khi người dùng chọn.
+      isDefault: (base?.isDefault ?? false) || _makeDefault,
     );
-    Navigator.of(context).pop();
+    setState(() {
+      _saving = true;
+      _serverErrors = const {};
+    });
+    try {
+      if (base == null) {
+        await notifier.create(address);
+      } else {
+        await notifier.edit(address);
+      }
+      if (mounted) Navigator.of(context).pop();
+    } on ApiError catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _serverErrors = {
+          for (final k in e.fieldErrors.keys)
+            _fieldMap[k] ?? k: l.errorFieldInvalid,
+        };
+      });
+      AppSnackbar.apiError(context, e);
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
   }
 
   @override
@@ -195,6 +249,8 @@ class _AddressFormState extends ConsumerState<_AddressForm> {
           AppTextField(
             label: l.addrRecipient,
             controller: _recipient,
+            errorText: _serverErrors['recipient'],
+            enabled: !_saving,
             validator: required,
             textCapitalization: TextCapitalization.words,
           ),
@@ -202,6 +258,8 @@ class _AddressFormState extends ConsumerState<_AddressForm> {
           AppTextField(
             label: l.addrPhone,
             controller: _phone,
+            errorText: _serverErrors['phone'],
+            enabled: !_saving,
             keyboardType: TextInputType.phone,
             validator: v.phoneRequired,
           ),
@@ -209,28 +267,47 @@ class _AddressFormState extends ConsumerState<_AddressForm> {
           AppTextField(
             label: l.addrProvince,
             controller: _province,
+            errorText: _serverErrors['province'],
+            enabled: !_saving,
             validator: required,
           ),
           gap(),
           AppTextField(
             label: l.addrDistrict,
             controller: _district,
+            errorText: _serverErrors['district'],
+            enabled: !_saving,
             validator: required,
           ),
           gap(),
           AppTextField(
             label: l.addrWard,
             controller: _ward,
+            errorText: _serverErrors['ward'],
+            enabled: !_saving,
             validator: required,
           ),
           gap(),
           AppTextField(
             label: l.addrDetail,
             controller: _detail,
+            errorText: _serverErrors['detail'],
+            enabled: !_saving,
             validator: required,
           ),
+          if (!(widget.existing?.isDefault ?? false))
+            CheckboxListTile(
+              value: _makeDefault,
+              onChanged: _saving
+                  ? null
+                  : (v) => setState(() => _makeDefault = v ?? false),
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+              title: Text(l.addrSetDefault, style: context.text.bodyMedium),
+            ),
           const SizedBox(height: AppSpacing.md),
-          AppButton(label: l.addrSave, onPressed: _save),
+          AppButton(label: l.addrSave, loading: _saving, onPressed: _save),
         ],
       ),
     );

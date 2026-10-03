@@ -24,7 +24,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _fullName;
   late final TextEditingController _phone;
-  late final TextEditingController _email;
 
   bool _saving = false;
   Map<String, String> _serverErrors = const {};
@@ -35,14 +34,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final profile = ref.read(profileControllerProvider).requireValue;
     _fullName = TextEditingController(text: profile.fullName);
     _phone = TextEditingController(text: profile.phoneNumber ?? '');
-    _email = TextEditingController(text: profile.email);
   }
 
   @override
   void dispose() {
     _fullName.dispose();
     _phone.dispose();
-    _email.dispose();
     super.dispose();
   }
 
@@ -60,13 +57,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       _serverErrors = const {};
     });
     try {
-      final phone = _phone.text.trim();
       await ref
           .read(profileControllerProvider.notifier)
-          .save(
-            fullName: _fullName.text.trim(),
-            phoneNumber: phone.isEmpty ? null : phone,
-          );
+          .save(fullName: _fullName.text.trim());
       if (!mounted) return;
       AppSnackbar.success(context, l.profileUpdated);
       context.pop();
@@ -109,24 +102,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             AppTextField(
               label: l.phoneLabel,
               controller: _phone,
-              keyboardType: TextInputType.phone,
-              textInputAction: TextInputAction.done,
-              autofillHints: const [AutofillHints.telephoneNumber],
-              validator: v.phoneOptional,
-              errorText: _serverErrors['phoneNumber'],
-              enabled: !_saving,
-              maxLength: 20,
-              prefixIcon: Icons.phone_outlined,
-              onChanged: (_) => _clearError('phoneNumber'),
-              onSubmitted: (_) => _save(),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            AppTextField(
-              label: l.emailLabel,
-              controller: _email,
               enabled: false,
-              helperText: l.emailReadOnlyHelper,
-              prefixIcon: Icons.mail_outline,
+              helperText: l.phoneReadOnlyHelper,
+              prefixIcon: Icons.phone_outlined,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton(
+                onPressed: _saving ? null : () => context.push('/me/phone'),
+                child: Text(l.phoneChangeLink),
+              ),
             ),
           ],
         ),

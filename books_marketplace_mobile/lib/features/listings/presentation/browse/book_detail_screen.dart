@@ -6,13 +6,13 @@ import '../../../../core/theme/app_dimens.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/theme_context.dart';
 import '../../../../core/util/format.dart';
+import '../../../../core/network/api_error.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_image_viewer.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/app_state_views.dart';
 import '../../../cart/application/cart_providers.dart';
-import '../../../cart/domain/cart_item.dart';
-import '../../../sim/domain/rules.dart';
+import '../../../sell/application/sell_rules_provider.dart';
 import '../../application/listing_providers.dart';
 import '../../domain/listing.dart';
 import '../../domain/listing_enums.dart';
@@ -21,9 +21,10 @@ import '../widgets/listing_format.dart';
 
 /// Chi tiết sách cho người mua: ảnh, giá, người bán, thông số, nút giỏ/mua.
 ///
-/// Đánh giá người bán và số đơn hoàn tất của prototype chưa có trong `ListingDto`
-/// nên không hiển thị. Tin đấu giá chỉ xem thông tin; phiên đấu giá thật ở tab
-/// Đấu giá.
+/// Đánh giá và số đơn hoàn tất của người bán chỉ hiện khi server có số liệu
+/// (`averageRating` là `null` cho tới khi có module đánh giá). Chỉ tin
+/// `PUBLISHED` mới mua được; `RESERVED`/`SOLD` chỉ xem. Tin chưa công khai chỉ
+/// chủ tin xem được, kèm trạng thái và lý do duyệt.
 class BookDetailScreen extends ConsumerWidget {
   const BookDetailScreen({super.key, required this.listingId});
 
@@ -108,7 +109,7 @@ class _Detail extends ConsumerWidget {
   final Listing listing;
 
   bool get _purchasable =>
-      listing.saleMethod != SaleMethod.auction && listing.fixedPrice != null;
+      listing.status == ListingStatus.published && listing.fixedPrice != null;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -117,7 +118,7 @@ class _Detail extends ConsumerWidget {
     final locale = Localizations.localeOf(context).toString();
     final info = listing.bookInfo;
     final price = listingPriceText(listing, l, locale);
-    final sellerName = listing.seller?.name;
+    final seller = listing.seller;
 
     final specs = <(String, String)>[
       if (info.condition != null) (l.detailCondition, info.condition!.label(l)),
@@ -142,6 +143,8 @@ class _Detail extends ConsumerWidget {
             children: [
               _Gallery(listing: listing),
               const SizedBox(height: AppSpacing.md),
+              if (listing.status != ListingStatus.published)
+                _StatusBanner(listing: listing),
               if (info.condition != null || listing.category != null)
                 Align(
                   alignment: Alignment.centerLeft,
@@ -206,7 +209,10 @@ class _Detail extends ConsumerWidget {
                           padding: const EdgeInsets.only(bottom: 3),
                           child: Text(
                             l.shipPlus(
-                              formatVnd(shippingFeeFixedPrice, locale),
+                              formatVnd(
+                                ref.watch(sellRulesProvider).shippingSale,
+                                locale,
+                              ),
                             ),
                             style: context.text.bodySmall?.copyWith(
                               color: colors.textMuted,
@@ -216,9 +222,9 @@ class _Detail extends ConsumerWidget {
                     ],
                   ),
                 ),
-              if (sellerName != null && sellerName.isNotEmpty) ...[
+              if (seller != null && seller.name.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.md),
-                _SellerCard(name: sellerName),
+                _SellerCard(seller: seller),
               ],
               if (specs.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.md),
@@ -235,13 +241,14 @@ class _Detail extends ConsumerWidget {
                 ),
               ],
               const SizedBox(height: AppSpacing.md),
-              Text(
-                _purchasable ? l.escrowNote : l.auctionListingNote,
-                style: context.text.labelSmall?.copyWith(
-                  color: colors.textMuted,
-                  height: 1.5,
+              if (_purchasable)
+                Text(
+                  l.escrowNote,
+                  style: context.text.labelSmall?.copyWith(
+                    color: colors.textMuted,
+                    height: 1.5,
+                  ),
                 ),
-              ),
             ],
           ),
         ),
@@ -281,8 +288,8 @@ class _GalleryState extends State<_Gallery> {
     }
 
     final labels = [
-      for (final i in images)
-        l.listingPhotoLabel(i.type.label(l), widget.listing.title),
+      for (var i = 0; i < images.length; i++)
+        l.listingPhotoN(i + 1, widget.listing.title),
     ];
     return SizedBox(
       height: 300,
@@ -351,13 +358,15 @@ class _GalleryState extends State<_Gallery> {
 }
 
 class _SellerCard extends StatelessWidget {
-  const _SellerCard({required this.name});
+  const _SellerCard({required this.seller});
 
-  final String name;
+  final SellerInfo seller;
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     final colors = context.colors;
+    final name = seller.name;
     final initials = name
         .trim()
         .split(RegExp(r'\s+'))
@@ -365,6 +374,11 @@ class _SellerCard extends StatelessWidget {
         .map((w) => String.fromCharCode(w.runes.first).toUpperCase())
         .take(2)
         .join();
+    final rating = seller.averageRating;
+    final stats = [
+      if (rating != null) l.sellerRating(rating.toStringAsFixed(1)),
+      if (seller.completedOrders > 0) l.sellerStats(seller.completedOrders),
+    ].join(' · ');
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colors.surface,
@@ -378,6 +392,9 @@ class _SellerCard extends StatelessWidget {
             CircleAvatar(
               radius: 20,
               backgroundColor: colors.surfaceMuted,
+              foregroundImage: seller.avatarUrl == null
+                  ? null
+                  : NetworkImage(seller.avatarUrl!),
               child: Text(
                 initials,
                 style: context.text.labelMedium?.copyWith(
@@ -387,8 +404,78 @@ class _SellerCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppSpacing.sm),
-            Expanded(child: Text(name, style: context.text.labelLarge)),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(name, style: context.text.labelLarge),
+                  if (stats.isNotEmpty)
+                    Text(
+                      stats,
+                      style: context.text.labelSmall?.copyWith(
+                        color: colors.textMuted,
+                      ),
+                    ),
+                ],
+              ),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Thông báo trạng thái: `RESERVED`/`SOLD` không cho mua; tin chưa công khai
+/// (chủ tin xem) hiện trạng thái và lý do duyệt.
+class _StatusBanner extends StatelessWidget {
+  const _StatusBanner({required this.listing});
+
+  final Listing listing;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final colors = context.colors;
+    final status = listing.status;
+    final reason = listing.reviewReason;
+    final message = switch (status) {
+      ListingStatus.reserved => l.detailReserved,
+      ListingStatus.sold => l.detailSold,
+      _ => l.detailOwnerStatus(status.label(l)),
+    };
+    final isProblem =
+        status == ListingStatus.needsChanges ||
+        status == ListingStatus.rejected;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: isProblem ? colors.errorContainer : colors.infoContainer,
+          borderRadius: AppRadius.mdAll,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.sm),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                message,
+                style: context.text.labelLarge?.copyWith(
+                  color: isProblem
+                      ? colors.onErrorContainer
+                      : colors.onInfoContainer,
+                ),
+              ),
+              if (reason != null)
+                Text(
+                  l.detailReviewReason(reason),
+                  style: context.text.bodySmall?.copyWith(
+                    color: colors.onErrorContainer,
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -432,18 +519,43 @@ class _SpecRow extends StatelessWidget {
   }
 }
 
-class _ActionBar extends ConsumerWidget {
+class _ActionBar extends ConsumerStatefulWidget {
   const _ActionBar({required this.listing});
 
   final Listing listing;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_ActionBar> createState() => _ActionBarState();
+}
+
+class _ActionBarState extends ConsumerState<_ActionBar> {
+  bool _busy = false;
+
+  /// Thêm vào giỏ (server). Trả `false` nếu có lỗi (đã hiện thông báo).
+  Future<bool> _add() async {
+    if (_busy) return false;
+    final l = context.l10n;
+    setState(() => _busy = true);
+    try {
+      final already = ref.read(inCartProvider(widget.listing.id));
+      await ref.read(cartProvider.notifier).add(widget.listing.id);
+      if (mounted) {
+        AppSnackbar.show(context, already ? l.ckAlready : l.ckAdded);
+      }
+      return true;
+    } on ApiError catch (e) {
+      if (mounted) AppSnackbar.apiError(context, e);
+      return false;
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l = context.l10n;
     final colors = context.colors;
-    final inCart = ref.watch(inCartProvider(listing.id));
-    final cart = ref.read(cartProvider.notifier);
-    final item = CartItem.fromListing(listing);
+    final inCart = ref.watch(inCartProvider(widget.listing.id));
 
     return Material(
       color: colors.surface,
@@ -466,23 +578,21 @@ class _ActionBar extends ConsumerWidget {
                   child: AppButton(
                     label: inCart ? l.inCart : l.addToCart,
                     variant: AppButtonVariant.secondary,
-                    onPressed: () {
-                      final added = cart.add(item);
-                      AppSnackbar.show(
-                        context,
-                        added ? l.addedToCart : l.alreadyInCart,
-                      );
-                    },
+                    loading: _busy,
+                    onPressed: _add,
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: AppButton(
                     label: l.buyNow,
-                    onPressed: () {
-                      cart.add(item);
-                      context.push('/cart');
-                    },
+                    onPressed: _busy
+                        ? null
+                        : () async {
+                            if (inCart || await _add()) {
+                              if (context.mounted) context.push('/cart');
+                            }
+                          },
                   ),
                 ),
               ],

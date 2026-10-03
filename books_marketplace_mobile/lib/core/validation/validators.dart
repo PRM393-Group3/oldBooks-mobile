@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/widgets.dart';
 
 import '../l10n/app_localizations.dart';
@@ -9,9 +11,11 @@ class Validators {
   final AppLocalizations l;
 
   static final _email = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-  static final _phone = RegExp(r'^(\+84|0)\d{9,10}$');
+  static final _phone = RegExp(r'^(\+84|0)[35789]\d{8}$');
 
   static const passwordMin = 8;
+
+  /// Giới hạn của bcrypt tính theo byte UTF-8: ký tự có dấu chiếm nhiều byte.
   static const passwordMax = 72;
   static const fullNameMax = 100;
 
@@ -42,11 +46,11 @@ class Validators {
     return null;
   };
 
-  /// Mật khẩu mới: 8 đến 72 ký tự.
+  /// Mật khẩu mới: tối thiểu 8 ký tự, tối đa 72 byte.
   FormFieldValidator<String> get newPassword => (value) {
     final v = value ?? '';
     if (v.isEmpty) return l.validationPasswordRequired;
-    if (v.length < passwordMin || v.length > passwordMax) {
+    if (v.length < passwordMin || utf8.encode(v).length > passwordMax) {
       return l.validationPasswordLength;
     }
     return null;

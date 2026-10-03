@@ -1,7 +1,11 @@
 import 'package:books_marketplace_mobile/app/app.dart';
 import 'package:books_marketplace_mobile/core/widgets/app_bottom_nav.dart';
 import 'package:books_marketplace_mobile/core/network/api_client.dart';
+import 'package:books_marketplace_mobile/core/config/config_providers.dart';
+import 'package:books_marketplace_mobile/features/wallet/application/wallet_providers.dart';
+import 'package:books_marketplace_mobile/core/preview/preview_overrides.dart';
 import 'package:books_marketplace_mobile/core/storage/storage_providers.dart';
+import 'package:books_marketplace_mobile/features/profile/application/address_providers.dart';
 import 'package:books_marketplace_mobile/features/auth/domain/user_role.dart';
 import 'package:books_marketplace_mobile/features/categories/application/category_providers.dart';
 import 'package:books_marketplace_mobile/features/listings/application/listing_providers.dart';
@@ -29,7 +33,6 @@ class _FakeProfileRepository extends ProfileRepository {
   @override
   Future<Profile> getProfile() async => Profile(
     id: 'u1',
-    email: 'a@b.co',
     fullName: 'Nguyen Van A',
     role: role,
     createdAt: DateTime.utc(2026, 9, 19),
@@ -49,6 +52,9 @@ class Harness {
   final FakeListingRepository listings;
   final FakeCategoryRepository categories;
   final FakeNotificationRepository notifications;
+
+  /// Ví trong bộ nhớ; test đặt số dư/tài khoản trước khi [pump].
+  InMemoryWalletRepository wallet = InMemoryWalletRepository();
 
   /// Bơm app đã đăng nhập với vai trò [role], ngôn ngữ tiếng Việt.
   Future<void> pump(
@@ -76,6 +82,13 @@ class Harness {
         overrides: [
           tokenStoreProvider.overrideWithValue(tokens),
           sharedPreferencesProvider.overrideWithValue(prefs),
+          walletRepositoryProvider.overrideWithValue(wallet),
+          configRepositoryProvider.overrideWithValue(
+            FixedConfigRepository(prefs),
+          ),
+          addressRepositoryProvider.overrideWithValue(
+            InMemoryAddressRepository(seed: const [sampleAddress]),
+          ),
           profileRepositoryProvider.overrideWithValue(
             _FakeProfileRepository(tokens, role),
           ),

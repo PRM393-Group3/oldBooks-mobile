@@ -10,19 +10,29 @@ import '../features/cart/presentation/cart_screen.dart';
 import '../features/auth/presentation/forgot_password_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/auth/presentation/register_screen.dart';
+import '../features/complaints/presentation/complaint_detail_screen.dart';
+import '../features/complaints/presentation/complaints_screen.dart';
+import '../features/complaints/presentation/open_complaint_screen.dart';
 import '../features/listings/presentation/browse/book_detail_screen.dart';
 import '../features/listings/presentation/browse/browse_screen.dart';
+import '../features/notifications/presentation/notification_settings_screen.dart';
 import '../features/notifications/presentation/notifications_screen.dart';
 import '../features/orders/presentation/order_detail_screen.dart';
+import '../features/orders/presentation/sim_order_detail_screen.dart';
+import '../features/orders/presentation/sim_orders_screen.dart';
 import '../features/orders/presentation/orders_screen.dart';
 import '../features/profile/presentation/addresses_screen.dart';
 import '../features/profile/presentation/bank_accounts_screen.dart';
 import '../features/profile/presentation/change_avatar_screen.dart';
 import '../features/profile/presentation/change_password_screen.dart';
+import '../features/profile/presentation/change_phone_screen.dart';
+import '../features/profile/presentation/delete_account_screen.dart';
 import '../features/profile/presentation/edit_profile_screen.dart';
 import '../features/profile/presentation/profile_screen.dart';
 import '../features/sell/presentation/my_listings_screen.dart';
+import '../features/sell/presentation/edit_listing_screen.dart';
 import '../features/sell/presentation/sell_screen.dart';
+import '../features/wallet/presentation/wallet_history_screen.dart';
 import '../features/wallet/presentation/wallet_screen.dart';
 import 'app_shell.dart';
 
@@ -122,6 +132,43 @@ final routerProvider = Provider<GoRouter>((ref) {
                         builder: (_, state) => OrderDetailScreen(
                           orderId: state.pathParameters['id']!,
                         ),
+                        routes: [
+                          GoRoute(
+                            path: 'complain',
+                            parentNavigatorKey: rootKey,
+                            builder: (_, state) => OpenComplaintScreen(
+                              orderId: state.pathParameters['id']!,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'complaints',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const ComplaintsScreen(),
+                    routes: [
+                      GoRoute(
+                        path: ':id',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, state) => ComplaintDetailScreen(
+                          complaintId: state.pathParameters['id']!,
+                        ),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'sim-orders',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const SimOrdersScreen(),
+                    routes: [
+                      GoRoute(
+                        path: ':id',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, state) => SimOrderDetailScreen(
+                          orderId: state.pathParameters['id']!,
+                        ),
                       ),
                     ],
                   ),
@@ -129,6 +176,15 @@ final routerProvider = Provider<GoRouter>((ref) {
                     path: 'listings',
                     parentNavigatorKey: rootKey,
                     builder: (_, _) => const MyListingsScreen(),
+                    routes: [
+                      GoRoute(
+                        path: ':id/edit',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, state) => EditListingScreen(
+                          listingId: state.pathParameters['id']!,
+                        ),
+                      ),
+                    ],
                   ),
                   GoRoute(
                     path: 'addresses',
@@ -151,6 +207,21 @@ final routerProvider = Provider<GoRouter>((ref) {
                     builder: (_, _) => const ChangeAvatarScreen(),
                   ),
                   GoRoute(
+                    path: 'notification-settings',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const NotificationSettingsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'phone',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const ChangePhoneScreen(),
+                  ),
+                  GoRoute(
+                    path: 'delete-account',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const DeleteAccountScreen(),
+                  ),
+                  GoRoute(
                     path: 'password',
                     parentNavigatorKey: rootKey,
                     builder: (_, _) => const ChangePasswordScreen(),
@@ -162,6 +233,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
       // Các màn hình phủ toàn màn hình, ẩn thanh tab.
+      GoRoute(
+        path: '/wallet/history',
+        parentNavigatorKey: rootKey,
+        builder: (_, _) => const WalletHistoryScreen(),
+      ),
       GoRoute(
         path: '/notifications',
         parentNavigatorKey: rootKey,

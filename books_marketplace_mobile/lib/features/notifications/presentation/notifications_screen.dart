@@ -15,8 +15,8 @@ import '../../sim/presentation/sim_text.dart';
 import '../application/notification_providers.dart';
 import '../domain/app_notification.dart';
 
-/// Danh sách thông báo trong app. Tiêu đề bản địa hóa theo `type`; chi tiết
-/// (lý do từ chối...) nằm ở màn hình tin đăng.
+/// Danh sách thông báo trong app. `title`/`body` do server tạo sẵn; `type` chỉ
+/// dùng chọn biểu tượng và điều hướng.
 class NotificationsScreen extends ConsumerStatefulWidget {
   const NotificationsScreen({super.key});
 
@@ -45,7 +45,15 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         if (mounted) AppSnackbar.apiError(context, e);
       }
     }
-    if (mounted && n.listingId != null) {
+    if (!mounted) return;
+    // Thông báo khiếu nại ưu tiên khiếu nại (cũng có orderId); đơn hàng mở đơn.
+    if (n.type.isWallet) {
+      context.go('/wallet');
+    } else if (n.complaintId != null) {
+      context.push('/me/complaints/${n.complaintId}');
+    } else if (n.orderId != null) {
+      context.push('/me/orders/${n.orderId}');
+    } else if (n.listingId != null) {
       context.push('/home/book/${n.listingId}');
     }
   }
@@ -134,20 +142,64 @@ class _NotificationTile extends StatelessWidget {
     final n = notification;
 
     final (IconData icon, Color bg, Color fg) = switch (n.type) {
-      NotificationType.listingApproved => (
-        Icons.check_circle_outline,
-        colors.successContainer,
-        colors.onSuccessContainer,
-      ),
-      NotificationType.listingRejected => (
-        Icons.cancel_outlined,
+      NotificationType.accountLocked ||
+      NotificationType.withdrawalRejected ||
+      NotificationType.withdrawalFailed ||
+      NotificationType.listingRejected ||
+      NotificationType.listingChangesRequested ||
+      NotificationType.listingUnpublished => (
+        switch (n.type) {
+          NotificationType.accountLocked => Icons.lock_outline,
+          NotificationType.listingChangesRequested => Icons.edit_note,
+          NotificationType.listingRejected ||
+          NotificationType.listingUnpublished => Icons.block,
+          _ => Icons.error_outline,
+        },
         colors.errorContainer,
         colors.onErrorContainer,
       ),
-      NotificationType.listingClosed => (
-        Icons.lock_outline,
-        colors.surfaceMuted,
-        colors.textSecondary,
+      NotificationType.accountUnlocked ||
+      NotificationType.listingApproved ||
+      NotificationType.topupSucceeded ||
+      NotificationType.withdrawalApproved ||
+      NotificationType.withdrawalPaid => (
+        switch (n.type) {
+          NotificationType.accountUnlocked => Icons.lock_open,
+          NotificationType.listingApproved => Icons.check_circle_outline,
+          _ => Icons.account_balance_wallet_outlined,
+        },
+        colors.successContainer,
+        colors.onSuccessContainer,
+      ),
+      NotificationType.orderTimeoutBuyer ||
+      NotificationType.orderTimeoutSeller ||
+      NotificationType.orderCancelledByBuyer ||
+      NotificationType.complaintEscalated => (
+        Icons.warning_amber_rounded,
+        colors.warningContainer,
+        colors.onWarningContainer,
+      ),
+      NotificationType.orderNew ||
+      NotificationType.orderShipped ||
+      NotificationType.orderDelivered ||
+      NotificationType.orderCompleted ||
+      NotificationType.orderShipReminder => (
+        Icons.local_shipping_outlined,
+        colors.successContainer,
+        colors.onSuccessContainer,
+      ),
+      NotificationType.complaintOpened ||
+      NotificationType.complaintSellerResponded ||
+      NotificationType.complaintMessage ||
+      NotificationType.complaintResolved => (
+        Icons.gavel_outlined,
+        colors.infoContainer,
+        colors.onInfoContainer,
+      ),
+      NotificationType.passwordChanged => (
+        Icons.vpn_key_outlined,
+        colors.infoContainer,
+        colors.onInfoContainer,
       ),
       NotificationType.unknown => (
         Icons.notifications_none,
@@ -155,9 +207,9 @@ class _NotificationTile extends StatelessWidget {
         colors.onInfoContainer,
       ),
     };
-    final title = n.type.title(l) ?? n.title;
-    // Loại đã biết thì chi tiết ở màn hình tin; loại lạ thì hiện nội dung server.
-    final body = n.type == NotificationType.unknown ? n.body : null;
+    // Nội dung do server dựng sẵn bằng tiếng Việt: hiển thị nguyên văn.
+    final title = n.title;
+    final body = n.body;
 
     return Semantics(
       label: '${n.isRead ? '' : '${l.unreadOnly}. '}$title',
@@ -195,7 +247,7 @@ class _NotificationTile extends StatelessWidget {
                               : FontWeight.w700,
                         ),
                       ),
-                      if (body != null && body.isNotEmpty)
+                      if (body.isNotEmpty)
                         Text(body, style: context.text.bodySmall),
                       if (n.createdAt != null)
                         Text(

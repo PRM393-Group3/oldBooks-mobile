@@ -7,6 +7,7 @@ import 'api_client.dart';
 import 'auth_interceptor.dart';
 import 'blob_uploader.dart';
 import 'session_events.dart';
+import 'token_refresher.dart';
 
 Dio _newDio() => Dio(
   BaseOptions(
@@ -27,6 +28,14 @@ final sessionEventsProvider = Provider<SessionEvents>((ref) {
 /// (bắt buộc không kèm `Authorization`).
 final plainDioProvider = Provider<Dio>((ref) => _newDio());
 
+/// Refresh token dùng chung cho interceptor và lúc khởi động app.
+final tokenRefresherProvider = Provider<TokenRefresher>(
+  (ref) => TokenRefresher(
+    tokens: ref.watch(tokenStoreProvider),
+    dio: ref.watch(plainDioProvider),
+  ),
+);
+
 /// Dio gọi backend, có [AuthInterceptor].
 final apiDioProvider = Provider<Dio>((ref) {
   final dio = _newDio();
@@ -35,6 +44,7 @@ final apiDioProvider = Provider<Dio>((ref) {
       tokens: ref.watch(tokenStoreProvider),
       refreshDio: ref.watch(plainDioProvider),
       onSessionLost: ref.read(sessionEventsProvider).notifyLost,
+      refresher: ref.watch(tokenRefresherProvider),
     ),
   );
   return dio;

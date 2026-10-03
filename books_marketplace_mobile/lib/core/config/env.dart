@@ -5,11 +5,11 @@ import 'package:flutter/foundation.dart';
 /// Ghi đè khi chạy máy thật: `flutter run --dart-define=API_BASE_URL=http://192.168.1.10:5148`
 abstract final class Env {
   /// Chế độ xem trước giao diện: bỏ đăng nhập và dùng dữ liệu mẫu trong bộ
-  /// nhớ thay cho backend. Tắt khi nối backend thật:
-  /// `flutter run --dart-define=UI_PREVIEW=false`
+  /// nhớ thay cho backend. Mặc định TẮT (đăng nhập và gọi backend thật); bật
+  /// khi chỉ muốn xem giao diện: `flutter run --dart-define=UI_PREVIEW=true`
   static const bool uiPreview = bool.fromEnvironment(
     'UI_PREVIEW',
-    defaultValue: true,
+    defaultValue: false,
   );
 
   static const String _override = String.fromEnvironment('API_BASE_URL');

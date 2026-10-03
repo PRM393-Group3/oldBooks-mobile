@@ -50,7 +50,7 @@ class NotificationActions {
   NotificationRepository get _repo => _ref.read(notificationRepositoryProvider);
 
   Future<void> markRead(String id) async {
-    await _repo.markRead(id);
+    await _repo.markRead([id]);
     _refresh();
   }
 
@@ -68,3 +68,40 @@ class NotificationActions {
 final notificationActionsProvider = Provider<NotificationActions>(
   NotificationActions.new,
 );
+
+/// Tùy chọn nhận push. Cập nhật lạc quan, lỗi thì trả về giá trị cũ.
+class NotificationSettingsNotifier extends AsyncNotifier<NotificationSettings> {
+  NotificationRepository get _repo => ref.read(notificationRepositoryProvider);
+
+  @override
+  Future<NotificationSettings> build() => _repo.getSettings();
+
+  Future<void> change({bool? marketing, bool? auctionWatch}) async {
+    final previous = state.value;
+    if (previous == null) return;
+    state = AsyncData(
+      previous.copyWith(marketing: marketing, auctionWatch: auctionWatch),
+    );
+    try {
+      state = AsyncData(
+        await _repo.updateSettings(
+          marketing: marketing,
+          auctionWatch: auctionWatch,
+        ),
+      );
+    } catch (_) {
+      state = AsyncData(previous);
+      rethrow;
+    }
+  }
+
+  Future<void> reload() async {
+    ref.invalidateSelf();
+    await future;
+  }
+}
+
+final notificationSettingsProvider =
+    AsyncNotifierProvider<NotificationSettingsNotifier, NotificationSettings>(
+      NotificationSettingsNotifier.new,
+    );

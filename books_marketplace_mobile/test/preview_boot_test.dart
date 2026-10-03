@@ -19,7 +19,7 @@ void main() {
           // Giống main.dart: token store và prefs ở ngoài, phần còn lại từ preview.
           tokenStoreProvider.overrideWithValue(tokens),
           sharedPreferencesProvider.overrideWithValue(prefs),
-          ...previewOverrides(tokens),
+          ...previewOverrides(tokens, prefs),
         ],
         child: const App(),
       ),

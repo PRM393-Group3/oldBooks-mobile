@@ -1,33 +1,32 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/network/network_providers.dart';
-import '../../../core/network/paged_result.dart';
-import '../../../core/paging/paged_notifier.dart';
+import '../../../core/paging/cursor_notifier.dart';
 import '../data/listing_repository.dart';
 import '../domain/listing.dart';
+import '../domain/listing_query.dart';
 
 final listingRepositoryProvider = Provider<ListingRepository>(
-  (ref) => ListingRepository(ref.watch(apiClientProvider)),
+  (ref) => ListingRepository(
+    ref.watch(apiClientProvider),
+    ref.watch(blobUploaderProvider),
+  ),
 );
 
-/// Tin công khai cho Buyer/Seller, lọc theo danh mục (`null` là tất cả).
-class BrowseListingsNotifier extends PagedNotifier<Listing> {
-  BrowseListingsNotifier(this.categoryId);
-  final String? categoryId;
+/// Kết quả tìm kiếm/khám phá cho một bộ điều kiện.
+class ListingSearchNotifier extends CursorNotifier<Listing> {
+  ListingSearchNotifier(this.query);
+  final ListingQuery query;
 
   @override
-  Future<PagedResult<Listing>> fetchPage(int page) => ref
+  Future<CursorPage<Listing>> fetch(String? cursor) => ref
       .read(listingRepositoryProvider)
-      .browse(
-        categoryId: categoryId,
-        page: page,
-        pageSize: PagedNotifier.pageSize,
-      );
+      .search(query, cursor: cursor, pageSize: CursorNotifier.pageSize);
 }
 
-final browseListingsProvider = AsyncNotifierProvider.autoDispose
-    .family<BrowseListingsNotifier, PagedState<Listing>, String?>(
-      BrowseListingsNotifier.new,
+final listingSearchProvider = AsyncNotifierProvider.autoDispose
+    .family<ListingSearchNotifier, CursorState<Listing>, ListingQuery>(
+      ListingSearchNotifier.new,
     );
 
 final listingDetailProvider = FutureProvider.autoDispose

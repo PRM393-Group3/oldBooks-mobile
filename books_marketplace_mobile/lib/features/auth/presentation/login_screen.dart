@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +15,7 @@ import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../application/auth_controller.dart';
 import 'auth_header.dart';
+import 'countdown_text.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -29,15 +32,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _loading = false;
   Map<String, String> _serverErrors = const {};
 
+  /// Giây còn lại của khóa đăng nhập tạm / giới hạn tần suất (`Retry-After`).
+  int _lockLeft = 0;
+  Timer? _lockTimer;
+
+  void _startLock(Duration wait) {
+    _lockTimer?.cancel();
+    setState(() => _lockLeft = wait.inSeconds);
+    _lockTimer = Timer.periodic(const Duration(seconds: 1), (t) {
+      if (!mounted) return t.cancel();
+      setState(() => _lockLeft--);
+      if (_lockLeft <= 0) t.cancel();
+    });
+  }
+
   @override
   void dispose() {
+    _lockTimer?.cancel();
     _phone.dispose();
     _password.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
-    if (_loading || !_formKey.currentState!.validate()) return;
+    if (_loading || _lockLeft > 0 || !_formKey.currentState!.validate()) return;
     final l = context.l10n;
     setState(() {
       _loading = true;
@@ -51,6 +69,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (!mounted) return;
       setState(() => _serverErrors = e.localizedFieldErrors(l));
       AppSnackbar.apiError(context, e);
+      final wait = e.retryAfter;
+      if (wait != null &&
+          (e.isTemporaryLock || e.code == ApiErrorCode.rateLimited)) {
+        _startLock(wait);
+      }
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -63,9 +86,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     return AppPage(
       bottom: AppButton(
-        label: l.loginButton,
+        label: _lockLeft > 0
+            ? l.loginLockedRetry(formatMmSs(_lockLeft))
+            : l.loginButton,
         loading: _loading,
-        onPressed: _submit,
+        onPressed: _lockLeft > 0 ? null : _submit,
       ),
       child: AutofillGroup(
         child: Form(

@@ -1,3 +1,5 @@
+import 'package:books_marketplace_mobile/core/preview/preview_overrides.dart';
+import 'package:books_marketplace_mobile/features/auth/application/auth_controller.dart';
 import 'package:books_marketplace_mobile/features/profile/application/address_providers.dart';
 import 'package:books_marketplace_mobile/features/profile/domain/address.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,45 +16,71 @@ Address _addr(String id, {bool isDefault = false}) => Address(
   isDefault: isDefault,
 );
 
+ProviderContainer _container() {
+  final c = ProviderContainer(
+    overrides: [
+      addressRepositoryProvider.overrideWithValue(
+        InMemoryAddressRepository(seed: const [sampleAddress]),
+      ),
+      authControllerProvider.overrideWith(_SignedIn.new),
+    ],
+  );
+  addTearDown(c.dispose);
+  return c;
+}
+
+class _SignedIn extends AuthController {
+  @override
+  AuthStatus build() => AuthStatus.authenticated;
+}
+
 void main() {
-  test('sổ địa chỉ: luôn đúng một địa chỉ mặc định', () {
-    final c = ProviderContainer();
+  test(
+    'sổ địa chỉ: luôn đúng một địa chỉ mặc định (quy tắc của server)',
+    () async {
+      final c = _container();
+      await c.read(addressesProvider.future);
+      final n = c.read(addressesProvider.notifier);
+      List<Address> list() => c.read(addressesProvider).requireValue;
+      expect(c.read(defaultAddressProvider)!.id, 'seed');
+
+      await n.create(_addr('x'));
+      expect(list().where((a) => a.isDefault).length, 1);
+      expect(c.read(defaultAddressProvider)!.id, 'seed');
+
+      await n.create(_addr('y', isDefault: true));
+      expect(list().where((a) => a.isDefault).length, 1);
+      expect(list().first.isDefault, isTrue, reason: 'mặc định lên đầu');
+
+      final defaultId = c.read(defaultAddressProvider)!.id;
+      await n.remove(defaultId);
+      expect(c.read(defaultAddressProvider), isNotNull);
+      expect(list().where((a) => a.isDefault).length, 1);
+
+      for (final a in [...list()]) {
+        await n.remove(a.id);
+      }
+      expect(c.read(defaultAddressProvider), isNull);
+    },
+  );
+
+  test('địa chỉ đầu tiên luôn mặc định dù gửi isDefault false', () async {
+    final c = ProviderContainer(
+      overrides: [
+        addressRepositoryProvider.overrideWithValue(
+          InMemoryAddressRepository(),
+        ),
+        authControllerProvider.overrideWith(_SignedIn.new),
+      ],
+    );
     addTearDown(c.dispose);
-    final n = c.read(addressesProvider.notifier);
-    expect(c.read(defaultAddressProvider)!.id, 'a0');
-
-    n.upsert(_addr('x'));
-    expect(c.read(addressesProvider).where((a) => a.isDefault).length, 1);
-    n.upsert(_addr('y'), makeDefault: true);
-    expect(c.read(defaultAddressProvider)!.id, 'y');
-
-    n.remove('y');
+    await c.read(addressesProvider.future);
+    await c.read(addressesProvider.notifier).create(_addr('first'));
     expect(c.read(defaultAddressProvider), isNotNull);
-    expect(c.read(addressesProvider).where((a) => a.isDefault).length, 1);
-
-    n.remove('a0');
-    n.remove('x');
-    expect(c.read(defaultAddressProvider), isNull);
   });
 
   test('địa chỉ in một dòng từ nhỏ đến lớn, bỏ phần trống', () {
     expect(_addr('z').fullLine, '1 Phố, QA, TH, HN');
     expect(_addr('z').copyWith(ward: ' ').fullLine, '1 Phố, TH, HN');
-  });
-
-  test('tài khoản ngân hàng: tối đa 3, che số', () {
-    final c = ProviderContainer();
-    addTearDown(c.dispose);
-    final n = c.read(bankAccountsProvider.notifier);
-    BankAccount b(String id) =>
-        BankAccount(id: id, bank: 'ACB', number: '123456789', holder: 'A');
-
-    expect(n.add(b('1')), isTrue);
-    expect(n.add(b('2')), isTrue);
-    expect(c.read(bankAccountsProvider).length, 3);
-    expect(n.add(b('3')), isFalse);
-    expect(b('1').last4, '6789');
-    n.remove('1');
-    expect(c.read(bankAccountsProvider).length, 2);
   });
 }

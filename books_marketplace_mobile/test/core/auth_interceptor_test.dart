@@ -45,29 +45,32 @@ void main() {
     expect(adapter.calls.single, 'GET /profile Bearer old-access');
   });
 
-  test('AUTH_TOKEN_EXPIRED: refresh rồi gửi lại đúng một lần', () async {
-    setup((o) {
-      if (o.path == '/auth/refresh') return jsonResponse(200, newTokens());
-      return o.headers['Authorization'] == 'Bearer new-access'
-          ? jsonResponse(200, okBody({'ok': true}))
-          : jsonResponse(401, errorBody(ApiErrorCode.tokenExpired));
-    });
+  test(
+    'UNAUTHENTICATED + token expired: refresh rồi gửi lại đúng một lần',
+    () async {
+      setup((o) {
+        if (o.path == '/auth/refresh') return jsonResponse(200, newTokens());
+        return o.headers['Authorization'] == 'Bearer new-access'
+            ? jsonResponse(200, okBody({'ok': true}))
+            : jsonResponse(401, expiredBody());
+      });
 
-    final result = await getProfile();
+      final result = await getProfile();
 
-    expect(result, {'ok': true});
-    expect(tokens.accessToken, 'new-access');
-    expect(tokens.refreshToken, 'new-refresh');
-    expect(adapter.count('/auth/refresh'), 1);
-    expect(sessionLost, 0);
-  });
+      expect(result, {'ok': true});
+      expect(tokens.accessToken, 'new-access');
+      expect(tokens.refreshToken, 'new-refresh');
+      expect(adapter.count('/auth/refresh'), 1);
+      expect(sessionLost, 0);
+    },
+  );
 
   test('nhiều request cùng hết hạn chỉ refresh một lần', () async {
     setup((o) {
       if (o.path == '/auth/refresh') return jsonResponse(200, newTokens());
       return o.headers['Authorization'] == 'Bearer new-access'
           ? jsonResponse(200, okBody({'ok': true}))
-          : jsonResponse(401, errorBody(ApiErrorCode.tokenExpired));
+          : jsonResponse(401, expiredBody());
     });
 
     final results = await Future.wait([
@@ -85,7 +88,7 @@ void main() {
       if (o.path == '/auth/refresh') {
         return jsonResponse(401, errorBody('AUTH_REFRESH_TOKEN_REUSED'));
       }
-      return jsonResponse(401, errorBody(ApiErrorCode.tokenExpired));
+      return jsonResponse(401, expiredBody());
     });
 
     await expectLater(getProfile(), throwsA(isA<ApiError>()));
@@ -111,7 +114,7 @@ void main() {
           reason: 'offline',
         );
       }
-      return jsonResponse(401, errorBody(ApiErrorCode.tokenExpired));
+      return jsonResponse(401, expiredBody());
     });
 
     await expectLater(
@@ -167,5 +170,60 @@ void main() {
         ),
       ),
     );
+  });
+
+  test('UNAUTHENTICATED không có details: token sai, về đăng nhập', () async {
+    setup((o) => jsonResponse(401, errorBody(ApiErrorCode.unauthenticated)));
+
+    await expectLater(getProfile(), throwsA(isA<ApiError>()));
+
+    expect(adapter.count('/auth/refresh'), 0);
+    expect(sessionLost, 1);
+  });
+
+  test('mọi request mang X-Correlation-Id hợp lệ', () async {
+    String? id;
+    setup((o) {
+      id = o.headers['X-Correlation-Id'] as String?;
+      return jsonResponse(200, okBody({'ok': true}));
+    });
+    await getProfile();
+    expect(id, matches(RegExp(r'^[A-Za-z0-9_-]{1,64}$')));
+  });
+
+  test('refresh bị 403 ACCOUNT_LOCKED: xóa phiên', () async {
+    setup((o) {
+      if (o.path == '/auth/refresh') {
+        return jsonResponse(403, errorBody(ApiErrorCode.accountLocked));
+      }
+      return jsonResponse(401, expiredBody());
+    });
+
+    await expectLater(getProfile(), throwsA(isA<ApiError>()));
+
+    expect(tokens.hasSession, isFalse);
+    expect(sessionLost, 1);
+  });
+
+  test(
+    'endpoint /auth/* không gắn Bearer và không kích hoạt refresh',
+    () async {
+      setup((o) => jsonResponse(401, errorBody(ApiErrorCode.unauthenticated)));
+
+      await expectLater(
+        client.post('/auth/login', body: {}, parse: (d) => d),
+        throwsA(isA<ApiError>()),
+      );
+
+      expect(adapter.calls.single, 'POST /auth/login null');
+      expect(sessionLost, 0);
+    },
+  );
+
+  test('logout vẫn gắn Bearer', () async {
+    setup((o) => ResponseBody.fromString('', 204));
+    await client.postNoContent('/auth/logout?all=true', body: {});
+    expect(adapter.calls.single, startsWith('POST /auth/logout'));
+    expect(adapter.calls.single, endsWith('Bearer old-access'));
   });
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_dimens.dart';
@@ -9,7 +8,6 @@ import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_dashed_button.dart';
 import '../../../core/widgets/app_sheet.dart';
 import '../../sim/application/sim_providers.dart';
-import '../../sim/domain/rules.dart';
 
 String _locale(BuildContext c) => Localizations.localeOf(c).toString();
 
@@ -64,7 +62,8 @@ Future<void> showInsufficientSheet(BuildContext context, int needed) {
 
 const _topupChoices = [100000, 200000, 500000, 1000000];
 
-/// Nạp tiền qua VietQR giả. Có [initialAmount] thì vào thẳng bước quét mã.
+/// Nạp tiền mô phỏng cho giỏ hàng/đấu giá (số dư mô phỏng, chưa nối backend).
+/// Nạp thật nằm ở `showWalletTopupSheet`. Có [initialAmount] thì vào thẳng bước quét mã.
 Future<void> showTopupSheet(BuildContext context, {int? initialAmount}) {
   return showAppSheet<void>(
     context,
@@ -221,86 +220,6 @@ class _AmountChip extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-/// Rút tiền về tài khoản ngân hàng (mô phỏng): giữ tiền chờ duyệt.
-Future<void> showWithdrawSheet(BuildContext context) {
-  return showAppSheet<void>(context, builder: (_) => const _WithdrawBody());
-}
-
-class _WithdrawBody extends ConsumerStatefulWidget {
-  const _WithdrawBody();
-
-  @override
-  ConsumerState<_WithdrawBody> createState() => _WithdrawBodyState();
-}
-
-class _WithdrawBodyState extends ConsumerState<_WithdrawBody> {
-  final _controller = TextEditingController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final colors = context.colors;
-    final locale = _locale(context);
-    final avail = ref.watch(availableBalanceProvider);
-    final amount = int.tryParse(_controller.text) ?? 0;
-    final valid = amount >= minWithdrawal && amount <= avail;
-
-    final (String hint, bool bad) = amount == 0
-        ? (l.withdrawHintAvailable(formatVnd(avail, locale)), false)
-        : amount < minWithdrawal
-        ? (l.withdrawHintMin, true)
-        : amount > avail
-        ? (l.withdrawHintOver(formatVnd(avail, locale)), true)
-        : (l.withdrawHintHold(formatVnd(amount, locale)), false);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AppSheetTitle(l.withdrawSheetTitle),
-        const SizedBox(height: AppSpacing.md),
-        TextField(
-          controller: _controller,
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          onChanged: (_) => setState(() {}),
-          decoration: InputDecoration(hintText: l.withdrawAmountHint),
-        ),
-        const SizedBox(height: AppSpacing.xxs),
-        Text(
-          hint,
-          style: context.text.labelSmall?.copyWith(
-            color: bad ? colors.error : colors.textMuted,
-          ),
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        Text(
-          l.withdrawNote,
-          style: context.text.labelSmall?.copyWith(
-            color: colors.textMuted,
-            height: 1.5,
-          ),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        AppButton(
-          label: l.withdrawSubmit,
-          onPressed: valid
-              ? () {
-                  ref.read(simProvider.notifier).withdraw(amount);
-                  Navigator.of(context).pop();
-                }
-              : null,
-        ),
-      ],
     );
   }
 }

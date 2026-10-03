@@ -12,8 +12,10 @@ import '../../../core/widgets/app_page.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../application/auth_controller.dart';
+import '../data/auth_repository.dart';
 import 'auth_header.dart';
 import 'otp_field.dart';
+import 'password_rules.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -30,6 +32,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _password = TextEditingController();
 
   bool _loading = false;
+  bool _acceptTerms = false;
+  bool _termsError = false;
   Map<String, String> _serverErrors = const {};
 
   @override
@@ -42,7 +46,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> _submit() async {
-    if (_loading || !_formKey.currentState!.validate()) return;
+    if (_loading) return;
+    final formOk = _formKey.currentState!.validate();
+    if (!_acceptTerms) setState(() => _termsError = true);
+    if (!formOk || !_acceptTerms) return;
     final l = context.l10n;
     setState(() {
       _loading = true;
@@ -56,11 +63,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             otp: _otp.text.trim(),
             password: _password.text,
             fullName: _fullName.text.trim(),
+            acceptTerms: _acceptTerms,
           );
     } on ApiError catch (e) {
       if (!mounted) return;
       setState(() => _serverErrors = e.localizedFieldErrors(l));
       AppSnackbar.apiError(context, e);
+      // Có người vừa đăng ký số này trước: về đăng nhập.
+      if (e.code == ApiErrorCode.phoneTaken) context.go('/login');
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -123,9 +133,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 errorText: _serverErrors['otp'],
                 validatePhone: () => v.phoneRequired(_phone.text) == null,
                 onSend: () async {
-                  await ref
+                  final expiresIn = await ref
                       .read(authControllerProvider.notifier)
-                      .sendOtp(_phone.text.trim());
+                      .sendOtp(_phone.text.trim(), OtpPurpose.register);
                   if (context.mounted) {
                     AppSnackbar.show(
                       context,
@@ -133,6 +143,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       type: AppSnackbarType.success,
                     );
                   }
+                  return expiresIn;
                 },
               ),
               const SizedBox(height: AppSpacing.md),
@@ -149,6 +160,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 prefixIcon: Icons.lock_outline,
                 onChanged: (_) => _clearError('password'),
                 onSubmitted: (_) => _submit(),
+              ),
+              PasswordRules(controller: _password),
+              const SizedBox(height: AppSpacing.md),
+              _TermsCheckbox(
+                value: _acceptTerms,
+                showError: _termsError && !_acceptTerms,
+                enabled: !_loading,
+                onChanged: (v) => setState(() {
+                  _acceptTerms = v;
+                  _termsError = false;
+                }),
               ),
               const SizedBox(height: AppSpacing.lg),
               Wrap(
@@ -171,6 +193,44 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _TermsCheckbox extends StatelessWidget {
+  const _TermsCheckbox({
+    required this.value,
+    required this.showError,
+    required this.enabled,
+    required this.onChanged,
+  });
+
+  final bool value;
+  final bool showError;
+  final bool enabled;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final colors = context.colors;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CheckboxListTile(
+          value: value,
+          onChanged: enabled ? (v) => onChanged(v ?? false) : null,
+          controlAffinity: ListTileControlAffinity.leading,
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          title: Text(l.termsLabel, style: context.text.bodySmall),
+        ),
+        if (showError)
+          Text(
+            l.validationTermsRequired,
+            style: context.text.bodySmall?.copyWith(color: colors.error),
+          ),
+      ],
     );
   }
 }

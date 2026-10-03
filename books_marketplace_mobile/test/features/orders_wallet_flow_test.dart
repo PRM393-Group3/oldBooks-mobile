@@ -25,10 +25,9 @@ Future<Harness> _pumpWithBook(
   final h = Harness(UserRole.buyer);
   final book = fakeListing(
     id: 'L1',
-    status: ListingStatus.onSale,
+    status: ListingStatus.published,
     bookInfo: const BookInfo(title: 'Sapiens', author: 'Yuval Noah Harari'),
-    saleMethod: SaleMethod.fixedPrice,
-    fixedPrice: const FixedPriceConfig(price: 95000, quantity: 1),
+    price: 95000,
   );
   h.listings.browseItems = [book];
   h.listings.stored = book;
@@ -134,59 +133,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Nạp thành công +50.000 ₫'), findsOneWidget);
     expect(simContainer(tester).read(availableBalanceProvider), 150000);
-  });
-
-  testWidgets('tab Ví: số dư, lịch sử và nạp tiền qua VietQR giả', (
-    tester,
-  ) async {
-    await _pumpWithBook(tester);
-    await tapTab(tester, 'Ví');
-
-    expect(find.text('Ví Oldbook'), findsOneWidget);
-    expect(find.text('1.250.000 ₫'), findsOneWidget);
-    expect(find.text('345.000 ₫'), findsOneWidget); // đang giữ
-    expect(find.text('1.595.000 ₫'), findsOneWidget); // tổng
-    expect(find.text('Nạp tiền qua VietQR'), findsOneWidget);
-
-    await tester.tap(find.text('Nạp tiền'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('500.000 ₫'));
-    await tester.pump();
-    await tester.tap(find.text('Tạo mã thanh toán · 500.000 ₫'));
-    await tester.pumpAndSettle();
-    expect(find.text('Quét mã để thanh toán'), findsOneWidget);
-    await tester.tap(find.text('Mô phỏng: cổng thanh toán xác nhận'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('1.750.000 ₫'), findsOneWidget);
-  });
-
-  testWidgets('rút tiền: kiểm tra số tiền rồi giữ chờ duyệt', (tester) async {
-    await _pumpWithBook(tester);
-    await tapTab(tester, 'Ví');
-
-    await tester.tap(find.text('Rút tiền').first);
-    await tester.pumpAndSettle();
-    final submit = find.widgetWithText(FilledButton, 'Gửi yêu cầu rút');
-    expect(tester.widget<FilledButton>(submit).onPressed, isNull);
-
-    await tester.enterText(find.byType(TextField), '10000');
-    await tester.pump();
-    expect(find.text('Tối thiểu 50.000 đ'), findsWidgets);
-    expect(tester.widget<FilledButton>(submit).onPressed, isNull);
-
-    await tester.enterText(find.byType(TextField), '2000000');
-    await tester.pump();
-    expect(find.textContaining('Vượt số dư khả dụng'), findsOneWidget);
-
-    await tester.enterText(find.byType(TextField), '100000');
-    await tester.pump();
-    expect(find.text('Sẽ giữ 100.000 ₫ chờ duyệt'), findsOneWidget);
-    await tester.tap(submit);
-    await tester.pumpAndSettle();
-
-    expect(find.text('1.150.000 ₫'), findsOneWidget);
-    expect(find.textContaining('Yêu cầu rút về Vietcombank'), findsOneWidget);
   });
 
   testWidgets(

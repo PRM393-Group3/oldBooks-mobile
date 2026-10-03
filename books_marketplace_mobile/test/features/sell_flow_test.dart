@@ -13,7 +13,7 @@ final _png = base64Decode(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
 );
 
-Future<void> _openSell(WidgetTester tester) async {
+Future<Harness> _openSell(WidgetTester tester) async {
   final h = Harness(UserRole.buyer);
   await h.pump(
     tester,
@@ -24,6 +24,7 @@ Future<void> _openSell(WidgetTester tester) async {
     ],
   );
   await tapSellTab(tester);
+  return h;
 }
 
 Future<void> _scrollTo(WidgetTester tester, Finder f) => tester
@@ -58,6 +59,7 @@ void main() {
         SellError.author,
         SellError.price,
         SellError.description,
+        SellError.category,
       ]);
       const ok = SellForm(
         photos: 4,
@@ -65,9 +67,14 @@ void main() {
         author: 'B',
         price: 1000,
         description: 'd',
+        categoryId: 'c0',
       );
       expect(validateSell(ok), isEmpty);
       expect(validateSell(ok.copyWith(price: 999)), [SellError.price]);
+      expect(validateSell(ok.copyWith(isbn: '978-0-306-40615-7')), isEmpty);
+      expect(validateSell(ok.copyWith(isbn: '123')), [SellError.isbn]);
+      expect(validateSell(ok.copyWith(publishYear: '1200')), [SellError.year]);
+      expect(validateSell(ok.copyWith(publishYear: '2018')), isEmpty);
     });
 
     test(
@@ -108,7 +115,7 @@ void main() {
   });
 
   testWidgets('form trống: báo đủ lỗi, không tạo tin', (tester) async {
-    await _openSell(tester);
+    final h = await _openSell(tester);
     expect(find.text('Đăng bán'), findsWidgets);
     await _scrollTo(tester, find.text('Gửi duyệt'));
     await tester.tap(find.text('Gửi duyệt'));
@@ -116,13 +123,19 @@ void main() {
     expect(find.text('• Cần ít nhất 4 ảnh (hiện có 0)'), findsOneWidget);
     expect(find.text('• Nhập tên sách'), findsOneWidget);
     expect(find.text('• Giá bán tối thiểu 1.000 đ'), findsOneWidget);
+    expect(find.text('• Chọn thể loại.'), findsOneWidget);
     expect(find.text('Đã gửi duyệt'), findsNothing);
+    expect(
+      h.listings.calls,
+      isNot(contains('create')),
+      reason: 'không tạo tin',
+    );
   });
 
   testWidgets(
     'đăng bán thường: dự tính phí 5%, gửi duyệt, hiện trong Tin của tôi',
     (tester) async {
-      await _openSell(tester);
+      final h = await _openSell(tester);
       for (var i = 0; i < 4; i++) {
         await tester.tap(find.text('+ thêm'));
         await tester.pumpAndSettle();
@@ -131,11 +144,14 @@ void main() {
 
       await _type(tester, 'VD: Số đỏ', 'Mắt biếc');
       await _type(tester, 'VD: Vũ Trọng Phụng', 'Nguyễn Nhật Ánh');
+      await _scrollTo(tester, find.widgetWithText(ChoiceChip, 'Văn học'));
+      await tester.tap(find.widgetWithText(ChoiceChip, 'Văn học'));
+      await tester.pump();
       await _type(tester, 'Tối thiểu 1.000', '100000');
       await _scrollTo(tester, find.text('Dự tính'.toUpperCase()));
       expect(find.text('−5.000 ₫'), findsOneWidget);
       expect(find.text('95.000 ₫'), findsOneWidget);
-      expect(find.text('25.000 ₫'), findsOneWidget);
+      expect(find.text('30.000 ₫'), findsOneWidget);
 
       await _type(
         tester,
@@ -148,12 +164,24 @@ void main() {
       expect(find.text('Đã gửi duyệt'), findsOneWidget);
       expect(find.textContaining('"Mắt biếc"'), findsOneWidget);
 
+      // Đã đi đủ các bước của backend theo thứ tự: tạo, tải ảnh, đặt ảnh, gửi duyệt.
+      expect(h.listings.calls.where((c) => !c.startsWith('mine')).toList(), [
+        'create',
+        'upload:mine-1:1',
+        'upload:mine-1:1',
+        'upload:mine-1:1',
+        'upload:mine-1:1',
+        'photos:mine-1:4',
+        'submit:mine-1',
+      ]);
+      expect(h.listings.items.first.status.api, 'PENDING_REVIEW');
+
       await tester.tap(find.text('Xem tin đăng của tôi'));
       await tester.pumpAndSettle();
       expect(find.text('Mắt biếc'), findsOneWidget);
-      expect(find.text('Vừa gửi duyệt · duyệt trong 24 giờ'), findsOneWidget);
+      expect(find.text('Chờ duyệt'), findsWidgets);
       expect(
-        find.text('Admin: Ảnh bìa bị mờ, vui lòng chụp lại.'),
+        find.text('Đang chờ duyệt, thường trong 24 giờ. Chưa sửa được.'),
         findsOneWidget,
       );
     },

@@ -230,7 +230,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get validationPhoneInvalid =>
-      'Phone number must start with 0 or +84, followed by 9 or 10 digits.';
+      'Enter a Vietnamese mobile number (10 digits starting 03, 05, 07, 08 or 09, or +84).';
 
   @override
   String get validationEmailRequired => 'Please enter your email.';
@@ -955,10 +955,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get filterButton => 'Filters';
+  String get filterButton => 'Filter';
 
   @override
-  String get filterTitle => 'Filter queue';
+  String get filterTitle => 'Filters';
 
   @override
   String get priceFrom => 'Price from (₫)';
@@ -1807,7 +1807,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get topupSheetNote =>
-      'Pay via VietQR. The request expires after 30 minutes if unpaid.';
+      'You will be taken to the payment gateway. The request expires if unpaid within the time limit.';
 
   @override
   String topupCreateCode(String amount) {
@@ -2769,4 +2769,1154 @@ class AppLocalizationsEn extends AppLocalizations {
   String bankMasked(String last) {
     return '•••• $last';
   }
+
+  @override
+  String get roleUser => 'User';
+
+  @override
+  String get roleSuperAdmin => 'Super administrator';
+
+  @override
+  String get errPhoneTaken =>
+      'This phone number already has an account. Sign in or reset your password.';
+
+  @override
+  String errAccountLockedTemp(int n) {
+    return 'Sign-in is temporarily locked. Try again in $n minutes, or reset your password to unlock now.';
+  }
+
+  @override
+  String errRateLimitedIn(int n) {
+    return 'Too many attempts. Try again in $n seconds.';
+  }
+
+  @override
+  String get termsLabel =>
+      'I accept the Terms of Use and consent to personal data processing (Decree 13/2023).';
+
+  @override
+  String get validationTermsRequired =>
+      'You need to accept the terms to continue.';
+
+  @override
+  String otpExpiresIn(String time) {
+    return 'Code expires in $time';
+  }
+
+  @override
+  String get otpExpired => 'The code has expired. Request a new one.';
+
+  @override
+  String get forgotOtpNotice =>
+      'If the number is registered, you will receive a code.';
+
+  @override
+  String get pwRuleLength => 'At least 8 characters';
+
+  @override
+  String get pwRuleLetter => 'Has a letter';
+
+  @override
+  String get pwRuleDigit => 'Has a digit';
+
+  @override
+  String loginLockedRetry(String time) {
+    return 'Try again in $time';
+  }
+
+  @override
+  String get errAddressNotFound => 'This address was not found.';
+
+  @override
+  String get errDeletionBlocked =>
+      'Your account cannot be deleted yet because some things are unfinished.';
+
+  @override
+  String get errRoleNotAllowed =>
+      'Administrator accounts cannot delete themselves.';
+
+  @override
+  String get phoneChangeLink => 'Change phone number';
+
+  @override
+  String get phoneReadOnlyHelper =>
+      'Changing it needs an OTP sent to the new number.';
+
+  @override
+  String get changePhoneTitle => 'Change phone number';
+
+  @override
+  String get changePhoneIntro =>
+      'An OTP will be sent to the NEW number. Use the new number the next time you sign in.';
+
+  @override
+  String get newPhoneLabel => 'New phone number';
+
+  @override
+  String get changePhoneSubmit => 'Confirm change';
+
+  @override
+  String get changePhoneDone => 'Phone number changed.';
+
+  @override
+  String get validationPhoneSame =>
+      'The new number is the same as the current one.';
+
+  @override
+  String get errPhoneTakenOther => 'This number belongs to another account.';
+
+  @override
+  String get logoutAll => 'Sign out of all devices';
+
+  @override
+  String get logoutAllConfirmTitle => 'Sign out of all devices?';
+
+  @override
+  String get logoutAllConfirmMessage =>
+      'You will need to sign in again on every device.';
+
+  @override
+  String get deleteAccountEntry => 'Delete account';
+
+  @override
+  String get deleteAccountTitle => 'Delete account';
+
+  @override
+  String get deleteAccountWarning =>
+      'This cannot be undone. Your name and phone number are anonymised, addresses and devices are removed and every session is revoked. Transaction records are kept for reconciliation.';
+
+  @override
+  String get deleteAccountPasswordLabel => 'Enter your password to confirm';
+
+  @override
+  String get deleteAccountSubmit => 'Delete account permanently';
+
+  @override
+  String get deleteAccountConfirmTitle => 'Are you sure you want to delete?';
+
+  @override
+  String get deleteAccountConfirmMessage =>
+      'Your account will be permanently deleted and cannot be restored.';
+
+  @override
+  String get deleteAccountBlockedHeader =>
+      'Take care of the following, then try again:';
+
+  @override
+  String get notifSettingsTitle => 'Notification settings';
+
+  @override
+  String get notifSettingsMarketing => 'Promotions';
+
+  @override
+  String get notifSettingsMarketingSub => 'Push about offers and marketing.';
+
+  @override
+  String get notifSettingsAuction => 'Watched auctions';
+
+  @override
+  String get notifSettingsAuctionSub => 'Push about auctions you follow.';
+
+  @override
+  String get notifSettingsAlways =>
+      'Transaction, security and money notifications (account lock, password change, wallet, orders, complaints) are always sent. In-app notifications are always saved, even with push off.';
+
+  @override
+  String walletTopupMin(String amount) {
+    return 'Minimum top-up $amount';
+  }
+
+  @override
+  String get walletLoadError => 'Could not load the wallet.';
+
+  @override
+  String get walletHistoryFilterAll => 'All';
+
+  @override
+  String get walletLedgerTopup => 'Top-up';
+
+  @override
+  String get walletLedgerWithdraw => 'Withdrawal';
+
+  @override
+  String get walletLedgerHold => 'Funds held';
+
+  @override
+  String get walletLedgerRelease => 'Held funds released';
+
+  @override
+  String get walletLedgerPayout => 'Sale proceeds';
+
+  @override
+  String get walletLedgerRefund => 'Refund';
+
+  @override
+  String get walletLedgerCompensation => 'Compensation from Oldbook';
+
+  @override
+  String get walletLedgerCapture => 'Funds charged';
+
+  @override
+  String get walletLedgerFee => 'Fee';
+
+  @override
+  String get walletLedgerOther => 'Transaction';
+
+  @override
+  String walletBalanceAfter(String amount) {
+    return 'Balance after: $amount';
+  }
+
+  @override
+  String walletHeldNote(String amount) {
+    return 'On hold: $amount';
+  }
+
+  @override
+  String get walletMoreHistory => 'Top-up / withdrawal history';
+
+  @override
+  String get walletLoadMore => 'Load more';
+
+  @override
+  String get topupAmountLabel => 'Top-up amount';
+
+  @override
+  String topupAmountRange(String min, String max) {
+    return 'From $min to $max';
+  }
+
+  @override
+  String topupAmountOut(String min, String max) {
+    return 'Amount must be between $min and $max.';
+  }
+
+  @override
+  String get topupCreate => 'Create top-up request';
+
+  @override
+  String get topupOpenPay => 'Open payment page';
+
+  @override
+  String get topupWaiting => 'Waiting for payment…';
+
+  @override
+  String topupWaitingNote(String time) {
+    return 'Finish paying, then come back to the app. Pay before: $time.';
+  }
+
+  @override
+  String get topupCheckAgain => 'Check again';
+
+  @override
+  String topupPaid(String amount) {
+    return 'Top-up successful $amount';
+  }
+
+  @override
+  String get topupExpired =>
+      'The request expired. If you still pay, the money is credited; tap check again.';
+
+  @override
+  String get topupFailed =>
+      'Payment failed. If you were charged, please contact support.';
+
+  @override
+  String get topupDevPay => 'Dev: simulate successful payment';
+
+  @override
+  String get topupCannotOpen => 'Could not open the payment page.';
+
+  @override
+  String get withdrawPickBank => 'Choose a receiving account';
+
+  @override
+  String get withdrawNoBank => 'You have no bank account yet.';
+
+  @override
+  String get withdrawAddBank => 'Add account';
+
+  @override
+  String withdrawMinHint(String amount) {
+    return 'Minimum $amount';
+  }
+
+  @override
+  String withdrawCreated(String amount) {
+    return 'Withdrawal of $amount requested. The money is held for review.';
+  }
+
+  @override
+  String withdrawNeedHave(String required, String available) {
+    return 'Need $required, you have $available.';
+  }
+
+  @override
+  String withdrawBelowMin(String amount) {
+    return 'The minimum withdrawal is $amount.';
+  }
+
+  @override
+  String get withdrawNoCancel =>
+      'A withdrawal cannot be cancelled by you. Contact Oldbook for help.';
+
+  @override
+  String get historyTitle => 'Top-up / withdrawal history';
+
+  @override
+  String get historyTopups => 'Top-ups';
+
+  @override
+  String get historyWithdrawals => 'Withdrawals';
+
+  @override
+  String get historyEmpty => 'No transactions yet.';
+
+  @override
+  String get topupStatusPending => 'Awaiting payment';
+
+  @override
+  String get topupStatusPaid => 'Received';
+
+  @override
+  String get topupStatusExpired => 'Expired';
+
+  @override
+  String get topupStatusFailed => 'Failed';
+
+  @override
+  String get wdStatusRequested => 'Awaiting review';
+
+  @override
+  String get wdStatusApproved => 'Approved, awaiting transfer';
+
+  @override
+  String get wdStatusSubmitted => 'Sent to the bank';
+
+  @override
+  String get wdStatusPaid => 'Transferred';
+
+  @override
+  String get wdStatusRejected => 'Rejected, money returned to your wallet';
+
+  @override
+  String get wdStatusFailed => 'Transfer failed, money returned to your wallet';
+
+  @override
+  String get wdStatusUnknown => 'Processing';
+
+  @override
+  String wdReason(String reason) {
+    return 'Reason: $reason';
+  }
+
+  @override
+  String wdTimeline(String created) {
+    return 'Created $created';
+  }
+
+  @override
+  String get bankPickBank => 'Bank';
+
+  @override
+  String get bankHolderMismatch =>
+      'The holder name differs from your profile name. An admin may reject the withdrawal if they do not match.';
+
+  @override
+  String get bankNumberInvalid => 'Account number has 6 to 20 digits.';
+
+  @override
+  String get errBankDuplicate => 'This account is already saved.';
+
+  @override
+  String get errBankLimit =>
+      'You can save at most 3 accounts. Remove one first.';
+
+  @override
+  String get errBankNotFound => 'Bank account not found.';
+
+  @override
+  String get errTopupRange => 'Top-up amount is outside the allowed range.';
+
+  @override
+  String get errIdempotencyInProgress =>
+      'The previous request is still being processed, please wait a moment.';
+
+  @override
+  String get statusReserved => 'Reserved';
+
+  @override
+  String get statusUnpublished => 'Unpublished';
+
+  @override
+  String get conditionBrandNew => 'New';
+
+  @override
+  String get conditionWorn => 'Worn';
+
+  @override
+  String filterButtonCount(int n) {
+    return 'Filter ($n)';
+  }
+
+  @override
+  String get filterCondition => 'Condition';
+
+  @override
+  String get filterPrice => 'Price range (₫)';
+
+  @override
+  String get filterMin => 'From';
+
+  @override
+  String get filterMax => 'To';
+
+  @override
+  String get filterSort => 'Sort by';
+
+  @override
+  String get sortNewest => 'Newest';
+
+  @override
+  String get sortPriceAsc => 'Price: low to high';
+
+  @override
+  String get sortPriceDesc => 'Price: high to low';
+
+  @override
+  String get filterApply => 'Apply';
+
+  @override
+  String get filterReset => 'Reset';
+
+  @override
+  String get filterPriceInvalid =>
+      'The minimum price cannot exceed the maximum.';
+
+  @override
+  String get detailReserved => 'Someone has already reserved this book.';
+
+  @override
+  String get detailSold => 'This book has been sold.';
+
+  @override
+  String detailOwnerStatus(String status) {
+    return 'Your listing status: $status';
+  }
+
+  @override
+  String detailReviewReason(String reason) {
+    return 'Reason: $reason';
+  }
+
+  @override
+  String sellerStats(int n) {
+    return '$n completed orders';
+  }
+
+  @override
+  String sellerRating(String rating) {
+    return '$rating ★';
+  }
+
+  @override
+  String listingPhotoN(int n, String title) {
+    return 'Photo $n of $title';
+  }
+
+  @override
+  String get sellProgressCreate => 'Creating the listing…';
+
+  @override
+  String sellProgressUpload(int done, int total) {
+    return 'Uploading photos $done/$total…';
+  }
+
+  @override
+  String get sellProgressSubmit => 'Submitting for review…';
+
+  @override
+  String get sellErrCategory => 'Choose a category.';
+
+  @override
+  String get sellErrIsbn => 'Invalid ISBN.';
+
+  @override
+  String get sellFieldPublisher => 'Publisher (optional)';
+
+  @override
+  String get sellFieldYear => 'Publication year (optional)';
+
+  @override
+  String get sellFieldIsbn => 'ISBN (optional)';
+
+  @override
+  String get sellFieldDefects => 'Defects, if any (optional)';
+
+  @override
+  String get sellEditTitle => 'Edit listing';
+
+  @override
+  String get sellEditSave => 'Save changes';
+
+  @override
+  String get sellEditSaveSubmit => 'Save and submit';
+
+  @override
+  String get sellEditWarnTitle => 'The listing will go back to review';
+
+  @override
+  String get sellEditWarnBody =>
+      'Changing the title, author, category, condition, publisher, year, ISBN, defects or photos puts the listing back into review and hides it from search. Price and description changes apply immediately.';
+
+  @override
+  String get sellEditWarnConfirm => 'Save anyway';
+
+  @override
+  String get sellSaved => 'Changes saved.';
+
+  @override
+  String get photoMakeCover => 'Make cover photo';
+
+  @override
+  String sellPhotoLimit(int n) {
+    return 'At most $n photos.';
+  }
+
+  @override
+  String get mlTabPublished => 'On sale';
+
+  @override
+  String get mlTabPending => 'In review';
+
+  @override
+  String get mlTabChanges => 'Needs changes';
+
+  @override
+  String get mlTabDraft => 'Drafts';
+
+  @override
+  String get mlTabUnpublished => 'Unpublished';
+
+  @override
+  String get mlTabSold => 'Sold';
+
+  @override
+  String get mlTabRejected => 'Rejected';
+
+  @override
+  String get mlEdit => 'Edit';
+
+  @override
+  String get mlSubmit => 'Submit';
+
+  @override
+  String get mlResubmit => 'Resubmit';
+
+  @override
+  String get mlRepublish => 'Republish';
+
+  @override
+  String get mlUnpublish => 'Unpublish';
+
+  @override
+  String get mlUnpublishTitle => 'Unpublish this listing?';
+
+  @override
+  String get mlUnpublishBody =>
+      'The listing disappears from search. Republishing needs a new review.';
+
+  @override
+  String get mlRejectedFinal =>
+      'A rejected listing is final. Create a new one if you like.';
+
+  @override
+  String mlReason(String reason) {
+    return 'Reason: $reason';
+  }
+
+  @override
+  String get mlPendingNote =>
+      'In review, usually within 24 hours. It cannot be edited yet.';
+
+  @override
+  String get mlSubmitted => 'Submitted for review.';
+
+  @override
+  String get mlUnpublished => 'Listing unpublished.';
+
+  @override
+  String get mlSimHeader => 'Auctions (simulated)';
+
+  @override
+  String get mlReservedNote =>
+      'Someone reserved it; it cannot be edited or unpublished.';
+
+  @override
+  String get errCategoryInactive =>
+      'This category is hidden. Choose another one.';
+
+  @override
+  String get errListingConcurrent =>
+      'The listing was changed elsewhere. It was reloaded, please try again.';
+
+  @override
+  String get errListingPhoto =>
+      'A photo is invalid (not uploaded, over 10 MB or not an image). Pick it again.';
+
+  @override
+  String get errListingIncomplete =>
+      'The listing is not ready to submit (missing photos or details).';
+
+  @override
+  String get errPaymentUnavailable =>
+      'Top-up is temporarily unavailable. Try again later.';
+
+  @override
+  String get errOrderNotFound => 'Order not found.';
+
+  @override
+  String get errOwnListing => 'You cannot buy your own book.';
+
+  @override
+  String get errCartFull => 'Your cart is full (50 items).';
+
+  @override
+  String get errComplaintNotFound => 'Complaint not found.';
+
+  @override
+  String get errComplaintAttachment =>
+      'An evidence file is invalid (wrong type, too large or already used). Pick it again.';
+
+  @override
+  String get topupNoGateway => 'Top-up is temporarily unavailable.';
+
+  @override
+  String get topupPickGateway => 'Choose a payment gateway';
+
+  @override
+  String get topupConfirming =>
+      'Confirming the payment; your balance will update in a few minutes. You will be notified once it succeeds.';
+
+  @override
+  String get soStatusAwaiting => 'Awaiting shipment';
+
+  @override
+  String get soStatusShipped => 'In transit';
+
+  @override
+  String get soStatusDelivered => 'Delivered';
+
+  @override
+  String get soStatusCompleted => 'Completed';
+
+  @override
+  String get soStatusCancelledBuyer => 'Cancelled';
+
+  @override
+  String get soStatusCancelledTimeout => 'Cancelled (seller timeout)';
+
+  @override
+  String get soStatusDisputed => 'In dispute';
+
+  @override
+  String get soStatusRefunded => 'Refunded';
+
+  @override
+  String get soStatusPartial => 'Partially refunded';
+
+  @override
+  String get soTabBuy => 'Purchases';
+
+  @override
+  String get soTabSell => 'Sales';
+
+  @override
+  String get soEmpty => 'No orders yet.';
+
+  @override
+  String get soSimLink => 'Auction orders (simulated)';
+
+  @override
+  String soNoteShipBy(String time) {
+    return 'Ship by $time';
+  }
+
+  @override
+  String soNoteTracking(String carrier, String code) {
+    return '$carrier · $code';
+  }
+
+  @override
+  String soNoteComplaintBy(String time) {
+    return 'Complain by $time';
+  }
+
+  @override
+  String get soNoteLocked => 'Funds are locked while the complaint is handled';
+
+  @override
+  String get soDetailTitle => 'Order details';
+
+  @override
+  String get soPrice => 'Book price';
+
+  @override
+  String get soShipFee => 'Shipping';
+
+  @override
+  String get soTotal => 'Total paid';
+
+  @override
+  String get soPayout => 'You receive';
+
+  @override
+  String get soPayoutFee => 'Platform fee';
+
+  @override
+  String get soPayoutNet => 'Net amount';
+
+  @override
+  String get soSeller => 'Seller';
+
+  @override
+  String get soBuyer => 'Buyer';
+
+  @override
+  String get soAddress => 'Delivery address';
+
+  @override
+  String get soShipment => 'Shipment';
+
+  @override
+  String get soTimeline => 'Timeline';
+
+  @override
+  String soCountdownShip(String time) {
+    return 'Ship deadline: $time left';
+  }
+
+  @override
+  String soCountdownShipBuyer(String time) {
+    return 'The seller must ship within $time.';
+  }
+
+  @override
+  String soCountdownComplaint(String time) {
+    return 'Complaint window: $time left. After it ends the order completes automatically.';
+  }
+
+  @override
+  String get soOverdue => 'overdue';
+
+  @override
+  String get soCancel => 'Cancel order';
+
+  @override
+  String get soCancelTitle => 'Cancel this order?';
+
+  @override
+  String get soCancelBody =>
+      'The money returns to your wallet and the book is listed again.';
+
+  @override
+  String get soReceived => 'Mark received';
+
+  @override
+  String get soReceivedTitle => 'Confirm you received it?';
+
+  @override
+  String get soReceivedBody =>
+      'After confirming you have a window to complain if the book has a problem.';
+
+  @override
+  String get soComplete => 'Happy, complete';
+
+  @override
+  String get soCompleteTitle => 'Complete the order?';
+
+  @override
+  String get soCompleteBody =>
+      'The seller is paid immediately and you can no longer complain.';
+
+  @override
+  String get soShip => 'Enter tracking';
+
+  @override
+  String get soShipCarrier => 'Carrier';
+
+  @override
+  String get soShipTracking => 'Tracking number';
+
+  @override
+  String get soShipSubmit => 'Confirm shipped';
+
+  @override
+  String get soShipInvalid =>
+      'Carrier 2 to 50 characters, tracking number 3 to 50.';
+
+  @override
+  String get soComplain => 'Complain';
+
+  @override
+  String get soViewComplaint => 'View complaint';
+
+  @override
+  String get soCancelled => 'Order cancelled.';
+
+  @override
+  String get soReceivedDone => 'Receipt confirmed.';
+
+  @override
+  String get soCompleted => 'Order completed.';
+
+  @override
+  String get soShipped => 'Tracking saved.';
+
+  @override
+  String get ckUnavailable => 'No longer available';
+
+  @override
+  String get ckRemove => 'Remove';
+
+  @override
+  String get ckSubtotal => 'Books';
+
+  @override
+  String ckShipping(int count, String fee) {
+    return 'Shipping ($count orders × $fee)';
+  }
+
+  @override
+  String get ckTotal => 'Total';
+
+  @override
+  String get ckBalance => 'Wallet balance';
+
+  @override
+  String get ckAddress => 'Deliver to';
+
+  @override
+  String get ckPickAddress => 'Choose an address';
+
+  @override
+  String get ckNoAddress => 'You have no delivery address yet.';
+
+  @override
+  String get ckAddAddress => 'Add address';
+
+  @override
+  String get ckPlace => 'Place order · pay from wallet';
+
+  @override
+  String get ckPlaceEmpty => 'No books available';
+
+  @override
+  String get ckNeedAddress => 'Choose an address to order';
+
+  @override
+  String get ckInsufficient => 'Insufficient balance · top up';
+
+  @override
+  String get ckEmpty => 'Your cart is empty.';
+
+  @override
+  String get ckPlacedTitle => 'Order placed';
+
+  @override
+  String ckPlacedBody(String total, int count) {
+    return '$total was held from your wallet for $count orders. Sellers have a deadline to ship; late orders are cancelled and refunded.';
+  }
+
+  @override
+  String get ckViewOrders => 'View orders';
+
+  @override
+  String get ckKeepShopping => 'Keep shopping';
+
+  @override
+  String get ckSomeUnavailable =>
+      'Some books were just taken or removed. They are marked in your cart; remove them and order again.';
+
+  @override
+  String get ckAdded => 'Added to cart';
+
+  @override
+  String get ckAlready => 'Already in your cart';
+
+  @override
+  String get cpListTitle => 'My complaints';
+
+  @override
+  String get cpTabBuy => 'Raised by me';
+
+  @override
+  String get cpTabSell => 'About my sales';
+
+  @override
+  String get cpEmpty => 'No complaints yet.';
+
+  @override
+  String get cpStatusOpen => 'Awaiting seller';
+
+  @override
+  String get cpStatusResponded => 'Awaiting buyer decision';
+
+  @override
+  String get cpStatusEscalated => 'With an administrator';
+
+  @override
+  String get cpStatusAgreed => 'Agreed';
+
+  @override
+  String get cpStatusResolved => 'Resolved';
+
+  @override
+  String get cpReasonNotAsDescribed => 'Not as described';
+
+  @override
+  String get cpReasonDamaged => 'Damaged';
+
+  @override
+  String get cpReasonWrongItem => 'Wrong item';
+
+  @override
+  String get cpReasonOther => 'Other';
+
+  @override
+  String get cpOpenTitle => 'Open a complaint';
+
+  @override
+  String get cpReasonLabel => 'Reason';
+
+  @override
+  String get cpDescLabel => 'Describe the problem';
+
+  @override
+  String get cpDescHint => 'At least 10 characters';
+
+  @override
+  String get cpDescInvalid => 'The description must be 10 to 2,000 characters.';
+
+  @override
+  String get cpEvidence => 'Evidence (photos or video)';
+
+  @override
+  String cpEvidenceCount(int n) {
+    return '$n/10 · at least 1 needed';
+  }
+
+  @override
+  String get cpEvidenceRequired => 'Add at least 1 photo or video.';
+
+  @override
+  String get cpAddEvidence => 'Add photo/video';
+
+  @override
+  String get cpPickPhoto => 'Choose photo';
+
+  @override
+  String get cpPickVideo => 'Choose video';
+
+  @override
+  String get cpEvidenceTooLarge =>
+      'File too large (photos up to 10 MB, videos up to 50 MB).';
+
+  @override
+  String get cpEvidenceUnsupported =>
+      'Unsupported format (photos JPEG/PNG/WebP, videos MP4/MOV/WebM).';
+
+  @override
+  String get cpSubmit => 'Submit complaint';
+
+  @override
+  String cpUploading(int done, int total) {
+    return 'Uploading evidence $done/$total…';
+  }
+
+  @override
+  String get cpOpened => 'Complaint submitted.';
+
+  @override
+  String get cpOpenNote =>
+      'Opening a complaint locks the order\'s money until it is resolved.';
+
+  @override
+  String get cpOrder => 'Order';
+
+  @override
+  String get cpOpenOrder => 'View order';
+
+  @override
+  String cpSellerDeadline(String time) {
+    return 'The seller must respond: $time left';
+  }
+
+  @override
+  String cpBuyerDeadline(String time) {
+    return 'You must decide: $time left';
+  }
+
+  @override
+  String get cpDeadlineNote =>
+      'After the deadline the complaint goes to an administrator automatically.';
+
+  @override
+  String get cpEscSellerTimeout =>
+      'Escalated: the seller did not respond in time.';
+
+  @override
+  String get cpEscBuyerRejected => 'Escalated: the buyer disagreed.';
+
+  @override
+  String get cpEscBuyerTimeout =>
+      'Escalated: the buyer did not decide in time.';
+
+  @override
+  String get cpEscAuction => 'Escalated (auction order).';
+
+  @override
+  String get cpResolution => 'Outcome';
+
+  @override
+  String get cpOutFull => 'Full refund (book and shipping)';
+
+  @override
+  String cpOutPartial(String amount) {
+    return 'Partial refund: $amount';
+  }
+
+  @override
+  String get cpOutRelease => 'No refund: money goes to the seller';
+
+  @override
+  String get cpReturnRequired =>
+      'An administrator asks the buyer to send the book back. Returning happens outside the system; the parties can talk in messages.';
+
+  @override
+  String get cpByAdmin => 'Decided by an administrator';
+
+  @override
+  String get cpByAgreement => 'Agreed by both parties';
+
+  @override
+  String get cpAuthorBuyer => 'Buyer';
+
+  @override
+  String get cpAuthorSeller => 'Seller';
+
+  @override
+  String get cpAuthorAdmin => 'Administrator';
+
+  @override
+  String get cpAuthorSystem => 'System';
+
+  @override
+  String get cpEntryOpened => 'Complaint opened';
+
+  @override
+  String get cpEntrySellerResponse => 'Seller responded';
+
+  @override
+  String get cpEntryBuyerDecision => 'Buyer decided';
+
+  @override
+  String get cpEntryEscalated => 'Escalated to an administrator';
+
+  @override
+  String get cpEntryResolved => 'Resolved';
+
+  @override
+  String cpRefundAmount(String amount) {
+    return 'Refund $amount';
+  }
+
+  @override
+  String get cpRespond => 'Respond';
+
+  @override
+  String get cpRespondTitle => 'Respond to the complaint';
+
+  @override
+  String get cpActAccept => 'Agree to a full refund (book and shipping)';
+
+  @override
+  String get cpActPartial => 'Offer a partial refund';
+
+  @override
+  String get cpActReject => 'Reject';
+
+  @override
+  String get cpAmountLabel => 'Refund amount (of the book price)';
+
+  @override
+  String cpAmountInvalid(String max) {
+    return 'Amount must be between 1 and $max.';
+  }
+
+  @override
+  String get cpRejectReason =>
+      'Reason for rejecting (add photo evidence if you can)';
+
+  @override
+  String get cpReasonInvalid => 'The reason needs at least 10 characters.';
+
+  @override
+  String get cpRespondSubmit => 'Send response';
+
+  @override
+  String get cpResponded => 'Response sent.';
+
+  @override
+  String get cpRespondNote => 'The buyer still has to confirm the result.';
+
+  @override
+  String get cpAccept => 'Agree';
+
+  @override
+  String get cpDisagree => 'Disagree, send to admin';
+
+  @override
+  String get cpAcceptTitle => 'Agree with the response?';
+
+  @override
+  String get cpAcceptFull =>
+      'You get a full refund of the book price and shipping.';
+
+  @override
+  String cpAcceptPartial(String amount) {
+    return 'You get $amount back. The rest goes to the seller.';
+  }
+
+  @override
+  String get cpAcceptReject =>
+      'The seller rejected. Agreeing means you WITHDRAW the complaint and the money goes to the seller.';
+
+  @override
+  String get cpDisagreeTitle => 'Send to an administrator?';
+
+  @override
+  String get cpDisagreeBody => 'An administrator will review and decide.';
+
+  @override
+  String get cpDecided => 'Decision recorded.';
+
+  @override
+  String get cpMessageHint => 'Type a message…';
+
+  @override
+  String get cpSend => 'Send';
+
+  @override
+  String get cpMessageClosed => 'The complaint is closed; messaging is off.';
+
+  @override
+  String get cpMessageNeed => 'Enter a message or attach a file.';
+
+  @override
+  String get cpOpenVideo => 'Open video';
+
+  @override
+  String get cpLockedNote =>
+      'The order\'s money is locked until the complaint is resolved.';
 }

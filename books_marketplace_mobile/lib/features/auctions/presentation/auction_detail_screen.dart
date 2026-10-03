@@ -664,7 +664,7 @@ class _BottomPanel extends ConsumerWidget {
               child: AppButton(
                 label: l.orderPlacedView,
                 variant: AppButtonVariant.secondary,
-                onPressed: () => context.push('/me/orders'),
+                onPressed: () => context.push('/me/sim-orders'),
               ),
             ),
         ]);

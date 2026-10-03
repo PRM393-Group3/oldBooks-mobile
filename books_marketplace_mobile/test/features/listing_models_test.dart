@@ -3,11 +3,9 @@ import 'package:books_marketplace_mobile/core/l10n/app_localizations_vi.dart';
 import 'package:books_marketplace_mobile/core/network/paged_result.dart';
 import 'package:books_marketplace_mobile/core/util/format.dart';
 import 'package:books_marketplace_mobile/core/validation/isbn.dart';
-import 'package:books_marketplace_mobile/features/listings/domain/reject_reason.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
-import 'package:books_marketplace_mobile/features/listings/domain/listing_input.dart';
-import 'package:books_marketplace_mobile/features/listings/domain/listing_rules.dart';
+import 'package:books_marketplace_mobile/features/listings/domain/listing_query.dart';
 import 'package:books_marketplace_mobile/features/notifications/domain/app_notification.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -16,215 +14,185 @@ void main() {
     test('ListingDto đầy đủ', () {
       final l = Listing.fromJson({
         'id': 'L1',
-        'status': 'Rejected',
-        'saleMethod': 'FixedPrice',
-        'seller': {'id': 'u1', 'fullName': 'Nguyen Van A'},
-        'category': {'id': 'c1', 'name': 'Tiểu thuyết'},
-        'bookInfo': {
-          'title': 'Nhà giả kim',
-          'author': 'Paulo Coelho',
-          'condition': 'VeryGood',
-          'coverType': 'Paperback',
-          'publicationYear': 2013,
+        'title': 'Đắc Nhân Tâm',
+        'author': 'Dale Carnegie',
+        'category': {
+          'id': 'c1',
+          'name': 'Văn học',
+          'slug': 'van-hoc',
+          'isActive': true,
+          'displayOrder': 10,
         },
-        'fixedPrice': {'price': 120000, 'quantity': 2},
-        'images': [
+        'condition': 'GOOD',
+        'price': 85000,
+        'description': 'Còn mới 90%.',
+        'publisher': 'NXB Tổng hợp',
+        'publishYear': 2018,
+        'isbn': '9780671027032',
+        'defectNotes': 'Góc bìa cong',
+        'status': 'PUBLISHED',
+        'photos': [
           {
-            'id': 'i2',
-            'url': 'http://x/public/u1/b.png',
-            'type': 'BackCover',
-            'displayOrder': 1,
+            'id': 'p2',
+            'url': 'http://blob/public/u1/b.jpg',
+            'thumbnailUrl': 'http://blob/public/u1/b-thumb.jpg',
+            'width': 2048,
+            'height': 1365,
+            'order': 1,
           },
           {
-            'id': 'i1',
-            'url': 'http://x/public/u1/a.png',
-            'type': 'FrontCover',
-            'displayOrder': 0,
+            'id': 'p1',
+            'url': 'http://blob/public/u1/a.jpg',
+            'thumbnailUrl': 'http://blob/public/u1/a-thumb.jpg',
+            'order': 0,
           },
         ],
-        'submissionCount': 2,
-        'maxSubmissions': 4,
-        'latestInspection': {
-          'reportId': 'r1',
-          'decision': 'Rejected',
-          'reasonCodes': ['BlurryPhotos'],
-          'note': 'Ảnh mờ quá',
-          'submissionNumber': 2,
-          'decidedAt': '2026-09-19T08:30:18Z',
+        'seller': {
+          'id': 'u9',
+          'fullName': 'Nguyen Seller',
+          'avatarUrl': null,
+          'averageRating': null,
+          'completedOrders': 0,
         },
+        'publishedAt': '2026-10-03T08:26:22Z',
+        'lastReview': {
+          'decision': 'REQUEST_CHANGES',
+          'reason': 'Ảnh mờ',
+          'createdAt': '2026-10-03T09:00:00Z',
+        },
+        'claim': null,
       });
 
-      expect(l.status, ListingStatus.rejected);
-      expect(l.saleMethod, SaleMethod.fixedPrice);
-      expect(l.title, 'Nhà giả kim');
-      expect(l.bookInfo.condition, BookCondition.veryGood);
-      expect(l.fixedPrice!.price, 120000);
-      expect(l.displayPrice, 120000);
-      expect(l.submissionsLeft, 2);
-      expect(l.latestInspection!.reasonCodes, ['BlurryPhotos']);
-      expect(l.latestInspection!.isApproved, isFalse);
-      // Ảnh được sắp theo displayOrder, bìa trước làm ảnh đại diện.
-      expect(l.images.first.type, ImageType.frontCover);
-      expect(l.coverImageUrl, 'http://x/public/u1/a.png');
+      expect(l.id, 'L1');
+      expect(l.status, ListingStatus.published);
+      expect(l.title, 'Đắc Nhân Tâm');
+      expect(l.price, 85000);
+      expect(l.fixedPrice!.price, 85000);
+      expect(l.bookInfo.condition, BookCondition.good);
+      expect(l.bookInfo.publicationYear, 2018);
+      expect(l.category!.name, 'Văn học');
+      expect(l.seller!.name, 'Nguyen Seller');
+      expect(l.seller!.averageRating, isNull, reason: 'ẩn khi null');
+      expect(l.images.map((p) => p.id), ['p1', 'p2'], reason: 'theo order');
+      expect(l.coverImageUrl, 'http://blob/public/u1/a-thumb.jpg');
+      expect(l.images.first.blobName, 'u1/a.jpg');
+      expect(l.lastReview!.reason, 'Ảnh mờ');
+      expect(
+        l.reviewReason,
+        isNull,
+        reason: 'chỉ hiện lý do khi cần sửa hoặc bị từ chối',
+      );
     });
 
-    test('dòng danh sách rút gọn, phẳng, thiếu nhiều trường', () {
+    test('lý do duyệt chỉ hiện với NEEDS_CHANGES và REJECTED', () {
+      Listing with_(String status) => Listing.fromJson({
+        'id': 'x',
+        'status': status,
+        'lastReview': {'decision': 'REJECT', 'reason': 'Vi phạm'},
+      });
+      expect(with_('NEEDS_CHANGES').reviewReason, 'Vi phạm');
+      expect(with_('REJECTED').reviewReason, 'Vi phạm');
+      expect(with_('PUBLISHED').reviewReason, isNull);
+    });
+
+    test('ListingSummaryDto rút gọn: thumbnail làm bìa, categoryId', () {
       final l = Listing.fromJson({
         'id': 'L2',
-        'status': 'OnSale',
         'title': 'Sapiens',
-        'author': 'Yuval Harari',
-        'price': 99000,
-        'thumbnailUrl': 'http://x/t.png',
+        'author': 'Harari',
+        'price': 95000,
+        'condition': 'FAIR',
+        'categoryId': 'c9',
+        'thumbnailUrl': 'http://blob/public/u1/t.jpg',
+        'status': 'PUBLISHED',
+        'publishedAt': '2026-10-03T08:26:22Z',
       });
-
-      expect(l.title, 'Sapiens');
-      expect(l.bookInfo.author, 'Yuval Harari');
-      expect(l.displayPrice, 99000);
-      expect(l.coverImageUrl, 'http://x/t.png');
+      expect(l.coverImageUrl, 'http://blob/public/u1/t.jpg');
+      expect(l.category!.id, 'c9');
       expect(l.images, isEmpty);
-    });
-
-    test('đấu giá: giá hiển thị là giá khởi điểm', () {
-      final l = Listing.fromJson({
-        'id': 'L3',
-        'status': 'Auctioning',
-        'saleMethod': 'Auction',
-        'auction': {
-          'startingPrice': 500000,
-          'minBidIncrement': 5000,
-          'durationDays': 5,
-          'startMode': 'Scheduled',
-          'scheduledStartAt': '2026-10-01T03:00:00Z',
-          'endsAt': '2026-10-06T03:00:00Z',
-        },
-      });
-      expect(l.displayPrice, 500000);
-      expect(l.auction!.startMode, AuctionStartMode.scheduled);
-      expect(l.auction!.endsAt!.isUtc, isTrue);
+      expect(
+        Listing.fromJson({'id': 'x', 'status': 'DRAFT'}).coverImageUrl,
+        isNull,
+        reason: 'thumbnailUrl null khi chưa có ảnh',
+      );
     });
 
     test('trạng thái lạ không làm hỏng parse', () {
-      expect(
-        Listing.fromJson({'id': 'x', 'status': 'Whatever'}).status,
-        ListingStatus.unknown,
-      );
+      final l = Listing.fromJson({'id': 'x', 'status': 'FUTURE'});
+      expect(l.status, ListingStatus.unknown);
+      expect(l.title, '');
+      expect(l.price, isNull);
     });
 
-    test('blobName suy từ URL sau /public/', () {
-      const azurite = ListingImage(
-        url: 'http://127.0.0.1:10000/devstoreaccount1/public/u1/abc.png',
-        type: ImageType.spine,
-      );
-      const prod = ListingImage(
-        url: 'https://acct.blob.core.windows.net/public/u1/abc.webp?sv=1',
-        type: ImageType.spine,
-      );
-      const other = ListingImage(
-        url: 'http://x/img/abc.png',
-        type: ImageType.spine,
-      );
-      expect(azurite.blobName, 'u1/abc.png');
-      expect(prod.blobName, 'u1/abc.webp');
-      expect(other.blobName, isNull);
-    });
-
-    test('quyền sửa và công khai theo trạng thái', () {
-      expect(ListingStatus.draft.isEditable, isTrue);
-      expect(ListingStatus.rejected.isEditable, isTrue);
-      expect(ListingStatus.pendingInspection.isEditable, isFalse);
-      expect(ListingStatus.onSale.isPublic, isTrue);
-      expect(ListingStatus.auctioning.isPublic, isTrue);
-      expect(ListingStatus.closed.isPublic, isFalse);
+    test('quyền sửa, gửi duyệt, gỡ và công khai theo trạng thái', () {
+      expect(ListingStatus.draft.isFreelyEditable, isTrue);
+      expect(ListingStatus.needsChanges.canSubmit, isTrue);
+      expect(ListingStatus.unpublished.canSubmit, isTrue);
+      expect(ListingStatus.published.isEditable, isTrue);
+      expect(ListingStatus.published.canSubmit, isFalse);
+      expect(ListingStatus.published.canUnpublish, isTrue);
+      for (final s in [
+        ListingStatus.pendingReview,
+        ListingStatus.rejected,
+        ListingStatus.reserved,
+        ListingStatus.sold,
+      ]) {
+        expect(s.isEditable, isFalse, reason: s.api);
+        expect(s.canUnpublish, isFalse, reason: s.api);
+      }
+      expect(ListingStatus.reserved.isPublic, isTrue);
+      expect(ListingStatus.draft.isPublic, isFalse);
     });
   });
 
-  group('ListingRules', () {
-    test('mặc định khớp doc', () {
-      const r = ListingRules();
-      expect(r.maxSubmissions, 4);
-      expect(r.minImages, 3);
-      expect(r.maxImages, 10);
-      expect(r.maxExtraImages, 6);
-      expect(r.maxImageBytes, 10 * 1024 * 1024);
-      expect(r.auctionDurations, [3, 5, 7, 10]);
-    });
-
-    test('đọc từ server, thiếu thì rơi về mặc định', () {
-      final r = ListingRules.fromJson({'maxSubmissions': 5, 'minPrice': 20000});
-      expect(r.maxSubmissions, 5);
-      expect(r.minPrice, 20000);
-      expect(r.maxPrice, 50000000);
-      expect(ListingRules.fromJson(null).maxImages, 10);
-    });
-
-    test('BR-08: bước giá tối thiểu = max(1.000, 1% làm tròn lên)', () {
-      const r = ListingRules();
-      expect(r.minBidIncrementFor(10000), 1000);
-      expect(r.minBidIncrementFor(500000), 5000);
-      expect(r.minBidIncrementFor(500001), 5001);
-      expect(r.minBidIncrementFor(50000000), 500000);
-    });
-  });
-
-  group('đầu vào', () {
-    test('BookInfoInput: chuỗi trống thành null, ngôn ngữ chữ thường', () {
-      const input = BookInfoInput(
-        title: '  Nhà giả kim ',
-        author: 'Paulo',
+  group('ListingQuery', () {
+    test('chỉ gửi tham số đã đặt, sort mặc định thì bỏ', () {
+      expect(const ListingQuery().toQuery(pageSize: 20), {'pageSize': 20});
+      final q = const ListingQuery(
+        q: ' dac nhan ',
         categoryId: 'c1',
         condition: BookCondition.good,
-        description: 'mô tả',
-        publisher: '  ',
-        isbn: '',
-        language: 'VI',
-        coverType: CoverType.hardcover,
+        minPrice: 1000,
+        maxPrice: 90000,
+        sort: ListingSort.priceAsc,
       );
-      final j = input.toJson();
-      expect(j['title'], 'Nhà giả kim');
-      expect(j['publisher'], isNull);
-      expect(j['isbn'], isNull);
-      expect(j['language'], 'vi');
-      expect(j['coverType'], 'Hardcover');
-      expect(j['condition'], 'Good');
+      expect(q.toQuery(cursor: 'abc', pageSize: 20), {
+        'q': 'dac nhan',
+        'categoryId': 'c1',
+        'condition': 'GOOD',
+        'minPrice': 1000,
+        'maxPrice': 90000,
+        'sort': 'price_asc',
+        'pageSize': 20,
+        'cursor': 'abc',
+      });
+      expect(q.activeFilters, 3);
     });
 
-    test('AuctionInput: chỉ gửi scheduledStartAt khi hẹn giờ, dạng UTC', () {
-      final at = DateTime.utc(2026, 10, 1, 3);
-      final scheduled = const AuctionInput(
-        startingPrice: 500000,
-        minBidIncrement: 5000,
-        durationDays: 5,
-        startMode: AuctionStartMode.scheduled,
-      ).toJson();
-      expect((scheduled['auction'] as Map)['scheduledStartAt'], isNull);
-
-      final ok = AuctionInput(
-        startingPrice: 500000,
-        minBidIncrement: 5000,
-        durationDays: 5,
-        startMode: AuctionStartMode.scheduled,
-        scheduledStartAt: at,
-      ).toJson();
+    test('so sánh theo giá trị (khóa family), cắt khoảng trắng từ khóa', () {
+      expect(const ListingQuery(q: 'a '), const ListingQuery(q: 'a'));
       expect(
-        (ok['auction'] as Map)['scheduledStartAt'],
-        '2026-10-01T03:00:00.000Z',
+        const ListingQuery(q: 'a').hashCode,
+        const ListingQuery(q: 'a ').hashCode,
       );
-
-      final now = const AuctionInput(
-        startingPrice: 500000,
-        minBidIncrement: 5000,
-        durationDays: 5,
-        startMode: AuctionStartMode.onApproval,
-      ).toJson();
-      expect((now['auction'] as Map).containsKey('scheduledStartAt'), isFalse);
-      expect(now['method'], 'Auction');
+      expect(
+        const ListingQuery(q: 'a'),
+        isNot(const ListingQuery(q: 'a', sort: ListingSort.priceDesc)),
+      );
     });
 
-    test('FixedPriceInput', () {
-      expect(const FixedPriceInput(price: 120000, quantity: 2).toJson(), {
-        'method': 'FixedPrice',
-        'fixedPrice': {'price': 120000, 'quantity': 2},
+    test('ListingDraftInput: bỏ trường null, giữ chuỗi rỗng để xóa', () {
+      const input = ListingDraftInput(
+        title: ' Sách ',
+        condition: BookCondition.worn,
+        price: 5000,
+        publisher: '',
+      );
+      expect(input.toJson(), {
+        'title': 'Sách',
+        'condition': 'WORN',
+        'price': 5000,
+        'publisher': '',
       });
     });
   });
@@ -297,33 +265,27 @@ void main() {
     });
   });
 
-  group('lý do từ chối, thông báo', () {
-    test('RejectReason: nhãn theo mã, mã lạ trả nguyên mã', () {
-      final l = AppLocalizationsVi();
-      expect(
-        RejectReason.labelOf('BlurryPhotos', l),
-        'Ảnh không đủ hoặc không rõ',
-      );
-      expect(RejectReason.labelOf('Mystery', l), 'Mystery');
-      expect(RejectReason.values.length, 7);
-    });
-
-    test('thông báo: loại đã biết có tiêu đề bản địa hóa', () {
+  group('thông báo', () {
+    test('thông báo: đọc type, data, và an toàn với type lạ', () {
       final n = AppNotification.fromJson({
         'id': 'n1',
-        'type': 'ListingApproved',
-        'title': 'Your listing was approved',
-        'body': 'english body',
+        'type': 'TOPUP_SUCCEEDED',
+        'title': 'Nạp tiền thành công',
+        'body': 'Bạn đã nạp 100.000đ.',
+        'data': {'topupId': 't1'},
         'isRead': false,
-        'listingId': 'L1',
         'createdAt': '2026-09-19T08:30:18Z',
       });
-      expect(
-        n.type.title(AppLocalizationsVi()),
-        'Tin đăng của bạn đã được duyệt',
-      );
+      expect(n.type, NotificationType.topupSucceeded);
+      expect(n.type.isWallet, isTrue);
+      expect(n.data!['topupId'], 't1');
       expect(n.asRead().isRead, isTrue);
-      expect(NotificationType.fromApi('Nope'), NotificationType.unknown);
+      expect(n.asRead().data, n.data);
+      expect(NotificationType.fromApi('NOPE'), NotificationType.unknown);
+      expect(
+        AppNotification.fromJson({'id': 'x', 'type': 'FUTURE_TYPE'}).type,
+        NotificationType.unknown,
+      );
     });
   });
 

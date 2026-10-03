@@ -1,12 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/paging/paged_notifier.dart';
+import '../../../../core/paging/cursor_notifier.dart';
 import '../../../../core/theme/app_dimens.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/theme_context.dart';
-import '../../../../core/util/search.dart';
 import '../../../../core/widgets/app_state_views.dart';
 import '../../../auctions/presentation/live_auction_strip.dart';
 import '../../../cart/application/cart_providers.dart';
@@ -15,12 +16,15 @@ import '../../../notifications/application/notification_providers.dart';
 import '../../../sim/application/sim_providers.dart';
 import '../../application/listing_providers.dart';
 import '../../domain/listing.dart';
+import '../../domain/listing_query.dart';
+import 'listing_filter_sheet.dart';
 import '../widgets/book_tile.dart';
 
 /// Tab Khám phá: tìm kiếm, lọc danh mục, lưới sách đang bán.
 ///
-/// Tìm kiếm lọc trên các lô đã tải (backend chưa có tham số tìm kiếm); bỏ dấu
-/// tiếng Việt khi so khớp. Dải "Đang đấu giá" của prototype thêm ở lát Đấu giá.
+/// Tìm kiếm gọi `GET /listings` (server tìm không phân biệt dấu, mọi từ phải
+/// khớp), cuộn vô hạn theo cursor. Ô tìm kiếm debounce 400 ms để không gọi mỗi
+/// phím; đổi bộ lọc hay sắp xếp là bắt đầu lại từ trang đầu.
 const _gridGap = 14.0;
 
 class BrowseScreen extends ConsumerStatefulWidget {
@@ -31,8 +35,9 @@ class BrowseScreen extends ConsumerStatefulWidget {
 }
 
 class _BrowseScreenState extends ConsumerState<BrowseScreen> {
-  String? _categoryId;
-  String _query = '';
+  /// Điều kiện đang áp dụng cho danh sách (từ khóa đã debounce).
+  ListingQuery _query = const ListingQuery();
+  Timer? _debounce;
 
   // Giữ controller ở đây: header được dựng lại khi trạng thái tải đổi, nếu
   // không ô tìm kiếm sẽ mất chữ đã gõ.
@@ -40,34 +45,46 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
 
   @override
   void dispose() {
+    _debounce?.cancel();
     _searchController.dispose();
     super.dispose();
   }
 
-  bool _matches(Listing l, String q) => normalizeSearch(
-    '${l.title} ${l.bookInfo.author ?? ''} ${l.bookInfo.isbn ?? ''}',
-  ).contains(q);
+  void _onText(String value) {
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 400), () {
+      if (mounted) setState(() => _query = _query.copyWith(q: value));
+    });
+  }
+
+  Future<void> _openFilters() async {
+    final next = await showListingFilterSheet(context, _query);
+    if (next != null && mounted) setState(() => _query = next);
+  }
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final provider = browseListingsProvider(_categoryId);
+    final provider = listingSearchProvider(_query);
     final state = ref.watch(provider);
     final notifier = ref.read(provider.notifier);
     final categories = ref.watch(categoryTreeProvider).value ?? const [];
     final unread = ref.watch(totalUnreadProvider);
     final cartCount = ref.watch(cartCountProvider);
     final reserved = ref.watch(reservedListingIdsProvider);
-    final q = normalizeSearch(_query);
+    final searching = _query.isSearching;
 
     final header = _Header(
       unread: unread,
       cartCount: cartCount,
       categories: [for (final c in categories) (id: c.id, name: c.name)],
-      categoryId: _categoryId,
+      categoryId: _query.categoryId,
       searchController: _searchController,
-      onCategory: (id) => setState(() => _categoryId = id),
-      onQuery: (v) => setState(() => _query = v),
+      filterCount: _query.activeFilters,
+      onFilters: _openFilters,
+      onCategory: (id) =>
+          setState(() => _query = _query.copyWith(categoryId: () => id)),
+      onQuery: _onText,
     );
 
     return Scaffold(
@@ -91,8 +108,7 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
           data: (data) {
             final items = [
               for (final x in data.items)
-                if (!reserved.contains(x.id) && (q.isEmpty || _matches(x, q)))
-                  x,
+                if (!reserved.contains(x.id)) x,
             ];
             return RefreshIndicator(
               onRefresh: notifier.reload,
@@ -105,7 +121,7 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
                     SliverToBoxAdapter(child: header),
-                    if (q.isEmpty)
+                    if (!searching)
                       const SliverToBoxAdapter(child: LiveAuctionStrip()),
                     SliverToBoxAdapter(
                       child: Padding(
@@ -122,7 +138,7 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
                           children: [
                             Flexible(
                               child: Text(
-                                q.isEmpty ? l.resultsNew : l.resultsSearch,
+                                searching ? l.resultsSearch : l.resultsNew,
                                 overflow: TextOverflow.ellipsis,
                                 style: context.text.titleMedium,
                               ),
@@ -142,7 +158,7 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
                       SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.all(AppSpacing.xl),
-                          child: q.isNotEmpty
+                          child: searching
                               ? Text(
                                   l.noSearchResults,
                                   textAlign: TextAlign.center,
@@ -205,7 +221,7 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
 class _Footer extends StatelessWidget {
   const _Footer({required this.state, required this.onRetry});
 
-  final PagedState<Listing> state;
+  final CursorState<Listing> state;
   final VoidCallback onRetry;
 
   @override
@@ -232,6 +248,8 @@ class _Header extends StatelessWidget {
     required this.categories,
     required this.categoryId,
     required this.searchController,
+    required this.filterCount,
+    required this.onFilters,
     required this.onCategory,
     required this.onQuery,
   });
@@ -241,6 +259,8 @@ class _Header extends StatelessWidget {
   final List<({String id, String name})> categories;
   final String? categoryId;
   final TextEditingController searchController;
+  final int filterCount;
+  final VoidCallback onFilters;
   final ValueChanged<String?> onCategory;
   final ValueChanged<String> onQuery;
 
@@ -296,6 +316,17 @@ class _Header extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: l.searchHint,
                 prefixIcon: Icon(Icons.search, color: colors.textMuted),
+                suffixIcon: IconButton(
+                  tooltip: filterCount > 0
+                      ? l.filterButtonCount(filterCount)
+                      : l.filterButton,
+                  onPressed: onFilters,
+                  icon: Badge(
+                    isLabelVisible: filterCount > 0,
+                    label: Text('$filterCount'),
+                    child: Icon(Icons.tune, color: colors.textSecondary),
+                  ),
+                ),
                 contentPadding: const EdgeInsets.symmetric(
                   vertical: AppSpacing.sm,
                 ),

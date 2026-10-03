@@ -25,13 +25,31 @@ class NotificationRepository {
     ),
   );
 
-  Future<int> unreadCount() => _api.get(
-    '/notifications/unread-count',
-    parse: (data) => data is Map ? (data['count'] as num?)?.toInt() ?? 0 : 0,
+  Future<int> unreadCount() =>
+      _api.get('/notifications/unread-count', parse: _count);
+
+  /// Trả về số chưa đọc còn lại. Id không phải của mình bị server bỏ qua.
+  Future<int> markRead(List<String> ids) =>
+      _api.post('/notifications/read', body: {'ids': ids}, parse: _count);
+
+  Future<int> markAllRead() =>
+      _api.post('/notifications/read', body: {'all': true}, parse: _count);
+
+  static int _count(dynamic data) =>
+      data is Map ? (data['count'] as num?)?.toInt() ?? 0 : 0;
+
+  Future<NotificationSettings> getSettings() => _api.get(
+    '/me/notification-settings',
+    parse: NotificationSettings.fromJson,
   );
 
-  Future<void> markRead(String id) =>
-      _api.postNoContent('/notifications/$id/read');
-
-  Future<void> markAllRead() => _api.postNoContent('/notifications/read-all');
+  /// Gửi một hoặc cả hai trường; trả về trạng thái đầy đủ.
+  Future<NotificationSettings> updateSettings({
+    bool? marketing,
+    bool? auctionWatch,
+  }) => _api.patch(
+    '/me/notification-settings',
+    body: {'marketing': ?marketing, 'auctionWatch': ?auctionWatch},
+    parse: NotificationSettings.fromJson,
+  );
 }

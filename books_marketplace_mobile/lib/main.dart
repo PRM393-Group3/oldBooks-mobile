@@ -26,7 +26,7 @@ Future<void> main() async {
       overrides: [
         tokenStoreProvider.overrideWithValue(tokenStore),
         sharedPreferencesProvider.overrideWithValue(prefs),
-        if (Env.uiPreview) ...previewOverrides(tokenStore),
+        if (Env.uiPreview) ...previewOverrides(tokenStore, prefs),
       ],
       child: const App(),
     ),

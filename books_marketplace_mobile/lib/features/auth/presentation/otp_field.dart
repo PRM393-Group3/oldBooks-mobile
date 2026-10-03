@@ -8,10 +8,12 @@ import '../../../core/theme/theme_context.dart';
 import '../../../core/validation/validators.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_text_field.dart';
+import 'countdown_text.dart';
 
-/// Ô nhập OTP kèm nút "Gửi mã" có đếm ngược chờ gửi lại.
+/// Ô nhập OTP kèm nút "Gửi mã" có đếm ngược chờ gửi lại và đếm ngược hạn OTP.
 ///
-/// [onSend] gọi API gửi OTP; [validatePhone] cho biết số điện thoại đã hợp lệ
+/// [onSend] gọi API gửi OTP và trả về `expiresInSeconds` của server (không viết
+/// cứng vì Super Admin chỉnh được); [validatePhone] cho biết số điện thoại đã hợp lệ
 /// chưa (không hợp lệ thì không gửi).
 class OtpField extends StatefulWidget {
   const OtpField({
@@ -21,14 +23,19 @@ class OtpField extends StatefulWidget {
     required this.validatePhone,
     this.enabled = true,
     this.errorText,
+    this.handleError,
     this.cooldown = const Duration(seconds: 60),
   });
 
   final TextEditingController controller;
-  final Future<void> Function() onSend;
+  final Future<int> Function() onSend;
   final bool Function() validatePhone;
   final bool enabled;
   final String? errorText;
+
+  /// Cho màn hình tự xử lý một số lỗi gửi OTP (trả `true` nếu đã xử lý, khi đó
+  /// không hiện snackbar mặc định).
+  final bool Function(ApiError error)? handleError;
   final Duration cooldown;
 
   @override
@@ -38,6 +45,8 @@ class OtpField extends StatefulWidget {
 class _OtpFieldState extends State<OtpField> {
   Timer? _timer;
   int _left = 0;
+  int _expiresLeft = 0;
+  bool _sent = false;
   bool _sending = false;
 
   @override
@@ -46,21 +55,39 @@ class _OtpFieldState extends State<OtpField> {
     super.dispose();
   }
 
+  void _startTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (t) {
+      if (!mounted) return t.cancel();
+      setState(() {
+        if (_left > 0) _left--;
+        if (_expiresLeft > 0) _expiresLeft--;
+      });
+      if (_left <= 0 && _expiresLeft <= 0) t.cancel();
+    });
+  }
+
   Future<void> _send() async {
     if (_sending || _left > 0 || !widget.validatePhone()) return;
     setState(() => _sending = true);
     try {
-      await widget.onSend();
+      final expiresIn = await widget.onSend();
       if (!mounted) return;
-      setState(() => _left = widget.cooldown.inSeconds);
-      _timer?.cancel();
-      _timer = Timer.periodic(const Duration(seconds: 1), (t) {
-        if (!mounted) return t.cancel();
-        setState(() => _left--);
-        if (_left <= 0) t.cancel();
+      setState(() {
+        _sent = true;
+        _left = widget.cooldown.inSeconds;
+        _expiresLeft = expiresIn;
       });
+      _startTimer();
     } on ApiError catch (e) {
-      if (mounted) AppSnackbar.apiError(context, e);
+      if (!mounted) return;
+      // Quá hạn mức OTP: khóa nút gửi theo đúng thời gian server yêu cầu.
+      final wait = e.retryAfter;
+      if (e.code == ApiErrorCode.rateLimited && wait != null) {
+        setState(() => _left = wait.inSeconds);
+        _startTimer();
+      }
+      if (widget.handleError?.call(e) != true) AppSnackbar.apiError(context, e);
     } finally {
       if (mounted) setState(() => _sending = false);
     }
@@ -82,6 +109,9 @@ class _OtpFieldState extends State<OtpField> {
             autofillHints: const [AutofillHints.oneTimeCode],
             validator: v.otp,
             errorText: widget.errorText,
+            helperText: _expiresLeft > 0
+                ? l.otpExpiresIn(formatMmSs(_expiresLeft))
+                : (_sent ? l.otpExpired : null),
             enabled: widget.enabled,
             maxLength: 6,
             prefixIcon: Icons.sms_outlined,

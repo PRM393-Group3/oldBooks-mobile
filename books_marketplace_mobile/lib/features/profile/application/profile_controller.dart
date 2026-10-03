@@ -30,17 +30,45 @@ class ProfileController extends AsyncNotifier<Profile> {
         const ApiError(status: 401, code: ApiErrorCode.unauthorized),
       );
     }
-    return ref.read(profileRepositoryProvider).getProfile();
+    return _load();
   }
 
-  Future<void> save({
-    required String fullName,
-    required String? phoneNumber,
-  }) async {
+  Future<Profile> _load() async {
+    try {
+      return await ref.read(profileRepositoryProvider).getProfile();
+    } on ApiError catch (e) {
+      // Token hợp lệ nhưng tài khoản không còn: coi như hết phiên.
+      if (e.code == ApiErrorCode.userNotFound) {
+        Future.microtask(
+          () => ref.read(authControllerProvider.notifier).clearLocalSession(),
+        );
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> save({required String fullName}) async {
     final profile = await ref
         .read(profileRepositoryProvider)
-        .updateProfile(fullName: fullName, phoneNumber: phoneNumber);
+        .updateProfile(fullName: fullName);
     state = AsyncData(profile);
+  }
+
+  /// Bước 1 đổi số điện thoại. Trả về số giây OTP còn hiệu lực.
+  Future<int> sendPhoneOtp(String phone) =>
+      ref.read(profileRepositoryProvider).sendPhoneOtp(phone: phone);
+
+  Future<void> changePhone({required String phone, required String otp}) async {
+    final profile = await ref
+        .read(profileRepositoryProvider)
+        .changePhone(phone: phone, otp: otp);
+    state = AsyncData(profile);
+  }
+
+  /// Xóa tài khoản rồi xóa phiên ở máy. Ném [ApiError] nếu bị từ chối.
+  Future<void> deleteAccount({required String password}) async {
+    await ref.read(profileRepositoryProvider).deleteAccount(password: password);
+    await ref.read(authControllerProvider.notifier).clearLocalSession();
   }
 
   Future<void> changeAvatar({

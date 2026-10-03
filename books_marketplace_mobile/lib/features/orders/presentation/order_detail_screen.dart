@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/l10n/app_localizations.dart';
+import '../../../core/network/api_error.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/util/format.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
-import '../../../core/widgets/app_dashed_button.dart';
-import '../../../core/widgets/app_page.dart';
+import '../../../core/widgets/app_dialog.dart';
+import '../../../core/widgets/app_sheet.dart';
+import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_state_views.dart';
 import '../../../core/widgets/app_tag.dart';
+import '../../../core/widgets/countdown_text.dart';
 import '../../listings/presentation/widgets/book_tile.dart';
-import '../../sim/application/sim_providers.dart';
-import '../../sim/application/sim_state.dart';
-import '../../sim/domain/rules.dart';
-import '../../sim/presentation/sim_text.dart';
-import '../../sim/presentation/sim_ticker.dart';
-import '../../wallet/presentation/wallet_sheets.dart';
-import '../domain/order.dart';
-import '../domain/order_timeline.dart';
-import 'complaint_sheet.dart';
+import '../../wallet/application/wallet_providers.dart';
+import '../application/order_providers.dart';
+import '../domain/sale_order.dart';
+import 'orders_screen.dart';
 
-/// Chi tiết đơn: trạng thái, dòng thời gian, tiền và các thao tác khả dụng.
+/// Chi tiết đơn bán thường: trạng thái, đếm ngược hạn, tiền, địa chỉ, vận đơn,
+/// diễn biến và các nút theo `actions` của server.
 class OrderDetailScreen extends ConsumerWidget {
   const OrderDetailScreen({super.key, required this.orderId});
 
@@ -32,473 +32,455 @@ class OrderDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
-    final order = ref.watch(orderProvider(orderId));
-    if (order == null) {
-      return AppPage(
-        title: l.orderTitle(orderId),
-        scrollable: false,
-        child: AppEmptyView(
-          icon: Icons.receipt_long_outlined,
-          title: l.ordersEmpty,
-        ),
-      );
-    }
-    final now = ref.watch(simNowProvider);
-    final locale = Localizations.localeOf(context).toString();
-
-    return SimTicker(
-      child: AppPage(
-        title: l.orderTitle(order.id),
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.screen + 4,
-          AppSpacing.md + 2,
-          AppSpacing.screen + 4,
-          AppSpacing.lg,
-        ),
-        bottom: _Actions(order: order),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _Header(order: order, now: now, locale: locale),
-            const SizedBox(height: AppSpacing.md + 2),
-            _ItemCard(order: order),
-            const SizedBox(height: AppSpacing.md + 2),
-            _Timeline(order: order),
-            if (order.complaint != null) ...[
-              const SizedBox(height: AppSpacing.sm),
-              _ComplaintCard(order: order, locale: locale),
-            ],
-            const SizedBox(height: AppSpacing.md + 2),
-            _MoneyCard(order: order, locale: locale),
-            if (order.status == OrderStatus.completed && !order.isAuction) ...[
-              const SizedBox(height: AppSpacing.md + 2),
-              _ReviewCard(order: order),
-            ],
-          ],
+    final state = ref.watch(saleOrderProvider(orderId));
+    return Scaffold(
+      appBar: AppBar(title: Text(l.soDetailTitle)),
+      body: SafeArea(
+        child: state.when(
+          loading: () => const AppLoadingView(),
+          error: (e, _) => AppErrorView(
+            error: e,
+            onRetry: () => ref.invalidate(saleOrderProvider(orderId)),
+          ),
+          data: (order) => RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(saleOrderProvider(orderId));
+              await ref.read(saleOrderProvider(orderId).future);
+            },
+            child: _Body(order: order),
+          ),
         ),
       ),
     );
   }
 }
 
-String _headline(AppLocalizations l, OrderStatus s) => switch (s) {
-  OrderStatus.paidAwaitingShipment => l.headPaidAwaitingShipment,
-  OrderStatus.shipped => l.headShipped,
-  OrderStatus.delivered => l.headDelivered,
-  OrderStatus.completed => l.headCompleted,
-  OrderStatus.disputed => l.headDisputed,
-  OrderStatus.cancelledByBuyer => l.headCancelled,
-  OrderStatus.refunded => l.headRefunded,
-  OrderStatus.partiallyRefunded => l.headPartiallyRefunded,
-  OrderStatus.readyToShip => l.headReadyToShip,
-  OrderStatus.inDelivery => l.headInDelivery,
-  OrderStatus.inStorage => l.headInStorage,
-  OrderStatus.pickedUp => l.headPickedUp,
-};
+class _Body extends ConsumerStatefulWidget {
+  const _Body({required this.order});
 
-String _note(AppLocalizations l, String locale, Order o, DateTime now) {
-  final remaining = remainingText(
-    l,
-    (o.deliveredAt ?? now).add(complaintWindow).difference(now),
-  );
-  return switch (o.status) {
-    OrderStatus.paidAwaitingShipment => l.detailNotePaid(
-      formatShortDateTime(o.shipDeadline),
-    ),
-    OrderStatus.shipped => l.detailNoteShipped,
-    OrderStatus.delivered ||
-    OrderStatus.pickedUp => l.detailNoteDelivered(remaining),
-    OrderStatus.completed => l.detailNoteCompleted,
-    OrderStatus.disputed => l.detailNoteDisputed,
-    OrderStatus.cancelledByBuyer => l.detailNoteCancelled,
-    OrderStatus.refunded => l.detailNoteRefunded,
-    OrderStatus.partiallyRefunded => l.detailNotePartiallyRefunded,
-    OrderStatus.readyToShip => l.detailNoteReadyToShip(
-      formatVnd(o.ship, locale),
-    ),
-    OrderStatus.inDelivery => l.detailNoteInDelivery(o.attempt),
-    OrderStatus.inStorage => l.detailNoteInStorage,
-  };
-}
-
-class _Header extends StatelessWidget {
-  const _Header({required this.order, required this.now, required this.locale});
-
-  final Order order;
-  final DateTime now;
-  final String locale;
+  final SaleOrder order;
 
   @override
-  Widget build(BuildContext context) {
+  ConsumerState<_Body> createState() => _BodyState();
+}
+
+class _BodyState extends ConsumerState<_Body> {
+  bool _busy = false;
+
+  Future<void> _act(
+    Future<SaleOrder> Function() action,
+    String successMessage,
+  ) async {
+    if (_busy) return;
+    setState(() => _busy = true);
+    try {
+      await action();
+      refreshOrders(ref, orderId: widget.order.id);
+      // Hủy đơn hoàn tiền, hoàn tất chuyển tiền: số dư thay đổi.
+      ref.read(walletProvider.notifier).refresh();
+      ref.invalidate(walletTransactionsProvider);
+      if (mounted) AppSnackbar.success(context, successMessage);
+    } on ApiError catch (e) {
+      // Sai trạng thái (`INVALID_STATE`): tải lại đơn để hiện đúng.
+      if (e.needsReload) refreshOrders(ref, orderId: widget.order.id);
+      if (mounted) AppSnackbar.apiError(context, e);
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _confirmThen({
+    required String title,
+    required String message,
+    required String confirmLabel,
+    required bool destructive,
+    required Future<SaleOrder> Function() action,
+    required String success,
+  }) async {
+    final ok = await showConfirmDialog(
+      context,
+      title: title,
+      message: message,
+      confirmLabel: confirmLabel,
+      destructive: destructive,
+    );
+    if (ok && mounted) await _act(action, success);
+  }
+
+  Future<void> _ship() async {
     final l = context.l10n;
-    final colors = context.colors;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AppTag(
-          label: orderStatusLabel(l, order.status),
-          tone: orderStatusTone(order.status),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          _headline(l, order.status),
-          style: context.text.headlineMedium?.copyWith(
-            fontSize: 24,
-            height: 1.15,
+    final input = await showAppSheet<({String carrier, String tracking})>(
+      context,
+      builder: (sheet) => _ShipForm(sheetContext: sheet),
+    );
+    if (input == null || !mounted) return;
+    await _act(
+      () => ref
+          .read(orderRepositoryProvider)
+          .ship(
+            widget.order.id,
+            carrier: input.carrier,
+            trackingNumber: input.tracking,
           ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          _note(l, locale, order, now),
-          style: context.text.bodySmall?.copyWith(
-            color: colors.textSecondary,
-            height: 1.5,
-          ),
-        ),
-      ],
+      l.soShipped,
     );
   }
-}
-
-class _ItemCard extends StatelessWidget {
-  const _ItemCard({required this.order});
-
-  final Order order;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final colors = context.colors;
-    final shipInfo = order.tracking != null
-        ? '${order.carrier ?? ''} · ${order.tracking}'
-        : order.isAuction
-        ? l.shipFromWarehouse
-        : l.shipNoTracking;
-    return AppCard(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 52,
-            height: 72,
-            child: BookCover(
-              url: order.coverUrl,
-              hue: order.coverHue,
-              label: order.title,
-              radius: 6,
-            ),
+    final locale = Localizations.localeOf(context).toString();
+    final o = widget.order;
+    final repo = ref.read(orderRepositoryProvider);
+    final a = o.actions;
+
+    String daysHours(int d, int h) => '$d ngày $h giờ';
+
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(AppSpacing.screen + 4),
+      children: [
+        // Sách
+        AppCard(
+          onTap: o.book?.listingId.isNotEmpty == true
+              ? () => context.push('/home/book/${o.book!.listingId}')
+              : null,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 56,
+                height: 76,
+                child: BookCover(
+                  url: o.book?.thumbnailUrl,
+                  label: o.title,
+                  radius: 6,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppTag(label: o.status.label(l), tone: orderTone(o.status)),
+                    const SizedBox(height: 6),
+                    Text(
+                      o.title,
+                      style: context.text.titleMedium?.copyWith(
+                        fontFamily: AppTypography.serifFamily,
+                        height: 1.2,
+                      ),
+                    ),
+                    if (o.book?.author != null)
+                      Text(
+                        o.book!.author!,
+                        style: context.text.labelSmall?.copyWith(
+                          color: colors.textMuted,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
+        ),
+        const SizedBox(height: AppSpacing.sm),
+
+        // Đếm ngược
+        if (o.status == SaleOrderStatus.paidAwaitingShipment &&
+            o.shipDeadlineAt != null)
+          _CountdownBanner(
+            target: o.shipDeadlineAt!,
+            daysHours: daysHours,
+            textFor: (remaining) => o.isSeller
+                ? l.soCountdownShip(remaining)
+                : l.soCountdownShipBuyer(remaining),
+          ),
+        if (o.status == SaleOrderStatus.delivered &&
+            o.complaintWindowEndsAt != null)
+          _CountdownBanner(
+            target: o.complaintWindowEndsAt!,
+            daysHours: daysHours,
+            textFor: l.soCountdownComplaint,
+          ),
+
+        // Tiền
+        _Section(
+          children: [
+            _Row(l.soPrice, formatVnd(o.price, locale)),
+            _Row(l.soShipFee, formatVnd(o.shippingFee, locale)),
+            _Row(l.soTotal, formatVnd(o.totalAmount, locale), bold: true),
+            if (o.isSeller && o.sellerPayout != null)
+              for (final e in o.sellerPayout!.entries)
+                _Row(
+                  _payoutLabel(l, e.key),
+                  formatVnd(e.value, locale),
+                  bold: _isNetPayout(e.key),
+                ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.sm),
+
+        // Các bên + địa chỉ (người bán cần địa chỉ để gửi hàng)
+        _Section(
+          children: [
+            if (o.seller != null) _Row(l.soSeller, o.seller!.name),
+            if (o.buyer != null) _Row(l.soBuyer, o.buyer!.name),
+          ],
+        ),
+        if (o.shippingAddress != null) ...[
+          const SizedBox(height: AppSpacing.sm),
+          AppCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  order.title,
-                  style: context.text.titleMedium?.copyWith(
-                    fontFamily: AppTypography.serifFamily,
+                  l.soAddress,
+                  style: context.text.labelSmall?.copyWith(
+                    color: colors.textMuted,
                   ),
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  [
-                    if (order.author != null) order.author!,
-                    if (order.seller.isNotEmpty) order.seller,
-                  ].join(' · '),
-                  style: context.text.labelSmall?.copyWith(
-                    color: colors.textMuted,
-                  ),
+                  '${o.shippingAddress!.recipientName} · ${o.shippingAddress!.phone}',
+                  style: context.text.labelLarge,
                 ),
                 Text(
-                  shipInfo,
-                  style: context.text.labelSmall?.copyWith(
-                    color: colors.textMuted,
+                  o.shippingAddress!.fullLine,
+                  style: context.text.bodySmall?.copyWith(
+                    color: colors.textSecondary,
                   ),
                 ),
               ],
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-String _stepLabel(AppLocalizations l, OrderStep s) => switch (s) {
-  OrderStep.saleOrdered => l.stepSaleOrdered,
-  OrderStep.saleShipped => l.stepSaleShipped,
-  OrderStep.delivered => l.stepDelivered,
-  OrderStep.saleCompleted => l.stepSaleCompleted,
-  OrderStep.auctionWon => l.stepAuctionWon,
-  OrderStep.auctionInDelivery => l.stepAuctionInDelivery,
-  OrderStep.auctionReceived => l.stepAuctionReceived,
-  OrderStep.auctionCompleted => l.stepAuctionCompleted,
-};
-
-class _Timeline extends StatelessWidget {
-  const _Timeline({required this.order});
-
-  final Order order;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final colors = context.colors;
-    final timeline = orderTimeline(order);
-    final steps = timeline.steps;
-
-    return Column(
-      children: [
-        for (var i = 0; i < steps.length; i++)
-          IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  width: 14,
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 12,
-                        height: 12,
-                        margin: const EdgeInsets.only(top: 3),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: steps[i].done
-                              ? colors.primary
-                              : colors.surface,
-                          border: Border.all(
-                            color: steps[i].done
-                                ? colors.primary
-                                : colors.border,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          width: 2,
-                          color: i == steps.length - 1
-                              ? Colors.transparent
-                              : (steps[i].done && steps[i + 1].done
-                                    ? colors.primary
-                                    : colors.divider),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 14),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          timeline.cancelled && i == 0
-                              ? l.stepCancelled
-                              : _stepLabel(l, steps[i].step),
-                          style: context.text.bodyMedium?.copyWith(
-                            fontWeight: steps[i].isCurrent
-                                ? FontWeight.w700
-                                : FontWeight.w500,
-                            color: steps[i].done
-                                ? colors.textPrimary
-                                : colors.textMuted,
-                          ),
-                        ),
-                        Text(
-                          steps[i].done && steps[i].time != null
-                              ? formatShortDateTime(steps[i].time!)
-                              : steps[i].isNext
-                              ? l.stepNext
-                              : '',
-                          style: context.text.labelSmall?.copyWith(
-                            color: colors.textMuted,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-class _ComplaintCard extends StatelessWidget {
-  const _ComplaintCard({required this.order, required this.locale});
-
-  final Order order;
-  final String locale;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final colors = context.colors;
-    final c = order.complaint!;
-    final text = switch (c.status) {
-      ComplaintStatus.open =>
-        order.isAuction ? l.complaintTextOpenAuction : l.complaintTextOpenSale,
-      ComplaintStatus.sellerResponded => l.complaintTextSellerResponded(
-        formatVnd(c.offer ?? 0, locale),
-      ),
-      ComplaintStatus.escalated =>
-        order.isAuction
-            ? l.complaintTextEscalatedAuction
-            : l.complaintTextEscalatedSale,
-      ComplaintStatus.agreed => l.complaintTextAgreed(
-        formatVnd(c.offer ?? 0, locale),
-      ),
-      ComplaintStatus.resolved => l.complaintTextResolved,
-    };
-    return AppCard(
-      color: colors.errorContainer,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l.complaintCardTitle(complaintStatusLabel(l, c.status)),
-            style: context.text.labelLarge?.copyWith(
-              color: colors.onErrorContainer,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            text,
-            style: context.text.bodySmall?.copyWith(
-              color: colors.onErrorContainer,
-              height: 1.5,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MoneyCard extends StatelessWidget {
-  const _MoneyCard({required this.order, required this.locale});
-
-  final Order order;
-  final String locale;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final colors = context.colors;
-    final settled = !order.status.isOpen;
-    final note = order.isAuction
-        ? l.moneyNoteAuction
-        : settled
-        ? l.moneyNoteSettled
-        : l.moneyNoteHeld;
-
-    Widget row(String label, String value, {bool bold = false}) => Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: context.text.bodySmall?.copyWith(
-            color: bold ? null : colors.textSecondary,
-            fontWeight: bold ? FontWeight.w700 : null,
-          ),
-        ),
-        Text(
-          value,
-          style: context.text.bodySmall?.copyWith(
-            fontWeight: bold ? FontWeight.w700 : null,
-          ),
-        ),
-      ],
-    );
-
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          row(
-            order.isAuction ? l.moneyWinPrice : l.moneyBookPrice,
-            formatVnd(order.price, locale),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          row(l.moneyShipping, formatVnd(order.ship, locale)),
-          const SizedBox(height: AppSpacing.xs),
-          Divider(color: colors.divider),
-          const SizedBox(height: AppSpacing.xs),
-          row(l.moneyTotal, formatVnd(order.total, locale), bold: true),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            note,
-            style: context.text.labelSmall?.copyWith(color: colors.textMuted),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ReviewCard extends ConsumerWidget {
-  const _ReviewCard({required this.order});
-
-  final Order order;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l = context.l10n;
-    final colors = context.colors;
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(l.reviewSeller, style: context.text.labelLarge),
-          const SizedBox(height: AppSpacing.xs),
-          Row(
+        if (o.shipment != null) ...[
+          const SizedBox(height: AppSpacing.sm),
+          _Section(
             children: [
-              for (var n = 1; n <= 5; n++)
-                Padding(
-                  padding: const EdgeInsets.only(right: 6),
-                  child: Semantics(
-                    button: true,
-                    selected: n <= order.stars,
-                    label: l.starLabel(n),
-                    child: Material(
-                      color: n <= order.stars
-                          ? colors.warningContainer
-                          : colors.surface,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: AppRadius.smAll,
-                        side: BorderSide(color: colors.divider),
-                      ),
-                      child: InkWell(
-                        borderRadius: AppRadius.smAll,
-                        onTap: () =>
-                            ref.read(simProvider.notifier).rate(order.id, n),
-                        child: SizedBox(
-                          width: 44,
-                          height: 44,
-                          child: Icon(
-                            Icons.star_rounded,
-                            color: n <= order.stars
-                                ? colors.warning
-                                : colors.border,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+              _Row(l.soShipment, o.shipment!.carrier),
+              _Row(l.soShipTracking, o.shipment!.trackingNumber),
+              if (o.shipment!.shippedAt != null)
+                _Row(
+                  l.soStatusShipped,
+                  formatDateTime(o.shipment!.shippedAt!, locale),
                 ),
             ],
           ),
+        ],
+
+        // Diễn biến
+        if (o.timeline.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.md),
+          Text(l.soTimeline, style: context.text.titleMedium),
           const SizedBox(height: AppSpacing.xs),
+          for (final t in o.timeline)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5, right: 10),
+                    child: Icon(Icons.circle, size: 8, color: colors.primary),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(t.status.label(l), style: context.text.labelLarge),
+                        if (t.at != null)
+                          Text(
+                            formatDateTime(t.at!, locale),
+                            style: context.text.labelSmall?.copyWith(
+                              color: colors.textMuted,
+                            ),
+                          ),
+                        if (t.note != null)
+                          Text(
+                            t.note!,
+                            style: context.text.bodySmall?.copyWith(
+                              color: colors.textSecondary,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+
+        // Nút theo `actions`
+        const SizedBox(height: AppSpacing.md),
+        if (o.complaintId != null) ...[
+          AppButton(
+            label: l.soViewComplaint,
+            variant: AppButtonVariant.secondary,
+            onPressed: () => context.push('/me/complaints/${o.complaintId}'),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+        ],
+        if (a.canComplain) ...[
+          AppButton(
+            label: l.soComplain,
+            variant: AppButtonVariant.secondary,
+            onPressed: _busy
+                ? null
+                : () => context.push('/me/orders/${o.id}/complain'),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+        ],
+        if (a.canComplete) ...[
+          AppButton(
+            label: l.soComplete,
+            loading: _busy,
+            onPressed: () => _confirmThen(
+              title: l.soCompleteTitle,
+              message: l.soCompleteBody,
+              confirmLabel: l.soComplete,
+              destructive: false,
+              action: () => repo.complete(o.id),
+              success: l.soCompleted,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+        ],
+        if (a.canConfirmReceived) ...[
+          AppButton(
+            label: l.soReceived,
+            loading: _busy,
+            onPressed: () => _confirmThen(
+              title: l.soReceivedTitle,
+              message: l.soReceivedBody,
+              confirmLabel: l.soReceived,
+              destructive: false,
+              action: () => repo.confirmReceived(o.id),
+              success: l.soReceivedDone,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+        ],
+        if (a.canShip) ...[
+          AppButton(label: l.soShip, loading: _busy, onPressed: _ship),
+          const SizedBox(height: AppSpacing.xs),
+        ],
+        if (a.canCancel)
+          AppButton(
+            label: l.soCancel,
+            variant: AppButtonVariant.danger,
+            loading: _busy,
+            onPressed: () => _confirmThen(
+              title: l.soCancelTitle,
+              message: l.soCancelBody,
+              confirmLabel: l.soCancel,
+              destructive: true,
+              action: () => repo.cancel(o.id),
+              success: l.soCancelled,
+            ),
+          ),
+        const SizedBox(height: AppSpacing.lg),
+      ],
+    );
+  }
+
+  static bool _isNetPayout(String key) =>
+      const {'amount', 'total', 'net', 'netAmount', 'payout'}.contains(key);
+
+  static String _payoutLabel(AppLocalizations l, String key) => switch (key) {
+    'price' => l.soPrice,
+    'fee' || 'platformFee' => l.soPayoutFee,
+    'shippingFee' => l.soShipFee,
+    _ when _isNetPayout(key) => l.soPayout,
+    _ => key,
+  };
+}
+
+class _CountdownBanner extends StatelessWidget {
+  const _CountdownBanner({
+    required this.target,
+    required this.daysHours,
+    required this.textFor,
+  });
+
+  final DateTime target;
+  final String Function(int days, int hours) daysHours;
+  final String Function(String remaining) textFor;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final colors = context.colors;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: Countdown(
+        target: target,
+        daysHours: daysHours,
+        builder: (context, remaining, expired) => DecoratedBox(
+          decoration: BoxDecoration(
+            color: expired ? colors.errorContainer : colors.warningContainer,
+            borderRadius: AppRadius.mdAll,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.sm),
+            child: Text(
+              textFor(expired ? l.soOverdue : remaining),
+              style: context.text.labelMedium?.copyWith(
+                color: expired
+                    ? colors.onErrorContainer
+                    : colors.onWarningContainer,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Section extends StatelessWidget {
+  const _Section({required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    if (children.isEmpty) return const SizedBox.shrink();
+    return AppCard(child: Column(children: children));
+  }
+}
+
+class _Row extends StatelessWidget {
+  const _Row(this.label, this.value, {this.bold = false});
+
+  final String label;
+  final String value;
+  final bool bold;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
           Text(
-            order.stars > 0 ? l.reviewNoteEdit : l.reviewNoteNew,
-            style: context.text.labelSmall?.copyWith(color: colors.textMuted),
+            label,
+            style: context.text.bodySmall?.copyWith(color: colors.textMuted),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: context.text.bodySmall?.copyWith(
+                fontWeight: bold ? FontWeight.w700 : null,
+              ),
+            ),
           ),
         ],
       ),
@@ -506,168 +488,78 @@ class _ReviewCard extends ConsumerWidget {
   }
 }
 
-class _Actions extends ConsumerWidget {
-  const _Actions({required this.order});
+class _ShipForm extends StatefulWidget {
+  const _ShipForm({required this.sheetContext});
 
-  final Order order;
+  final BuildContext sheetContext;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<_ShipForm> createState() => _ShipFormState();
+}
+
+class _ShipFormState extends State<_ShipForm> {
+  final _carrier = TextEditingController();
+  final _tracking = TextEditingController();
+  bool _tried = false;
+
+  @override
+  void dispose() {
+    _carrier.dispose();
+    _tracking.dispose();
+    super.dispose();
+  }
+
+  bool get _valid {
+    final c = _carrier.text.trim().length;
+    final t = _tracking.text.trim().length;
+    return c >= 2 && c <= 50 && t >= 3 && t <= 50;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l = context.l10n;
-    final colors = context.colors;
-    final locale = Localizations.localeOf(context).toString();
-    final sim = ref.read(simProvider.notifier);
-    final c = order.complaint;
-
-    void run(SimOutcome Function() action) {
-      final outcome = action();
-      if (outcome is SimInsufficient) {
-        showInsufficientSheet(context, outcome.needed);
-      }
-    }
-
-    Widget primary(String label, VoidCallback onTap) =>
-        AppButton(label: label, onPressed: onTap);
-    Widget plain(String label, VoidCallback onTap) => AppButton(
-      label: label,
-      variant: AppButtonVariant.secondary,
-      onPressed: onTap,
-    );
-    Widget simulate(String label, VoidCallback onTap) =>
-        AppDashedButton(label: label, onPressed: onTap);
-    Widget danger(String label, VoidCallback onTap) => SizedBox(
-      width: double.infinity,
-      height: 48,
-      child: OutlinedButton(
-        onPressed: onTap,
-        style: OutlinedButton.styleFrom(
-          foregroundColor: colors.error,
-          side: BorderSide(color: colors.error.withValues(alpha: 0.35)),
-        ),
-        child: Text(label),
-      ),
-    );
-
-    final actions = <Widget>[];
-    switch (order.status) {
-      case OrderStatus.paidAwaitingShipment:
-        actions
-          ..add(
-            simulate(
-              l.actSimSellerShip,
-              () => run(() => sim.simSellerShip(order.id)),
-            ),
-          )
-          ..add(
-            danger(
-              l.actCancelOrder(formatVnd(order.total, locale)),
-              () => run(() => sim.cancelOrder(order.id)),
-            ),
-          );
-      case OrderStatus.shipped:
-        actions.add(
-          primary(l.actReceived, () => run(() => sim.markReceived(order.id))),
-        );
-      case OrderStatus.readyToShip:
-        actions.add(
-          simulate(
-            l.actSimWarehouseShip,
-            () => run(() => sim.simWarehouseShip(order.id)),
-          ),
-        );
-      case OrderStatus.inDelivery:
-        actions
-          ..add(
-            simulate(
-              l.actSimDeliverOk,
-              () => run(() => sim.simDeliverySucceeded(order.id)),
-            ),
-          )
-          ..add(
-            simulate(
-              l.actSimDeliverFail,
-              () => run(() => sim.simDeliveryFailed(order.id)),
-            ),
-          );
-      case OrderStatus.inStorage:
-        actions
-          ..add(
-            primary(
-              l.actPickUp,
-              () => run(() => sim.pickUpAtWarehouse(order.id)),
-            ),
-          )
-          ..add(
-            plain(
-              l.actRedeliver(formatVnd(shippingFeeAuction, locale)),
-              () => run(() => sim.redeliver(order.id)),
-            ),
-          );
-      case OrderStatus.delivered || OrderStatus.pickedUp:
-        actions
-          ..add(
-            primary(
-              l.actCompleteOrder,
-              () => run(() => sim.completeOrder(order.id)),
-            ),
-          )
-          ..add(
-            danger(l.actComplaint, () => showComplaintSheet(context, order.id)),
-          );
-      case OrderStatus.disputed when c != null:
-        switch (c.status) {
-          case ComplaintStatus.open:
-            actions.add(
-              simulate(
-                l.actSimSellerOffer,
-                () => run(() => sim.simSellerOffer(order.id)),
-              ),
-            );
-          case ComplaintStatus.sellerResponded:
-            actions
-              ..add(
-                primary(
-                  l.actAcceptOffer(formatVnd(c.offer ?? 0, locale)),
-                  () => run(() => sim.acceptOffer(order.id)),
-                ),
-              )
-              ..add(
-                plain(
-                  l.actEscalate,
-                  () => run(() => sim.escalateComplaint(order.id)),
-                ),
-              );
-          case ComplaintStatus.escalated:
-            actions.add(
-              simulate(
-                l.actSimAdmin,
-                () => run(() => sim.simAdminResolve(order.id)),
-              ),
-            );
-          case ComplaintStatus.agreed || ComplaintStatus.resolved:
-            break;
-        }
-      default:
-        break;
-    }
-
-    if (actions.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-        child: Text(
-          l.actNone,
-          textAlign: TextAlign.center,
-          style: context.text.bodySmall?.copyWith(color: colors.textMuted),
-        ),
-      );
-    }
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        for (var i = 0; i < actions.length; i++) ...[
-          if (i > 0) const SizedBox(height: AppSpacing.xs),
-          actions[i],
-        ],
+        AppSheetTitle(l.soShip),
+        const SizedBox(height: AppSpacing.md),
+        TextField(
+          controller: _carrier,
+          maxLength: 50,
+          textCapitalization: TextCapitalization.characters,
+          onChanged: (_) => setState(() {}),
+          decoration: InputDecoration(
+            labelText: l.soShipCarrier,
+            hintText: 'GHN',
+          ),
+        ),
+        TextField(
+          controller: _tracking,
+          maxLength: 50,
+          onChanged: (_) => setState(() {}),
+          decoration: InputDecoration(labelText: l.soShipTracking),
+        ),
+        if (_tried && !_valid)
+          Text(
+            l.soShipInvalid,
+            style: context.text.labelSmall?.copyWith(
+              color: context.colors.error,
+            ),
+          ),
+        const SizedBox(height: AppSpacing.md),
+        AppButton(
+          label: l.soShipSubmit,
+          onPressed: () {
+            if (!_valid) {
+              setState(() => _tried = true);
+              return;
+            }
+            Navigator.of(widget.sheetContext).pop((
+              carrier: _carrier.text.trim(),
+              tracking: _tracking.text.trim(),
+            ));
+          },
+        ),
       ],
     );
   }

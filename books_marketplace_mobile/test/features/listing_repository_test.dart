@@ -1,16 +1,18 @@
-import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:books_marketplace_mobile/core/network/api_client.dart';
+import 'package:books_marketplace_mobile/core/network/api_error.dart';
+import 'package:books_marketplace_mobile/core/network/blob_uploader.dart';
 import 'package:books_marketplace_mobile/features/listings/data/listing_repository.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
-import 'package:books_marketplace_mobile/features/listings/domain/listing_input.dart';
+import 'package:books_marketplace_mobile/features/listings/domain/listing_query.dart';
 import 'package:books_marketplace_mobile/features/notifications/data/notification_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../support/fakes.dart';
 
-const _listing = {'id': 'L1', 'status': 'Draft'};
+const _listing = {'id': 'L1', 'status': 'DRAFT'};
 
 void main() {
   late List<RequestOptions> seen;
@@ -28,123 +30,184 @@ void main() {
   }
 
   group('ListingRepository', () {
-    test('mine gửi status và phân trang, đọc danh sách', () async {
+    test('search gửi bộ lọc và cursor, đọc nextCursor từ meta', () async {
       setup(
-        (o) => jsonResponse(
-          200,
-          okBody({
-            'items': [_listing],
-            'totalCount': 1,
-          }),
-        ),
+        (o) => jsonResponse(200, {
+          'success': true,
+          'data': [
+            {'id': 'L1', 'title': 'A', 'status': 'PUBLISHED', 'price': 1000},
+          ],
+          'meta': {'pageSize': 20, 'hasNext': true, 'nextCursor': 'MHwx'},
+          'traceId': 't',
+        }),
       );
-      final page = await ListingRepository(api)
-          .mine(status: ListingStatus.rejected, page: 2, pageSize: 20);
-
-      expect(seen.single.path, '/listings/mine');
-      expect(seen.single.queryParameters, {
-        'status': 'Rejected',
-        'page': 2,
-        'pageSize': 20,
-      });
-      expect(page.items.single.id, 'L1');
-    });
-
-    test('mine không gửi status khi lấy tất cả', () async {
-      setup((o) => jsonResponse(200, okBody(<dynamic>[])));
-      await ListingRepository(api).mine(page: 1, pageSize: 20);
-      expect(seen.single.queryParameters.containsKey('status'), isFalse);
-    });
-
-    test('mineSummary đọc counts, bỏ trạng thái lạ', () async {
-      setup(
-        (o) => jsonResponse(
-          200,
-          okBody({
-            'counts': {'Draft': 2, 'PendingInspection': 1, 'Bogus': 9},
-          }),
-        ),
+      final page = await ListingRepository(api).search(
+        const ListingQuery(q: 'dac nhan', condition: BookCondition.good),
+        cursor: 'abc',
       );
-      final counts = await ListingRepository(api).mineSummary();
-      expect(counts, {
-        ListingStatus.draft: 2,
-        ListingStatus.pendingInspection: 1,
-      });
-    });
 
-    test('browse gửi categoryId', () async {
-      setup((o) => jsonResponse(200, okBody(<dynamic>[])));
-      await ListingRepository(api)
-          .browse(categoryId: 'c9', page: 1, pageSize: 20);
       expect(seen.single.path, '/listings');
-      expect(seen.single.queryParameters['categoryId'], 'c9');
+      expect(seen.single.queryParameters, {
+        'q': 'dac nhan',
+        'condition': 'GOOD',
+        'pageSize': 20,
+        'cursor': 'abc',
+      });
+      expect(page.items.single.price, 1000);
+      expect(page.hasNext, isTrue);
+      expect(page.nextCursor, 'MHwx');
+    });
+
+    test('create gửi đủ trường; update dùng PATCH một phần', () async {
+      setup(
+        (o) => jsonResponse(o.method == 'POST' ? 201 : 200, okBody(_listing)),
+      );
+      final repo = ListingRepository(api);
+      await repo.create(
+        const ListingDraftInput(
+          title: 'Đắc Nhân Tâm',
+          author: 'Dale Carnegie',
+          categoryId: 'c1',
+          condition: BookCondition.good,
+          price: 85000,
+          description: 'Mới 90%',
+        ),
+      );
+      await repo.update('L1', const ListingDraftInput(price: 90000));
+
+      expect(seen[0].method, 'POST');
+      expect(seen[0].data['categoryId'], 'c1');
+      expect(seen[1].method, 'PATCH');
+      expect(seen[1].path, '/listings/L1');
+      expect(seen[1].data, {'price': 90000});
     });
 
     test(
-      'create, saveBookInfo, saveImages, saveSaleMethod đúng đường dẫn và body',
+      'ảnh: xin URL riêng của tin, PUT lên kho, rồi đặt danh sách',
       () async {
-        setup((o) => jsonResponse(200, okBody(_listing)));
-        final repo = ListingRepository(api);
+        setup((o) {
+          if (o.path == '/listings/L1/photos/upload-url') {
+            return jsonResponse(
+              200,
+              okBody({
+                'blobName': 'u1/new.jpg',
+                'uploadUrl': 'http://blob/public/u1/new.jpg?sig=1',
+                'requiredHeaders': {'x-ms-blob-type': 'BlockBlob'},
+              }),
+            );
+          }
+          if (o.uri.host == 'blob') return jsonResponse(201, {});
+          return jsonResponse(
+            200,
+            okBody([
+              {'id': 'p0', 'url': 'http://blob/public/u1/old.jpg', 'order': 0},
+              {'id': 'p1', 'url': 'http://blob/public/u1/new2.jpg', 'order': 1},
+            ]),
+          );
+        });
+        final plain = Dio(BaseOptions(baseUrl: 'http://x'))
+          ..httpClientAdapter = FakeAdapter((o) {
+            seen.add(o);
+            return jsonResponse(201, {});
+          });
+        final repo = ListingRepository(api, BlobUploader(api, plain));
 
-        await repo.create();
-        await repo.saveBookInfo(
-          'L1',
-          const BookInfoInput(
-            title: 'A',
-            author: 'B',
-            categoryId: 'c',
-            condition: BookCondition.good,
-            description: 'd',
+        final names = await repo.uploadPhotos('L1', [
+          NewPhoto(
+            bytes: Uint8List.fromList([1, 2]),
+            fileName: 'a.jpg',
+            contentType: 'image/jpeg',
           ),
-        );
-        await repo.saveImages('L1', [
-          (blobName: 'u1/a.png', type: ImageType.frontCover),
-          (blobName: 'u1/b.png', type: ImageType.innerPage),
         ]);
-        await repo.saveSaleMethod(
-          'L1',
-          const FixedPriceInput(price: 120000, quantity: 2),
-        );
+        final photos = await repo.setPhotos('L1', ['u1/old.jpg', names.single]);
 
-        expect(seen.map((o) => '${o.method} ${o.path}').toList(), [
-          'POST /listings',
-          'PUT /listings/L1/book-info',
-          'PUT /listings/L1/images',
-          'PUT /listings/L1/sale-method',
-        ]);
-        expect(jsonDecode(jsonEncode(seen[2].data)), {
-          'images': [
-            {'blobName': 'u1/a.png', 'type': 'FrontCover'},
-            {'blobName': 'u1/b.png', 'type': 'InnerPage'},
-          ],
+        expect(names, ['u1/new.jpg']);
+        expect(seen[0].data, {
+          'fileName': 'a.jpg',
+          'contentType': 'image/jpeg',
         });
-        expect(seen[3].data, {
-          'method': 'FixedPrice',
-          'fixedPrice': {'price': 120000, 'quantity': 2},
+        expect(
+          (seen[0].data as Map).containsKey('visibility'),
+          isFalse,
+          reason: 'endpoint ảnh của tin không có visibility',
+        );
+        expect(seen.last.method, 'PUT');
+        expect(seen.last.path, '/listings/L1/photos');
+        expect(seen.last.data, {
+          'blobNames': ['u1/old.jpg', 'u1/new.jpg'],
         });
+        expect(photos.map((p) => p.blobName), ['u1/old.jpg', 'u1/new2.jpg']);
       },
     );
 
-    test('submit đọc listing và estimatedProcessingHours', () async {
+    test('submit, unpublish (không body), lỗi LISTING_INCOMPLETE', () async {
       setup(
         (o) => jsonResponse(
           200,
-          okBody({
-            'listing': {'id': 'L1', 'status': 'PendingInspection'},
-            'estimatedProcessingHours': 24,
-          }),
+          okBody({..._listing, 'status': 'PENDING_REVIEW'}),
         ),
       );
-      final r = await ListingRepository(api).submit('L1');
-      expect(r.listing.status, ListingStatus.pendingInspection);
-      expect(r.result.estimatedProcessingHours, 24);
+      final repo = ListingRepository(api);
+      expect((await repo.submit('L1')).status, ListingStatus.pendingReview);
+      await repo.unpublish('L1');
+      expect(seen[0].path, '/listings/L1/submit');
+      expect(seen[1].path, '/listings/L1/unpublish');
+
+      setup(
+        (o) => jsonResponse(
+          422,
+          errorBody(
+            'LISTING_INCOMPLETE',
+            details: [
+              {
+                'field': 'photos',
+                'message': 'Cần tối thiểu 4 ảnh (hiện có 2).',
+              },
+            ],
+          ),
+        ),
+      );
+      await expectLater(
+        ListingRepository(api).submit('L1'),
+        throwsA(
+          isA<ApiError>()
+              .having((e) => e.code, 'code', 'LISTING_INCOMPLETE')
+              .having(
+                (e) => e.fieldErrors['photos'],
+                'photos',
+                contains('4 ảnh'),
+              ),
+        ),
+      );
     });
 
-    test('delete chấp nhận 204', () async {
-      setup((o) => ResponseBody.fromString('', 204));
-      await ListingRepository(api).delete('L1');
-      expect(seen.single.method, 'DELETE');
-      expect(seen.single.path, '/listings/L1');
+    test('mine gửi status/phân trang và đọc tổng từ meta', () async {
+      setup(
+        (o) => jsonResponse(200, {
+          'success': true,
+          'data': [_listing],
+          'meta': {
+            'page': 1,
+            'pageSize': 20,
+            'totalItems': 45,
+            'hasNext': true,
+          },
+          'traceId': 't',
+        }),
+      );
+      final page = await ListingRepository(api)
+          .mine(status: ListingStatus.pendingReview, page: 1, pageSize: 20);
+      expect(seen.single.path, '/me/listings');
+      expect(seen.single.queryParameters, {
+        'status': 'PENDING_REVIEW',
+        'page': 1,
+        'pageSize': 20,
+      });
+      expect(page.totalCount, 45);
+      expect(page.hasMore, isTrue);
+
+      await ListingRepository(api).mine(page: 1, pageSize: 20);
+      expect(seen.last.queryParameters.containsKey('status'), isFalse);
     });
   });
 
@@ -154,13 +217,15 @@ void main() {
         if (o.path == '/notifications/unread-count') {
           return jsonResponse(200, okBody({'count': 3}));
         }
-        if (o.method == 'POST') return ResponseBody.fromString('', 204);
+        if (o.method == 'POST') {
+          return jsonResponse(200, okBody({'count': 0}));
+        }
         return jsonResponse(
           200,
           okBody([
             {
               'id': 'n1',
-              'type': 'ListingRejected',
+              'type': 'ACCOUNT_LOCKED',
               'title': 't',
               'body': 'b',
               'isRead': false,
@@ -172,14 +237,14 @@ void main() {
 
       final page = await repo.list(unreadOnly: true, page: 1, pageSize: 20);
       final count = await repo.unreadCount();
-      await repo.markRead('n1');
+      await repo.markRead(['n1']);
       await repo.markAllRead();
 
       expect(page.items.single.isRead, isFalse);
       expect(seen.first.queryParameters['unreadOnly'], true);
       expect(count, 3);
-      expect(seen[2].path, '/notifications/n1/read');
-      expect(seen[3].path, '/notifications/read-all');
+      expect(seen[2].path, '/notifications/read');
+      expect(seen[3].path, '/notifications/read');
     });
 
     test('list không gửi unreadOnly khi lấy tất cả', () async {

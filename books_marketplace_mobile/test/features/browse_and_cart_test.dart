@@ -1,3 +1,4 @@
+import 'package:books_marketplace_mobile/core/preview/in_memory_listings.dart';
 import 'package:books_marketplace_mobile/core/util/search.dart';
 import 'package:books_marketplace_mobile/features/auth/domain/user_role.dart';
 import 'package:books_marketplace_mobile/features/cart/application/cart_providers.dart';
@@ -5,6 +6,7 @@ import 'package:books_marketplace_mobile/features/cart/domain/cart_item.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,15 +21,14 @@ Listing _book(
   int price = 50000,
 }) => fakeListing(
   id: id,
-  status: ListingStatus.onSale,
+  status: ListingStatus.published,
   bookInfo: BookInfo(
     title: title,
     author: author,
     isbn: isbn,
     condition: BookCondition.good,
   ),
-  saleMethod: SaleMethod.fixedPrice,
-  fixedPrice: FixedPriceConfig(price: price, quantity: 1),
+  price: price,
 );
 
 void main() {
@@ -107,22 +108,26 @@ void main() {
       final field = find.byType(TextField);
 
       await tester.enterText(field, 'nha gia kim');
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 450));
+      await tester.pumpAndSettle();
       expect(find.text('Kết quả tìm kiếm'), findsOneWidget);
       expect(find.text('Nhà giả kim'), findsOneWidget);
       expect(find.text('Sapiens'), findsNothing);
       expect(find.text('1 cuốn'), findsOneWidget);
 
       await tester.enterText(field, 'harari');
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 450));
+      await tester.pumpAndSettle();
       expect(find.text('Sapiens'), findsOneWidget);
 
       await tester.enterText(field, '9786045337563');
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 450));
+      await tester.pumpAndSettle();
       expect(find.text('Nhà giả kim'), findsOneWidget);
 
       await tester.enterText(field, 'zzz');
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 450));
+      await tester.pumpAndSettle();
       expect(
         find.textContaining('Không tìm thấy sách phù hợp'),
         findsOneWidget,
@@ -134,7 +139,8 @@ void main() {
     ) async {
       await pumpHome(tester);
       await tester.enterText(find.byType(TextField), 'sapiens');
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 450));
+      await tester.pumpAndSettle();
       await tester.tap(find.widgetWithText(ChoiceChip, 'Văn học'));
       await tester.pumpAndSettle();
       expect(find.widgetWithText(TextField, 'sapiens'), findsOneWidget);
@@ -148,7 +154,7 @@ void main() {
       final h = Harness(UserRole.buyer);
       final book = fakeListing(
         id: 'L1',
-        status: ListingStatus.onSale,
+        status: ListingStatus.published,
         bookInfo: const BookInfo(
           title: 'Nhà giả kim',
           author: 'Paulo Coelho',
@@ -159,8 +165,7 @@ void main() {
           defectNotes: 'Gáy hơi cong nhẹ',
           description: 'Giấy còn trắng.',
         ),
-        saleMethod: SaleMethod.fixedPrice,
-        fixedPrice: const FixedPriceConfig(price: 45000, quantity: 1),
+        price: 45000,
       );
       h.listings.browseItems = [book];
       h.listings.stored = book;
@@ -217,32 +222,89 @@ void main() {
       expect(find.text('Giỏ hàng'), findsOneWidget);
     });
 
-    testWidgets('tin đấu giá chỉ xem thông tin, không có nút giỏ', (
+    Future<void> pumpDetail(WidgetTester tester, Listing listing) async {
+      final h = Harness(UserRole.buyer);
+      h.listings.stored = listing;
+      await h.pump(tester);
+      final context = tester.element(find.byType(Scaffold).first);
+      GoRouter.of(context).push('/home/book/${listing.id}');
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('tin đã có người đặt: xem được, báo rõ, không có nút mua', (
       tester,
     ) async {
-      final h = Harness(UserRole.buyer);
-      final auction = fakeListing(
-        id: 'A1',
-        status: ListingStatus.onSale,
-        bookInfo: const BookInfo(title: 'Dế Mèn phiêu lưu ký'),
-        saleMethod: SaleMethod.auction,
-        auction: const AuctionConfig(
-          startingPrice: 200000,
-          minBidIncrement: 10000,
-          durationDays: 3,
-          startMode: AuctionStartMode.onApproval,
+      await pumpDetail(
+        tester,
+        fakeListing(
+          id: 'R1',
+          status: ListingStatus.reserved,
+          bookInfo: const BookInfo(title: 'Dế Mèn phiêu lưu ký'),
+          price: 60000,
         ),
       );
-      h.listings.browseItems = [auction];
-      h.listings.stored = auction;
-      await h.pump(tester);
-
-      await tester.tap(find.text('Dế Mèn phiêu lưu ký'));
-      await tester.pumpAndSettle();
-
+      expect(find.text('Dế Mèn phiêu lưu ký'), findsOneWidget);
+      expect(find.text('Đã có người đặt mua cuốn này.'), findsOneWidget);
       expect(find.text('Thêm vào giỏ'), findsNothing);
       expect(find.text('Mua ngay'), findsNothing);
-      expect(find.text('Sách này bán theo hình thức đấu giá.'), findsOneWidget);
+    });
+
+    testWidgets('tin đã bán: báo đã bán, không có nút mua', (tester) async {
+      await pumpDetail(
+        tester,
+        fakeListing(
+          id: 'S1',
+          status: ListingStatus.sold,
+          bookInfo: const BookInfo(title: 'Sách đã bán'),
+          price: 60000,
+        ),
+      );
+      expect(find.text('Cuốn này đã bán.'), findsOneWidget);
+      expect(find.text('Mua ngay'), findsNothing);
+    });
+
+    testWidgets('chủ tin xem tin cần sửa: hiện trạng thái và lý do duyệt', (
+      tester,
+    ) async {
+      await pumpDetail(
+        tester,
+        fakeListing(
+          id: 'M1',
+          status: ListingStatus.needsChanges,
+          seller: const SellerInfo(id: previewMeId, name: 'Tôi'),
+          bookInfo: const BookInfo(title: 'Sách của tôi'),
+          price: 40000,
+          lastReview: const ListingReview(
+            decision: 'REQUEST_CHANGES',
+            reason: 'Ảnh bìa bị mờ.',
+          ),
+        ),
+      );
+      expect(find.text('Trạng thái tin của bạn: Cần sửa'), findsOneWidget);
+      expect(find.text('Lý do: Ảnh bìa bị mờ.'), findsOneWidget);
+      expect(find.text('Mua ngay'), findsNothing);
+    });
+
+    testWidgets('người bán có đánh giá: hiện sao và số đơn; null thì ẩn', (
+      tester,
+    ) async {
+      await pumpDetail(
+        tester,
+        fakeListing(
+          id: 'P1',
+          status: ListingStatus.published,
+          seller: const SellerInfo(
+            id: 's9',
+            name: 'Minh Thư',
+            averageRating: 4.5,
+            completedOrders: 12,
+          ),
+          bookInfo: const BookInfo(title: 'Có đánh giá'),
+          price: 50000,
+        ),
+      );
+      expect(find.text('Minh Thư'), findsOneWidget);
+      expect(find.text('4.5 ★ · 12 đơn hoàn tất'), findsOneWidget);
     });
   });
 }

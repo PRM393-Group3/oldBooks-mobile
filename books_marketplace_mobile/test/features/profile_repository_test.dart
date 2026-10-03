@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:books_marketplace_mobile/core/network/api_client.dart';
 import 'package:books_marketplace_mobile/core/network/api_error.dart';
 import 'package:books_marketplace_mobile/core/network/auth_interceptor.dart';
+import 'package:books_marketplace_mobile/core/network/blob_uploader.dart';
 import 'package:books_marketplace_mobile/features/profile/data/profile_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,11 +13,11 @@ import '../support/fakes.dart';
 
 const _profileJson = {
   'id': 'u1',
-  'email': 'a@b.co',
+  'phone': '+84912345678',
   'fullName': 'Nguyen Van A',
-  'phoneNumber': null,
   'avatarUrl': 'http://blob/public/u1/x.png',
-  'role': 'Seller',
+  'role': 'USER',
+  'status': 'ACTIVE',
   'createdAt': '2026-09-19T08:30:18.271413Z',
 };
 
@@ -80,7 +81,7 @@ void main() {
         [
           'POST x/storage/upload-url',
           'PUT blob/public/u1/x.png',
-          'PUT x/profile/avatar',
+          'PUT x/me/avatar',
         ],
       );
 
@@ -92,7 +93,7 @@ void main() {
       final confirm = seen[2];
       expect(confirm.headers['Authorization'], 'Bearer acc');
       expect(confirm.data, {'blobName': 'u1/x.png'});
-      expect((seen[0].data as Map)['visibility'], 'Public');
+      expect((seen[0].data as Map)['visibility'], 'PUBLIC');
     },
   );
 
@@ -127,7 +128,7 @@ void main() {
           ),
         ),
       );
-      expect(seen.any((o) => o.path == '/profile/avatar'), isFalse);
+      expect(seen.any((o) => o.path == '/me/avatar'), isFalse);
     },
   );
 
@@ -142,9 +143,9 @@ void main() {
           'refreshTokenExpiresAt': '2026-09-26T08:30:00Z',
           'user': {
             'id': 'u1',
-            'email': 'a@b.co',
+            'phone': '+84912345678',
             'fullName': 'A',
-            'role': 'Buyer',
+            'role': 'USER',
           },
         }),
       ),
@@ -156,16 +157,96 @@ void main() {
     expect(tokens.refreshToken, 'ref2');
   });
 
-  test('updateProfile: PUT đủ hai trường, số điện thoại null để xóa', () async {
+  test('getProfile gọi GET /me', () async {
     setup((o) => jsonResponse(200, okBody(_profileJson)));
+    final p = await repo.getProfile();
+    expect(seen.single.path, '/me');
+    expect(p.phoneNumber, '+84912345678');
+    expect(p.role.apiValue, 'USER');
+    expect(p.isStaff, isFalse);
+  });
 
-    await repo.updateProfile(fullName: '  Nguyen Van A  ', phoneNumber: null);
+  test(
+    'updateProfile: PATCH /me chỉ gửi fullName đã cắt khoảng trắng',
+    () async {
+      setup((o) => jsonResponse(200, okBody(_profileJson)));
 
-    expect(seen.single.method, 'PUT');
-    expect(jsonDecode(jsonEncode(seen.single.data)), {
-      'fullName': 'Nguyen Van A',
-      'phoneNumber': null,
+      await repo.updateProfile(fullName: '  Nguyen Van A  ');
+
+      expect(seen.single.method, 'PATCH');
+      expect(seen.single.path, '/me');
+      expect(jsonDecode(jsonEncode(seen.single.data)), {
+        'fullName': 'Nguyen Van A',
+      });
+    },
+  );
+
+  test('đổi số: gửi OTP tới số mới rồi xác nhận, token không đổi', () async {
+    setup((o) {
+      if (o.path == '/me/phone/otp') {
+        return jsonResponse(200, okBody({'expiresInSeconds': 300}));
+      }
+      return jsonResponse(
+        200,
+        okBody({..._profileJson, 'phone': '+84987654321'}),
+      );
     });
+
+    expect(await repo.sendPhoneOtp(phone: '0987654321'), 300);
+    final p = await repo.changePhone(phone: '0987654321', otp: '123456');
+
+    expect(p.phoneNumber, '+84987654321');
+    expect(seen[0].data, {'phone': '0987654321'});
+    expect(seen[1].path, '/me/phone');
+    expect(seen[1].data, {'phone': '0987654321', 'otp': '123456'});
+    expect(tokens.accessToken, 'acc');
+  });
+
+  test('changePassword gọi POST /me/password', () async {
+    setup(
+      (o) => jsonResponse(
+        200,
+        okBody({
+          'accessToken': 'acc2',
+          'accessTokenExpiresAt': '2026-09-19T08:45:00Z',
+          'refreshToken': 'ref2',
+          'refreshTokenExpiresAt': '2026-09-26T08:30:00Z',
+          'user': {'id': 'u1', 'fullName': 'A', 'role': 'USER'},
+        }),
+      ),
+    );
+    await repo.changePassword(currentPassword: 'old', newPassword: 'new1new1');
+    expect(seen.single.path, '/me/password');
+  });
+
+  test('deleteAccount: 204, gửi mật khẩu', () async {
+    setup((o) => ResponseBody.fromString('', 204));
+    await repo.deleteAccount(password: 'Passw0rd123');
+    expect(seen.single.method, 'POST');
+    expect(seen.single.path, '/me/delete-account');
+    expect(seen.single.data, {'password': 'Passw0rd123'});
+  });
+
+  test('deleteAccount bị chặn: giữ danh sách lý do', () async {
+    setup(
+      (o) => jsonResponse(
+        409,
+        errorBody(
+          ApiErrorCode.accountDeletionBlocked,
+          details: [
+            {'field': 'wallet', 'message': 'Số dư ví khác 0'},
+          ],
+        ),
+      ),
+    );
+    await expectLater(
+      repo.deleteAccount(password: 'x'),
+      throwsA(
+        isA<ApiError>().having((e) => e.detailMessages, 'reasons', [
+          'Số dư ví khác 0',
+        ]),
+      ),
+    );
   });
 
   test('deleteAvatar chấp nhận 204 không có body', () async {
@@ -174,11 +255,40 @@ void main() {
     expect(seen.single.method, 'DELETE');
   });
 
-  test('getProfile map role, avatarUrl và createdAt', () async {
-    setup((o) => jsonResponse(200, okBody(_profileJson)));
-    final p = await repo.getProfile();
-    expect(p.role.apiValue, 'Seller');
-    expect(p.phoneNumber, isNull);
-    expect(p.createdAt.isUtc, isTrue);
+  test('tệp PRIVATE: gửi visibility PRIVATE và lấy read-url', () async {
+    setup((o) {
+      if (o.path == '/storage/upload-url') {
+        return jsonResponse(
+          200,
+          okBody({
+            'blobName': 'u1/x.pdf',
+            'uploadUrl': 'http://blob/private/u1/x.pdf?sig=abc',
+            'requiredHeaders': <String, String>{},
+          }),
+        );
+      }
+      if (o.uri.host == 'blob') return jsonResponse(201, {});
+      return jsonResponse(
+        200,
+        okBody({'readUrl': 'http://blob/private/u1/x.pdf?sig=r'}),
+      );
+    });
+    final api = ApiClient(
+      Dio(BaseOptions(baseUrl: 'http://x'))..httpClientAdapter = adapter,
+    );
+    final plain = Dio(BaseOptions(baseUrl: 'http://x'))
+      ..httpClientAdapter = adapter;
+
+    final blob = await BlobUploader(api, plain).upload(
+      bytes: Uint8List(1),
+      fileName: 'x.pdf',
+      contentType: 'application/pdf',
+      visibility: BlobVisibility.private,
+    );
+    final url = await fetchPrivateReadUrl(api, blob);
+
+    expect((seen.first.data as Map)['visibility'], 'PRIVATE');
+    expect(url, contains('sig=r'));
+    expect(seen.last.queryParameters, {'blobName': 'u1/x.pdf'});
   });
 }

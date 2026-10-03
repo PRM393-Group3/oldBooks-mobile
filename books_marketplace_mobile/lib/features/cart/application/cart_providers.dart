@@ -1,55 +1,52 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/cart_repository.dart';
-import '../domain/cart_item.dart';
+import '../../auth/application/auth_controller.dart';
+import '../../orders/application/order_providers.dart';
+import '../../orders/domain/sale_order.dart';
 
-final cartRepositoryProvider = Provider<CartRepository>(
-  (ref) => MockCartRepository(),
-);
-
-/// Giỏ hàng hiện tại. State là bản sao danh sách của repository để UI rebuild.
-class CartNotifier extends Notifier<List<CartItem>> {
-  CartRepository get _repo => ref.read(cartRepositoryProvider);
-
+/// Giỏ hàng lưu ở server, dùng chung giữa các thiết bị. Thao tác ghi ném
+/// `ApiError` (`LISTING_NOT_AVAILABLE`, `CART_OWN_LISTING`, `CART_FULL`) để màn
+/// hình hiển thị; state chỉ đổi khi server xác nhận.
+class CartNotifier extends AsyncNotifier<CartData> {
   @override
-  List<CartItem> build() => _repo.items;
-
-  /// `false` nếu sách đã có trong giỏ.
-  bool add(CartItem item) {
-    final added = _repo.add(item);
-    state = _repo.items;
-    return added;
+  Future<CartData> build() {
+    final authed = ref.watch(
+      authControllerProvider.select((s) => s == AuthStatus.authenticated),
+    );
+    if (!authed) return Future.value(const CartData());
+    return ref.read(orderRepositoryProvider).cart();
   }
 
-  void remove(String listingId) {
-    _repo.remove(listingId);
-    state = _repo.items;
+  Future<void> add(String listingId) async {
+    state = AsyncData(
+      await ref.read(orderRepositoryProvider).addToCart(listingId),
+    );
   }
 
-  /// Bỏ các món đã đặt mua khỏi giỏ.
-  void removeAll(Iterable<String> listingIds) {
-    final ids = listingIds.toSet();
-    for (final id in ids) {
-      _repo.remove(id);
-    }
-    state = _repo.items;
+  Future<void> remove(String listingId) async {
+    final repo = ref.read(orderRepositoryProvider);
+    await repo.removeFromCart(listingId);
+    state = AsyncData(await repo.cart());
   }
 
-  void clear() {
-    _repo.clear();
-    state = _repo.items;
+  Future<void> reload() async {
+    state = await AsyncValue.guard(
+      () => ref.read(orderRepositoryProvider).cart(),
+    );
   }
 }
 
-final cartProvider = NotifierProvider<CartNotifier, List<CartItem>>(
+final cartProvider = AsyncNotifierProvider<CartNotifier, CartData>(
   CartNotifier.new,
 );
 
 final cartCountProvider = Provider<int>(
-  (ref) => ref.watch(cartProvider).length,
+  (ref) => ref.watch(cartProvider).value?.items.length ?? 0,
 );
 
 /// Sách `listingId` đã có trong giỏ chưa.
 final inCartProvider = Provider.family<bool, String>(
-  (ref, id) => ref.watch(cartProvider).any((i) => i.listingId == id),
+  (ref, id) =>
+      ref.watch(cartProvider).value?.items.any((i) => i.listingId == id) ??
+      false,
 );

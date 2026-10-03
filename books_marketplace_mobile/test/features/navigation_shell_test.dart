@@ -14,10 +14,9 @@ void main() {
     h.listings.browseItems = [
       fakeListing(
         id: 'L1',
-        status: ListingStatus.onSale,
+        status: ListingStatus.published,
         bookInfo: const BookInfo(title: 'Sapiens', author: 'Yuval'),
-        saleMethod: SaleMethod.fixedPrice,
-        fixedPrice: const FixedPriceConfig(price: 99000, quantity: 1),
+        price: 99000,
       ),
     ];
     await h.pump(tester);
@@ -90,48 +89,50 @@ void main() {
     );
   });
 
-  testWidgets('thông báo: tiêu đề bản địa hóa, chạm để đánh dấu đã đọc', (
-    tester,
-  ) async {
-    final h = Harness(UserRole.seller);
-    h.notifications.unread = 1;
-    h.notifications.items = [
-      const AppNotification(
-        id: 'n1',
-        type: NotificationType.listingRejected,
-        title: 'Your listing was rejected',
-        body: 'english body',
-        isRead: false,
-        listingId: 'L1',
-      ),
-    ];
-    h.listings.stored = fakeListing(
-      id: 'L1',
-      status: ListingStatus.rejected,
-      bookInfo: completeBookInfo,
-    );
-    await h.pump(tester);
+  testWidgets(
+    'thông báo: hiển thị nguyên văn của server, chạm để đánh dấu đã đọc',
+    (tester) async {
+      final h = Harness(UserRole.seller);
+      h.notifications.unread = 2;
+      h.notifications.items = [
+        const AppNotification(
+          id: 'n1',
+          type: NotificationType.accountLocked,
+          title: 'Tài khoản đã bị khóa',
+          body: 'Lý do: Vi phạm quy định cộng đồng.',
+          isRead: false,
+        ),
+        const AppNotification(
+          id: 'n2',
+          type: NotificationType.unknown,
+          title: 'Loại thông báo mới',
+          body: 'Nội dung từ giai đoạn sau.',
+          isRead: false,
+        ),
+      ];
+      await h.pump(tester);
 
-    await tester.tap(find.text('Thông báo'));
-    await tester.pumpAndSettle();
-    expect(find.text('Tin đăng của bạn bị từ chối'), findsOneWidget);
-    expect(
-      find.text('english body'),
-      findsNothing,
-      reason: 'loại đã biết dùng chuỗi bản địa hóa',
-    );
-    expect(
-      find.byType(BottomNavigationBar),
-      findsNothing,
-      reason: 'mở phủ lên thanh tab',
-    );
+      await tester.tap(find.text('Thông báo'));
+      await tester.pumpAndSettle();
+      expect(find.text('Tài khoản đã bị khóa'), findsOneWidget);
+      expect(find.text('Lý do: Vi phạm quy định cộng đồng.'), findsOneWidget);
+      expect(
+        find.text('Loại thông báo mới'),
+        findsOneWidget,
+        reason: 'type lạ vẫn hiển thị title/body, không crash',
+      );
+      expect(
+        find.byType(BottomNavigationBar),
+        findsNothing,
+        reason: 'mở phủ lên thanh tab',
+      );
 
-    await tester.tap(find.text('Tin đăng của bạn bị từ chối'));
-    await tester.pumpAndSettle();
+      await tester.tap(find.text('Tài khoản đã bị khóa'));
+      await tester.pumpAndSettle();
 
-    expect(h.notifications.calls, ['read:n1']);
-    expect(find.text('Nhà giả kim'), findsWidgets, reason: 'mở chi tiết tin');
-  });
+      expect(h.notifications.calls, ['read:n1']);
+    },
+  );
 
   testWidgets('không có thông báo backend vẫn thấy thông báo mô phỏng', (
     tester,

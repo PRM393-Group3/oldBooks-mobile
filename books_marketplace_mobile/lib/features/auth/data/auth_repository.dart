@@ -1,7 +1,17 @@
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_error.dart';
 import '../../../core/storage/token_store.dart';
+import '../../../core/util/server_clock.dart';
 import '../domain/auth_session.dart';
+
+enum OtpPurpose {
+  register('REGISTER'),
+  resetPassword('RESET_PASSWORD');
+
+  const OtpPurpose(this.apiValue);
+
+  final String apiValue;
+}
 
 /// Xác thực theo BE-SRS v1.1: số điện thoại + mật khẩu, xác thực bằng OTP SMS.
 class AuthRepository {
@@ -10,9 +20,14 @@ class AuthRepository {
   final ApiClient _api;
   final TokenStore _tokens;
 
-  /// Gửi OTP tới [phone] (E.164 hoặc số nội địa).
-  Future<void> sendOtp({required String phone}) =>
-      _api.postNoContent('/auth/otp', body: {'phone': phone});
+  /// Gửi OTP tới [phone] (E.164 hoặc số nội địa). Trả về số giây OTP còn hiệu
+  /// lực, lấy từ server vì Super Admin chỉnh được.
+  Future<int> sendOtp({required String phone, required OtpPurpose purpose}) =>
+      _api.post(
+        '/auth/otp',
+        body: {'phone': phone, 'purpose': purpose.apiValue},
+        parse: (data) => (data as Map)['expiresInSeconds'] as int,
+      );
 
   Future<AuthSession> login({
     required String phone,
@@ -32,6 +47,7 @@ class AuthRepository {
     required String otp,
     required String password,
     required String fullName,
+    required bool acceptTerms,
   }) async {
     final session = await _api.post(
       '/auth/register',
@@ -40,6 +56,7 @@ class AuthRepository {
         'otp': otp,
         'password': password,
         'fullName': fullName,
+        'acceptTerms': acceptTerms,
       },
       parse: AuthSession.fromJson,
     );
@@ -58,13 +75,15 @@ class AuthRepository {
   );
 
   /// Luôn xóa token ở máy, kể cả khi gọi server lỗi.
-  Future<void> logout() async {
+  ///
+  /// Mặc định thu hồi phiên của thiết bị này; [allDevices] thu hồi mọi thiết bị.
+  Future<void> logout({bool allDevices = false}) async {
     final refreshToken = _tokens.refreshToken;
     try {
-      if (refreshToken != null) {
+      if (_tokens.accessToken != null || refreshToken != null) {
         await _api.postNoContent(
-          '/auth/logout',
-          body: {'refreshToken': refreshToken},
+          allDevices ? '/auth/logout?all=true' : '/auth/logout',
+          body: {'refreshToken': ?refreshToken},
         );
       }
     } on ApiError {
@@ -74,7 +93,12 @@ class AuthRepository {
     }
   }
 
-  Future<void> _persist(AuthSession session) => _tokens.save(
+  Future<void> _persist(AuthSession session) {
+    ServerClock.sync(session.serverTime);
+    return _save(session);
+  }
+
+  Future<void> _save(AuthSession session) => _tokens.save(
     accessToken: session.accessToken,
     refreshToken: session.refreshToken,
   );

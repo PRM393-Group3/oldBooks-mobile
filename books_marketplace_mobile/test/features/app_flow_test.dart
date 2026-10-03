@@ -2,7 +2,11 @@ import 'package:books_marketplace_mobile/features/sim/application/sim_providers.
 import 'package:books_marketplace_mobile/app/app.dart';
 import 'package:books_marketplace_mobile/core/network/api_client.dart';
 import 'package:books_marketplace_mobile/core/network/api_error.dart';
+import 'package:books_marketplace_mobile/core/config/config_providers.dart';
+import 'package:books_marketplace_mobile/features/wallet/application/wallet_providers.dart';
+import 'package:books_marketplace_mobile/core/preview/preview_overrides.dart';
 import 'package:books_marketplace_mobile/core/storage/storage_providers.dart';
+import 'package:books_marketplace_mobile/features/profile/application/address_providers.dart';
 import 'package:books_marketplace_mobile/features/auth/application/auth_controller.dart';
 import 'package:books_marketplace_mobile/features/categories/application/category_providers.dart';
 import 'package:books_marketplace_mobile/features/listings/application/listing_providers.dart';
@@ -30,7 +34,10 @@ class _FakeAuthRepository extends AuthRepository {
   int logins = 0;
 
   @override
-  Future<void> sendOtp({required String phone}) async {}
+  Future<int> sendOtp({
+    required String phone,
+    required OtpPurpose purpose,
+  }) async => 300;
 
   @override
   Future<AuthSession> login({
@@ -49,7 +56,6 @@ class _FakeAuthRepository extends AuthRepository {
       refreshTokenExpiresAt: DateTime.now(),
       user: const SessionUser(
         id: 'u1',
-        email: 'a@b.co',
         fullName: 'Nguyen Van A',
         role: UserRole.buyer,
       ),
@@ -57,7 +63,7 @@ class _FakeAuthRepository extends AuthRepository {
   }
 
   @override
-  Future<void> logout() => _tokens.clear();
+  Future<void> logout({bool allDevices = false}) => _tokens.clear();
 }
 
 class _FakeProfileRepository extends ProfileRepository {
@@ -66,7 +72,6 @@ class _FakeProfileRepository extends ProfileRepository {
 
   Profile current = Profile(
     id: 'u1',
-    email: 'a@b.co',
     fullName: 'Nguyen Van A',
     role: UserRole.seller,
     createdAt: DateTime.utc(2026, 9, 19),
@@ -76,15 +81,29 @@ class _FakeProfileRepository extends ProfileRepository {
   Future<Profile> getProfile() async => current;
 
   @override
-  Future<Profile> updateProfile({
-    required String fullName,
-    required String? phoneNumber,
-  }) async {
+  Future<int> sendPhoneOtp({required String phone}) async => 300;
+
+  @override
+  Future<Profile> changePhone({
+    required String phone,
+    required String otp,
+  }) async => current = Profile(
+    id: current.id,
+    fullName: current.fullName,
+    phoneNumber: phone,
+    role: current.role,
+    createdAt: current.createdAt,
+  );
+
+  @override
+  Future<void> deleteAccount({required String password}) async {}
+
+  @override
+  Future<Profile> updateProfile({required String fullName}) async {
     current = Profile(
       id: current.id,
-      email: current.email,
       fullName: fullName,
-      phoneNumber: phoneNumber,
+      phoneNumber: current.phoneNumber,
       role: current.role,
       createdAt: current.createdAt,
     );
@@ -110,6 +129,13 @@ Future<({MemoryTokenStore tokens, _FakeAuthRepository auth})> _pumpApp(
       overrides: [
         tokenStoreProvider.overrideWithValue(tokens),
         sharedPreferencesProvider.overrideWithValue(prefs),
+        walletRepositoryProvider.overrideWithValue(InMemoryWalletRepository()),
+        configRepositoryProvider.overrideWithValue(
+          FixedConfigRepository(prefs),
+        ),
+        addressRepositoryProvider.overrideWithValue(
+          InMemoryAddressRepository(seed: const [sampleAddress]),
+        ),
         authRepositoryProvider.overrideWithValue(auth),
         profileRepositoryProvider.overrideWithValue(
           _FakeProfileRepository(tokens),
@@ -182,38 +208,93 @@ void main() {
 
     expect(find.text('Nguyen Van A'), findsOneWidget);
     expect(find.text('Người bán'), findsOneWidget);
-    expect(find.text('Chưa cập nhật'), findsOneWidget);
+    expect(find.text('Chưa cập nhật'), findsWidgets);
     expect(find.text('Sửa hồ sơ'), findsOneWidget);
   });
 
-  testWidgets('đã có phiên: mở thẳng Hồ sơ, sửa họ tên và số điện thoại', (
+  testWidgets(
+    'đã có phiên: mở thẳng Hồ sơ, sửa họ tên (số điện thoại chỉ đọc)',
+    (tester) async {
+      await _pumpApp(tester, loggedIn: true);
+      expect(find.text('Nguyen Van A'), findsOneWidget);
+
+      await tester.scrollUntilVisible(find.text('Sửa hồ sơ'), 200);
+      await tester.tap(find.text('Sửa hồ sơ'));
+      await tester.pumpAndSettle();
+
+      // Số điện thoại đổi bằng OTP ở màn riêng nên ô này bị khóa.
+      expect(
+        tester.widget<TextField>(find.byType(TextField).at(1)).enabled,
+        false,
+      );
+      expect(find.text('Đổi số điện thoại'), findsOneWidget);
+
+      await tester.enterText(find.byType(TextFormField).at(0), '');
+      await tester.tap(find.widgetWithText(FilledButton, 'Lưu'));
+      await tester.pumpAndSettle();
+      expect(find.text('Vui lòng nhập họ và tên.'), findsOneWidget);
+
+      await tester.enterText(find.byType(TextFormField).at(0), 'Tran Thi B');
+      await tester.tap(find.widgetWithText(FilledButton, 'Lưu'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Đã cập nhật hồ sơ'), findsOneWidget);
+      expect(find.text('Tran Thi B'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'đổi số điện thoại: chặn số trùng, gửi OTP tới số mới rồi xác nhận',
+    (tester) async {
+      await _pumpApp(tester, loggedIn: true);
+      await tester.scrollUntilVisible(find.text('Sửa hồ sơ'), 200);
+      await tester.tap(find.text('Sửa hồ sơ'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Đổi số điện thoại'));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextFormField).at(0), '0987654321');
+      await tester.tap(find.text('Gửi mã'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(find.text('Đã gửi mã OTP tới 0987654321'), findsOneWidget);
+      expect(find.text('Mã hết hạn sau 05:00'), findsOneWidget);
+
+      await tester.enterText(find.byType(TextFormField).at(1), '123456');
+      await tester.tap(find.widgetWithText(FilledButton, 'Xác nhận đổi số'));
+      await tester.pumpAndSettle();
+      expect(find.text('Đã đổi số điện thoại.'), findsOneWidget);
+    },
+  );
+
+  testWidgets('xóa tài khoản: cần mật khẩu và xác nhận hai bước', (
     tester,
   ) async {
-    await _pumpApp(tester, loggedIn: true);
-    expect(find.text('Nguyen Van A'), findsOneWidget);
-
-    await tester.scrollUntilVisible(find.text('Sửa hồ sơ'), 200);
-    await tester.tap(find.text('Sửa hồ sơ'));
+    final app = await _pumpApp(tester, loggedIn: true);
+    await tester.scrollUntilVisible(find.text('Xóa tài khoản'), 200);
+    await tester.tap(find.text('Xóa tài khoản'));
     await tester.pumpAndSettle();
 
-    await tester.enterText(find.byType(TextFormField).at(0), 'Tran Thi B');
-    await tester.enterText(find.byType(TextFormField).at(1), '12345');
-    await tester.tap(find.widgetWithText(FilledButton, 'Lưu'));
-    await tester.pumpAndSettle();
-    expect(
-      find.text(
-        'Số điện thoại phải bắt đầu bằng 0 hoặc +84, theo sau là 9 hoặc 10 chữ số.',
-      ),
-      findsOneWidget,
+    await tester.tap(
+      find.widgetWithText(FilledButton, 'Xóa tài khoản vĩnh viễn'),
     );
+    await tester.pumpAndSettle();
+    expect(find.text('Vui lòng nhập mật khẩu.'), findsOneWidget);
 
-    await tester.enterText(find.byType(TextFormField).at(1), '0901234567');
-    await tester.tap(find.widgetWithText(FilledButton, 'Lưu'));
+    await tester.enterText(find.byType(TextFormField).first, 'Passw0rd!');
+    await tester.tap(
+      find.widgetWithText(FilledButton, 'Xóa tài khoản vĩnh viễn'),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Bạn chắc chắn muốn xóa?'), findsOneWidget);
+
+    await tester.tap(
+      find.widgetWithText(FilledButton, 'Xóa tài khoản vĩnh viễn').last,
+    );
     await tester.pumpAndSettle();
 
-    expect(find.text('Đã cập nhật hồ sơ'), findsOneWidget);
-    expect(find.text('Tran Thi B'), findsOneWidget);
-    expect(find.text('0901234567'), findsOneWidget);
+    expect(app.tokens.hasSession, isFalse);
+    expect(find.text('Chào mừng bạn quay lại chợ sách cũ.'), findsOneWidget);
   });
 
   testWidgets('đổi mật khẩu: mật khẩu mới trùng mật khẩu cũ bị chặn ở client', (
@@ -314,6 +395,29 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
     expect(find.text('Gửi lại sau 60s'), findsOneWidget);
-    expect(find.text('Đã gửi mã OTP tới 0912345678'), findsOneWidget);
+    expect(
+      find.text('Nếu số đã đăng ký, bạn sẽ nhận được mã.'),
+      findsOneWidget,
+      reason: 'không lộ số nào đã có tài khoản',
+    );
+    expect(find.text('Mã hết hạn sau 05:00'), findsOneWidget);
+  });
+
+  testWidgets('đăng ký bắt buộc đồng ý điều khoản (acceptTerms)', (
+    tester,
+  ) async {
+    await _pumpApp(tester);
+    await tester.tap(find.text('Đăng ký'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextFormField).at(0), 'Nguyen Van A');
+    await tester.enterText(find.byType(TextFormField).at(1), '0912345678');
+    await tester.enterText(find.byType(TextFormField).at(2), '123456');
+    await tester.enterText(find.byType(TextFormField).at(3), 'Passw0rd123');
+    await tester.ensureVisible(find.widgetWithText(FilledButton, 'Đăng ký'));
+    await tester.tap(find.widgetWithText(FilledButton, 'Đăng ký'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Bạn cần đồng ý điều khoản để tiếp tục.'), findsOneWidget);
   });
 }

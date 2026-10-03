@@ -13,8 +13,8 @@ import '../../../core/widgets/app_section.dart';
 import '../../../core/widgets/app_state_views.dart';
 import '../../../core/widgets/app_tag.dart';
 import '../../auth/application/auth_controller.dart';
-import '../../auth/domain/user_role.dart';
 import '../../sell/application/my_listings_provider.dart';
+import '../../orders/application/order_providers.dart';
 import '../application/address_providers.dart';
 import '../../notifications/application/notification_providers.dart';
 import '../../sim/application/sim_providers.dart';
@@ -98,7 +98,7 @@ class _ProfileBody extends ConsumerWidget {
               ),
               const SizedBox(height: AppSpacing.xxs),
               Text(
-                profile.email,
+                profile.phoneNumber ?? l.phoneNotSet,
                 style: context.text.bodySmall?.copyWith(
                   color: colors.textSecondary,
                 ),
@@ -113,7 +113,7 @@ class _ProfileBody extends ConsumerWidget {
             ],
           ),
         ),
-        if (profile.role == UserRole.admin) ...[
+        if (profile.isStaff) ...[
           const SizedBox(height: AppSpacing.md),
           Container(
             padding: const EdgeInsets.all(AppSpacing.sm),
@@ -163,6 +163,11 @@ class _ProfileBody extends ConsumerWidget {
               title: l.meMyOrders,
               subtitle: l.meMyOrdersSub,
               onTap: () => context.push('/me/orders'),
+            ),
+            AppMenuTile(
+              icon: Icons.gavel_outlined,
+              title: l.cpListTitle,
+              onTap: () => context.push('/me/complaints'),
             ),
             AppMenuTile(
               icon: Icons.inventory_2_outlined,
@@ -217,6 +222,11 @@ class _ProfileBody extends ConsumerWidget {
               onTap: () => context.push('/me/password'),
             ),
             AppMenuTile(
+              icon: Icons.tune,
+              title: l.notifSettingsTitle,
+              onTap: () => context.push('/me/notification-settings'),
+            ),
+            AppMenuTile(
               icon: Icons.language,
               title: l.language,
               onTap: () => showLanguageSheet(context),
@@ -245,6 +255,33 @@ class _ProfileBody extends ConsumerWidget {
                 }
               },
             ),
+            AppMenuTile(
+              icon: Icons.devices_other_outlined,
+              title: l.logoutAll,
+              destructive: true,
+              onTap: () async {
+                final ok = await showConfirmDialog(
+                  context,
+                  title: l.logoutAllConfirmTitle,
+                  message: l.logoutAllConfirmMessage,
+                  confirmLabel: l.logoutAll,
+                  destructive: true,
+                );
+                if (ok) {
+                  await ref
+                      .read(authControllerProvider.notifier)
+                      .logout(allDevices: true);
+                }
+              },
+            ),
+            // Tài khoản quản trị không tự xóa được (403 USER_ROLE_NOT_ALLOWED).
+            if (!profile.isStaff)
+              AppMenuTile(
+                icon: Icons.delete_forever_outlined,
+                title: l.deleteAccountEntry,
+                destructive: true,
+                onTap: () => context.push('/me/delete-account'),
+              ),
           ],
         ),
         const SizedBox(height: AppSpacing.lg),
@@ -260,11 +297,8 @@ class _StatTiles extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
-    final orders = ref.watch(openOrderCountProvider);
-    final activeListings = ref
-        .watch(myListingsProvider)
-        .where((m) => m.isActive)
-        .length;
+    final orders = ref.watch(openBuyOrderCountProvider).value ?? 0;
+    final activeListings = ref.watch(publishedListingCountProvider).value ?? 0;
     final auctions = ref
         .watch(auctionsProvider)
         .where((a) => a.registered && !a.status.isEnded)

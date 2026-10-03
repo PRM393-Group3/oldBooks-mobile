@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/network/api_error.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/theme_context.dart';
@@ -12,17 +13,31 @@ import '../../../core/util/image_picking.dart';
 import '../../../core/util/photo_picker.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
+import '../../../core/widgets/app_dialog.dart';
 import '../../../core/widgets/app_sheet.dart';
 import '../../../core/widgets/app_snackbar.dart';
+import '../../categories/application/category_providers.dart';
+import '../../listings/application/listing_providers.dart';
+import '../../listings/data/listing_repository.dart';
+import '../../listings/domain/listing.dart';
+import '../../listings/domain/listing_enums.dart';
+import '../../listings/domain/listing_query.dart';
 import '../../sim/application/sim_providers.dart';
-import '../../sim/domain/rules.dart';
+import '../application/listing_publisher.dart';
 import '../application/my_listings_provider.dart';
+import '../application/sell_rules_provider.dart';
 import '../domain/sell_rules.dart';
 import 'sell_text.dart';
 
 /// Tab Đăng bán: một biểu mẫu cho bán giá cố định và đấu giá, kèm ô "Dự tính".
+///
+/// Bán giá cố định đi qua backend thật (tạo tin, tải ảnh, đặt danh sách ảnh,
+/// gửi duyệt). Truyền [editing] để sửa một tin đã có (nháp, cần sửa, đã gỡ hoặc
+/// đang bán). Đấu giá chưa có backend nên vẫn mô phỏng.
 class SellScreen extends ConsumerStatefulWidget {
-  const SellScreen({super.key});
+  const SellScreen({super.key, this.editing});
+
+  final Listing? editing;
 
   @override
   ConsumerState<SellScreen> createState() => _SellScreenState();
@@ -30,8 +45,17 @@ class SellScreen extends ConsumerStatefulWidget {
 
 class _SellScreenState extends ConsumerState<SellScreen> {
   SellForm _form = const SellForm();
-  final List<Uint8List> _photos = [];
+  final List<PhotoSlot> _photos = [];
   bool _tried = false;
+
+  /// Đang gọi backend; chặn bấm lặp.
+  bool _busy = false;
+  String? _stageText;
+
+  /// Giữ tiến trình để lỗi giữa chừng chạy lại không tạo tin trùng/tải lại ảnh.
+  late PublishProgress _progress = PublishProgress(
+    listingId: widget.editing?.id,
+  );
 
   final _title = TextEditingController();
   final _author = TextEditingController();
@@ -40,10 +64,73 @@ class _SellScreenState extends ConsumerState<SellScreen> {
   final _step = TextEditingController();
   final _buyNow = TextEditingController();
   final _desc = TextEditingController();
+  final _publisher = TextEditingController();
+  final _year = TextEditingController();
+  final _isbn = TextEditingController();
+  final _defects = TextEditingController();
+
+  List<TextEditingController> get _controllers => [
+    _title,
+    _author,
+    _price,
+    _start,
+    _step,
+    _buyNow,
+    _desc,
+    _publisher,
+    _year,
+    _isbn,
+    _defects,
+  ];
+
+  bool get _editing => widget.editing != null;
+
+  @override
+  void initState() {
+    super.initState();
+    final e = widget.editing;
+    if (e == null) return;
+    final b = e.bookInfo;
+    _title.text = b.title ?? '';
+    _author.text = b.author ?? '';
+    _price.text = '${e.price ?? ''}';
+    _desc.text = b.description ?? '';
+    _publisher.text = b.publisher ?? '';
+    _year.text = b.publicationYear?.toString() ?? '';
+    _isbn.text = b.isbn ?? '';
+    _defects.text = b.defectNotes ?? '';
+    for (final p in e.images) {
+      final name = p.blobName;
+      if (name != null) {
+        _photos.add(
+          PhotoSlot.existing(
+            blobName: name,
+            previewUrl: p.thumbnailUrl ?? p.url,
+          ),
+        );
+      }
+    }
+    _form = SellForm(
+      photos: _photos.length,
+      title: _title.text,
+      author: _author.text,
+      categoryId: e.category?.id,
+      condition: SellCondition.values.firstWhere(
+        (c) => c.condition == b.condition,
+        orElse: () => SellCondition.good,
+      ),
+      price: e.price ?? 0,
+      description: _desc.text,
+      publisher: _publisher.text,
+      publishYear: _year.text,
+      isbn: _isbn.text,
+      defectNotes: _defects.text,
+    );
+  }
 
   @override
   void dispose() {
-    for (final c in [_title, _author, _price, _start, _step, _buyNow, _desc]) {
+    for (final c in _controllers) {
       c.dispose();
     }
     super.dispose();
@@ -65,15 +152,37 @@ class _SellScreenState extends ConsumerState<SellScreen> {
       step: _num(_step),
       buyNow: _num(_buyNow),
       photos: _photos.length,
+      publisher: _publisher.text,
+      publishYear: _year.text,
+      isbn: _isbn.text,
+      defectNotes: _defects.text,
     ),
   );
 
   Future<void> _addPhoto() async {
-    if (_photos.length >= maxSellPhotos) return;
+    if (_busy) return;
+    if (_photos.length >= maxSellPhotos) {
+      AppSnackbar.show(
+        context,
+        context.l10n.sellPhotoLimit(maxSellPhotos),
+        type: AppSnackbarType.error,
+      );
+      return;
+    }
     try {
       final image = await ref.read(photoPickerProvider)();
       if (image != null && mounted) {
-        _photos.add(image.bytes);
+        _photos.add(
+          PhotoSlot.fresh(
+            NewPhoto(
+              bytes: image.bytes,
+              fileName: 'photo-${_photos.length + 1}.${image.extension}',
+              contentType: image.contentType,
+            ),
+          ),
+        );
+        _photosChanged = true;
+        _progress.photosSaved = false;
         _sync();
       }
     } on ImagePickException {
@@ -87,9 +196,48 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     }
   }
 
+  /// Đã thêm/xóa/đổi thứ tự ảnh so với lúc mở (để biết có cần `PUT /photos`).
+  bool _photosChanged = false;
+
   void _removePhoto(int i) {
     _photos.removeAt(i);
+    _photosChanged = true;
+    _progress.photosSaved = false;
     _sync();
+  }
+
+  void _makeCover(int i) {
+    _photos.insert(0, _photos.removeAt(i));
+    _photosChanged = true;
+    _progress.photosSaved = false;
+    _sync();
+  }
+
+  Future<void> _photoActions(int i) async {
+    final l = context.l10n;
+    final action = await showModalBottomSheet<String>(
+      context: context,
+      builder: (sheet) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (i != 0)
+              ListTile(
+                leading: const Icon(Icons.star_outline),
+                title: Text(l.photoMakeCover),
+                onTap: () => Navigator.of(sheet).pop('cover'),
+              ),
+            ListTile(
+              leading: const Icon(Icons.delete_outline),
+              title: Text(l.removeAvatar),
+              onTap: () => Navigator.of(sheet).pop('remove'),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (action == 'cover') _makeCover(i);
+    if (action == 'remove') _removePhoto(i);
   }
 
   String _newCode() {
@@ -98,34 +246,149 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     return 'OB-IN-${List.generate(4, (_) => chars[rng.nextInt(chars.length)]).join()}';
   }
 
+  /// Trường gửi lên server. Khi sửa, trường tùy chọn để trống gửi `""` để xóa
+  /// giá trị cũ; khi tạo thì không gửi.
+  ListingDraftInput _input(SellForm f) {
+    String? opt(String v) {
+      final t = v.trim();
+      return t.isEmpty ? (_editing ? '' : null) : t;
+    }
+
+    return ListingDraftInput(
+      title: f.title,
+      author: f.author,
+      categoryId: f.categoryId,
+      condition: f.condition.condition,
+      price: f.price,
+      description: f.description,
+      publisher: opt(f.publisher),
+      publishYear: int.tryParse(f.publishYear.trim()),
+      isbn: opt(f.isbn),
+      defectNotes: opt(f.defectNotes),
+    );
+  }
+
+  /// Sửa tin ĐANG BÁN: chỉ giá và mô tả có hiệu lực ngay, đổi phần khác hoặc
+  /// ảnh đưa tin về chờ duyệt. Dùng để cảnh báo trước khi lưu.
+  bool _needsReReview(SellForm f) {
+    final e = widget.editing;
+    if (e == null || e.status != ListingStatus.published) return false;
+    final b = e.bookInfo;
+    String t(String? v) => (v ?? '').trim();
+    return _photosChanged ||
+        t(b.title) != f.title.trim() ||
+        t(b.author) != f.author.trim() ||
+        e.category?.id != f.categoryId ||
+        b.condition != f.condition.condition ||
+        t(b.publisher) != f.publisher.trim() ||
+        (b.publicationYear?.toString() ?? '') != f.publishYear.trim() ||
+        t(b.isbn) != f.isbn.trim() ||
+        t(b.defectNotes) != f.defectNotes.trim();
+  }
+
   Future<void> _submit() async {
+    if (_busy) return;
     _sync();
-    final errors = validateSell(_form);
+    final rules = ref.read(sellRulesProvider);
+    final errors = validateSell(_form, rules: rules);
     if (errors.isNotEmpty) {
       setState(() => _tried = true);
       return;
     }
     final form = _form;
+    if (form.isAuction) return _submitAuction(form);
+    await _submitFixed(form);
+  }
+
+  Future<void> _submitAuction(SellForm form) async {
+    final first = _photos.isEmpty ? null : _photos.first.photo?.bytes;
     final code = ref
-        .read(myListingsProvider.notifier)
-        .add(form, _photos.isEmpty ? null : _photos.first, _newCode);
+        .read(simAuctionListingsProvider.notifier)
+        .add(form, first, _newCode);
+    _resetForm(form.mode);
+    await _showDone(form, code);
+  }
+
+  Future<void> _submitFixed(SellForm form) async {
+    final l = context.l10n;
+    final existing = widget.editing;
+
+    if (_needsReReview(form)) {
+      final ok = await showConfirmDialog(
+        context,
+        title: l.sellEditWarnTitle,
+        message: l.sellEditWarnBody,
+        confirmLabel: l.sellEditWarnConfirm,
+      );
+      if (!ok || !mounted) return;
+    }
+
+    // Tin đang bán: lưu thẳng, không gửi duyệt lại (server tự đưa về chờ duyệt
+    // nếu đổi phần chính). Tin khác: gửi duyệt sau khi lưu.
+    final submit = existing == null || existing.status.canSubmit;
+    final photosChanged = existing == null || _photosChanged;
+
     setState(() {
-      _form = SellForm(mode: form.mode);
+      _busy = true;
+      _stageText = l.sellProgressCreate;
+    });
+    try {
+      final listing =
+          await ListingPublisher(ref.read(listingRepositoryProvider)).run(
+            progress: _progress,
+            input: _input(form),
+            photos: _photos,
+            submit: submit,
+            photosChanged: photosChanged,
+            onStage: (stage, done, total) {
+              if (!mounted) return;
+              setState(() {
+                _stageText = switch (stage) {
+                  PublishStage.creating => l.sellProgressCreate,
+                  PublishStage.uploading => l.sellProgressUpload(done, total),
+                  PublishStage.submitting => l.sellProgressSubmit,
+                };
+              });
+            },
+          );
+      refreshMyListings(ref);
+      ref.invalidate(listingDetailProvider(listing.id));
+      if (!mounted) return;
+      if (_editing) {
+        AppSnackbar.success(context, submit ? l.mlSubmitted : l.sellSaved);
+        context.pop();
+      } else {
+        _resetForm(form.mode);
+        await _showDone(form, null);
+      }
+    } on ApiError catch (e) {
+      if (!mounted) return;
+      // Lỗi trạng thái hoặc sửa đồng thời: tin đã đổi, tải lại để khỏi ghi đè.
+      if (e.needsReload || e.code == ApiErrorCode.listingConcurrentUpdate) {
+        ref.invalidate(listingDetailProvider(_progress.listingId ?? ''));
+      }
+      AppSnackbar.apiError(context, e);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _busy = false;
+          _stageText = null;
+        });
+      }
+    }
+  }
+
+  void _resetForm(SellMode mode) {
+    setState(() {
+      _form = SellForm(mode: mode);
       _photos.clear();
+      _photosChanged = false;
+      _progress = PublishProgress();
       _tried = false;
-      for (final c in [
-        _title,
-        _author,
-        _price,
-        _start,
-        _step,
-        _buyNow,
-        _desc,
-      ]) {
+      for (final c in _controllers) {
         c.clear();
       }
     });
-    await _showDone(form, code);
   }
 
   Future<void> _showDone(SellForm form, String? code) {
@@ -216,10 +479,15 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     final colors = context.colors;
     final locale = Localizations.localeOf(context).toString();
     final f = _form;
-    final errors = validateSell(f);
+    final rules = ref.watch(sellRulesProvider);
+    final errors = validateSell(f, rules: rules);
     final now = ref.watch(clockProvider)();
 
+    final categories = ref.watch(categoryTreeProvider).value ?? const [];
+    final existingStatus = widget.editing?.status;
+
     return Scaffold(
+      appBar: _editing ? AppBar(title: Text(l.sellEditTitle)) : null,
       body: SafeArea(
         child: ListView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -230,18 +498,20 @@ class _SellScreenState extends ConsumerState<SellScreen> {
             AppSpacing.xl,
           ),
           children: [
-            Text(
-              l.sellTitle,
-              style: context.text.headlineMedium?.copyWith(
-                fontSize: 30,
-                letterSpacing: -0.6,
+            if (!_editing) ...[
+              Text(
+                l.sellTitle,
+                style: context.text.headlineMedium?.copyWith(
+                  fontSize: 30,
+                  letterSpacing: -0.6,
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            _ModeToggle(
-              mode: f.mode,
-              onChanged: (m) => _update((x) => x.copyWith(mode: m)),
-            ),
+              const SizedBox(height: AppSpacing.md),
+              _ModeToggle(
+                mode: f.mode,
+                onChanged: (m) => _update((x) => x.copyWith(mode: m)),
+              ),
+            ],
             if (f.isAuction) ...[
               const SizedBox(height: AppSpacing.md),
               AppCard(
@@ -262,8 +532,9 @@ class _SellScreenState extends ConsumerState<SellScreen> {
             const SizedBox(height: AppSpacing.md),
             _PhotoGrid(
               photos: _photos,
+              minPhotos: rules.minPhotos,
               onAdd: _addPhoto,
-              onRemove: _removePhoto,
+              onTapPhoto: _photoActions,
             ),
             _Field(
               label: l.sellFieldTitle,
@@ -282,12 +553,12 @@ class _SellScreenState extends ConsumerState<SellScreen> {
               spacing: 6,
               runSpacing: 6,
               children: [
-                for (final k in sellCategoryKeys)
+                for (final c in categories)
                   ChoiceChip(
-                    label: Text(sellCategoryLabel(l, k)),
-                    selected: f.categoryKey == k,
+                    label: Text(c.name),
+                    selected: f.categoryId == c.id,
                     onSelected: (_) =>
-                        _update((x) => x.copyWith(categoryKey: k)),
+                        _update((x) => x.copyWith(categoryId: () => c.id)),
                   ),
               ],
             ),
@@ -337,7 +608,7 @@ class _SellScreenState extends ConsumerState<SellScreen> {
                       label: l.sellFieldStep,
                       controller: _step,
                       hint: f.startingPrice >= minStartingPrice
-                          ? '${formatVnd(stepRange(f.startingPrice).lo, locale)} – ${formatVnd(stepRange(f.startingPrice).hi, locale)}'
+                          ? '${formatVnd(rules.stepRange(f.startingPrice).lo, locale)} – ${formatVnd(rules.stepRange(f.startingPrice).hi, locale)}'
                           : l.sellStepHintEmpty,
                       numeric: true,
                       onChanged: (_) => _sync(),
@@ -350,7 +621,7 @@ class _SellScreenState extends ConsumerState<SellScreen> {
                 controller: _buyNow,
                 hint: f.startingPrice > 0
                     ? l.sellBuyNowHint(
-                        formatVnd(minBuyNow(f.startingPrice), locale),
+                        formatVnd(rules.minBuyNow(f.startingPrice), locale),
                       )
                     : l.sellBuyNowHintEmpty,
                 numeric: true,
@@ -380,12 +651,40 @@ class _SellScreenState extends ConsumerState<SellScreen> {
               lines: 3,
               onChanged: (_) => _sync(),
             ),
-            _PreviewCard(form: f, locale: locale),
+            if (!f.isAuction) ...[
+              _Field(
+                label: l.sellFieldPublisher,
+                controller: _publisher,
+                hint: '',
+                onChanged: (_) => _sync(),
+              ),
+              _Field(
+                label: l.sellFieldYear,
+                controller: _year,
+                hint: '',
+                numeric: true,
+                onChanged: (_) => _sync(),
+              ),
+              _Field(
+                label: l.sellFieldIsbn,
+                controller: _isbn,
+                hint: '978-0-671-02703-2',
+                onChanged: (_) => _sync(),
+              ),
+              _Field(
+                label: l.sellFieldDefects,
+                controller: _defects,
+                hint: '',
+                lines: 2,
+                onChanged: (_) => _sync(),
+              ),
+            ],
+            _PreviewCard(form: f, locale: locale, rules: rules),
             if (_tried && errors.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.sm),
               for (final e in errors)
                 Text(
-                  '• ${sellErrorText(l, locale, e, f)}',
+                  '• ${sellErrorText(l, locale, e, f, rules: rules)}',
                   style: context.text.labelSmall?.copyWith(
                     color: colors.error,
                     height: 1.6,
@@ -393,8 +692,26 @@ class _SellScreenState extends ConsumerState<SellScreen> {
                 ),
             ],
             const SizedBox(height: AppSpacing.md),
+            if (_stageText != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+                child: Text(
+                  _stageText!,
+                  textAlign: TextAlign.center,
+                  style: context.text.labelSmall?.copyWith(
+                    color: colors.textMuted,
+                  ),
+                ),
+              ),
             AppButton(
-              label: f.isAuction ? l.sellSubmitAuction : l.sellSubmitSale,
+              label: f.isAuction
+                  ? l.sellSubmitAuction
+                  : _editing
+                  ? (existingStatus != null && existingStatus.canSubmit
+                        ? l.sellEditSaveSubmit
+                        : l.sellEditSave)
+                  : l.sellSubmitSale,
+              loading: _busy,
               onPressed: _submit,
             ),
           ],
@@ -528,19 +845,21 @@ class _ModeToggle extends StatelessWidget {
 class _PhotoGrid extends StatelessWidget {
   const _PhotoGrid({
     required this.photos,
+    required this.minPhotos,
     required this.onAdd,
-    required this.onRemove,
+    required this.onTapPhoto,
   });
 
-  final List<Uint8List> photos;
+  final List<PhotoSlot> photos;
+  final int minPhotos;
   final VoidCallback onAdd;
-  final ValueChanged<int> onRemove;
+  final ValueChanged<int> onTapPhoto;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final colors = context.colors;
-    final slots = (photos.length + 1).clamp(4, maxSellPhotos);
+    final slots = (photos.length + 1).clamp(minPhotos, maxSellPhotos);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
@@ -554,7 +873,7 @@ class _PhotoGrid extends StatelessWidget {
               Text(
                 l.sellPhotoCount(photos.length),
                 style: context.text.labelSmall?.copyWith(
-                  color: photos.length >= minSellPhotos
+                  color: photos.length >= minPhotos
                       ? colors.success
                       : colors.textMuted,
                 ),
@@ -575,13 +894,23 @@ class _PhotoGrid extends StatelessWidget {
                     button: true,
                     label: '${l.sellPhotos} ${i + 1}',
                     child: GestureDetector(
-                      onTap: () => onRemove(i),
+                      onTap: () => onTapPhoto(i),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Stack(
                           fit: StackFit.expand,
                           children: [
-                            Image.memory(photos[i], fit: BoxFit.cover),
+                            photos[i].photo != null
+                                ? Image.memory(
+                                    photos[i].photo!.bytes,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    photos[i].previewUrl!,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, _, _) =>
+                                        const Icon(Icons.image_outlined),
+                                  ),
                             const Positioned(
                               top: 4,
                               right: 4,
@@ -748,10 +1077,15 @@ class _Durations extends StatelessWidget {
 }
 
 class _PreviewCard extends StatelessWidget {
-  const _PreviewCard({required this.form, required this.locale});
+  const _PreviewCard({
+    required this.form,
+    required this.locale,
+    required this.rules,
+  });
 
   final SellForm form;
   final String locale;
+  final SellRules rules;
 
   @override
   Widget build(BuildContext context) {
@@ -767,19 +1101,19 @@ class _PreviewCard extends StatelessWidget {
               form.startingPrice == 0
                   ? '—'
                   : formatVnd(
-                      auctionRegistrationFee(form.startingPrice),
+                      rules.participationFee(form.startingPrice),
                       locale,
                     ),
               false,
             ),
             (
               l.sellPreviewPlayerDeposit,
-              money(form.startingPrice ~/ 10),
+              money(rules.deposit(form.startingPrice)),
               false,
             ),
             (
               l.sellPreviewCommission,
-              money(auctionCommission(form.startingPrice), minus: true),
+              money(rules.auctionCommission(form.startingPrice), minus: true),
               false,
             ),
             (
@@ -788,7 +1122,7 @@ class _PreviewCard extends StatelessWidget {
                   ? '—'
                   : formatVnd(
                       form.startingPrice -
-                          auctionCommission(form.startingPrice),
+                          rules.auctionCommission(form.startingPrice),
                       locale,
                     ),
               true,
@@ -798,21 +1132,17 @@ class _PreviewCard extends StatelessWidget {
             (l.sellPreviewPrice, money(form.price), false),
             (
               l.sellPreviewFee,
-              money(sellerFee(form.price), minus: true),
+              money(rules.sellerFee(form.price), minus: true),
               false,
             ),
             (
               l.sellPreviewReceive,
               form.price == 0
                   ? '—'
-                  : formatVnd(form.price - sellerFee(form.price), locale),
+                  : formatVnd(form.price - rules.sellerFee(form.price), locale),
               true,
             ),
-            (
-              l.sellPreviewShip,
-              formatVnd(shippingFeeFixedPrice, locale),
-              false,
-            ),
+            (l.sellPreviewShip, formatVnd(rules.shippingSale, locale), false),
           ];
 
     return AppCard(

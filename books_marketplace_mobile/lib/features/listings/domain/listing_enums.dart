@@ -1,14 +1,15 @@
 import '../../../core/l10n/app_localizations.dart';
 
-/// Trạng thái tin đăng (SRS 10.1, phần backend đã hỗ trợ).
+/// Trạng thái tin đăng (`08-listings`, mục 1). Mã lạ rơi vào [unknown].
 enum ListingStatus {
-  draft('Draft'),
-  pendingInspection('PendingInspection'),
-  inInspection('InInspection'),
-  rejected('Rejected'),
-  onSale('OnSale'),
-  auctioning('Auctioning'),
-  closed('Closed'),
+  draft('DRAFT'),
+  pendingReview('PENDING_REVIEW'),
+  needsChanges('NEEDS_CHANGES'),
+  rejected('REJECTED'),
+  published('PUBLISHED'),
+  reserved('RESERVED'),
+  sold('SOLD'),
+  unpublished('UNPUBLISHED'),
   unknown('');
 
   const ListingStatus(this.api);
@@ -19,20 +20,32 @@ enum ListingStatus {
     orElse: () => unknown,
   );
 
-  /// Chỉ sửa được khi Nháp hoặc Bị từ chối.
-  bool get isEditable => this == draft || this == rejected;
+  /// Sửa tự do mọi trường và ảnh.
+  bool get isFreelyEditable =>
+      this == draft || this == needsChanges || this == unpublished;
 
-  /// Người mua nhìn thấy.
-  bool get isPublic => this == onSale || this == auctioning;
+  /// Có sửa được không (kể cả `PUBLISHED`: chỉ giá và mô tả có hiệu lực ngay,
+  /// phần khác đưa tin về chờ duyệt).
+  bool get isEditable => isFreelyEditable || this == published;
+
+  /// Gửi duyệt được: nháp, cần sửa, hoặc đã gỡ (đăng lại).
+  bool get canSubmit => isFreelyEditable;
+
+  /// Gỡ được khi đang bán.
+  bool get canUnpublish => this == published;
+
+  /// Ai cũng xem được (nhưng chỉ `published` mới mua được).
+  bool get isPublic => this == published || this == reserved || this == sold;
 
   String label(AppLocalizations l) => switch (this) {
     draft => l.statusDraft,
-    pendingInspection => l.statusPendingInspection,
-    inInspection => l.statusInInspection,
+    pendingReview => l.myListingStatusPending,
+    needsChanges => l.myListingStatusNeedsChanges,
     rejected => l.statusRejected,
-    onSale => l.statusOnSale,
-    auctioning => l.statusAuctioning,
-    closed => l.statusClosed,
+    published => l.statusOnSale,
+    reserved => l.statusReserved,
+    sold => l.myListingStatusSold,
+    unpublished => l.statusUnpublished,
     unknown => l.statusUnknown,
   };
 }
@@ -55,12 +68,12 @@ enum SaleMethod {
       this == fixedPrice ? l.saleFixedPrice : l.saleAuction;
 }
 
+/// Tình trạng sách: `NEW` mới, `GOOD` tốt, `FAIR` khá, `WORN` cũ.
 enum BookCondition {
-  likeNew('LikeNew'),
-  veryGood('VeryGood'),
-  good('Good'),
-  fair('Fair'),
-  poor('Poor');
+  brandNew('NEW'),
+  good('GOOD'),
+  fair('FAIR'),
+  worn('WORN');
 
   const BookCondition(this.api);
   final String api;
@@ -73,82 +86,9 @@ enum BookCondition {
   }
 
   String label(AppLocalizations l) => switch (this) {
-    likeNew => l.conditionLikeNew,
-    veryGood => l.conditionVeryGood,
+    brandNew => l.conditionBrandNew,
     good => l.conditionGood,
     fair => l.conditionFair,
-    poor => l.conditionPoor,
+    worn => l.conditionWorn,
   };
-
-  /// Tiêu chí của từng mức, hiện ngay trên màn hình chọn (FR-SEL-06).
-  String description(AppLocalizations l) => switch (this) {
-    likeNew => l.conditionLikeNewDesc,
-    veryGood => l.conditionVeryGoodDesc,
-    good => l.conditionGoodDesc,
-    fair => l.conditionFairDesc,
-    poor => l.conditionPoorDesc,
-  };
-}
-
-enum CoverType {
-  paperback('Paperback'),
-  hardcover('Hardcover');
-
-  const CoverType(this.api);
-  final String api;
-
-  static CoverType? fromApi(String? v) {
-    for (final c in values) {
-      if (c.api == v) return c;
-    }
-    return null;
-  }
-
-  String label(AppLocalizations l) =>
-      this == paperback ? l.coverPaperback : l.coverHardcover;
-}
-
-enum ImageType {
-  frontCover('FrontCover'),
-  backCover('BackCover'),
-  spine('Spine'),
-  innerPage('InnerPage');
-
-  const ImageType(this.api);
-  final String api;
-
-  /// Bốn góc bắt buộc theo FR-SEL-05, theo thứ tự hiển thị.
-  static const required = [frontCover, backCover, spine, innerPage];
-
-  static ImageType? fromApi(String? v) {
-    for (final t in values) {
-      if (t.api == v) return t;
-    }
-    return null;
-  }
-
-  String label(AppLocalizations l) => switch (this) {
-    frontCover => l.imageFrontCover,
-    backCover => l.imageBackCover,
-    spine => l.imageSpine,
-    innerPage => l.imageInnerPage,
-  };
-}
-
-enum AuctionStartMode {
-  onApproval('OnApproval'),
-  scheduled('Scheduled');
-
-  const AuctionStartMode(this.api);
-  final String api;
-
-  static AuctionStartMode? fromApi(String? v) {
-    for (final m in values) {
-      if (m.api == v) return m;
-    }
-    return null;
-  }
-
-  String label(AppLocalizations l) =>
-      this == onApproval ? l.startOnApproval : l.startScheduled;
 }

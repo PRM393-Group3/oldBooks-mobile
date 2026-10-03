@@ -229,7 +229,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get validationPhoneInvalid =>
-      'Số điện thoại phải bắt đầu bằng 0 hoặc +84, theo sau là 9 hoặc 10 chữ số.';
+      'Nhập số di động Việt Nam hợp lệ (10 số, đầu số 03, 05, 07, 08, 09 hoặc +84).';
 
   @override
   String get validationEmailRequired => 'Vui lòng nhập email.';
@@ -952,10 +952,10 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get filterButton => 'Bộ lọc';
+  String get filterButton => 'Lọc';
 
   @override
-  String get filterTitle => 'Lọc hàng đợi';
+  String get filterTitle => 'Bộ lọc';
 
   @override
   String get priceFrom => 'Giá từ (₫)';
@@ -1797,7 +1797,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get topupSheetNote =>
-      'Thanh toán qua VietQR. Yêu cầu hết hạn sau 30 phút nếu chưa thanh toán.';
+      'Bạn sẽ được chuyển tới trang thanh toán của cổng. Yêu cầu hết hạn nếu chưa thanh toán trong thời gian quy định.';
 
   @override
   String topupCreateCode(String amount) {
@@ -2756,4 +2756,1145 @@ class AppLocalizationsVi extends AppLocalizations {
   String bankMasked(String last) {
     return '•••• $last';
   }
+
+  @override
+  String get roleUser => 'Người dùng';
+
+  @override
+  String get roleSuperAdmin => 'Quản trị cấp cao';
+
+  @override
+  String get errPhoneTaken =>
+      'Số điện thoại này đã có tài khoản. Hãy đăng nhập hoặc đặt lại mật khẩu.';
+
+  @override
+  String errAccountLockedTemp(int n) {
+    return 'Tạm khóa đăng nhập, thử lại sau $n phút. Bạn có thể đặt lại mật khẩu để mở khóa ngay.';
+  }
+
+  @override
+  String errRateLimitedIn(int n) {
+    return 'Bạn thao tác quá nhanh. Thử lại sau $n giây.';
+  }
+
+  @override
+  String get termsLabel =>
+      'Tôi đồng ý Điều khoản sử dụng và cho phép xử lý dữ liệu cá nhân theo Nghị định 13/2023.';
+
+  @override
+  String get validationTermsRequired =>
+      'Bạn cần đồng ý điều khoản để tiếp tục.';
+
+  @override
+  String otpExpiresIn(String time) {
+    return 'Mã hết hạn sau $time';
+  }
+
+  @override
+  String get otpExpired => 'Mã đã hết hạn. Hãy gửi lại mã.';
+
+  @override
+  String get forgotOtpNotice => 'Nếu số đã đăng ký, bạn sẽ nhận được mã.';
+
+  @override
+  String get pwRuleLength => 'Ít nhất 8 ký tự';
+
+  @override
+  String get pwRuleLetter => 'Có chữ cái';
+
+  @override
+  String get pwRuleDigit => 'Có chữ số';
+
+  @override
+  String loginLockedRetry(String time) {
+    return 'Thử lại sau $time';
+  }
+
+  @override
+  String get errAddressNotFound => 'Không tìm thấy địa chỉ này.';
+
+  @override
+  String get errDeletionBlocked =>
+      'Chưa thể xóa tài khoản vì còn việc chưa xong.';
+
+  @override
+  String get errRoleNotAllowed => 'Tài khoản quản trị không tự xóa được.';
+
+  @override
+  String get phoneChangeLink => 'Đổi số điện thoại';
+
+  @override
+  String get phoneReadOnlyHelper => 'Đổi số cần mã OTP gửi tới số mới.';
+
+  @override
+  String get changePhoneTitle => 'Đổi số điện thoại';
+
+  @override
+  String get changePhoneIntro =>
+      'Mã OTP sẽ được gửi tới SỐ MỚI. Lần đăng nhập sau dùng số mới.';
+
+  @override
+  String get newPhoneLabel => 'Số điện thoại mới';
+
+  @override
+  String get changePhoneSubmit => 'Xác nhận đổi số';
+
+  @override
+  String get changePhoneDone => 'Đã đổi số điện thoại.';
+
+  @override
+  String get validationPhoneSame => 'Số mới trùng số hiện tại.';
+
+  @override
+  String get errPhoneTakenOther => 'Số này đã thuộc tài khoản khác.';
+
+  @override
+  String get logoutAll => 'Đăng xuất mọi thiết bị';
+
+  @override
+  String get logoutAllConfirmTitle => 'Đăng xuất mọi thiết bị?';
+
+  @override
+  String get logoutAllConfirmMessage =>
+      'Bạn sẽ phải đăng nhập lại trên tất cả thiết bị.';
+
+  @override
+  String get deleteAccountEntry => 'Xóa tài khoản';
+
+  @override
+  String get deleteAccountTitle => 'Xóa tài khoản';
+
+  @override
+  String get deleteAccountWarning =>
+      'Hành động này không thể hoàn tác. Tên và số điện thoại của bạn sẽ bị ẩn danh, địa chỉ và thiết bị bị xóa, mọi phiên đăng nhập bị thu hồi. Dữ liệu giao dịch được giữ lại để đối soát.';
+
+  @override
+  String get deleteAccountPasswordLabel => 'Nhập mật khẩu để xác nhận';
+
+  @override
+  String get deleteAccountSubmit => 'Xóa tài khoản vĩnh viễn';
+
+  @override
+  String get deleteAccountConfirmTitle => 'Bạn chắc chắn muốn xóa?';
+
+  @override
+  String get deleteAccountConfirmMessage =>
+      'Tài khoản sẽ bị xóa vĩnh viễn và không thể khôi phục.';
+
+  @override
+  String get deleteAccountBlockedHeader =>
+      'Hãy xử lý các việc sau rồi thử lại:';
+
+  @override
+  String get notifSettingsTitle => 'Tùy chọn thông báo';
+
+  @override
+  String get notifSettingsMarketing => 'Tin khuyến mãi';
+
+  @override
+  String get notifSettingsMarketingSub => 'Nhận push về ưu đãi, tiếp thị.';
+
+  @override
+  String get notifSettingsAuction => 'Phiên đấu giá đang theo dõi';
+
+  @override
+  String get notifSettingsAuctionSub => 'Nhận push về các phiên bạn theo dõi.';
+
+  @override
+  String get notifSettingsAlways =>
+      'Thông báo giao dịch, bảo mật và tiền (khóa tài khoản, đổi mật khẩu, ví, đơn, khiếu nại) luôn được gửi. Thông báo trong app luôn được lưu, kể cả khi tắt push.';
+
+  @override
+  String walletTopupMin(String amount) {
+    return 'Nạp tối thiểu $amount';
+  }
+
+  @override
+  String get walletLoadError => 'Không tải được ví.';
+
+  @override
+  String get walletHistoryFilterAll => 'Tất cả';
+
+  @override
+  String get walletLedgerTopup => 'Nạp tiền';
+
+  @override
+  String get walletLedgerWithdraw => 'Rút tiền';
+
+  @override
+  String get walletLedgerHold => 'Giữ tiền';
+
+  @override
+  String get walletLedgerRelease => 'Hoàn tiền giữ';
+
+  @override
+  String get walletLedgerPayout => 'Nhận tiền bán hàng';
+
+  @override
+  String get walletLedgerRefund => 'Hoàn tiền';
+
+  @override
+  String get walletLedgerCompensation => 'Bồi thường từ Oldbook';
+
+  @override
+  String get walletLedgerCapture => 'Chốt trừ tiền';
+
+  @override
+  String get walletLedgerFee => 'Phí';
+
+  @override
+  String get walletLedgerOther => 'Giao dịch';
+
+  @override
+  String walletBalanceAfter(String amount) {
+    return 'Số dư sau: $amount';
+  }
+
+  @override
+  String walletHeldNote(String amount) {
+    return 'Đang giữ: $amount';
+  }
+
+  @override
+  String get walletMoreHistory => 'Lịch sử nạp / rút';
+
+  @override
+  String get walletLoadMore => 'Xem thêm';
+
+  @override
+  String get topupAmountLabel => 'Số tiền nạp';
+
+  @override
+  String topupAmountRange(String min, String max) {
+    return 'Từ $min đến $max';
+  }
+
+  @override
+  String topupAmountOut(String min, String max) {
+    return 'Số tiền phải từ $min đến $max.';
+  }
+
+  @override
+  String get topupCreate => 'Tạo yêu cầu nạp';
+
+  @override
+  String get topupOpenPay => 'Mở trang thanh toán';
+
+  @override
+  String get topupWaiting => 'Đang chờ thanh toán…';
+
+  @override
+  String topupWaitingNote(String time) {
+    return 'Hoàn tất thanh toán rồi quay lại app. Hạn thanh toán: $time.';
+  }
+
+  @override
+  String get topupCheckAgain => 'Kiểm tra lại';
+
+  @override
+  String topupPaid(String amount) {
+    return 'Nạp thành công $amount';
+  }
+
+  @override
+  String get topupExpired =>
+      'Yêu cầu đã quá hạn. Nếu bạn vẫn thanh toán, tiền vẫn được cộng; bấm kiểm tra lại.';
+
+  @override
+  String get topupFailed =>
+      'Thanh toán không thành công. Nếu đã bị trừ tiền, hãy liên hệ hỗ trợ.';
+
+  @override
+  String get topupDevPay => 'Dev: giả lập thanh toán thành công';
+
+  @override
+  String get topupCannotOpen => 'Không mở được trang thanh toán.';
+
+  @override
+  String get withdrawPickBank => 'Chọn tài khoản nhận tiền';
+
+  @override
+  String get withdrawNoBank => 'Bạn chưa có tài khoản ngân hàng.';
+
+  @override
+  String get withdrawAddBank => 'Thêm tài khoản';
+
+  @override
+  String withdrawMinHint(String amount) {
+    return 'Tối thiểu $amount';
+  }
+
+  @override
+  String withdrawCreated(String amount) {
+    return 'Đã gửi yêu cầu rút $amount. Tiền được giữ chờ duyệt.';
+  }
+
+  @override
+  String withdrawNeedHave(String required, String available) {
+    return 'Cần $required, hiện có $available.';
+  }
+
+  @override
+  String withdrawBelowMin(String amount) {
+    return 'Số tiền rút tối thiểu là $amount.';
+  }
+
+  @override
+  String get withdrawNoCancel =>
+      'Yêu cầu rút không tự hủy được. Cần hỗ trợ, hãy liên hệ Oldbook.';
+
+  @override
+  String get historyTitle => 'Lịch sử nạp / rút';
+
+  @override
+  String get historyTopups => 'Nạp tiền';
+
+  @override
+  String get historyWithdrawals => 'Rút tiền';
+
+  @override
+  String get historyEmpty => 'Chưa có giao dịch.';
+
+  @override
+  String get topupStatusPending => 'Chờ thanh toán';
+
+  @override
+  String get topupStatusPaid => 'Đã nhận tiền';
+
+  @override
+  String get topupStatusExpired => 'Quá hạn';
+
+  @override
+  String get topupStatusFailed => 'Thất bại';
+
+  @override
+  String get wdStatusRequested => 'Chờ duyệt';
+
+  @override
+  String get wdStatusApproved => 'Đã duyệt, chờ chuyển khoản';
+
+  @override
+  String get wdStatusSubmitted => 'Đã gửi lệnh tới ngân hàng';
+
+  @override
+  String get wdStatusPaid => 'Đã chuyển thành công';
+
+  @override
+  String get wdStatusRejected => 'Bị từ chối, tiền đã trả về ví';
+
+  @override
+  String get wdStatusFailed => 'Chuyển khoản thất bại, tiền đã trả về ví';
+
+  @override
+  String get wdStatusUnknown => 'Đang xử lý';
+
+  @override
+  String wdReason(String reason) {
+    return 'Lý do: $reason';
+  }
+
+  @override
+  String wdTimeline(String created) {
+    return 'Tạo lúc $created';
+  }
+
+  @override
+  String get bankPickBank => 'Ngân hàng';
+
+  @override
+  String get bankHolderMismatch =>
+      'Tên chủ tài khoản khác họ tên hồ sơ. Admin có thể từ chối yêu cầu rút nếu hai tên không khớp.';
+
+  @override
+  String get bankNumberInvalid => 'Số tài khoản gồm 6 đến 20 chữ số.';
+
+  @override
+  String get errBankDuplicate => 'Tài khoản này đã được lưu.';
+
+  @override
+  String get errBankLimit =>
+      'Bạn chỉ lưu được tối đa 3 tài khoản. Hãy xóa bớt.';
+
+  @override
+  String get errBankNotFound => 'Không tìm thấy tài khoản ngân hàng.';
+
+  @override
+  String get errTopupRange => 'Số tiền nạp ngoài khoảng cho phép.';
+
+  @override
+  String get errIdempotencyInProgress =>
+      'Yêu cầu trước đang được xử lý, vui lòng đợi giây lát.';
+
+  @override
+  String get statusReserved => 'Đã có người đặt';
+
+  @override
+  String get statusUnpublished => 'Đã gỡ';
+
+  @override
+  String get conditionBrandNew => 'Mới';
+
+  @override
+  String get conditionWorn => 'Cũ';
+
+  @override
+  String filterButtonCount(int n) {
+    return 'Lọc ($n)';
+  }
+
+  @override
+  String get filterCondition => 'Tình trạng';
+
+  @override
+  String get filterPrice => 'Khoảng giá (₫)';
+
+  @override
+  String get filterMin => 'Từ';
+
+  @override
+  String get filterMax => 'Đến';
+
+  @override
+  String get filterSort => 'Sắp xếp';
+
+  @override
+  String get sortNewest => 'Mới nhất';
+
+  @override
+  String get sortPriceAsc => 'Giá tăng dần';
+
+  @override
+  String get sortPriceDesc => 'Giá giảm dần';
+
+  @override
+  String get filterApply => 'Áp dụng';
+
+  @override
+  String get filterReset => 'Đặt lại';
+
+  @override
+  String get filterPriceInvalid =>
+      'Giá thấp nhất không được lớn hơn giá cao nhất.';
+
+  @override
+  String get detailReserved => 'Đã có người đặt mua cuốn này.';
+
+  @override
+  String get detailSold => 'Cuốn này đã bán.';
+
+  @override
+  String detailOwnerStatus(String status) {
+    return 'Trạng thái tin của bạn: $status';
+  }
+
+  @override
+  String detailReviewReason(String reason) {
+    return 'Lý do: $reason';
+  }
+
+  @override
+  String sellerStats(int n) {
+    return '$n đơn hoàn tất';
+  }
+
+  @override
+  String sellerRating(String rating) {
+    return '$rating ★';
+  }
+
+  @override
+  String listingPhotoN(int n, String title) {
+    return 'Ảnh $n của sách $title';
+  }
+
+  @override
+  String get sellProgressCreate => 'Đang tạo tin…';
+
+  @override
+  String sellProgressUpload(int done, int total) {
+    return 'Đang tải ảnh $done/$total…';
+  }
+
+  @override
+  String get sellProgressSubmit => 'Đang gửi duyệt…';
+
+  @override
+  String get sellErrCategory => 'Chọn thể loại.';
+
+  @override
+  String get sellErrIsbn => 'ISBN không hợp lệ.';
+
+  @override
+  String get sellFieldPublisher => 'Nhà xuất bản (tùy chọn)';
+
+  @override
+  String get sellFieldYear => 'Năm xuất bản (tùy chọn)';
+
+  @override
+  String get sellFieldIsbn => 'ISBN (tùy chọn)';
+
+  @override
+  String get sellFieldDefects => 'Mô tả lỗi, nếu có (tùy chọn)';
+
+  @override
+  String get sellEditTitle => 'Sửa tin đăng';
+
+  @override
+  String get sellEditSave => 'Lưu thay đổi';
+
+  @override
+  String get sellEditSaveSubmit => 'Lưu và gửi duyệt';
+
+  @override
+  String get sellEditWarnTitle => 'Tin sẽ quay về chờ duyệt';
+
+  @override
+  String get sellEditWarnBody =>
+      'Sửa tên, tác giả, thể loại, tình trạng, nhà xuất bản, năm, ISBN, mô tả lỗi hoặc ảnh sẽ đưa tin về chờ duyệt và tạm ẩn khỏi tìm kiếm. Sửa giá và mô tả thì có hiệu lực ngay.';
+
+  @override
+  String get sellEditWarnConfirm => 'Vẫn lưu';
+
+  @override
+  String get sellSaved => 'Đã lưu thay đổi.';
+
+  @override
+  String get photoMakeCover => 'Đặt làm ảnh bìa';
+
+  @override
+  String sellPhotoLimit(int n) {
+    return 'Tối đa $n ảnh.';
+  }
+
+  @override
+  String get mlTabPublished => 'Đang bán';
+
+  @override
+  String get mlTabPending => 'Chờ duyệt';
+
+  @override
+  String get mlTabChanges => 'Cần sửa';
+
+  @override
+  String get mlTabDraft => 'Nháp';
+
+  @override
+  String get mlTabUnpublished => 'Đã gỡ';
+
+  @override
+  String get mlTabSold => 'Đã bán';
+
+  @override
+  String get mlTabRejected => 'Bị từ chối';
+
+  @override
+  String get mlEdit => 'Sửa';
+
+  @override
+  String get mlSubmit => 'Gửi duyệt';
+
+  @override
+  String get mlResubmit => 'Gửi duyệt lại';
+
+  @override
+  String get mlRepublish => 'Đăng lại';
+
+  @override
+  String get mlUnpublish => 'Gỡ tin';
+
+  @override
+  String get mlUnpublishTitle => 'Gỡ tin này?';
+
+  @override
+  String get mlUnpublishBody =>
+      'Tin sẽ ẩn khỏi tìm kiếm. Muốn đăng lại phải qua duyệt lại.';
+
+  @override
+  String get mlRejectedFinal =>
+      'Tin bị từ chối là kết thúc. Hãy tạo tin mới nếu muốn.';
+
+  @override
+  String mlReason(String reason) {
+    return 'Lý do: $reason';
+  }
+
+  @override
+  String get mlPendingNote =>
+      'Đang chờ duyệt, thường trong 24 giờ. Chưa sửa được.';
+
+  @override
+  String get mlSubmitted => 'Đã gửi duyệt.';
+
+  @override
+  String get mlUnpublished => 'Đã gỡ tin.';
+
+  @override
+  String get mlSimHeader => 'Đấu giá (mô phỏng)';
+
+  @override
+  String get mlReservedNote => 'Đã có người đặt mua, chưa thể sửa hay gỡ.';
+
+  @override
+  String get errCategoryInactive =>
+      'Thể loại này đã bị ẩn. Hãy chọn thể loại khác.';
+
+  @override
+  String get errListingConcurrent =>
+      'Tin vừa bị thay đổi ở nơi khác. Đã tải lại, hãy thử lại.';
+
+  @override
+  String get errListingPhoto =>
+      'Có ảnh không hợp lệ (chưa tải lên, quá 10 MB hoặc không phải ảnh). Hãy chọn lại.';
+
+  @override
+  String get errListingIncomplete =>
+      'Tin chưa đủ điều kiện gửi duyệt (thiếu ảnh hoặc thông tin).';
+
+  @override
+  String get errPaymentUnavailable =>
+      'Tạm thời chưa hỗ trợ nạp tiền. Hãy thử lại sau.';
+
+  @override
+  String get errOrderNotFound => 'Không tìm thấy đơn hàng này.';
+
+  @override
+  String get errOwnListing => 'Bạn không thể mua sách của chính mình.';
+
+  @override
+  String get errCartFull => 'Giỏ hàng đã đủ 50 sản phẩm.';
+
+  @override
+  String get errComplaintNotFound => 'Không tìm thấy khiếu nại này.';
+
+  @override
+  String get errComplaintAttachment =>
+      'Có tệp bằng chứng không hợp lệ (sai loại, quá dung lượng hoặc đã dùng). Hãy chọn lại.';
+
+  @override
+  String get topupNoGateway => 'Tạm thời chưa hỗ trợ nạp tiền.';
+
+  @override
+  String get topupPickGateway => 'Chọn cổng thanh toán';
+
+  @override
+  String get topupConfirming =>
+      'Đang xác nhận thanh toán, số dư sẽ cập nhật sau ít phút. Bạn sẽ nhận thông báo khi nạp thành công.';
+
+  @override
+  String get soStatusAwaiting => 'Chờ người bán gửi';
+
+  @override
+  String get soStatusShipped => 'Đang vận chuyển';
+
+  @override
+  String get soStatusDelivered => 'Đã giao';
+
+  @override
+  String get soStatusCompleted => 'Hoàn tất';
+
+  @override
+  String get soStatusCancelledBuyer => 'Đã hủy';
+
+  @override
+  String get soStatusCancelledTimeout => 'Hủy do quá hạn gửi';
+
+  @override
+  String get soStatusDisputed => 'Đang khiếu nại';
+
+  @override
+  String get soStatusRefunded => 'Đã hoàn tiền';
+
+  @override
+  String get soStatusPartial => 'Hoàn một phần';
+
+  @override
+  String get soTabBuy => 'Đơn mua';
+
+  @override
+  String get soTabSell => 'Đơn bán';
+
+  @override
+  String get soEmpty => 'Chưa có đơn nào.';
+
+  @override
+  String get soSimLink => 'Đơn đấu giá (mô phỏng)';
+
+  @override
+  String soNoteShipBy(String time) {
+    return 'Gửi trước $time';
+  }
+
+  @override
+  String soNoteTracking(String carrier, String code) {
+    return '$carrier · $code';
+  }
+
+  @override
+  String soNoteComplaintBy(String time) {
+    return 'Khiếu nại trước $time';
+  }
+
+  @override
+  String get soNoteLocked => 'Tiền đang bị khóa chờ xử lý khiếu nại';
+
+  @override
+  String get soDetailTitle => 'Chi tiết đơn';
+
+  @override
+  String get soPrice => 'Giá sách';
+
+  @override
+  String get soShipFee => 'Phí ship';
+
+  @override
+  String get soTotal => 'Tổng thanh toán';
+
+  @override
+  String get soPayout => 'Bạn nhận được';
+
+  @override
+  String get soPayoutFee => 'Phí nền tảng';
+
+  @override
+  String get soPayoutNet => 'Thực nhận';
+
+  @override
+  String get soSeller => 'Người bán';
+
+  @override
+  String get soBuyer => 'Người mua';
+
+  @override
+  String get soAddress => 'Địa chỉ nhận hàng';
+
+  @override
+  String get soShipment => 'Vận đơn';
+
+  @override
+  String get soTimeline => 'Diễn biến';
+
+  @override
+  String soCountdownShip(String time) {
+    return 'Hạn gửi hàng: còn $time';
+  }
+
+  @override
+  String soCountdownShipBuyer(String time) {
+    return 'Người bán cần gửi hàng trong $time.';
+  }
+
+  @override
+  String soCountdownComplaint(String time) {
+    return 'Hạn khiếu nại: còn $time. Hết hạn này đơn sẽ tự hoàn tất.';
+  }
+
+  @override
+  String get soOverdue => 'đã quá hạn';
+
+  @override
+  String get soCancel => 'Hủy đơn';
+
+  @override
+  String get soCancelTitle => 'Hủy đơn này?';
+
+  @override
+  String get soCancelBody => 'Tiền được hoàn về ví và sách được đăng bán lại.';
+
+  @override
+  String get soReceived => 'Đã nhận hàng';
+
+  @override
+  String get soReceivedTitle => 'Xác nhận đã nhận hàng?';
+
+  @override
+  String get soReceivedBody =>
+      'Sau khi xác nhận, bạn có thời gian khiếu nại nếu sách có vấn đề.';
+
+  @override
+  String get soComplete => 'Hài lòng, hoàn tất';
+
+  @override
+  String get soCompleteTitle => 'Hoàn tất đơn?';
+
+  @override
+  String get soCompleteBody =>
+      'Tiền chuyển cho người bán ngay và bạn không khiếu nại được nữa.';
+
+  @override
+  String get soShip => 'Nhập vận đơn';
+
+  @override
+  String get soShipCarrier => 'Hãng vận chuyển';
+
+  @override
+  String get soShipTracking => 'Mã vận đơn';
+
+  @override
+  String get soShipSubmit => 'Xác nhận đã gửi';
+
+  @override
+  String get soShipInvalid => 'Hãng 2 đến 50 ký tự, mã vận đơn 3 đến 50 ký tự.';
+
+  @override
+  String get soComplain => 'Khiếu nại';
+
+  @override
+  String get soViewComplaint => 'Xem khiếu nại';
+
+  @override
+  String get soCancelled => 'Đã hủy đơn.';
+
+  @override
+  String get soReceivedDone => 'Đã xác nhận nhận hàng.';
+
+  @override
+  String get soCompleted => 'Đã hoàn tất đơn.';
+
+  @override
+  String get soShipped => 'Đã nhập vận đơn.';
+
+  @override
+  String get ckUnavailable => 'Không còn bán';
+
+  @override
+  String get ckRemove => 'Xóa';
+
+  @override
+  String get ckSubtotal => 'Tiền sách';
+
+  @override
+  String ckShipping(int count, String fee) {
+    return 'Phí ship ($count đơn × $fee)';
+  }
+
+  @override
+  String get ckTotal => 'Tổng thanh toán';
+
+  @override
+  String get ckBalance => 'Số dư ví';
+
+  @override
+  String get ckAddress => 'Giao tới';
+
+  @override
+  String get ckPickAddress => 'Chọn địa chỉ';
+
+  @override
+  String get ckNoAddress => 'Bạn chưa có địa chỉ nhận hàng.';
+
+  @override
+  String get ckAddAddress => 'Thêm địa chỉ';
+
+  @override
+  String get ckPlace => 'Đặt hàng · thanh toán bằng ví';
+
+  @override
+  String get ckPlaceEmpty => 'Không có sách khả dụng';
+
+  @override
+  String get ckNeedAddress => 'Chọn địa chỉ để đặt hàng';
+
+  @override
+  String get ckInsufficient => 'Số dư không đủ · nạp thêm';
+
+  @override
+  String get ckEmpty => 'Giỏ hàng trống.';
+
+  @override
+  String get ckPlacedTitle => 'Đặt hàng thành công';
+
+  @override
+  String ckPlacedBody(String total, int count) {
+    return 'Đã giữ $total từ ví cho $count đơn. Người bán có hạn gửi hàng, quá hạn đơn tự hủy và hoàn tiền.';
+  }
+
+  @override
+  String get ckViewOrders => 'Xem đơn hàng';
+
+  @override
+  String get ckKeepShopping => 'Tiếp tục mua sắm';
+
+  @override
+  String get ckSomeUnavailable =>
+      'Một số sách vừa bị người khác đặt hoặc gỡ. Đã đánh dấu trong giỏ, hãy bỏ chúng rồi đặt lại.';
+
+  @override
+  String get ckAdded => 'Đã thêm vào giỏ';
+
+  @override
+  String get ckAlready => 'Sách đã có trong giỏ';
+
+  @override
+  String get cpListTitle => 'Khiếu nại của tôi';
+
+  @override
+  String get cpTabBuy => 'Tôi khiếu nại';
+
+  @override
+  String get cpTabSell => 'Về đơn bán của tôi';
+
+  @override
+  String get cpEmpty => 'Chưa có khiếu nại nào.';
+
+  @override
+  String get cpStatusOpen => 'Chờ người bán phản hồi';
+
+  @override
+  String get cpStatusResponded => 'Chờ người mua quyết định';
+
+  @override
+  String get cpStatusEscalated => 'Chờ quản trị viên';
+
+  @override
+  String get cpStatusAgreed => 'Đã thỏa thuận';
+
+  @override
+  String get cpStatusResolved => 'Đã giải quyết';
+
+  @override
+  String get cpReasonNotAsDescribed => 'Không đúng mô tả';
+
+  @override
+  String get cpReasonDamaged => 'Hư hỏng';
+
+  @override
+  String get cpReasonWrongItem => 'Sai sách';
+
+  @override
+  String get cpReasonOther => 'Lý do khác';
+
+  @override
+  String get cpOpenTitle => 'Mở khiếu nại';
+
+  @override
+  String get cpReasonLabel => 'Lý do';
+
+  @override
+  String get cpDescLabel => 'Mô tả vấn đề';
+
+  @override
+  String get cpDescHint => 'Ít nhất 10 ký tự';
+
+  @override
+  String get cpDescInvalid => 'Mô tả từ 10 đến 2.000 ký tự.';
+
+  @override
+  String get cpEvidence => 'Bằng chứng (ảnh hoặc video)';
+
+  @override
+  String cpEvidenceCount(int n) {
+    return '$n/10 · cần ít nhất 1';
+  }
+
+  @override
+  String get cpEvidenceRequired => 'Cần ít nhất 1 ảnh hoặc video.';
+
+  @override
+  String get cpAddEvidence => 'Thêm ảnh/video';
+
+  @override
+  String get cpPickPhoto => 'Chọn ảnh';
+
+  @override
+  String get cpPickVideo => 'Chọn video';
+
+  @override
+  String get cpEvidenceTooLarge =>
+      'Tệp quá lớn (ảnh tối đa 10 MB, video tối đa 50 MB).';
+
+  @override
+  String get cpEvidenceUnsupported =>
+      'Định dạng không hỗ trợ (ảnh JPEG/PNG/WebP, video MP4/MOV/WebM).';
+
+  @override
+  String get cpSubmit => 'Gửi khiếu nại';
+
+  @override
+  String cpUploading(int done, int total) {
+    return 'Đang tải bằng chứng $done/$total…';
+  }
+
+  @override
+  String get cpOpened => 'Đã gửi khiếu nại.';
+
+  @override
+  String get cpOpenNote =>
+      'Gửi khiếu nại sẽ khóa tiền của đơn cho tới khi được giải quyết.';
+
+  @override
+  String get cpOrder => 'Đơn hàng';
+
+  @override
+  String get cpOpenOrder => 'Xem đơn';
+
+  @override
+  String cpSellerDeadline(String time) {
+    return 'Người bán cần phản hồi: còn $time';
+  }
+
+  @override
+  String cpBuyerDeadline(String time) {
+    return 'Bạn cần quyết định: còn $time';
+  }
+
+  @override
+  String get cpDeadlineNote =>
+      'Quá hạn, khiếu nại tự chuyển cho quản trị viên.';
+
+  @override
+  String get cpEscSellerTimeout =>
+      'Chuyển admin vì người bán không phản hồi kịp.';
+
+  @override
+  String get cpEscBuyerRejected => 'Chuyển admin vì người mua không đồng ý.';
+
+  @override
+  String get cpEscBuyerTimeout =>
+      'Chuyển admin vì người mua không quyết định kịp.';
+
+  @override
+  String get cpEscAuction => 'Chuyển admin (đơn đấu giá).';
+
+  @override
+  String get cpResolution => 'Kết quả';
+
+  @override
+  String get cpOutFull => 'Hoàn toàn bộ (giá sách và phí ship)';
+
+  @override
+  String cpOutPartial(String amount) {
+    return 'Hoàn một phần: $amount';
+  }
+
+  @override
+  String get cpOutRelease => 'Không hoàn: tiền chuyển cho người bán';
+
+  @override
+  String get cpReturnRequired =>
+      'Quản trị viên yêu cầu người mua gửi trả sách. Việc gửi trả thực hiện ngoài hệ thống; hai bên trao đổi qua tin nhắn nếu cần.';
+
+  @override
+  String get cpByAdmin => 'Quản trị viên phán quyết';
+
+  @override
+  String get cpByAgreement => 'Hai bên thỏa thuận';
+
+  @override
+  String get cpAuthorBuyer => 'Người mua';
+
+  @override
+  String get cpAuthorSeller => 'Người bán';
+
+  @override
+  String get cpAuthorAdmin => 'Quản trị viên';
+
+  @override
+  String get cpAuthorSystem => 'Hệ thống';
+
+  @override
+  String get cpEntryOpened => 'Mở khiếu nại';
+
+  @override
+  String get cpEntrySellerResponse => 'Người bán phản hồi';
+
+  @override
+  String get cpEntryBuyerDecision => 'Người mua quyết định';
+
+  @override
+  String get cpEntryEscalated => 'Chuyển cho quản trị viên';
+
+  @override
+  String get cpEntryResolved => 'Đã giải quyết';
+
+  @override
+  String cpRefundAmount(String amount) {
+    return 'Hoàn $amount';
+  }
+
+  @override
+  String get cpRespond => 'Phản hồi';
+
+  @override
+  String get cpRespondTitle => 'Phản hồi khiếu nại';
+
+  @override
+  String get cpActAccept => 'Đồng ý hoàn toàn bộ (giá sách và phí ship)';
+
+  @override
+  String get cpActPartial => 'Đề xuất hoàn một phần';
+
+  @override
+  String get cpActReject => 'Từ chối';
+
+  @override
+  String get cpAmountLabel => 'Số tiền hoàn (trên giá sách)';
+
+  @override
+  String cpAmountInvalid(String max) {
+    return 'Số tiền phải từ 1 đến $max.';
+  }
+
+  @override
+  String get cpRejectReason => 'Lý do từ chối (nên kèm ảnh bằng chứng)';
+
+  @override
+  String get cpReasonInvalid => 'Lý do tối thiểu 10 ký tự.';
+
+  @override
+  String get cpRespondSubmit => 'Gửi phản hồi';
+
+  @override
+  String get cpResponded => 'Đã gửi phản hồi.';
+
+  @override
+  String get cpRespondNote => 'Người mua vẫn cần xác nhận kết quả.';
+
+  @override
+  String get cpAccept => 'Đồng ý';
+
+  @override
+  String get cpDisagree => 'Không đồng ý, chuyển admin';
+
+  @override
+  String get cpAcceptTitle => 'Đồng ý với phản hồi?';
+
+  @override
+  String get cpAcceptFull => 'Bạn được hoàn toàn bộ giá sách và phí ship.';
+
+  @override
+  String cpAcceptPartial(String amount) {
+    return 'Bạn được hoàn $amount. Phần còn lại chuyển cho người bán.';
+  }
+
+  @override
+  String get cpAcceptReject =>
+      'Người bán đã từ chối. Bấm đồng ý nghĩa là bạn RÚT khiếu nại và tiền chuyển cho người bán.';
+
+  @override
+  String get cpDisagreeTitle => 'Chuyển cho quản trị viên?';
+
+  @override
+  String get cpDisagreeBody => 'Quản trị viên sẽ xem xét và phán quyết.';
+
+  @override
+  String get cpDecided => 'Đã ghi nhận quyết định.';
+
+  @override
+  String get cpMessageHint => 'Nhập tin nhắn…';
+
+  @override
+  String get cpSend => 'Gửi';
+
+  @override
+  String get cpMessageClosed => 'Khiếu nại đã đóng, không thể nhắn tin.';
+
+  @override
+  String get cpMessageNeed => 'Nhập nội dung hoặc đính kèm một tệp.';
+
+  @override
+  String get cpOpenVideo => 'Mở video';
+
+  @override
+  String get cpLockedNote =>
+      'Tiền của đơn đang bị khóa cho tới khi khiếu nại được giải quyết.';
 }

@@ -1,111 +1,112 @@
+import 'dart:typed_data';
+
 import '../../../core/network/api_client.dart';
+import '../../../core/network/blob_uploader.dart';
 import '../../../core/network/paged_result.dart';
+import '../../../core/paging/cursor_notifier.dart';
 import '../domain/listing.dart';
 import '../domain/listing_enums.dart';
-import '../domain/listing_input.dart';
-import '../domain/listing_rules.dart';
+import '../domain/listing_query.dart';
 
+/// Ảnh mới chọn từ máy, chờ tải lên.
+class NewPhoto {
+  const NewPhoto({
+    required this.bytes,
+    required this.fileName,
+    required this.contentType,
+  });
+
+  final Uint8List bytes;
+  final String fileName;
+  final String contentType;
+}
+
+/// Tin đăng bán sách (`08-listings`): tạo/sửa, ảnh, gửi duyệt, gỡ, tìm kiếm.
 class ListingRepository {
-  ListingRepository(this._api);
+  ListingRepository(this._api, [this._uploader]);
+
   final ApiClient _api;
+  final BlobUploader? _uploader;
 
-  Future<ListingRules> rules() =>
-      _api.get('/listings/rules', parse: ListingRules.fromJson);
+  /// Tìm kiếm tin `PUBLISHED`, phân trang cursor. Bộ lọc và `sort` của các trang
+  /// sau phải giống trang đầu.
+  Future<CursorPage<Listing>> search(
+    ListingQuery query, {
+    String? cursor,
+    int pageSize = 20,
+  }) => _api.getWithMeta(
+    '/listings',
+    query: query.toQuery(cursor: cursor, pageSize: pageSize),
+    parse: (data, meta) => CursorPage.fromJson(data, meta, Listing.fromJson),
+  );
 
-  /// Tạo bản nháp rỗng. Chỉ gọi khi người dùng bấm "Tiếp" ở bước 1.
-  Future<Listing> create() => _api.post('/listings', parse: Listing.fromJson);
-
+  /// Tin công khai ai cũng xem được; tin khác chỉ chủ tin và admin (gửi kèm
+  /// `Authorization`), người khác nhận `404 LISTING_NOT_FOUND`.
   Future<Listing> get(String id) =>
       _api.get('/listings/$id', parse: Listing.fromJson);
 
-  Future<Listing> saveBookInfo(String id, BookInfoInput input) => _api.put(
-    '/listings/$id/book-info',
+  Future<Listing> create(ListingDraftInput input) =>
+      _api.post('/listings', body: input.toJson(), parse: Listing.fromJson);
+
+  Future<Listing> update(String id, ListingDraftInput input) => _api.patch(
+    '/listings/$id',
     body: input.toJson(),
     parse: Listing.fromJson,
   );
 
-  /// Thứ tự mảng là thứ tự hiển thị.
-  Future<Listing> saveImages(
-    String id,
-    List<({String blobName, ImageType type})> images,
-  ) => _api.put(
-    '/listings/$id/images',
-    body: {
-      'images': [
-        for (final i in images) {'blobName': i.blobName, 'type': i.type.api},
-      ],
-    },
-    parse: Listing.fromJson,
-  );
+  /// Tải từng ảnh mới lên kho (mỗi ảnh một URL ký sẵn) rồi trả về `blobName`
+  /// theo thứ tự đầu vào.
+  Future<List<String>> uploadPhotos(String id, List<NewPhoto> photos) async {
+    final uploader = _uploader;
+    if (uploader == null) {
+      throw StateError('ListingRepository không có BlobUploader');
+    }
+    return [
+      for (final p in photos)
+        await uploader.upload(
+          bytes: p.bytes,
+          fileName: p.fileName,
+          contentType: p.contentType,
+          ticketPath: '/listings/$id/photos/upload-url',
+        ),
+    ];
+  }
 
-  Future<Listing> saveSaleMethod(String id, SaleMethodInput input) => _api.put(
-    '/listings/$id/sale-method',
-    body: input.toJson(),
-    parse: Listing.fromJson,
-  );
-
-  Future<({Listing listing, SubmitResult result})> submit(String id) =>
-      _api.post(
-        '/listings/$id/submit',
-        parse: (data) {
-          final j = data as Map<dynamic, dynamic>;
-          return (
-            listing: Listing.fromJson(j['listing']),
-            result: SubmitResult(
-              estimatedProcessingHours:
-                  (j['estimatedProcessingHours'] as num?)?.toInt() ?? 24,
-            ),
-          );
-        },
+  /// Đặt lại TOÀN BỘ danh sách ảnh theo thứ tự (ảnh đầu là ảnh bìa). Muốn giữ
+  /// ảnh đã có thì gửi lại đúng `blobName` của chúng; bỏ ảnh nào là xóa ảnh đó.
+  Future<List<ListingPhoto>> setPhotos(String id, List<String> blobNames) =>
+      _api.put(
+        '/listings/$id/photos',
+        body: {'blobNames': blobNames},
+        parse: (data) => [
+          for (final j in data as List)
+            ListingPhoto.fromJson(j as Map<dynamic, dynamic>),
+        ],
       );
 
-  /// Chỉ với tin Nháp hoặc Bị từ chối.
-  Future<void> delete(String id) => _api.deleteNoContent('/listings/$id');
+  Future<Listing> submit(String id) =>
+      _api.post('/listings/$id/submit', parse: Listing.fromJson);
 
+  /// Chủ tin gỡ không cần body.
+  Future<Listing> unpublish(String id) => _api.post(
+    '/listings/$id/unpublish',
+    body: const <String, dynamic>{},
+    parse: Listing.fromJson,
+  );
+
+  /// Tin của tôi, mới cập nhật trước.
   Future<PagedResult<Listing>> mine({
     ListingStatus? status,
     required int page,
     required int pageSize,
-  }) => _api.get(
-    '/listings/mine',
+  }) => _api.getWithMeta(
+    '/me/listings',
     query: {'status': ?status?.api, 'page': page, 'pageSize': pageSize},
-    parse: (d) => PagedResult.fromJson(
-      d,
-      Listing.fromJson,
+    parse: (data, meta) => PagedResult(
+      items: [for (final j in data as List) Listing.fromJson(j)],
       page: page,
       pageSize: pageSize,
-    ),
-  );
-
-  /// Số tin theo trạng thái cho dashboard: `{ counts: { Draft: n, ... } }`.
-  Future<Map<ListingStatus, int>> mineSummary() => _api.get(
-    '/listings/mine/summary',
-    parse: (data) {
-      final raw = data is Map
-          ? (data['counts'] is Map ? data['counts'] as Map : data)
-          : const {};
-      return {
-        for (final e in raw.entries)
-          if (e.value is num &&
-              ListingStatus.fromApi(e.key.toString()) != ListingStatus.unknown)
-            ListingStatus.fromApi(e.key.toString()): (e.value as num).toInt(),
-      };
-    },
-  );
-
-  /// Tin công khai (Đang bán, Đang đấu giá). `categoryId` gồm cả danh mục con.
-  Future<PagedResult<Listing>> browse({
-    String? categoryId,
-    required int page,
-    required int pageSize,
-  }) => _api.get(
-    '/listings',
-    query: {'categoryId': ?categoryId, 'page': page, 'pageSize': pageSize},
-    parse: (d) => PagedResult.fromJson(
-      d,
-      Listing.fromJson,
-      page: page,
-      pageSize: pageSize,
+      totalCount: (meta['totalItems'] as num?)?.toInt(),
     ),
   );
 }
