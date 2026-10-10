@@ -21,6 +21,10 @@ abstract final class Env {
     defaultValue: stagingBaseUrl,
   );
 
+  /// Endpoint giả lập `/dev/...` (ví dụ thanh toán nạp tiền) chỉ có trên
+  /// backend chạy ở máy dev; staging trả `404`.
+  static const bool hasDevEndpoints = apiBaseUrl != stagingBaseUrl;
+
   /// Mọi route của backend có tiền tố `/api/v1`.
   static String get apiRoot => '$apiBaseUrl/api/v1';
 }

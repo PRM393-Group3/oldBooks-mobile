@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/config/env.dart';
 import '../../../core/l10n/api_error_l10n.dart';
 import '../../../core/network/api_error.dart';
 import '../../../core/theme/app_dimens.dart';
@@ -375,8 +376,9 @@ class _TopupFlowState extends ConsumerState<_TopupFlow>
             },
           ),
         ],
-        // Cổng sandbox của backend dev: payUrl không mở được trang thật.
-        if (kDebugMode && pending) ...[
+        // Chỉ backend dev có `/dev/payments`; staging thanh toán qua payUrl
+        // của cổng sandbox (VNPay/PayOS) như bản phát hành.
+        if (kDebugMode && Env.hasDevEndpoints && pending) ...[
           const SizedBox(height: AppSpacing.xs),
           AppButton(
             label: l.topupDevPay,
