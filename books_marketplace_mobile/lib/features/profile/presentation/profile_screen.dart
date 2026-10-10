@@ -149,6 +149,12 @@ class _ProfileBody extends ConsumerWidget {
               muted: profile.phoneNumber == null,
             ),
             AppInfoRow(
+              icon: Icons.mail_outline,
+              label: l.emailLabel,
+              value: profile.email ?? l.emailNotSet,
+              muted: profile.email == null,
+            ),
+            AppInfoRow(
               icon: Icons.calendar_today_outlined,
               label: l.memberSince,
               value: joined,

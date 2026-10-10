@@ -7,6 +7,7 @@ import '../../../core/network/blob_uploader.dart';
 import '../../../core/storage/token_store.dart';
 import '../../../core/util/server_clock.dart';
 import '../../auth/domain/auth_session.dart';
+import '../../auth/domain/otp_sent.dart';
 import '../domain/profile.dart';
 
 class ProfileRepository {
@@ -47,11 +48,11 @@ class ProfileRepository {
 
   Future<void> deleteAvatar() => _api.deleteNoContent('/me/avatar');
 
-  /// Bước 1 đổi số: gửi OTP tới SỐ MỚI. Trả về số giây OTP còn hiệu lực.
-  Future<int> sendPhoneOtp({required String phone}) => _api.post(
+  /// Bước 1 đổi số: OTP gửi tới email của tài khoản, không gửi tới số mới.
+  Future<OtpSent> sendPhoneOtp({required String phone}) => _api.post(
     '/me/phone/otp',
     body: {'phone': phone},
-    parse: (data) => (data as Map)['expiresInSeconds'] as int,
+    parse: OtpSent.fromJson,
   );
 
   /// Bước 2 đổi số. Token đang dùng không đổi (định danh theo id).

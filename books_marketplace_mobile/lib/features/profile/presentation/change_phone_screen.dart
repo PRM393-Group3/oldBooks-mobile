@@ -14,7 +14,7 @@ import '../../../core/widgets/app_text_field.dart';
 import '../../auth/presentation/otp_field.dart';
 import '../application/profile_controller.dart';
 
-/// Đổi số điện thoại: OTP gửi tới SỐ MỚI, rồi xác nhận bằng OTP đó.
+/// Đổi số điện thoại: OTP gửi tới email của tài khoản, rồi xác nhận bằng OTP đó.
 class ChangePhoneScreen extends ConsumerStatefulWidget {
   const ChangePhoneScreen({super.key});
 
@@ -120,14 +120,16 @@ class _ChangePhoneScreenState extends ConsumerState<ChangePhoneScreen> {
               errorText: _serverErrors['phone'],
               enabled: !_saving,
               prefixIcon: Icons.phone_outlined,
-              onChanged: (_) => _clearError('phone'),
+              // Build lại để [OtpField] biết số đã đổi so với lúc gửi mã.
+              onChanged: (_) => setState(() => _clearError('phone')),
             ),
             const SizedBox(height: AppSpacing.md),
             OtpField(
               controller: _otp,
               enabled: !_saving,
               errorText: _serverErrors['otp'],
-              validatePhone: () => _validatePhone(_phone.text, v) == null,
+              target: () => _e164(_phone.text),
+              canSend: () => _validatePhone(_phone.text, v) == null,
               handleError: (e) {
                 if (e.code != ApiErrorCode.phoneTaken &&
                     !e.fieldErrors.containsKey('phone')) {
@@ -143,17 +145,20 @@ class _ChangePhoneScreenState extends ConsumerState<ChangePhoneScreen> {
                 return true;
               },
               onSend: () async {
-                final expiresIn = await ref
+                final sent = await ref
                     .read(profileControllerProvider.notifier)
                     .sendPhoneOtp(_phone.text.trim());
                 if (context.mounted) {
+                  final sentTo = sent.sentTo;
                   AppSnackbar.show(
                     context,
-                    l.otpSentTo(_phone.text.trim()),
+                    sentTo != null
+                        ? l.otpSentToEmail(sentTo)
+                        : l.otpSentTo(_phone.text.trim()),
                     type: AppSnackbarType.success,
                   );
                 }
-                return expiresIn;
+                return sent;
               },
             ),
           ],

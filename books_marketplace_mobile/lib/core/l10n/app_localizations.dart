@@ -4973,7 +4973,7 @@ abstract class AppLocalizations {
   /// No description provided for @forgotOtpNotice.
   ///
   /// In vi, this message translates to:
-  /// **'Nếu số đã đăng ký, bạn sẽ nhận được mã.'**
+  /// **'Nếu số đã đăng ký, mã sẽ được gửi tới email của tài khoản.'**
   String get forgotOtpNotice;
 
   /// No description provided for @pwRuleLength.
@@ -5027,7 +5027,7 @@ abstract class AppLocalizations {
   /// No description provided for @phoneReadOnlyHelper.
   ///
   /// In vi, this message translates to:
-  /// **'Đổi số cần mã OTP gửi tới số mới.'**
+  /// **'Đổi số cần mã OTP gửi tới email của tài khoản.'**
   String get phoneReadOnlyHelper;
 
   /// No description provided for @changePhoneTitle.
@@ -5039,7 +5039,7 @@ abstract class AppLocalizations {
   /// No description provided for @changePhoneIntro.
   ///
   /// In vi, this message translates to:
-  /// **'Mã OTP sẽ được gửi tới SỐ MỚI. Lần đăng nhập sau dùng số mới.'**
+  /// **'Mã OTP sẽ được gửi tới email của tài khoản. Lần đăng nhập sau dùng số mới.'**
   String get changePhoneIntro;
 
   /// No description provided for @newPhoneLabel.
@@ -6949,6 +6949,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Tiền của đơn đang bị khóa cho tới khi khiếu nại được giải quyết.'**
   String get cpLockedNote;
+
+  /// No description provided for @otpSentToEmail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã đã gửi tới {email}. Kiểm tra cả thư mục Spam/Quảng cáo.'**
+  String otpSentToEmail(String email);
+
+  /// No description provided for @emailOtpHelper.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã OTP sẽ được gửi tới email này.'**
+  String get emailOtpHelper;
+
+  /// No description provided for @emailNotSet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có email'**
+  String get emailNotSet;
+
+  /// No description provided for @errEmailTakenLogin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Email này đã thuộc tài khoản khác. Nếu là bạn, hãy đăng nhập.'**
+  String get errEmailTakenLogin;
+
+  /// No description provided for @errEmailRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản chưa có email, hãy liên hệ hỗ trợ.'**
+  String get errEmailRequired;
+
+  /// No description provided for @errOtpSendFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không gửi được mã, hãy thử lại sau.'**
+  String get errOtpSendFailed;
 }
 
 class _AppLocalizationsDelegate

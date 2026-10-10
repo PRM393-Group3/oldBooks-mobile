@@ -2808,7 +2808,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forgotOtpNotice =>
-      'If the number is registered, you will receive a code.';
+      'If the number is registered, the code will be sent to the account\'s email.';
 
   @override
   String get pwRuleLength => 'At least 8 characters';
@@ -2840,14 +2840,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get phoneReadOnlyHelper =>
-      'Changing it needs an OTP sent to the new number.';
+      'Changing it needs an OTP sent to your account\'s email.';
 
   @override
   String get changePhoneTitle => 'Change phone number';
 
   @override
   String get changePhoneIntro =>
-      'An OTP will be sent to the NEW number. Use the new number the next time you sign in.';
+      'The OTP will be sent to your account\'s email. Use the new number the next time you sign in.';
 
   @override
   String get newPhoneLabel => 'New phone number';
@@ -3919,4 +3919,26 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cpLockedNote =>
       'The order\'s money is locked until the complaint is resolved.';
+
+  @override
+  String otpSentToEmail(String email) {
+    return 'Code sent to $email. Check your Spam/Promotions folder too.';
+  }
+
+  @override
+  String get emailOtpHelper => 'The OTP will be sent to this email.';
+
+  @override
+  String get emailNotSet => 'No email';
+
+  @override
+  String get errEmailTakenLogin =>
+      'This email belongs to another account. If it\'s yours, sign in.';
+
+  @override
+  String get errEmailRequired =>
+      'This account has no email. Please contact support.';
+
+  @override
+  String get errOtpSendFailed => 'Couldn\'t send the code. Try again later.';
 }

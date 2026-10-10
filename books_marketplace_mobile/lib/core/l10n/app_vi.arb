@@ -1847,7 +1847,7 @@
     }
   },
   "otpExpired": "Mã đã hết hạn. Hãy gửi lại mã.",
-  "forgotOtpNotice": "Nếu số đã đăng ký, bạn sẽ nhận được mã.",
+  "forgotOtpNotice": "Nếu số đã đăng ký, mã sẽ được gửi tới email của tài khoản.",
   "pwRuleLength": "Ít nhất 8 ký tự",
   "pwRuleLetter": "Có chữ cái",
   "pwRuleDigit": "Có chữ số",
@@ -1863,9 +1863,9 @@
   "errDeletionBlocked": "Chưa thể xóa tài khoản vì còn việc chưa xong.",
   "errRoleNotAllowed": "Tài khoản quản trị không tự xóa được.",
   "phoneChangeLink": "Đổi số điện thoại",
-  "phoneReadOnlyHelper": "Đổi số cần mã OTP gửi tới số mới.",
+  "phoneReadOnlyHelper": "Đổi số cần mã OTP gửi tới email của tài khoản.",
   "changePhoneTitle": "Đổi số điện thoại",
-  "changePhoneIntro": "Mã OTP sẽ được gửi tới SỐ MỚI. Lần đăng nhập sau dùng số mới.",
+  "changePhoneIntro": "Mã OTP sẽ được gửi tới email của tài khoản. Lần đăng nhập sau dùng số mới.",
   "newPhoneLabel": "Số điện thoại mới",
   "changePhoneSubmit": "Xác nhận đổi số",
   "changePhoneDone": "Đã đổi số điện thoại.",
@@ -2223,5 +2223,18 @@
   "cpMessageClosed": "Khiếu nại đã đóng, không thể nhắn tin.",
   "cpMessageNeed": "Nhập nội dung hoặc đính kèm một tệp.",
   "cpOpenVideo": "Mở video",
-  "cpLockedNote": "Tiền của đơn đang bị khóa cho tới khi khiếu nại được giải quyết."
+  "cpLockedNote": "Tiền của đơn đang bị khóa cho tới khi khiếu nại được giải quyết.",
+  "otpSentToEmail": "Mã đã gửi tới {email}. Kiểm tra cả thư mục Spam/Quảng cáo.",
+  "@otpSentToEmail": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "emailOtpHelper": "Mã OTP sẽ được gửi tới email này.",
+  "emailNotSet": "Chưa có email",
+  "errEmailTakenLogin": "Email này đã thuộc tài khoản khác. Nếu là bạn, hãy đăng nhập.",
+  "errEmailRequired": "Tài khoản chưa có email, hãy liên hệ hỗ trợ.",
+  "errOtpSendFailed": "Không gửi được mã, hãy thử lại sau."
 }

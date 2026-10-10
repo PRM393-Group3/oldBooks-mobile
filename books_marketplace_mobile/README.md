@@ -1,17 +1,33 @@
 # books_marketplace_mobile
 
-A new Flutter project.
+Flutter app for the Oldbook used-book marketplace.
 
-## Getting Started
+## Running
 
-This project is a starting point for a Flutter application.
+By default the app talks to the staging backend
+(`https://oldbooks-api.yellowocean-f7cb6092.southeastasia.azurecontainerapps.io`).
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+flutter run                      # staging
+flutter build apk --release      # staging
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+To use a backend running on your machine, override the base URL (no trailing
+`/`, no `/api/v1`):
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5148   # Android emulator
+flutter run --dart-define=API_BASE_URL=http://localhost:5148  # iOS simulator
+```
+
+UI preview with in-memory sample data, no backend:
+`flutter run --dart-define=UI_PREVIEW=true`.
+
+## Staging notes
+
+- OTP codes arrive by **email**, not SMS. Registration requires an email; the
+  code may land in Spam/Promotions. Avoid sending OTPs repeatedly (low quota,
+  5 OTP/hour/phone).
+- No push notifications are delivered; use the in-app notification list.
+- Data may be wiped when the backend resets. Tokens from a dev server are not
+  valid on staging: sign out and sign in again.

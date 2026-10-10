@@ -43,18 +43,44 @@ void main() {
     repo = AuthRepository(ApiClient(dio), tokens);
   }
 
-  test('sendOtp gửi purpose và trả expiresInSeconds của server', () async {
-    setup((o) => jsonResponse(200, okBody({'expiresInSeconds': 180})));
+  test(
+    'sendOtp quên mật khẩu: không gửi email, trả hạn mã và sentTo',
+    () async {
+      setup(
+        (o) => jsonResponse(
+          200,
+          okBody({'expiresInSeconds': 180, 'sentTo': 'n*******a@gmail.com'}),
+        ),
+      );
 
-    final expires = await repo.sendOtp(
+      final otp = await repo.sendOtp(
+        phone: '0912345678',
+        purpose: OtpPurpose.resetPassword,
+      );
+
+      expect(otp.expiresInSeconds, 180);
+      expect(otp.sentTo, 'n*******a@gmail.com');
+      expect(sent.single.data, {
+        'phone': '0912345678',
+        'purpose': 'RESET_PASSWORD',
+      });
+    },
+  );
+
+  test('sendOtp đăng ký gửi kèm email; thiếu sentTo vẫn parse được', () async {
+    setup((o) => jsonResponse(200, okBody({'expiresInSeconds': 300})));
+
+    final otp = await repo.sendOtp(
       phone: '0912345678',
-      purpose: OtpPurpose.resetPassword,
+      purpose: OtpPurpose.register,
+      email: 'nguyenvana@gmail.com',
     );
 
-    expect(expires, 180);
+    expect(otp.sentTo, isNull);
     expect(sent.single.data, {
       'phone': '0912345678',
-      'purpose': 'RESET_PASSWORD',
+      'purpose': 'REGISTER',
+      'email': 'nguyenvana@gmail.com',
     });
   });
 
@@ -90,9 +116,11 @@ void main() {
       password: 'Passw0rd123',
       fullName: 'Nguyễn Văn A',
       acceptTerms: true,
+      email: 'nguyenvana@gmail.com',
     );
 
     expect((sent.single.data as Map)['acceptTerms'], isTrue);
+    expect((sent.single.data as Map)['email'], 'nguyenvana@gmail.com');
     expect(tokens.accessToken, 'a1');
     expect(tokens.refreshToken, 'r1');
     expect(session.user.phone, '+84912345678');

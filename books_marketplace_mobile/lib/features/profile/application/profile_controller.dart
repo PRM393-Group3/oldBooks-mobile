@@ -6,6 +6,7 @@ import '../../../core/network/api_error.dart';
 import '../../../core/network/network_providers.dart';
 import '../../../core/storage/storage_providers.dart';
 import '../../auth/application/auth_controller.dart';
+import '../../auth/domain/otp_sent.dart';
 import '../data/profile_repository.dart';
 import '../domain/profile.dart';
 
@@ -54,8 +55,8 @@ class ProfileController extends AsyncNotifier<Profile> {
     state = AsyncData(profile);
   }
 
-  /// Bước 1 đổi số điện thoại. Trả về số giây OTP còn hiệu lực.
-  Future<int> sendPhoneOtp(String phone) =>
+  /// Bước 1 đổi số điện thoại, OTP gửi tới email của tài khoản.
+  Future<OtpSent> sendPhoneOtp(String phone) =>
       ref.read(profileRepositoryProvider).sendPhoneOtp(phone: phone);
 
   Future<void> changePhone({required String phone, required String otp}) async {

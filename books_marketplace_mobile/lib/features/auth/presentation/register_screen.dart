@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/l10n/api_error_l10n.dart';
+import '../../../core/l10n/app_localizations.dart';
 import '../../../core/network/api_error.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
@@ -28,6 +29,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _fullName = TextEditingController();
   final _phone = TextEditingController();
+  final _email = TextEditingController();
   final _otp = TextEditingController();
   final _password = TextEditingController();
 
@@ -40,6 +42,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   void dispose() {
     _fullName.dispose();
     _phone.dispose();
+    _email.dispose();
     _otp.dispose();
     _password.dispose();
     super.dispose();
@@ -64,16 +67,32 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             password: _password.text,
             fullName: _fullName.text.trim(),
             acceptTerms: _acceptTerms,
+            email: _email.text.trim(),
           );
     } on ApiError catch (e) {
       if (!mounted) return;
-      setState(() => _serverErrors = e.localizedFieldErrors(l));
+      setState(() => _serverErrors = _fieldErrors(e, l));
       AppSnackbar.apiError(context, e);
       // Có người vừa đăng ký số này trước: về đăng nhập.
       if (e.code == ApiErrorCode.phoneTaken) context.go('/login');
     } finally {
       if (mounted) setState(() => _loading = false);
     }
+  }
+
+  /// Email trùng báo ngay dưới ô email kèm gợi ý đăng nhập.
+  Map<String, String> _fieldErrors(ApiError e, AppLocalizations l) => {
+    ...e.localizedFieldErrors(l),
+    if (e.code == ApiErrorCode.emailTaken) 'email': l.errEmailTakenLogin,
+  };
+
+  /// Luôn build lại để [OtpField] biết SĐT/email đã đổi so với lúc gửi mã.
+  void _onChanged(String field) {
+    setState(() {
+      if (_serverErrors.containsKey(field)) {
+        _serverErrors = {..._serverErrors}..remove(field);
+      }
+    });
   }
 
   void _clearError(String field) {
@@ -124,26 +143,61 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 errorText: _serverErrors['phone'],
                 enabled: !_loading,
                 prefixIcon: Icons.phone_outlined,
-                onChanged: (_) => _clearError('phone'),
+                onChanged: (_) => _onChanged('phone'),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              AppTextField(
+                label: l.emailLabel,
+                controller: _email,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                autofillHints: const [AutofillHints.email],
+                helperText: l.emailOtpHelper,
+                validator: v.email,
+                errorText: _serverErrors['email'],
+                enabled: !_loading,
+                maxLength: Validators.emailMax,
+                prefixIcon: Icons.mail_outline,
+                onChanged: (_) => _onChanged('email'),
               ),
               const SizedBox(height: AppSpacing.md),
               OtpField(
                 controller: _otp,
                 enabled: !_loading,
                 errorText: _serverErrors['otp'],
-                validatePhone: () => v.phoneRequired(_phone.text) == null,
+                target: () =>
+                    '${_phone.text.trim()}|${_email.text.trim().toLowerCase()}',
+                canSend: () =>
+                    v.phoneRequired(_phone.text) == null &&
+                    v.email(_email.text) == null,
+                handleError: (e) {
+                  final errors = _fieldErrors(e, l);
+                  if (!errors.containsKey('email') &&
+                      !errors.containsKey('phone')) {
+                    return false;
+                  }
+                  setState(() => _serverErrors = errors);
+                  return true;
+                },
                 onSend: () async {
-                  final expiresIn = await ref
+                  final sent = await ref
                       .read(authControllerProvider.notifier)
-                      .sendOtp(_phone.text.trim(), OtpPurpose.register);
+                      .sendOtp(
+                        _phone.text.trim(),
+                        OtpPurpose.register,
+                        email: _email.text.trim(),
+                      );
                   if (context.mounted) {
+                    final sentTo = sent.sentTo;
                     AppSnackbar.show(
                       context,
-                      l.otpSentTo(_phone.text.trim()),
+                      sentTo != null
+                          ? l.otpSentToEmail(sentTo)
+                          : l.otpSentTo(_phone.text.trim()),
                       type: AppSnackbarType.success,
                     );
                   }
-                  return expiresIn;
+                  return sent;
                 },
               ),
               const SizedBox(height: AppSpacing.md),

@@ -12,6 +12,9 @@ abstract final class ApiErrorCode {
   static const userNotFound = 'USER_NOT_FOUND';
   static const internal = 'INTERNAL_ERROR';
   static const emailTaken = 'AUTH_EMAIL_TAKEN';
+
+  /// Quên mật khẩu/đổi số với tài khoản tạo trước khi bật OTP email.
+  static const emailRequired = 'AUTH_EMAIL_REQUIRED';
   static const accountDisabled = 'ACCOUNT_DISABLED';
   static const phoneTaken = 'AUTH_PHONE_TAKEN';
   static const addressNotFound = 'ADDRESS_NOT_FOUND';

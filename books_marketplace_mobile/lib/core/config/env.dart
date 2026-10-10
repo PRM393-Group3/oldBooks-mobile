@@ -1,8 +1,8 @@
-import 'package:flutter/foundation.dart';
-
 /// Cấu hình môi trường.
 ///
-/// Ghi đè khi chạy máy thật: `flutter run --dart-define=API_BASE_URL=http://192.168.1.10:5148`
+/// Mặc định gọi server staging. Chạy backend ở máy dev thì ghi đè:
+/// `flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5148` (Android
+/// emulator), `http://localhost:5148` (iOS simulator) hoặc IP LAN (máy thật).
 abstract final class Env {
   /// Chế độ xem trước giao diện: bỏ đăng nhập và dùng dữ liệu mẫu trong bộ
   /// nhớ thay cho backend. Mặc định TẮT (đăng nhập và gọi backend thật); bật
@@ -12,16 +12,14 @@ abstract final class Env {
     defaultValue: false,
   );
 
-  static const String _override = String.fromEnvironment('API_BASE_URL');
+  static const String stagingBaseUrl =
+      'https://oldbooks-api.yellowocean-f7cb6092.southeastasia.azurecontainerapps.io';
 
-  /// iOS simulator dùng `localhost`, Android emulator phải dùng `10.0.2.2`.
-  static String get apiBaseUrl {
-    if (_override.isNotEmpty) return _override;
-    final host = defaultTargetPlatform == TargetPlatform.android
-        ? '10.0.2.2'
-        : 'localhost';
-    return 'http://$host:5148';
-  }
+  /// Không có `/` cuối và không chứa `/api/v1`.
+  static const String apiBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: stagingBaseUrl,
+  );
 
   /// Mọi route của backend có tiền tố `/api/v1`.
   static String get apiRoot => '$apiBaseUrl/api/v1';

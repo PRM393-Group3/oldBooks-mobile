@@ -18,6 +18,7 @@ class Validators {
   /// Giới hạn của bcrypt tính theo byte UTF-8: ký tự có dấu chiếm nhiều byte.
   static const passwordMax = 72;
   static const fullNameMax = 100;
+  static const emailMax = 254;
 
   FormFieldValidator<String> get phoneRequired => (value) {
     final v = value?.trim() ?? '';
@@ -36,7 +37,9 @@ class Validators {
   FormFieldValidator<String> get email => (value) {
     final v = value?.trim() ?? '';
     if (v.isEmpty) return l.validationEmailRequired;
-    if (!_email.hasMatch(v)) return l.validationEmailInvalid;
+    if (v.length > emailMax || !_email.hasMatch(v)) {
+      return l.validationEmailInvalid;
+    }
     return null;
   };
 

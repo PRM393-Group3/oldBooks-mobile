@@ -2794,7 +2794,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get otpExpired => 'Mã đã hết hạn. Hãy gửi lại mã.';
 
   @override
-  String get forgotOtpNotice => 'Nếu số đã đăng ký, bạn sẽ nhận được mã.';
+  String get forgotOtpNotice =>
+      'Nếu số đã đăng ký, mã sẽ được gửi tới email của tài khoản.';
 
   @override
   String get pwRuleLength => 'Ít nhất 8 ký tự';
@@ -2824,14 +2825,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get phoneChangeLink => 'Đổi số điện thoại';
 
   @override
-  String get phoneReadOnlyHelper => 'Đổi số cần mã OTP gửi tới số mới.';
+  String get phoneReadOnlyHelper =>
+      'Đổi số cần mã OTP gửi tới email của tài khoản.';
 
   @override
   String get changePhoneTitle => 'Đổi số điện thoại';
 
   @override
   String get changePhoneIntro =>
-      'Mã OTP sẽ được gửi tới SỐ MỚI. Lần đăng nhập sau dùng số mới.';
+      'Mã OTP sẽ được gửi tới email của tài khoản. Lần đăng nhập sau dùng số mới.';
 
   @override
   String get newPhoneLabel => 'Số điện thoại mới';
@@ -3897,4 +3899,25 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get cpLockedNote =>
       'Tiền của đơn đang bị khóa cho tới khi khiếu nại được giải quyết.';
+
+  @override
+  String otpSentToEmail(String email) {
+    return 'Mã đã gửi tới $email. Kiểm tra cả thư mục Spam/Quảng cáo.';
+  }
+
+  @override
+  String get emailOtpHelper => 'Mã OTP sẽ được gửi tới email này.';
+
+  @override
+  String get emailNotSet => 'Chưa có email';
+
+  @override
+  String get errEmailTakenLogin =>
+      'Email này đã thuộc tài khoản khác. Nếu là bạn, hãy đăng nhập.';
+
+  @override
+  String get errEmailRequired => 'Tài khoản chưa có email, hãy liên hệ hỗ trợ.';
+
+  @override
+  String get errOtpSendFailed => 'Không gửi được mã, hãy thử lại sau.';
 }

@@ -51,6 +51,7 @@ extension ApiErrorL10n on ApiError {
       ApiErrorCode.userNotFound => l.errorUserNotFound,
       ApiErrorCode.internal => l.errorInternal,
       ApiErrorCode.emailTaken => l.errorEmailTaken,
+      ApiErrorCode.emailRequired => l.errEmailRequired,
       ApiErrorCode.accountDisabled => l.errorAccountDisabled,
       ApiErrorCode.listingImageInvalid => l.errorListingImageInvalid,
       ApiErrorCode.listingNotFound => l.errorListingNotFound,

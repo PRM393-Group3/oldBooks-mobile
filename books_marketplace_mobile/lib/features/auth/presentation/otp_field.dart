@@ -8,19 +8,24 @@ import '../../../core/theme/theme_context.dart';
 import '../../../core/validation/validators.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_text_field.dart';
+import '../domain/otp_sent.dart';
 import 'countdown_text.dart';
 
 /// Ô nhập OTP kèm nút "Gửi mã" có đếm ngược chờ gửi lại và đếm ngược hạn OTP.
 ///
-/// [onSend] gọi API gửi OTP và trả về `expiresInSeconds` của server (không viết
-/// cứng vì Super Admin chỉnh được); [validatePhone] cho biết số điện thoại đã hợp lệ
-/// chưa (không hợp lệ thì không gửi).
+/// OTP gửi qua email nên không tự điền từ SMS. [onSend] gọi API gửi OTP và trả
+/// về [OtpSent] của server (hạn mã không viết cứng vì Super Admin chỉnh được);
+/// [canSend] cho biết thông tin cần để gửi đã hợp lệ chưa (không hợp lệ thì
+/// không gửi). [target] trả về giá trị mã gắn với (ví dụ SĐT + email): đổi
+/// sau khi đã gửi thì mã cũ không dùng được nữa, ô OTP về trạng thái chưa gửi.
+/// Màn hình cha phải build lại khi giá trị đó đổi.
 class OtpField extends StatefulWidget {
   const OtpField({
     super.key,
     required this.controller,
     required this.onSend,
-    required this.validatePhone,
+    required this.canSend,
+    this.target,
     this.enabled = true,
     this.errorText,
     this.handleError,
@@ -28,8 +33,9 @@ class OtpField extends StatefulWidget {
   });
 
   final TextEditingController controller;
-  final Future<int> Function() onSend;
-  final bool Function() validatePhone;
+  final Future<OtpSent> Function() onSend;
+  final bool Function() canSend;
+  final ValueGetter<String>? target;
   final bool enabled;
   final String? errorText;
 
@@ -48,6 +54,28 @@ class _OtpFieldState extends State<OtpField> {
   int _expiresLeft = 0;
   bool _sent = false;
   bool _sending = false;
+  String? _sentTo;
+  String? _sentTarget;
+
+  @override
+  void didUpdateWidget(OtpField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (_sent && widget.target?.call() != _sentTarget) _reset();
+  }
+
+  /// Sửa thông tin sau khi gửi: phải gửi lại, nên cho bấm gửi ngay.
+  void _reset() {
+    _timer?.cancel();
+    _sent = false;
+    _left = 0;
+    _expiresLeft = 0;
+    _sentTo = null;
+    _sentTarget = null;
+    // Đang trong build của cha: xóa ô OTP sau khung hình để không gọi
+    // setState của ô nhập giữa lúc build.
+    final controller = widget.controller;
+    WidgetsBinding.instance.addPostFrameCallback((_) => controller.clear());
+  }
 
   @override
   void dispose() {
@@ -68,15 +96,18 @@ class _OtpFieldState extends State<OtpField> {
   }
 
   Future<void> _send() async {
-    if (_sending || _left > 0 || !widget.validatePhone()) return;
+    if (_sending || _left > 0 || !widget.canSend()) return;
+    final target = widget.target?.call();
     setState(() => _sending = true);
     try {
-      final expiresIn = await widget.onSend();
+      final sent = await widget.onSend();
       if (!mounted) return;
       setState(() {
         _sent = true;
+        _sentTo = sent.sentTo;
+        _sentTarget = target;
         _left = widget.cooldown.inSeconds;
-        _expiresLeft = expiresIn;
+        _expiresLeft = sent.expiresInSeconds;
       });
       _startTimer();
     } on ApiError catch (e) {
@@ -87,7 +118,17 @@ class _OtpFieldState extends State<OtpField> {
         setState(() => _left = wait.inSeconds);
         _startTimer();
       }
-      if (widget.handleError?.call(e) != true) AppSnackbar.apiError(context, e);
+      if (widget.handleError?.call(e) == true) return;
+      // Dịch vụ email lỗi: báo không gửi được, nút gửi vẫn bấm lại được.
+      if (e.code == ApiErrorCode.upstreamError) {
+        AppSnackbar.show(
+          context,
+          context.l10n.errOtpSendFailed,
+          type: AppSnackbarType.error,
+        );
+      } else {
+        AppSnackbar.apiError(context, e);
+      }
     } finally {
       if (mounted) setState(() => _sending = false);
     }
@@ -97,7 +138,8 @@ class _OtpFieldState extends State<OtpField> {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final v = Validators(l);
-    return Row(
+    final sentTo = _sentTo;
+    final field = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
@@ -106,7 +148,6 @@ class _OtpFieldState extends State<OtpField> {
             controller: widget.controller,
             keyboardType: TextInputType.number,
             textInputAction: TextInputAction.next,
-            autofillHints: const [AutofillHints.oneTimeCode],
             validator: v.otp,
             errorText: widget.errorText,
             helperText: _expiresLeft > 0
@@ -114,7 +155,7 @@ class _OtpFieldState extends State<OtpField> {
                 : (_sent ? l.otpExpired : null),
             enabled: widget.enabled,
             maxLength: 6,
-            prefixIcon: Icons.sms_outlined,
+            prefixIcon: Icons.mark_email_unread_outlined,
           ),
         ),
         const SizedBox(width: AppSpacing.xs),
@@ -124,6 +165,33 @@ class _OtpFieldState extends State<OtpField> {
             onPressed: widget.enabled && !_sending && _left == 0 ? _send : null,
             child: Text(_left > 0 ? l.otpResendIn(_left) : l.otpSend),
           ),
+        ),
+      ],
+    );
+    if (!_sent || sentTo == null) return field;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        field,
+        const SizedBox(height: AppSpacing.xxs),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.mail_outline,
+              size: 16,
+              color: context.colors.textSecondary,
+            ),
+            const SizedBox(width: AppSpacing.xxs),
+            Expanded(
+              child: Text(
+                l.otpSentToEmail(sentTo),
+                style: context.text.bodySmall?.copyWith(
+                  color: context.colors.textSecondary,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );

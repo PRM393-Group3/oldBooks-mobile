@@ -9,6 +9,7 @@ import '../../../core/network/network_providers.dart';
 import '../../../core/storage/storage_providers.dart';
 import '../../devices/application/device_service.dart';
 import '../data/auth_repository.dart';
+import '../domain/otp_sent.dart';
 
 enum AuthStatus { authenticated, unauthenticated }
 
@@ -52,9 +53,11 @@ class AuthController extends Notifier<AuthStatus> {
     }
   }
 
-  /// Trả về số giây OTP còn hiệu lực.
-  Future<int> sendOtp(String phone, OtpPurpose purpose) =>
-      ref.read(authRepositoryProvider).sendOtp(phone: phone, purpose: purpose);
+  /// [email] bắt buộc khi đăng ký; quên mật khẩu gửi tới email của tài khoản.
+  Future<OtpSent> sendOtp(String phone, OtpPurpose purpose, {String? email}) =>
+      ref
+          .read(authRepositoryProvider)
+          .sendOtp(phone: phone, purpose: purpose, email: email);
 
   Future<void> login({required String phone, required String password}) async {
     await ref
@@ -70,6 +73,7 @@ class AuthController extends Notifier<AuthStatus> {
     required String password,
     required String fullName,
     required bool acceptTerms,
+    required String email,
   }) async {
     await ref
         .read(authRepositoryProvider)
@@ -79,6 +83,7 @@ class AuthController extends Notifier<AuthStatus> {
           password: password,
           fullName: fullName,
           acceptTerms: acceptTerms,
+          email: email,
         );
     state = AuthStatus.authenticated;
     unawaited(ref.read(deviceServiceProvider).register());

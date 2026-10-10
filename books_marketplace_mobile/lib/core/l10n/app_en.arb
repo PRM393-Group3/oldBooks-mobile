@@ -1847,7 +1847,7 @@
     }
   },
   "otpExpired": "The code has expired. Request a new one.",
-  "forgotOtpNotice": "If the number is registered, you will receive a code.",
+  "forgotOtpNotice": "If the number is registered, the code will be sent to the account's email.",
   "pwRuleLength": "At least 8 characters",
   "pwRuleLetter": "Has a letter",
   "pwRuleDigit": "Has a digit",
@@ -1863,9 +1863,9 @@
   "errDeletionBlocked": "Your account cannot be deleted yet because some things are unfinished.",
   "errRoleNotAllowed": "Administrator accounts cannot delete themselves.",
   "phoneChangeLink": "Change phone number",
-  "phoneReadOnlyHelper": "Changing it needs an OTP sent to the new number.",
+  "phoneReadOnlyHelper": "Changing it needs an OTP sent to your account's email.",
   "changePhoneTitle": "Change phone number",
-  "changePhoneIntro": "An OTP will be sent to the NEW number. Use the new number the next time you sign in.",
+  "changePhoneIntro": "The OTP will be sent to your account's email. Use the new number the next time you sign in.",
   "newPhoneLabel": "New phone number",
   "changePhoneSubmit": "Confirm change",
   "changePhoneDone": "Phone number changed.",
@@ -2223,5 +2223,18 @@
   "cpMessageClosed": "The complaint is closed; messaging is off.",
   "cpMessageNeed": "Enter a message or attach a file.",
   "cpOpenVideo": "Open video",
-  "cpLockedNote": "The order's money is locked until the complaint is resolved."
+  "cpLockedNote": "The order's money is locked until the complaint is resolved.",
+  "otpSentToEmail": "Code sent to {email}. Check your Spam/Promotions folder too.",
+  "@otpSentToEmail": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "emailOtpHelper": "The OTP will be sent to this email.",
+  "emailNotSet": "No email",
+  "errEmailTakenLogin": "This email belongs to another account. If it's yours, sign in.",
+  "errEmailRequired": "This account has no email. Please contact support.",
+  "errOtpSendFailed": "Couldn't send the code. Try again later."
 }

@@ -3,6 +3,7 @@ import '../../../core/network/api_error.dart';
 import '../../../core/storage/token_store.dart';
 import '../../../core/util/server_clock.dart';
 import '../domain/auth_session.dart';
+import '../domain/otp_sent.dart';
 
 enum OtpPurpose {
   register('REGISTER'),
@@ -13,21 +14,25 @@ enum OtpPurpose {
   final String apiValue;
 }
 
-/// Xác thực theo BE-SRS v1.1: số điện thoại + mật khẩu, xác thực bằng OTP SMS.
+/// Xác thực theo BE-SRS v1.1: số điện thoại + mật khẩu. OTP gửi qua email:
+/// đăng ký tới [email] người dùng nhập, quên mật khẩu tới email của tài khoản.
 class AuthRepository {
   AuthRepository(this._api, this._tokens);
 
   final ApiClient _api;
   final TokenStore _tokens;
 
-  /// Gửi OTP tới [phone] (E.164 hoặc số nội địa). Trả về số giây OTP còn hiệu
-  /// lực, lấy từ server vì Super Admin chỉnh được.
-  Future<int> sendOtp({required String phone, required OtpPurpose purpose}) =>
-      _api.post(
-        '/auth/otp',
-        body: {'phone': phone, 'purpose': purpose.apiValue},
-        parse: (data) => (data as Map)['expiresInSeconds'] as int,
-      );
+  /// Gửi OTP cho [phone] (E.164 hoặc số nội địa). [email] bắt buộc với
+  /// [OtpPurpose.register], server bỏ qua với [OtpPurpose.resetPassword].
+  Future<OtpSent> sendOtp({
+    required String phone,
+    required OtpPurpose purpose,
+    String? email,
+  }) => _api.post(
+    '/auth/otp',
+    body: {'phone': phone, 'purpose': purpose.apiValue, 'email': ?email},
+    parse: OtpSent.fromJson,
+  );
 
   Future<AuthSession> login({
     required String phone,
@@ -48,6 +53,7 @@ class AuthRepository {
     required String password,
     required String fullName,
     required bool acceptTerms,
+    required String email,
   }) async {
     final session = await _api.post(
       '/auth/register',
@@ -57,6 +63,7 @@ class AuthRepository {
         'password': password,
         'fullName': fullName,
         'acceptTerms': acceptTerms,
+        'email': email,
       },
       parse: AuthSession.fromJson,
     );

@@ -87,6 +87,13 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             AuthHeader(title: l.forgotTitle, subtitle: l.forgotSubtitle),
+            Text(
+              l.forgotOtpNotice,
+              style: context.text.bodySmall?.copyWith(
+                color: context.colors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
             AppTextField(
               label: l.phoneLabel,
               controller: _phone,
@@ -96,27 +103,33 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               errorText: _serverErrors['phone'],
               enabled: !_loading,
               prefixIcon: Icons.phone_outlined,
+              onChanged: (_) => setState(() {}),
             ),
             const SizedBox(height: AppSpacing.md),
             OtpField(
               controller: _otp,
               enabled: !_loading,
               errorText: _serverErrors['otp'],
-              validatePhone: () => v.phoneRequired(_phone.text) == null,
+              target: () => _phone.text.trim(),
+              canSend: () => v.phoneRequired(_phone.text) == null,
               onSend: () async {
-                final expiresIn = await ref
+                final sent = await ref
                     .read(authControllerProvider.notifier)
                     .sendOtp(_phone.text.trim(), OtpPurpose.resetPassword);
-                // Không khẳng định đã gửi: số chưa đăng ký vẫn nhận 200 nhưng
-                // server không gửi SMS để không lộ số nào có tài khoản.
+                // OTP gửi tới email của tài khoản. Không có `sentTo` thì không
+                // khẳng định đã gửi: số chưa đăng ký vẫn nhận 200 để không lộ
+                // số nào có tài khoản.
                 if (context.mounted) {
+                  final sentTo = sent.sentTo;
                   AppSnackbar.show(
                     context,
-                    l.forgotOtpNotice,
+                    sentTo != null
+                        ? l.otpSentToEmail(sentTo)
+                        : l.forgotOtpNotice,
                     type: AppSnackbarType.info,
                   );
                 }
-                return expiresIn;
+                return sent;
               },
             ),
             const SizedBox(height: AppSpacing.md),

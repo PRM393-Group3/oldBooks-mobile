@@ -8,6 +8,7 @@ class Profile {
     required this.role,
     required this.createdAt,
     this.phoneNumber,
+    this.email,
     this.avatarUrl,
     this.status = 'ACTIVE',
   });
@@ -18,6 +19,7 @@ class Profile {
       id: j['id'] as String,
       fullName: (j['fullName'] as String?) ?? '',
       phoneNumber: (j['phone'] ?? j['phoneNumber']) as String?,
+      email: j['email'] as String?,
       avatarUrl: j['avatarUrl'] as String?,
       role: UserRole.fromApi(j['role'] as String?),
       status: (j['status'] as String?) ?? 'ACTIVE',
@@ -30,6 +32,9 @@ class Profile {
 
   /// E.164, ví dụ `+84912345678`.
   final String? phoneNumber;
+
+  /// Đã chuẩn hóa chữ thường. `null` với tài khoản tạo trước khi bật OTP email.
+  final String? email;
   final String? avatarUrl;
   final UserRole role;
   final String status;
@@ -44,6 +49,7 @@ class Profile {
     id: id,
     fullName: fullName,
     phoneNumber: phoneNumber,
+    email: email,
     avatarUrl: null,
     role: role,
     status: status,

@@ -14,6 +14,7 @@ import '../../features/profile/data/address_repository.dart';
 import '../../features/profile/domain/address.dart';
 import '../../features/auth/data/auth_repository.dart';
 import '../../features/auth/domain/auth_session.dart';
+import '../../features/auth/domain/otp_sent.dart';
 import '../../features/auth/domain/user_role.dart';
 import '../../features/categories/application/category_providers.dart';
 import '../../features/categories/data/category_repository.dart';
@@ -71,6 +72,7 @@ Profile _previewProfile() => Profile(
   id: 'u-preview',
   fullName: 'Nguyễn Minh Anh',
   phoneNumber: '+84912345482',
+  email: 'minhanh@example.com',
   role: UserRole.user,
   createdAt: DateTime.utc(2026, 9, 1),
 );
@@ -105,10 +107,12 @@ class PreviewAuthRepository extends AuthRepository {
   }
 
   @override
-  Future<int> sendOtp({
+  Future<OtpSent> sendOtp({
     required String phone,
     required OtpPurpose purpose,
-  }) async => 300;
+    String? email,
+  }) async =>
+      const OtpSent(expiresInSeconds: 300, sentTo: 'm*******h@example.com');
 
   @override
   Future<AuthSession> login({
@@ -123,6 +127,7 @@ class PreviewAuthRepository extends AuthRepository {
     required String password,
     required String fullName,
     required bool acceptTerms,
+    required String email,
   }) => _ok();
 
   @override
@@ -228,6 +233,7 @@ class PreviewProfileRepository extends ProfileRepository {
         id: _profile.id,
         fullName: fullName.trim(),
         phoneNumber: _profile.phoneNumber,
+        email: _profile.email,
         avatarUrl: _profile.avatarUrl,
         role: _profile.role,
         createdAt: _profile.createdAt,
@@ -244,7 +250,8 @@ class PreviewProfileRepository extends ProfileRepository {
   Future<void> deleteAvatar() async {}
 
   @override
-  Future<int> sendPhoneOtp({required String phone}) async => 300;
+  Future<OtpSent> sendPhoneOtp({required String phone}) async =>
+      const OtpSent(expiresInSeconds: 300, sentTo: 'm*******h@example.com');
 
   @override
   Future<Profile> changePhone({
@@ -254,6 +261,7 @@ class PreviewProfileRepository extends ProfileRepository {
     id: _profile.id,
     fullName: _profile.fullName,
     phoneNumber: phone,
+    email: _profile.email,
     avatarUrl: _profile.avatarUrl,
     role: _profile.role,
     createdAt: _profile.createdAt,

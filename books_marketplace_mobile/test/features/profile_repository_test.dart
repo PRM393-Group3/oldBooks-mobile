@@ -15,6 +15,7 @@ const _profileJson = {
   'id': 'u1',
   'phone': '+84912345678',
   'fullName': 'Nguyen Van A',
+  'email': 'nguyenvana@gmail.com',
   'avatarUrl': 'http://blob/public/u1/x.png',
   'role': 'USER',
   'status': 'ACTIVE',
@@ -162,6 +163,7 @@ void main() {
     final p = await repo.getProfile();
     expect(seen.single.path, '/me');
     expect(p.phoneNumber, '+84912345678');
+    expect(p.email, 'nguyenvana@gmail.com');
     expect(p.role.apiValue, 'USER');
     expect(p.isStaff, isFalse);
   });
@@ -181,26 +183,34 @@ void main() {
     },
   );
 
-  test('đổi số: gửi OTP tới số mới rồi xác nhận, token không đổi', () async {
-    setup((o) {
-      if (o.path == '/me/phone/otp') {
-        return jsonResponse(200, okBody({'expiresInSeconds': 300}));
-      }
-      return jsonResponse(
-        200,
-        okBody({..._profileJson, 'phone': '+84987654321'}),
-      );
-    });
+  test(
+    'đổi số: gửi OTP tới email tài khoản rồi xác nhận, token không đổi',
+    () async {
+      setup((o) {
+        if (o.path == '/me/phone/otp') {
+          return jsonResponse(
+            200,
+            okBody({'expiresInSeconds': 300, 'sentTo': 'n*******a@gmail.com'}),
+          );
+        }
+        return jsonResponse(
+          200,
+          okBody({..._profileJson, 'phone': '+84987654321'}),
+        );
+      });
 
-    expect(await repo.sendPhoneOtp(phone: '0987654321'), 300);
-    final p = await repo.changePhone(phone: '0987654321', otp: '123456');
+      final otp = await repo.sendPhoneOtp(phone: '0987654321');
+      expect(otp.expiresInSeconds, 300);
+      expect(otp.sentTo, 'n*******a@gmail.com');
+      final p = await repo.changePhone(phone: '0987654321', otp: '123456');
 
-    expect(p.phoneNumber, '+84987654321');
-    expect(seen[0].data, {'phone': '0987654321'});
-    expect(seen[1].path, '/me/phone');
-    expect(seen[1].data, {'phone': '0987654321', 'otp': '123456'});
-    expect(tokens.accessToken, 'acc');
-  });
+      expect(p.phoneNumber, '+84987654321');
+      expect(seen[0].data, {'phone': '0987654321'});
+      expect(seen[1].path, '/me/phone');
+      expect(seen[1].data, {'phone': '0987654321', 'otp': '123456'});
+      expect(tokens.accessToken, 'acc');
+    },
+  );
 
   test('changePassword gọi POST /me/password', () async {
     setup(
