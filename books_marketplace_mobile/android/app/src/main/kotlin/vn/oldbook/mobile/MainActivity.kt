@@ -1,4 +1,4 @@
-package com.example.books_marketplace_mobile
+package vn.oldbook.mobile
 
 import io.flutter.embedding.android.FlutterActivity
 
