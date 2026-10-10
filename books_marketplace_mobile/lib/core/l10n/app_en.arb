@@ -1,0 +1,2240 @@
+{
+  "@@locale": "en",
+  "appName": "Book Marketplace",
+  "retry": "Try again",
+  "cancel": "Cancel",
+  "save": "Save",
+  "confirm": "Confirm",
+  "close": "Close",
+  "loading": "Loading",
+  "navHome": "Home",
+  "navProfile": "Profile",
+  "homePlaceholderTitle": "Coming soon",
+  "homePlaceholderMessage": "The home screen will arrive in a later version.",
+  "loginTitle": "Log in",
+  "loginSubtitle": "Welcome back to the used-book marketplace.",
+  "loginButton": "Log in",
+  "noAccountPrompt": "Don't have an account?",
+  "registerLink": "Sign up",
+  "registerTitle": "Create account",
+  "registerSubtitle": "It takes a minute to start buying and selling used books.",
+  "registerButton": "Sign up",
+  "haveAccountPrompt": "Already have an account?",
+  "loginLink": "Log in",
+  "roleLabel": "I want to",
+  "roleOptionBuyer": "Buy books",
+  "roleOptionSeller": "Sell books",
+  "logout": "Log out",
+  "logoutConfirmTitle": "Log out?",
+  "logoutConfirmMessage": "You will need to log in again to keep using the app.",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "fullNameLabel": "Full name",
+  "phoneLabel": "Phone number",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "profileTitle": "Profile",
+  "editProfile": "Edit profile",
+  "changeAvatar": "Change profile photo",
+  "changePassword": "Change password",
+  "language": "Language",
+  "languageSystem": "System default",
+  "languageVi": "Tiếng Việt",
+  "languageEn": "English",
+  "phoneNotSet": "Not set",
+  "memberSince": "Member since",
+  "roleBuyer": "Buyer",
+  "roleSeller": "Seller",
+  "roleInspector": "Inspector",
+  "roleAdmin": "Administrator",
+  "roleUnknown": "User",
+  "emailReadOnlyHelper": "Your email is used to log in, so it can't be changed.",
+  "profileUpdated": "Profile updated",
+  "avatarPreviewLabel": "Profile photo",
+  "avatarHint": "JPG, PNG or WebP, up to 5 MB.",
+  "chooseFromGallery": "Choose from library",
+  "takePhoto": "Take a photo",
+  "saveAvatar": "Save photo",
+  "removeAvatar": "Remove profile photo",
+  "removeAvatarConfirmTitle": "Remove profile photo?",
+  "removeAvatarConfirmMessage": "Your photo will be replaced by your initials.",
+  "avatarUpdated": "Profile photo updated",
+  "avatarRemoved": "Profile photo removed",
+  "currentPasswordLabel": "Current password",
+  "newPasswordLabel": "New password",
+  "confirmPasswordLabel": "Confirm new password",
+  "passwordLengthHelper": "8 to 72 characters.",
+  "passwordRuleHelper": "8 to 72 characters and different from your current password.",
+  "passwordChangedOtherDevices": "Other devices will be logged out.",
+  "passwordChanged": "Password changed",
+  "changePasswordLocked": "Try again in {seconds} s",
+  "@changePasswordLocked": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "validationFullNameRequired": "Please enter your full name.",
+  "validationFullNameTooLong": "Full name can be at most 100 characters.",
+  "validationPhoneInvalid": "Enter a Vietnamese mobile number (10 digits starting 03, 05, 07, 08 or 09, or +84).",
+  "validationEmailRequired": "Please enter your email.",
+  "validationEmailInvalid": "That email doesn't look right.",
+  "validationPasswordRequired": "Please enter your password.",
+  "validationPasswordLength": "Password must be 8 to 72 characters.",
+  "validationPasswordSame": "New password must differ from the current one.",
+  "validationPasswordMismatch": "The passwords don't match.",
+  "errorNetwork": "No connection. Check your network and try again.",
+  "errorValidation": "Some details aren't valid. Please review the fields above.",
+  "errorFieldInvalid": "This value isn't valid.",
+  "errorAvatarInvalid": "The photo is invalid or larger than 5 MB. Please choose another one.",
+  "errorAvatarUnsupported": "Only JPG, PNG or WebP photos are supported. Please choose another one.",
+  "errorAvatarTooLarge": "The photo is larger than 5 MB. Please choose a smaller one.",
+  "errorPickImage": "Couldn't open the photo. Check app permissions and try again.",
+  "errorUploadFailed": "Photo upload failed. Please try again.",
+  "errorCurrentPasswordIncorrect": "The current password is incorrect.",
+  "errorPasswordUnchanged": "New password must differ from the old one.",
+  "errorInvalidCredentials": "Phone number or password is incorrect.",
+  "errorSessionExpired": "Your session has expired. Please log in again.",
+  "errorUserNotFound": "This account no longer exists.",
+  "errorInternal": "Something went wrong on our side. Please try again in a few minutes.",
+  "errorUnknown": "Something went wrong. Please try again.",
+  "supportCode": "Support code: {traceId}",
+  "@supportCode": {
+    "placeholders": {
+      "traceId": {
+        "type": "String"
+      }
+    }
+  },
+  "navExplore": "Explore",
+  "navAuctions": "Auctions",
+  "navSell": "Sell",
+  "navWallet": "Wallet",
+  "navMe": "Me",
+  "comingSoonTitle": "Coming soon",
+  "comingSoonBody": "This feature is under construction.",
+  "navMyListings": "My listings",
+  "navNotifications": "Notifications",
+  "navQueue": "Queue",
+  "navClaimed": "Claimed",
+  "sellAction": "Sell",
+  "adminWebNote": "Administration is available on the web portal.",
+  "loadMoreFailed": "Couldn't load more. Tap to retry.",
+  "optionalHint": "Optional",
+  "edit": "Edit",
+  "done": "Done",
+  "comingSoon": "Buying and bidding will arrive in a later version.",
+  "emptyBrowseTitle": "No books yet",
+  "emptyBrowseMessage": "Inspected books will appear here.",
+  "emptyMineTitle": "You have no listings yet",
+  "emptyMineMessage": "Tap Sell to create your first listing.",
+  "emptyQueueTitle": "The queue is empty",
+  "emptyQueueMessage": "No listings are waiting for inspection.",
+  "emptyClaimedTitle": "You aren't holding any listings",
+  "emptyClaimedMessage": "Claim a listing from the queue to start inspecting.",
+  "emptyNotificationsTitle": "No notifications yet",
+  "emptyNotificationsMessage": "Inspection results will appear here.",
+  "statusDraft": "Draft",
+  "statusPendingInspection": "Pending inspection",
+  "statusInInspection": "In inspection",
+  "statusRejected": "Rejected",
+  "statusOnSale": "On sale",
+  "statusAuctioning": "Auctioning",
+  "statusClosed": "Closed",
+  "statusUnknown": "Unknown",
+  "filterAll": "All",
+  "categoryAll": "All categories",
+  "conditionLikeNew": "Like new",
+  "conditionLikeNewDesc": "Almost unused, no sign of reading.",
+  "conditionVeryGood": "Very good",
+  "conditionVeryGoodDesc": "Very light wear, no tears or notes.",
+  "conditionGood": "Good",
+  "conditionGoodDesc": "Light wear, content intact.",
+  "conditionFair": "Fair",
+  "conditionFairDesc": "Stains, folded corners or notes, but fully readable.",
+  "conditionPoor": "Heavily used",
+  "conditionPoorDesc": "Clearly worn but content is complete.",
+  "coverPaperback": "Paperback",
+  "coverHardcover": "Hardcover",
+  "imageFrontCover": "Front cover",
+  "imageBackCover": "Back cover",
+  "imageSpine": "Spine",
+  "imageInnerPage": "Inner page",
+  "imageExtra": "Extra photo",
+  "saleFixedPrice": "Fixed price",
+  "saleAuction": "Auction",
+  "startOnApproval": "As soon as approved",
+  "startScheduled": "Scheduled",
+  "reasonBlurryPhotos": "Photos missing or blurry",
+  "reasonDescriptionMismatch": "Description doesn't match the book",
+  "reasonSuspectedPirated": "Suspected pirated copy",
+  "reasonProhibitedPublication": "Prohibited publication",
+  "reasonDamageBeyondThreshold": "Damage beyond the accepted level",
+  "reasonWrongCatalogInfo": "Incorrect catalog information",
+  "reasonDuplicateListing": "Duplicate listing",
+  "notificationsTitle": "Notifications",
+  "markAllRead": "Mark all read",
+  "unreadOnly": "Unread",
+  "notifListingApproved": "Your listing was approved",
+  "notifListingRejected": "Your listing was rejected",
+  "notifListingClosed": "Your listing was closed",
+  "wizardTitleNew": "Sell a book",
+  "wizardTitleEdit": "Edit listing",
+  "wizardStepBook": "Book info",
+  "wizardStepPhotos": "Photos",
+  "wizardStepSale": "Sale method",
+  "wizardStepReview": "Review",
+  "wizardStepOf": "Step {current} of {total}",
+  "@wizardStepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "next": "Next",
+  "back": "Back",
+  "submitForInspection": "Submit for inspection",
+  "draftSavedHint": "Your draft is saved after each step.",
+  "fieldTitle": "Title",
+  "fieldAuthor": "Author",
+  "fieldCategory": "Category",
+  "fieldPublisher": "Publisher",
+  "fieldIsbn": "ISBN",
+  "fieldYear": "Publication year",
+  "fieldLanguage": "Language (2-letter code)",
+  "fieldLanguageHelper": "For example: vi, en",
+  "fieldPages": "Pages",
+  "fieldCover": "Cover type",
+  "fieldCondition": "Book condition",
+  "fieldConditionHelper": "Pick the closest level. An inspector will confirm it.",
+  "fieldDescription": "Description",
+  "fieldDescriptionHelper": "At least {min} characters ({count}/{min})",
+  "@fieldDescriptionHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fieldDefects": "Defect notes",
+  "chooseCategory": "Choose a category",
+  "categoryPickerTitle": "Choose a category",
+  "validationFieldRequired": "Please enter {field}.",
+  "@validationFieldRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "validationChooseCategory": "Please choose a category.",
+  "validationChooseCondition": "Please choose the book condition.",
+  "validationIsbn": "Invalid ISBN (ISBN-10 or ISBN-13).",
+  "validationYearRange": "Year must be between {min} and {max}.",
+  "@validationYearRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationPagesRange": "Pages must be between 1 and 10000.",
+  "validationLanguage": "Enter a 2-letter code, for example vi.",
+  "validationDescriptionMin": "Description needs at least {min} characters.",
+  "@validationDescriptionMin": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationTooLong": "At most {max} characters.",
+  "@validationTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "photosHint": "You need {min} to {max} photos covering 4 angles: front cover, back cover, spine and an inner page.",
+  "@photosHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "photosRequired": "Required",
+  "photosExtraTitle": "Extra photos ({count}/{max})",
+  "@photosExtraTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "addPhoto": "Add photo",
+  "photoUploading": "Uploading photo",
+  "photoFailed": "Photo upload failed",
+  "photoRetry": "Retry",
+  "removePhoto": "Remove photo",
+  "photosWaiting": "Photos are still uploading, please wait.",
+  "photosMissing": "Some required photos are missing.",
+  "photoSlotLabel": "{angle}, required photo",
+  "@photoSlotLabel": {
+    "placeholders": {
+      "angle": {
+        "type": "String"
+      }
+    }
+  },
+  "photoSlotEmpty": "No photo yet",
+  "saleMethodLabel": "Sale method",
+  "fieldPrice": "Price (₫)",
+  "fieldQuantity": "Quantity",
+  "fieldStartingPrice": "Starting price (₫)",
+  "fieldMinIncrement": "Minimum bid increment (₫)",
+  "minIncrementHelper": "At least {amount}",
+  "@minIncrementHelper": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "fieldDuration": "Auction length",
+  "durationDays": "{days} days",
+  "@durationDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "fieldStartMode": "Start",
+  "fieldScheduledAt": "Start time",
+  "pickDateTime": "Pick date and time",
+  "validationPriceRange": "Price must be between {min} and {max}.",
+  "@validationPriceRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "validationQuantityRange": "Quantity must be between {min} and {max}.",
+  "@validationQuantityRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationMinIncrement": "Minimum increment is {amount}.",
+  "@validationMinIncrement": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "validationScheduleRequired": "Please pick a start time.",
+  "validationScheduleFuture": "The start time must be in the future.",
+  "changeMethodTitle": "Change sale method?",
+  "changeMethodMessage": "The other method's settings are removed when you save.",
+  "reviewBookSection": "Book info",
+  "reviewPhotosSection": "Photos",
+  "reviewSaleSection": "Sale method",
+  "submitSuccessTitle": "Submitted for inspection",
+  "submitSuccessMessage": "Expected within {hours} hours. You will be notified with the result.",
+  "@submitSuccessMessage": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "incompleteTitle": "Listing is incomplete",
+  "incompleteMessage": "Please complete the items below, then submit again.",
+  "goToStep": "Go to this step",
+  "missingImages": "Photos (all 4 angles)",
+  "missingSaleMethod": "Sale method",
+  "missingPrice": "Price",
+  "missingStartingPrice": "Starting price",
+  "missingCategory": "Category",
+  "myListingsTitle": "My listings",
+  "continueDraft": "Continue editing",
+  "deleteListing": "Delete listing",
+  "deleteListingTitle": "Delete this listing?",
+  "deleteListingMessage": "The listing will be closed and can't be restored.",
+  "listingDeleted": "Listing deleted",
+  "editAndResubmit": "Edit and resubmit",
+  "closeListing": "Close listing",
+  "resubmitsLeft": "{count} resubmissions left",
+  "@resubmitsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noResubmitsLeft": "No resubmissions left",
+  "estimatedProcessing": "Expected within {hours} hours",
+  "@estimatedProcessing": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rejectedTitle": "Listing rejected",
+  "closedTitle": "Listing closed",
+  "reasonsLabel": "Reasons",
+  "inspectorNote": "Inspector's note",
+  "inspectionResult": "Inspection result",
+  "inspectionApproved": "Approved",
+  "inspectionRejected": "Rejected",
+  "inspectedOn": "Inspected on {date}",
+  "@inspectedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "sellerSection": "Seller",
+  "bookDetails": "Book details",
+  "detailAuthor": "Author",
+  "detailPublisher": "Publisher",
+  "detailYear": "Year",
+  "detailLanguage": "Language",
+  "detailPages": "Pages",
+  "detailCover": "Cover",
+  "detailCondition": "Condition",
+  "detailCategory": "Category",
+  "detailQuantity": "Quantity",
+  "auctionSection": "Auction details",
+  "startingPriceLabel": "Starting price",
+  "minIncrementLabel": "Minimum increment",
+  "auctionStarts": "Starts",
+  "auctionEnds": "Ends",
+  "auctionDuration": "Length",
+  "startingFrom": "From {price}",
+  "@startingFrom": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "listingPhotoLabel": "{angle} of {title}",
+  "@listingPhotoLabel": {
+    "placeholders": {
+      "angle": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "description": "Description",
+  "defectNotesTitle": "Defects",
+  "submissionOf": "Submission {n} of {max}",
+  "@submissionOf": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "queueTitle": "Inspection queue",
+  "claimedTitle": "Claimed listings",
+  "overdueTag": "Overdue",
+  "waitingHours": "Waiting {hours} h",
+  "@waitingHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "filterButton": "Filters",
+  "filterTitle": "Filter queue",
+  "priceFrom": "Price from (₫)",
+  "priceTo": "Price to (₫)",
+  "applyFilter": "Apply",
+  "clearFilter": "Clear filters",
+  "reviewTitle": "Inspect",
+  "claimExpiresIn": "{time} left to decide",
+  "@claimExpiresIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "claimExpired": "Your claim expired. Claim the listing again to continue.",
+  "reclaim": "Claim again",
+  "release": "Release",
+  "releaseTitle": "Release this listing?",
+  "releaseMessage": "It goes back to the queue for other inspectors.",
+  "approve": "Approve",
+  "reject": "Reject",
+  "approveTitle": "Approve listing",
+  "approveNoteLabel": "Note (optional)",
+  "rejectTitle": "Reject listing",
+  "rejectReasonsLabel": "Reasons (choose at least 1)",
+  "rejectNoteLabel": "Note for the seller",
+  "rejectNoteHelper": "At least {min} characters",
+  "@rejectNoteHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationRejectReasons": "Choose at least one reason.",
+  "validationRejectNote": "The note needs at least {min} characters.",
+  "@validationRejectNote": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "listingApproved": "Listing approved",
+  "listingRejected": "Listing rejected",
+  "listingReleased": "Listing released",
+  "sellerDeclared": "Declared by the seller",
+  "viewPhotos": "View original photos",
+  "inspectionHistory": "Inspection history",
+  "errorEmailTaken": "This email is already in use.",
+  "errorAccountDisabled": "Your account is disabled. Please contact an administrator.",
+  "errorListingIncomplete": "The listing is incomplete. Please complete it and submit again.",
+  "errorListingImageInvalid": "One of the photos is invalid. Please choose it again.",
+  "errorListingNotFound": "This listing can't be found.",
+  "errorListingInvalidState": "The listing status changed. Reloading it.",
+  "errorSubmissionLimit": "This listing has no resubmissions left.",
+  "errorConcurrentUpdate": "The listing was just updated elsewhere. Reloading.",
+  "errorAlreadyClaimed": "Another inspector is holding this listing.",
+  "errorClaimRequired": "You no longer hold this listing. Claim it again.",
+  "errorCategoryNotFound": "This category no longer exists.",
+  "errorNotificationNotFound": "This notification can't be found.",
+  "errorPhotoTooLarge": "The photo is larger than {mb} MB. Please choose a smaller one.",
+  "@errorPhotoTooLarge": {
+    "placeholders": {
+      "mb": {
+        "type": "int"
+      }
+    }
+  },
+  "errorPhotosUploadPending": "Some photos are still uploading or failed. Retry them first.",
+  "brandName": "Oldbook",
+  "cartButton": "Cart · {count}",
+  "@cartButton": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cartTitle": "Cart",
+  "searchHint": "Title, author, ISBN",
+  "resultsNew": "New listings",
+  "resultsSearch": "Search results",
+  "resultsCount": "{count} books",
+  "@resultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noSearchResults": "No matching books. Try removing accents or changing the category.",
+  "addToCart": "Add to cart",
+  "inCart": "In cart",
+  "buyNow": "Buy now",
+  "addedToCart": "Added to cart",
+  "alreadyInCart": "Already in your cart",
+  "shipPlus": "+ shipping {price}",
+  "@shipPlus": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "escrowNote": "Your payment is held in the Oldbook wallet until you confirm delivery. You have 3 days to file a complaint after delivery.",
+  "auctionListingNote": "This book is sold by auction.",
+  "toastOrderCancelled": "Order cancelled, {amount} refunded",
+  "@toastOrderCancelled": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastOrderCompleted": "Order completed · thank you!",
+  "toastComplaintOpened": "Complaint opened · funds are locked",
+  "toastOfferAccepted": "{amount} refunded to you",
+  "@toastOfferAccepted": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastNoBooks": "No available books in your cart",
+  "toastSellerShipped": "The seller entered a tracking code",
+  "toastDeliveryFailed": "Delivery attempt {n} failed",
+  "@toastDeliveryFailed": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "toastMovedToStorage": "Fifth delivery failed · the book moved to storage",
+  "toastTopupOk": "Top-up successful +{amount}",
+  "@toastTopupOk": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastWithdrawRequested": "Withdrawal of {amount} requested",
+  "@toastWithdrawRequested": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastRated": "Rated {n} stars",
+  "@toastRated": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "toastRegistered": "Registered · {amount} held",
+  "@toastRegistered": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastUnregistered": "Registration cancelled, {amount} refunded",
+  "@toastUnregistered": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastLeading": "You are leading with {amount}",
+  "@toastLeading": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastBuyNowStarted": "Bought now · the 30-minute countdown has started",
+  "toastOutbid": "You were outbid on \"{title}\" · {amount}",
+  "@toastOutbid": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "toastAuctionWon": "You won \"{title}\" at {amount}",
+  "@toastAuctionWon": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "txnTopupVietQr": "Top-up via VietQR",
+  "txnHoldOrder": "Hold for order {arg}",
+  "@txnHoldOrder": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnHoldOrders": "Hold for {n} orders",
+  "@txnHoldOrders": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "txnHoldAuctionRegistration": "Registration for \"{arg}\"",
+  "@txnHoldAuctionRegistration": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnHoldBid": "Bid on \"{arg}\"",
+  "@txnHoldBid": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnHoldBuyNow": "Buy now \"{arg}\"",
+  "@txnHoldBuyNow": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnHoldRedelivery": "Redelivery fee {arg}",
+  "@txnHoldRedelivery": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnReleaseOrderCancelled": "Refund for cancelled order {arg}",
+  "@txnReleaseOrderCancelled": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnReleaseAuctionUnregistered": "Registration cancelled \"{arg}\"",
+  "@txnReleaseAuctionUnregistered": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnReleaseAuctionDeposit": "Deposit returned for \"{arg}\"",
+  "@txnReleaseAuctionDeposit": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnPayoutSale": "Sale proceeds for \"{arg}\"",
+  "@txnPayoutSale": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnCaptureOrder": "Payment for order {arg} (from held funds)",
+  "@txnCaptureOrder": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnRefundAgreement": "Agreed refund for {arg}",
+  "@txnRefundAgreement": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnRefundVerdict": "Refund by verdict for {arg}",
+  "@txnRefundVerdict": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "txnWithdrawRequest": "Withdrawal to Vietcombank · pending approval",
+  "txnTypeTopup": "Top-up",
+  "txnTypeHold": "Hold",
+  "txnTypeRelease": "Release",
+  "txnTypePayout": "Payout",
+  "txnTypeRefund": "Refund",
+  "txnTypeCapture": "Capture",
+  "txnTypeWithdraw": "Withdrawal",
+  "orderStatusPaidAwaitingShipment": "Awaiting shipment",
+  "orderStatusShipped": "In transit",
+  "orderStatusDelivered": "Delivered",
+  "orderStatusCompleted": "Completed",
+  "orderStatusCancelled": "Cancelled",
+  "orderStatusRefunded": "Refunded",
+  "orderStatusPartiallyRefunded": "Partially refunded",
+  "orderStatusDisputed": "Disputed",
+  "orderStatusReadyToShip": "Ready to ship",
+  "orderStatusInDelivery": "Out for delivery",
+  "orderStatusInStorage": "In storage",
+  "orderStatusPickedUp": "Picked up",
+  "orderKindSale": "Fixed price",
+  "orderKindAuction": "Auction",
+  "ordersTitle": "My orders",
+  "orderTitle": "Order {arg}",
+  "@orderTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "ordersEmpty": "You have no orders yet.",
+  "noteShipBy": "Seller ships by {date}",
+  "@noteShipBy": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noteComplaintLeft": "{time} left to file a complaint",
+  "@noteComplaintLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "noteDeliveryAttempt": "Attempt {n}/5 · {carrier}",
+  "@noteDeliveryAttempt": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "carrier": {
+        "type": "String"
+      }
+    }
+  },
+  "noteStorage": "In storage {days} days · 5,000 ₫/day deducted from deposit",
+  "@noteStorage": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "notePacking": "The warehouse is packing",
+  "noteFundsLocked": "Funds are locked",
+  "headPaidAwaitingShipment": "Waiting for the seller to ship",
+  "headShipped": "Your book is on its way",
+  "headDelivered": "Did you receive the book?",
+  "headCompleted": "Order completed",
+  "headDisputed": "Complaint in progress",
+  "headCancelled": "Order cancelled",
+  "headRefunded": "Refunded",
+  "headPartiallyRefunded": "Partially refunded",
+  "headReadyToShip": "The warehouse is preparing your order",
+  "headInDelivery": "Your auction book is being delivered",
+  "headInStorage": "Your book is in storage",
+  "headPickedUp": "Picked up at the warehouse",
+  "detailNotePaid": "The seller must ship by {date}. Past that the order is cancelled and fully refunded. You can cancel for free until the seller ships.",
+  "@detailNotePaid": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "detailNoteShipped": "Tap \"I received the book\" when it arrives to start the 3-day inspection window.",
+  "detailNoteDelivered": "You have {time} to file a complaint. After that the order completes and the seller is paid.",
+  "@detailNoteDelivered": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "detailNoteCompleted": "The seller has been paid after fees.",
+  "detailNoteDisputed": "Funds stay locked until an agreement or a verdict.",
+  "detailNoteCancelled": "All held funds were released to your wallet.",
+  "detailNoteRefunded": "The refund is in your wallet.",
+  "detailNotePartiallyRefunded": "The refunded part is in your wallet, the rest went to the seller.",
+  "detailNoteReadyToShip": "Shipping fee {amount} is held. The warehouse photographs the package before delivery.",
+  "@detailNoteReadyToShip": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "detailNoteInDelivery": "Attempt {n}/5. After 5 failed attempts the book goes to storage (5,000 ₫/day, up to 30 days).",
+  "@detailNoteInDelivery": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "detailNoteInStorage": "Delivery failed 5 times. Storage fees are deducted from your deposit. Pick it up or ask for redelivery.",
+  "stepSaleOrdered": "Ordered · funds held",
+  "stepSaleShipped": "Seller shipped",
+  "stepDelivered": "Delivered",
+  "stepSaleCompleted": "Completed · seller paid",
+  "stepAuctionWon": "Won the auction · warehouse notified",
+  "stepAuctionInDelivery": "In delivery",
+  "stepAuctionReceived": "Received",
+  "stepAuctionCompleted": "Completed · deposit returned",
+  "stepCancelled": "Cancelled · refunded to your wallet",
+  "stepNext": "Next",
+  "moneyBookPrice": "Book price",
+  "moneyWinPrice": "Winning bid",
+  "moneyShipping": "Shipping",
+  "moneyTotal": "Total",
+  "moneyNoteAuction": "The winning bid is held in escrow. Your deposit is returned when you receive the book.",
+  "moneyNoteSettled": "Settled.",
+  "moneyNoteHeld": "Held in your wallet until the order completes.",
+  "shipNoTracking": "No tracking code yet",
+  "shipFromWarehouse": "Shipped from the Oldbook warehouse",
+  "reviewSeller": "Rate the seller",
+  "reviewNoteNew": "Rate within 14 days of completion.",
+  "reviewNoteEdit": "You can edit your rating once within 7 days.",
+  "starLabel": "{n} stars",
+  "@starLabel": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "actSimSellerShip": "Simulate: seller ships",
+  "actCancelOrder": "Cancel order · refund {amount}",
+  "@actCancelOrder": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "actReceived": "I received the book",
+  "actSimWarehouseShip": "Simulate: warehouse ships",
+  "actSimDeliverOk": "Simulate: delivery succeeded",
+  "actSimDeliverFail": "Simulate: delivery failed",
+  "actPickUp": "Pick up at the warehouse",
+  "actRedeliver": "Redeliver · extra {amount}",
+  "@actRedeliver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "actCompleteOrder": "Satisfied, complete the order",
+  "actComplaint": "File a complaint",
+  "actSimSellerOffer": "Simulate: seller offers a 50% refund",
+  "actAcceptOffer": "Accept {amount} refund",
+  "@actAcceptOffer": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "actEscalate": "Decline, escalate to Oldbook",
+  "actSimAdmin": "Simulate: admin rules a full refund",
+  "actNone": "Nothing to do right now.",
+  "complaintCardTitle": "Complaint · {status}",
+  "@complaintCardTitle": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "complaintStatusOpen": "Waiting for the seller",
+  "complaintStatusSellerResponded": "Seller made an offer",
+  "complaintStatusEscalated": "Oldbook is reviewing",
+  "complaintStatusAgreed": "Agreed",
+  "complaintStatusResolved": "Resolved",
+  "complaintTextOpenSale": "The seller has 2 days to respond, otherwise Oldbook steps in.",
+  "complaintTextOpenAuction": "Auction complaints go straight to Oldbook.",
+  "complaintTextSellerResponded": "The seller offered a {amount} refund. Accept it or escalate to Oldbook.",
+  "@complaintTextSellerResponded": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "complaintTextEscalatedSale": "An admin reviews both sides' evidence and rules.",
+  "complaintTextEscalatedAuction": "An admin reviews both sides' evidence and the warehouse in/out photos, then rules.",
+  "complaintTextAgreed": "{amount} refunded by agreement.",
+  "@complaintTextAgreed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "complaintTextResolved": "Fully refunded by verdict.",
+  "complaintSheetTitle": "File a complaint",
+  "complaintSheetNote": "Funds stay locked until the complaint is resolved.",
+  "complaintReasonNotAsDescribed": "Not as described",
+  "complaintReasonDamaged": "Damaged",
+  "complaintReasonWrongItem": "Wrong book",
+  "complaintReasonOther": "Other",
+  "complaintDescribeHint": "Describe the problem",
+  "complaintAddEvidence": "+ Add evidence photos ({n}/10)",
+  "@complaintAddEvidence": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "complaintSubmit": "Submit complaint",
+  "complaintNeedReasonAndPhoto": "Choose a reason and add at least 1 photo",
+  "cartEmpty": "Your cart is empty.",
+  "cartSeller": "Seller: {name}",
+  "@cartSeller": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cartUnavailable": "No longer available · sold",
+  "cartRemove": "Remove",
+  "cartShipTo": "Deliver to",
+  "cartSubtotal": "Books ({n})",
+  "@cartSubtotal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "cartShippingFee": "Shipping ({amount} per order)",
+  "@cartShippingFee": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "cartBalance": "Available wallet balance",
+  "cartNote": "Each book becomes a separate order with its seller. You can cancel for free until the seller ships.",
+  "cartPayTotal": "Total",
+  "cartPlaceOrder": "Place order · pay with wallet",
+  "cartInsufficient": "Not enough balance · top up",
+  "cartNoAvailable": "No available books",
+  "insufficientTitle": "Not enough balance",
+  "insufficientBody": "You need {need} more to continue. Available balance: {avail}.",
+  "@insufficientBody": {
+    "placeholders": {
+      "need": {
+        "type": "String"
+      },
+      "avail": {
+        "type": "String"
+      }
+    }
+  },
+  "insufficientTopup": "Top up {amount}",
+  "@insufficientTopup": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "sheetClose": "Close",
+  "sheetLater": "Not now",
+  "orderPlacedTitle": "Order placed",
+  "orderPlacedBody": "{amount} was held from your wallet for {n} orders. Sellers have 2 working days to ship, otherwise the order is cancelled and refunded.",
+  "@orderPlacedBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "orderPlacedView": "View orders",
+  "orderPlacedKeepShopping": "Keep shopping",
+  "walletTitle": "Oldbook wallet",
+  "walletAvailable": "Available balance",
+  "walletHeld": "Held",
+  "walletTotal": "Total",
+  "walletTopup": "Top up",
+  "walletWithdraw": "Withdraw",
+  "walletNote": "Held funds cover unfinished orders, auction deposits and your leading bids. Every payment goes through the wallet, never directly between users.",
+  "walletHistory": "Transactions",
+  "walletNoTransactions": "No transactions yet.",
+  "walletPayoutAccount": "Payout account",
+  "topupSheetTitle": "Top up your wallet",
+  "topupSheetNote": "You will be taken to the payment gateway. The request expires if unpaid within the time limit.",
+  "topupCreateCode": "Create payment code · {amount}",
+  "@topupCreateCode": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "topupScanTitle": "Scan to pay",
+  "topupQrLabel": "VietQR code",
+  "topupTransferContent": "Reference: OLDBOOK NAP 7K2Q9 · expires in 30:00",
+  "topupConfirmNote": "Your balance is credited only when the payment gateway confirms.",
+  "topupSimConfirm": "Simulate: payment gateway confirms",
+  "withdrawSheetTitle": "Withdraw",
+  "withdrawAmountHint": "Amount (minimum 50,000 ₫)",
+  "withdrawHintAvailable": "Available: {amount}",
+  "@withdrawHintAvailable": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawHintMin": "Minimum 50,000 ₫",
+  "withdrawHintOver": "Exceeds available balance ({amount})",
+  "@withdrawHintOver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawHintHold": "{amount} will be held pending approval",
+  "@withdrawHintHold": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawNote": "The amount is held now and transferred after Oldbook approves. The account holder name must match your profile name.",
+  "withdrawSubmit": "Request withdrawal",
+  "remainingDaysHours": "{days}d {hours}h",
+  "@remainingDaysHours": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "agoNow": "just now",
+  "agoMinutes": "{n} min ago",
+  "@agoMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "agoHours": "{n} h ago",
+  "@agoHours": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "agoDays": "{n} d ago",
+  "@agoDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "meMyOrders": "My orders",
+  "meMyOrdersSub": "Track deliveries, confirm receipt, file complaints",
+  "aucTitle": "Auctions",
+  "aucSubtitle": "Books are checked at the Oldbook warehouse before listing",
+  "aucTabLive": "Live",
+  "aucTabRegister": "Register",
+  "aucTabUpcoming": "Upcoming",
+  "aucTabEnded": "Ended",
+  "aucEmpty": "No auctions in this state yet.",
+  "aucStatusLive": "Live",
+  "aucStatusBuyNow": "Buy-now countdown",
+  "aucStatusRegistration": "Registration open",
+  "aucStatusConfirmed": "Starting soon",
+  "aucStatusEnded": "Ended",
+  "aucStatusNoBid": "No bids",
+  "aucRegisteredTag": "Registered",
+  "aucParticipants": "{n} participants",
+  "@aucParticipants": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "aucParticipantsMin": "{n}/{min} minimum players",
+  "@aucParticipantsMin": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "aucPriceStarting": "Starting price",
+  "aucPriceCurrent": "Current price",
+  "aucPriceWinning": "Winning price",
+  "aucTimerEndsIn": "Ends in",
+  "aucTimerCountdown": "Countdown",
+  "aucTimerRegCloses": "Registration closes in",
+  "aucTimerStartsIn": "Starts in",
+  "aucTimerEndedAt": "Ended at",
+  "aucSubLive": "A bid in the last 2 minutes extends the auction by 2 minutes.",
+  "aucSubCountdown": "Someone bought now. Each higher bid resets 30 minutes · ends by {time} at the latest.",
+  "@aucSubCountdown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aucSubRegistration": "Starts {time} · needs at least {min} players.",
+  "@aucSubRegistration": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "aucSubConfirmed": "Enough players · starts {time}.",
+  "@aucSubConfirmed": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "aucLeaderMe": "You are leading",
+  "aucLeaderOther": "Leading: {name}",
+  "@aucLeaderOther": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "aucNoBids": "No bids yet",
+  "aucExtendedBanner": "The auction was just extended by 2 minutes (anti-sniping)",
+  "aucStatStart": "Starting price",
+  "aucStatStep": "Bid step",
+  "aucStatBuyNow": "Buy-now price",
+  "aucStatFeeDeposit": "Entry fee · Deposit",
+  "aucNone": "None",
+  "aucBidHistory": "Bid history",
+  "aucBidCount": "{n} bids",
+  "@aucBidCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "aucBidYou": "You",
+  "aucNoBidsYet": "No bids yet. The first bid must be at least the starting price.",
+  "aucSellerLine": "Seller: {seller} · {part}",
+  "@aucSellerLine": {
+    "placeholders": {
+      "seller": {
+        "type": "String"
+      },
+      "part": {
+        "type": "String"
+      }
+    }
+  },
+  "aucHoldLabel": "Entry fee + deposit held",
+  "aucRegister": "Register",
+  "aucRegisteredTitle": "You are registered",
+  "aucRegisteredSub": "Holding {amount} · you can cancel before it closes",
+  "@aucRegisteredSub": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucUnregister": "Cancel registration",
+  "aucFilledTitle": "The auction is full",
+  "aucFilledSub": "The entry fee was charged and the {amount} deposit stays held. We will remind you 1 hour before it starts.",
+  "@aucFilledSub": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucWatchTitle": "You are watching this auction",
+  "aucWatchSub": "Registration closed 24 hours before the start. Only registered players can bid.",
+  "aucLeadingTitle": "You are leading",
+  "aucLeadingSub": "{amount} is held in your wallet · released if you are outbid",
+  "@aucLeadingSub": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucMinimum": "Minimum {amount}",
+  "@aucMinimum": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucBid": "Place bid",
+  "aucBuyNowButton": "Buy now {amount}",
+  "@aucBuyNowButton": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucEndedWon": "You won this auction",
+  "aucEndedLost": "You did not win this auction",
+  "aucEndedGeneric": "The auction has ended",
+  "aucEndedWonText": "A delivery order was created in My orders. Your {amount} deposit is returned when you receive the book.",
+  "@aucEndedWonText": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucEndedLostText": "Your {amount} deposit was released to your wallet.",
+  "@aucEndedLostText": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucEndedOtherText": "Winning price {amount}.",
+  "@aucEndedOtherText": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "aucNotFound": "Auction not found.",
+  "aucErrEnded": "The auction has ended, bidding is closed.",
+  "aucErrTooLow": "Your bid is below the current minimum.",
+  "aucErrState": "Not possible in the current state.",
+  "regSheetTitle": "Register for the auction",
+  "regFee": "Entry fee (2% of start, 10,000–100,000 ₫)",
+  "regDeposit": "Deposit (10% of start)",
+  "regHold": "Held from wallet",
+  "regBalance": "Available balance",
+  "regNote1": "• The entry fee is charged only when 3 players join; otherwise it is fully refunded.",
+  "regNote2": "• The deposit is returned when the auction ends (losers) or when you receive the book (winner). A 5,000 ₫/day storage fee is deducted if you do not collect it.",
+  "regNote3": "• Cancel for free before {time}.",
+  "@regNote3": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "regConfirm": "Confirm · hold {amount}",
+  "@regConfirm": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "regInsufficient": "Not enough balance · top up",
+  "buyNowTitle": "Buy now for {amount}?",
+  "@buyNowTitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "buyNowNote1": "• {amount} is held from your wallet and you become the leader.",
+  "@buyNowNote1": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "buyNowNote2": "• The auction switches to a 30-minute countdown. Each higher bid resets it to 30 minutes.",
+  "buyNowNote3": "• The auction ends within 24 hours of buying now.",
+  "buyNowConfirm": "Confirm buy now",
+  "myAuctionsTitle": "My auctions",
+  "myAuctionsEmpty": "You have not registered for any auction.",
+  "myAucWon": "Won · {amount}",
+  "@myAucWon": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "myAucLeading": "Leading · {amount}",
+  "@myAucLeading": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "myAucLost": "Did not win",
+  "myAucOutbid": "Outbid",
+  "myAucRegistered": "Registered",
+  "homeLiveAuctions": "Live auctions",
+  "homeSeeAll": "See all",
+  "simNotifBuyNowTitle": "Auction \"{arg}\" is in the buy-now countdown",
+  "@simNotifBuyNowTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifBuyNowBody": "Someone bought now. Bid higher to reset the 30-minute countdown.",
+  "simNotifDeliveredTitle": "Order {arg} delivered",
+  "@simNotifDeliveredTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifDeliveredBody": "You have 3 days to check the book and file a complaint if needed.",
+  "simNotifFilledTitle": "Auction \"{arg}\" is full",
+  "@simNotifFilledTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifFilledBody": "It starts in a few hours. Your {amount} deposit stays held.",
+  "@simNotifFilledBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifTopupTitle": "Top-up successful",
+  "simNotifTopupBody": "+{amount} was added to your wallet.",
+  "@simNotifTopupBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifRegisteredTitle": "Registration successful",
+  "simNotifRegisteredBody": "\"{arg}\" · {amount} held",
+  "@simNotifRegisteredBody": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifOutbidTitle": "You were outbid",
+  "simNotifOutbidBody": "\"{arg}\" · new price {amount}. Your held funds were released.",
+  "@simNotifOutbidBody": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifWonTitle": "You won \"{arg}\"",
+  "@simNotifWonTitle": {
+    "placeholders": {
+      "arg": {
+        "type": "String"
+      }
+    }
+  },
+  "simNotifWonBody": "Winning price {amount}. A delivery order was created in My orders.",
+  "@simNotifWonBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "meStatOpenOrders": "Open orders",
+  "meStatListings": "Active listings",
+  "meStatAuctions": "Auctions joined",
+  "meMyListings": "My listings",
+  "meMyListingsSub": "Review status, needs changes, sold",
+  "meMyAuctionsSub": "Registered, leading, won",
+  "meNotificationsSub": "{n} unread",
+  "@meNotificationsSub": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "meNotificationsAllRead": "All read",
+  "meDefaultAddress": "Default address",
+  "sellTitle": "Sell",
+  "sellModeFixed": "Fixed price",
+  "sellModeAuction": "Auction",
+  "sellAuctionNote": "Auction books are sent to the Oldbook warehouse within 5 days to be checked and re-photographed. After approval, registration stays open for at least 3 days and needs at least 3 players.",
+  "sellPhotos": "Book photos",
+  "sellPhotoCount": "{n}/10 · at least 4",
+  "@sellPhotoCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sellPhotoAdd": "+ add",
+  "sellFieldTitle": "Title",
+  "sellFieldTitleHint": "e.g. The Little Prince",
+  "sellFieldAuthor": "Author",
+  "sellFieldAuthorHint": "e.g. Antoine de Saint-Exupéry",
+  "sellFieldCategory": "Category",
+  "sellFieldCondition": "Condition",
+  "sellFieldPrice": "Price (₫)",
+  "sellFieldPriceHint": "Minimum 1,000",
+  "sellFieldStart": "Starting price",
+  "sellFieldStartHint": "≥ 10,000",
+  "sellFieldStep": "Bid step",
+  "sellFieldBuyNow": "Buy-now price",
+  "sellFieldBuyNowOptional": "(optional, ≥ 1.5 × starting price)",
+  "sellBuyNowHintEmpty": "Leave empty to skip",
+  "sellBuyNowHint": "≥ {amount}",
+  "@sellBuyNowHint": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "sellStepHintEmpty": "1–10% of start",
+  "sellDuration": "Auction length",
+  "sellDuration1h": "1 hour",
+  "sellDuration1d": "1 day",
+  "sellDuration3d": "3 days",
+  "sellDuration7d": "7 days",
+  "sellEarliestStart": "Earliest start: {time} (5 days to the warehouse + 3 days registration + 24 hours)",
+  "@sellEarliestStart": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "sellFieldDesc": "Description & defects (if any)",
+  "sellFieldDescHint": "Publication year, publisher, notes, stained pages…",
+  "sellPreviewTitle": "Estimate",
+  "sellPreviewPrice": "Price",
+  "sellPreviewFee": "Oldbook fee (5%)",
+  "sellPreviewReceive": "You receive",
+  "sellPreviewShip": "Shipping (paid by buyer)",
+  "sellPreviewPlayerFee": "Player pays entry fee",
+  "sellPreviewPlayerDeposit": "Player deposit",
+  "sellPreviewCommission": "Oldbook commission (10% of winning bid)",
+  "sellPreviewReceiveAtStart": "You receive if sold at the starting price",
+  "sellSubmitSale": "Submit for review",
+  "sellSubmitAuction": "Create auction & get warehouse code",
+  "sellErrPhotos": "At least 4 photos needed (you have {n})",
+  "@sellErrPhotos": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sellErrTitle": "Enter the title",
+  "sellErrAuthor": "Enter the author",
+  "sellErrPrice": "Minimum price is 1,000 ₫",
+  "sellErrStart": "Minimum starting price is 10,000 ₫",
+  "sellErrStep": "Bid step must be between {lo} and {hi}",
+  "@sellErrStep": {
+    "placeholders": {
+      "lo": {
+        "type": "String"
+      },
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "sellErrBuyNow": "Minimum buy-now price is {amount}",
+  "@sellErrBuyNow": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "sellErrDesc": "Enter a description",
+  "sellDoneSaleTitle": "Submitted for review",
+  "sellDoneSaleBody": "Oldbook will review \"{title}\" within 24 hours and notify you.",
+  "@sellDoneSaleBody": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "sellDoneAuctionTitle": "Auction created",
+  "sellDoneAuctionBody": "Send the book to the warehouse within 5 days with the code below. The auction is cancelled if late. You pay shipping to the warehouse.",
+  "sellDoneCode": "Warehouse code",
+  "sellDoneWarehouse": "Oldbook warehouse Hanoi · 25 Le Van Luong, Thanh Xuan, Hanoi",
+  "sellDoneView": "View my listings",
+  "myListingsEmpty": "You have no listings yet.",
+  "myListingStatusPublished": "On sale",
+  "myListingStatusPending": "Pending review",
+  "myListingStatusNeedsChanges": "Needs changes",
+  "myListingStatusAwaitingInbound": "Awaiting warehouse",
+  "myListingStatusSold": "Sold",
+  "myListingKindFixed": "Fixed price · {price}",
+  "@myListingKindFixed": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "myListingKindAuction": "Auction · start {price}",
+  "@myListingKindAuction": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "myListingNotePublished": "Posted {days} days ago · {views} views",
+  "@myListingNotePublished": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "views": {
+        "type": "String"
+      }
+    }
+  },
+  "myListingNotePending": "Submitted {hours} h ago · reviewed within 24 hours",
+  "@myListingNotePending": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "myListingNotePendingNow": "Just submitted · reviewed within 24 hours",
+  "myListingNoteNeedsChanges": "Admin: {reason}",
+  "@myListingNoteNeedsChanges": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "myListingNoteInbound": "Send the book to the warehouse by {date} · code {code}",
+  "@myListingNoteInbound": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "myListingNoteSold": "Received {amount} (after 5% fee, incl. shipping)",
+  "@myListingNoteSold": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "sellCatLiterature": "Literature",
+  "sellCatHistory": "History",
+  "sellCatChildren": "Children",
+  "sellCatScience": "Science",
+  "sellCatForeign": "Foreign language",
+  "validationPhoneRequired": "Please enter your phone number.",
+  "validationOtpInvalid": "The OTP has 6 digits.",
+  "validationPasswordLetterDigit": "The password needs both letters and digits.",
+  "passwordHelperLetterDigit": "At least 8 characters with letters and digits",
+  "otpLabel": "OTP code",
+  "otpSend": "Send code",
+  "otpResendIn": "Resend in {n}s",
+  "@otpResendIn": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "otpSentTo": "OTP sent to {phone}",
+  "@otpSentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "forgotLink": "Forgot password?",
+  "forgotTitle": "Forgot password",
+  "forgotSubtitle": "Enter your phone number to get a code and set a new password.",
+  "forgotSubmit": "Reset password",
+  "forgotDone": "Password reset. Please sign in.",
+  "backToLogin": "Back to sign in",
+  "errOtpInvalid": "The OTP is incorrect.",
+  "errOtpExpired": "The OTP has expired. Request a new one.",
+  "errRateLimited": "Too many attempts. Try again in a few minutes.",
+  "errAccountLocked": "Your account is locked.",
+  "errInsufficientBalance": "Your wallet balance is not enough.",
+  "errBidTooLow": "Your bid is below the current minimum.",
+  "errAlreadyLeading": "You are already leading this auction.",
+  "errAuctionEnded": "The auction has ended.",
+  "errAuctionNotLive": "The auction is not live yet.",
+  "errBuyNowUnavailable": "Buy now is no longer available.",
+  "errNotRegistered": "You have not registered for this auction.",
+  "errRegistrationClosed": "Registration is closed.",
+  "errSellerCannotBid": "Sellers cannot take part in their own auction.",
+  "errListingNotAvailable": "This book is no longer available.",
+  "errComplaintWindowClosed": "The complaint window has closed.",
+  "errWithdrawBelowMin": "The withdrawal is below the minimum.",
+  "errForbidden": "You are not allowed to do this.",
+  "errNotFound": "Not found.",
+  "errInvalidState": "Not possible in the current state.",
+  "errUpstream": "A partner service is having trouble. Try again later.",
+  "addrTitle": "Address book",
+  "addrSub": "Delivery addresses, set a default",
+  "addrEmpty": "You have no addresses yet.",
+  "addrAdd": "Add address",
+  "addrEdit": "Edit address",
+  "addrDefault": "Default",
+  "addrSetDefault": "Set as default",
+  "addrDelete": "Delete",
+  "addrDeleteTitle": "Delete this address?",
+  "addrRecipient": "Recipient",
+  "addrPhone": "Phone",
+  "addrProvince": "Province/City",
+  "addrDistrict": "District",
+  "addrWard": "Ward",
+  "addrDetail": "Street address",
+  "addrSave": "Save address",
+  "addrRequired": "Please fill this in.",
+  "addrNone": "No delivery address yet",
+  "bankTitle": "Bank accounts",
+  "bankSub": "Receive withdrawals (up to 3)",
+  "bankEmpty": "You have not saved a bank account.",
+  "bankAdd": "Add account",
+  "bankName": "Bank",
+  "bankNumber": "Account number",
+  "bankHolder": "Account holder",
+  "bankHolderNote": "The holder name must match your profile name.",
+  "bankLimit": "You can save up to 3 accounts.",
+  "bankSave": "Save account",
+  "bankDeleteTitle": "Remove this account?",
+  "bankMasked": "•••• {last}",
+  "@bankMasked": {
+    "placeholders": {
+      "last": {
+        "type": "String"
+      }
+    }
+  },
+  "roleUser": "User",
+  "roleSuperAdmin": "Super administrator",
+  "errPhoneTaken": "This phone number already has an account. Sign in or reset your password.",
+  "errAccountLockedTemp": "Sign-in is temporarily locked. Try again in {n} minutes, or reset your password to unlock now.",
+  "@errAccountLockedTemp": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "errRateLimitedIn": "Too many attempts. Try again in {n} seconds.",
+  "@errRateLimitedIn": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "termsLabel": "I accept the Terms of Use and consent to personal data processing (Decree 13/2023).",
+  "validationTermsRequired": "You need to accept the terms to continue.",
+  "otpExpiresIn": "Code expires in {time}",
+  "@otpExpiresIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "otpExpired": "The code has expired. Request a new one.",
+  "forgotOtpNotice": "If the number is registered, the code will be sent to the account's email.",
+  "pwRuleLength": "At least 8 characters",
+  "pwRuleLetter": "Has a letter",
+  "pwRuleDigit": "Has a digit",
+  "loginLockedRetry": "Try again in {time}",
+  "@loginLockedRetry": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "errAddressNotFound": "This address was not found.",
+  "errDeletionBlocked": "Your account cannot be deleted yet because some things are unfinished.",
+  "errRoleNotAllowed": "Administrator accounts cannot delete themselves.",
+  "phoneChangeLink": "Change phone number",
+  "phoneReadOnlyHelper": "Changing it needs an OTP sent to your account's email.",
+  "changePhoneTitle": "Change phone number",
+  "changePhoneIntro": "The OTP will be sent to your account's email. Use the new number the next time you sign in.",
+  "newPhoneLabel": "New phone number",
+  "changePhoneSubmit": "Confirm change",
+  "changePhoneDone": "Phone number changed.",
+  "validationPhoneSame": "The new number is the same as the current one.",
+  "errPhoneTakenOther": "This number belongs to another account.",
+  "logoutAll": "Sign out of all devices",
+  "logoutAllConfirmTitle": "Sign out of all devices?",
+  "logoutAllConfirmMessage": "You will need to sign in again on every device.",
+  "deleteAccountEntry": "Delete account",
+  "deleteAccountTitle": "Delete account",
+  "deleteAccountWarning": "This cannot be undone. Your name and phone number are anonymised, addresses and devices are removed and every session is revoked. Transaction records are kept for reconciliation.",
+  "deleteAccountPasswordLabel": "Enter your password to confirm",
+  "deleteAccountSubmit": "Delete account permanently",
+  "deleteAccountConfirmTitle": "Are you sure you want to delete?",
+  "deleteAccountConfirmMessage": "Your account will be permanently deleted and cannot be restored.",
+  "deleteAccountBlockedHeader": "Take care of the following, then try again:",
+  "notifSettingsTitle": "Notification settings",
+  "notifSettingsMarketing": "Promotions",
+  "notifSettingsMarketingSub": "Push about offers and marketing.",
+  "notifSettingsAuction": "Watched auctions",
+  "notifSettingsAuctionSub": "Push about auctions you follow.",
+  "notifSettingsAlways": "Transaction, security and money notifications (account lock, password change, wallet, orders, complaints) are always sent. In-app notifications are always saved, even with push off.",
+  "walletTopupMin": "Minimum top-up {amount}",
+  "@walletTopupMin": {"placeholders": {"amount": {"type": "String"}}},
+  "walletLoadError": "Could not load the wallet.",
+  "walletHistoryFilterAll": "All",
+  "walletLedgerTopup": "Top-up",
+  "walletLedgerWithdraw": "Withdrawal",
+  "walletLedgerHold": "Funds held",
+  "walletLedgerRelease": "Held funds released",
+  "walletLedgerPayout": "Sale proceeds",
+  "walletLedgerRefund": "Refund",
+  "walletLedgerCompensation": "Compensation from Oldbook",
+  "walletLedgerCapture": "Funds charged",
+  "walletLedgerFee": "Fee",
+  "walletLedgerOther": "Transaction",
+  "walletBalanceAfter": "Balance after: {amount}",
+  "@walletBalanceAfter": {"placeholders": {"amount": {"type": "String"}}},
+  "walletHeldNote": "On hold: {amount}",
+  "@walletHeldNote": {"placeholders": {"amount": {"type": "String"}}},
+  "walletMoreHistory": "Top-up / withdrawal history",
+  "walletLoadMore": "Load more",
+  "topupAmountLabel": "Top-up amount",
+  "topupAmountRange": "From {min} to {max}",
+  "@topupAmountRange": {"placeholders": {"min": {"type": "String"}, "max": {"type": "String"}}},
+  "topupAmountOut": "Amount must be between {min} and {max}.",
+  "@topupAmountOut": {"placeholders": {"min": {"type": "String"}, "max": {"type": "String"}}},
+  "topupCreate": "Create top-up request",
+  "topupOpenPay": "Open payment page",
+  "topupWaiting": "Waiting for payment…",
+  "topupWaitingNote": "Finish paying, then come back to the app. Pay before: {time}.",
+  "@topupWaitingNote": {"placeholders": {"time": {"type": "String"}}},
+  "topupCheckAgain": "Check again",
+  "topupPaid": "Top-up successful {amount}",
+  "@topupPaid": {"placeholders": {"amount": {"type": "String"}}},
+  "topupExpired": "The request expired. If you still pay, the money is credited; tap check again.",
+  "topupFailed": "Payment failed. If you were charged, please contact support.",
+  "topupDevPay": "Dev: simulate successful payment",
+  "topupCannotOpen": "Could not open the payment page.",
+  "withdrawPickBank": "Choose a receiving account",
+  "withdrawNoBank": "You have no bank account yet.",
+  "withdrawAddBank": "Add account",
+  "withdrawMinHint": "Minimum {amount}",
+  "@withdrawMinHint": {"placeholders": {"amount": {"type": "String"}}},
+  "withdrawCreated": "Withdrawal of {amount} requested. The money is held for review.",
+  "@withdrawCreated": {"placeholders": {"amount": {"type": "String"}}},
+  "withdrawNeedHave": "Need {required}, you have {available}.",
+  "@withdrawNeedHave": {"placeholders": {"required": {"type": "String"}, "available": {"type": "String"}}},
+  "withdrawBelowMin": "The minimum withdrawal is {amount}.",
+  "@withdrawBelowMin": {"placeholders": {"amount": {"type": "String"}}},
+  "withdrawNoCancel": "A withdrawal cannot be cancelled by you. Contact Oldbook for help.",
+  "historyTitle": "Top-up / withdrawal history",
+  "historyTopups": "Top-ups",
+  "historyWithdrawals": "Withdrawals",
+  "historyEmpty": "No transactions yet.",
+  "topupStatusPending": "Awaiting payment",
+  "topupStatusPaid": "Received",
+  "topupStatusExpired": "Expired",
+  "topupStatusFailed": "Failed",
+  "wdStatusRequested": "Awaiting review",
+  "wdStatusApproved": "Approved, awaiting transfer",
+  "wdStatusSubmitted": "Sent to the bank",
+  "wdStatusPaid": "Transferred",
+  "wdStatusRejected": "Rejected, money returned to your wallet",
+  "wdStatusFailed": "Transfer failed, money returned to your wallet",
+  "wdStatusUnknown": "Processing",
+  "wdReason": "Reason: {reason}",
+  "@wdReason": {"placeholders": {"reason": {"type": "String"}}},
+  "wdTimeline": "Created {created}",
+  "@wdTimeline": {"placeholders": {"created": {"type": "String"}}},
+  "bankPickBank": "Bank",
+  "bankHolderMismatch": "The holder name differs from your profile name. An admin may reject the withdrawal if they do not match.",
+  "bankNumberInvalid": "Account number has 6 to 20 digits.",
+  "errBankDuplicate": "This account is already saved.",
+  "errBankLimit": "You can save at most 3 accounts. Remove one first.",
+  "errBankNotFound": "Bank account not found.",
+  "errTopupRange": "Top-up amount is outside the allowed range.",
+  "errIdempotencyInProgress": "The previous request is still being processed, please wait a moment.",
+  "statusReserved": "Reserved",
+  "statusUnpublished": "Unpublished",
+  "conditionBrandNew": "New",
+  "conditionWorn": "Worn",
+  "filterTitle": "Filters",
+  "filterButton": "Filter",
+  "filterButtonCount": "Filter ({n})",
+  "@filterButtonCount": {"placeholders": {"n": {"type": "int"}}},
+  "filterCondition": "Condition",
+  "filterPrice": "Price range (₫)",
+  "filterMin": "From",
+  "filterMax": "To",
+  "filterSort": "Sort by",
+  "sortNewest": "Newest",
+  "sortPriceAsc": "Price: low to high",
+  "sortPriceDesc": "Price: high to low",
+  "filterApply": "Apply",
+  "filterReset": "Reset",
+  "filterPriceInvalid": "The minimum price cannot exceed the maximum.",
+  "detailReserved": "Someone has already reserved this book.",
+  "detailSold": "This book has been sold.",
+  "detailOwnerStatus": "Your listing status: {status}",
+  "@detailOwnerStatus": {"placeholders": {"status": {"type": "String"}}},
+  "detailReviewReason": "Reason: {reason}",
+  "@detailReviewReason": {"placeholders": {"reason": {"type": "String"}}},
+  "sellerStats": "{n} completed orders",
+  "@sellerStats": {"placeholders": {"n": {"type": "int"}}},
+  "sellerRating": "{rating} ★",
+  "@sellerRating": {"placeholders": {"rating": {"type": "String"}}},
+  "listingPhotoN": "Photo {n} of {title}",
+  "@listingPhotoN": {"placeholders": {"n": {"type": "int"}, "title": {"type": "String"}}},
+  "sellProgressCreate": "Creating the listing…",
+  "sellProgressUpload": "Uploading photos {done}/{total}…",
+  "@sellProgressUpload": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
+  "sellProgressSubmit": "Submitting for review…",
+  "sellErrCategory": "Choose a category.",
+  "sellErrIsbn": "Invalid ISBN.",
+  "sellFieldPublisher": "Publisher (optional)",
+  "sellFieldYear": "Publication year (optional)",
+  "sellFieldIsbn": "ISBN (optional)",
+  "sellFieldDefects": "Defects, if any (optional)",
+  "sellEditTitle": "Edit listing",
+  "sellEditSave": "Save changes",
+  "sellEditSaveSubmit": "Save and submit",
+  "sellEditWarnTitle": "The listing will go back to review",
+  "sellEditWarnBody": "Changing the title, author, category, condition, publisher, year, ISBN, defects or photos puts the listing back into review and hides it from search. Price and description changes apply immediately.",
+  "sellEditWarnConfirm": "Save anyway",
+  "sellSaved": "Changes saved.",
+  "photoMakeCover": "Make cover photo",
+  "sellPhotoLimit": "At most {n} photos.",
+  "@sellPhotoLimit": {"placeholders": {"n": {"type": "int"}}},
+  "mlTabPublished": "On sale",
+  "mlTabPending": "In review",
+  "mlTabChanges": "Needs changes",
+  "mlTabDraft": "Drafts",
+  "mlTabUnpublished": "Unpublished",
+  "mlTabSold": "Sold",
+  "mlTabRejected": "Rejected",
+  "mlEdit": "Edit",
+  "mlSubmit": "Submit",
+  "mlResubmit": "Resubmit",
+  "mlRepublish": "Republish",
+  "mlUnpublish": "Unpublish",
+  "mlUnpublishTitle": "Unpublish this listing?",
+  "mlUnpublishBody": "The listing disappears from search. Republishing needs a new review.",
+  "mlRejectedFinal": "A rejected listing is final. Create a new one if you like.",
+  "mlReason": "Reason: {reason}",
+  "@mlReason": {"placeholders": {"reason": {"type": "String"}}},
+  "mlPendingNote": "In review, usually within 24 hours. It cannot be edited yet.",
+  "mlSubmitted": "Submitted for review.",
+  "mlUnpublished": "Listing unpublished.",
+  "mlSimHeader": "Auctions (simulated)",
+  "mlReservedNote": "Someone reserved it; it cannot be edited or unpublished.",
+  "errCategoryInactive": "This category is hidden. Choose another one.",
+  "errListingConcurrent": "The listing was changed elsewhere. It was reloaded, please try again.",
+  "errListingPhoto": "A photo is invalid (not uploaded, over 10 MB or not an image). Pick it again.",
+  "errListingIncomplete": "The listing is not ready to submit (missing photos or details).",
+  "errPaymentUnavailable": "Top-up is temporarily unavailable. Try again later.",
+  "errOrderNotFound": "Order not found.",
+  "errOwnListing": "You cannot buy your own book.",
+  "errCartFull": "Your cart is full (50 items).",
+  "errComplaintNotFound": "Complaint not found.",
+  "errComplaintAttachment": "An evidence file is invalid (wrong type, too large or already used). Pick it again.",
+  "topupNoGateway": "Top-up is temporarily unavailable.",
+  "topupPickGateway": "Choose a payment gateway",
+  "topupConfirming": "Confirming the payment; your balance will update in a few minutes. You will be notified once it succeeds.",
+  "soStatusAwaiting": "Awaiting shipment",
+  "soStatusShipped": "In transit",
+  "soStatusDelivered": "Delivered",
+  "soStatusCompleted": "Completed",
+  "soStatusCancelledBuyer": "Cancelled",
+  "soStatusCancelledTimeout": "Cancelled (seller timeout)",
+  "soStatusDisputed": "In dispute",
+  "soStatusRefunded": "Refunded",
+  "soStatusPartial": "Partially refunded",
+  "soTabBuy": "Purchases",
+  "soTabSell": "Sales",
+  "soEmpty": "No orders yet.",
+  "soSimLink": "Auction orders (simulated)",
+  "soNoteShipBy": "Ship by {time}",
+  "@soNoteShipBy": {"placeholders": {"time": {"type": "String"}}},
+  "soNoteTracking": "{carrier} · {code}",
+  "@soNoteTracking": {"placeholders": {"carrier": {"type": "String"}, "code": {"type": "String"}}},
+  "soNoteComplaintBy": "Complain by {time}",
+  "@soNoteComplaintBy": {"placeholders": {"time": {"type": "String"}}},
+  "soNoteLocked": "Funds are locked while the complaint is handled",
+  "soDetailTitle": "Order details",
+  "soPrice": "Book price",
+  "soShipFee": "Shipping",
+  "soTotal": "Total paid",
+  "soPayout": "You receive",
+  "soPayoutFee": "Platform fee",
+  "soPayoutNet": "Net amount",
+  "soSeller": "Seller",
+  "soBuyer": "Buyer",
+  "soAddress": "Delivery address",
+  "soShipment": "Shipment",
+  "soTimeline": "Timeline",
+  "soCountdownShip": "Ship deadline: {time} left",
+  "@soCountdownShip": {"placeholders": {"time": {"type": "String"}}},
+  "soCountdownShipBuyer": "The seller must ship within {time}.",
+  "@soCountdownShipBuyer": {"placeholders": {"time": {"type": "String"}}},
+  "soCountdownComplaint": "Complaint window: {time} left. After it ends the order completes automatically.",
+  "@soCountdownComplaint": {"placeholders": {"time": {"type": "String"}}},
+  "soOverdue": "overdue",
+  "soCancel": "Cancel order",
+  "soCancelTitle": "Cancel this order?",
+  "soCancelBody": "The money returns to your wallet and the book is listed again.",
+  "soReceived": "Mark received",
+  "soReceivedTitle": "Confirm you received it?",
+  "soReceivedBody": "After confirming you have a window to complain if the book has a problem.",
+  "soComplete": "Happy, complete",
+  "soCompleteTitle": "Complete the order?",
+  "soCompleteBody": "The seller is paid immediately and you can no longer complain.",
+  "soShip": "Enter tracking",
+  "soShipCarrier": "Carrier",
+  "soShipTracking": "Tracking number",
+  "soShipSubmit": "Confirm shipped",
+  "soShipInvalid": "Carrier 2 to 50 characters, tracking number 3 to 50.",
+  "soComplain": "Complain",
+  "soViewComplaint": "View complaint",
+  "soCancelled": "Order cancelled.",
+  "soReceivedDone": "Receipt confirmed.",
+  "soCompleted": "Order completed.",
+  "soShipped": "Tracking saved.",
+  "ckUnavailable": "No longer available",
+  "ckRemove": "Remove",
+  "ckSubtotal": "Books",
+  "ckShipping": "Shipping ({count} orders × {fee})",
+  "@ckShipping": {"placeholders": {"count": {"type": "int"}, "fee": {"type": "String"}}},
+  "ckTotal": "Total",
+  "ckBalance": "Wallet balance",
+  "ckAddress": "Deliver to",
+  "ckPickAddress": "Choose an address",
+  "ckNoAddress": "You have no delivery address yet.",
+  "ckAddAddress": "Add address",
+  "ckPlace": "Place order · pay from wallet",
+  "ckPlaceEmpty": "No books available",
+  "ckNeedAddress": "Choose an address to order",
+  "ckInsufficient": "Insufficient balance · top up",
+  "ckEmpty": "Your cart is empty.",
+  "ckPlacedTitle": "Order placed",
+  "ckPlacedBody": "{total} was held from your wallet for {count} orders. Sellers have a deadline to ship; late orders are cancelled and refunded.",
+  "@ckPlacedBody": {"placeholders": {"total": {"type": "String"}, "count": {"type": "int"}}},
+  "ckViewOrders": "View orders",
+  "ckKeepShopping": "Keep shopping",
+  "ckSomeUnavailable": "Some books were just taken or removed. They are marked in your cart; remove them and order again.",
+  "ckAdded": "Added to cart",
+  "ckAlready": "Already in your cart",
+  "cpListTitle": "My complaints",
+  "cpTabBuy": "Raised by me",
+  "cpTabSell": "About my sales",
+  "cpEmpty": "No complaints yet.",
+  "cpStatusOpen": "Awaiting seller",
+  "cpStatusResponded": "Awaiting buyer decision",
+  "cpStatusEscalated": "With an administrator",
+  "cpStatusAgreed": "Agreed",
+  "cpStatusResolved": "Resolved",
+  "cpReasonNotAsDescribed": "Not as described",
+  "cpReasonDamaged": "Damaged",
+  "cpReasonWrongItem": "Wrong item",
+  "cpReasonOther": "Other",
+  "cpOpenTitle": "Open a complaint",
+  "cpReasonLabel": "Reason",
+  "cpDescLabel": "Describe the problem",
+  "cpDescHint": "At least 10 characters",
+  "cpDescInvalid": "The description must be 10 to 2,000 characters.",
+  "cpEvidence": "Evidence (photos or video)",
+  "cpEvidenceCount": "{n}/10 · at least 1 needed",
+  "@cpEvidenceCount": {"placeholders": {"n": {"type": "int"}}},
+  "cpEvidenceRequired": "Add at least 1 photo or video.",
+  "cpAddEvidence": "Add photo/video",
+  "cpPickPhoto": "Choose photo",
+  "cpPickVideo": "Choose video",
+  "cpEvidenceTooLarge": "File too large (photos up to 10 MB, videos up to 50 MB).",
+  "cpEvidenceUnsupported": "Unsupported format (photos JPEG/PNG/WebP, videos MP4/MOV/WebM).",
+  "cpSubmit": "Submit complaint",
+  "cpUploading": "Uploading evidence {done}/{total}…",
+  "@cpUploading": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
+  "cpOpened": "Complaint submitted.",
+  "cpOpenNote": "Opening a complaint locks the order's money until it is resolved.",
+  "cpOrder": "Order",
+  "cpOpenOrder": "View order",
+  "cpSellerDeadline": "The seller must respond: {time} left",
+  "@cpSellerDeadline": {"placeholders": {"time": {"type": "String"}}},
+  "cpBuyerDeadline": "You must decide: {time} left",
+  "@cpBuyerDeadline": {"placeholders": {"time": {"type": "String"}}},
+  "cpDeadlineNote": "After the deadline the complaint goes to an administrator automatically.",
+  "cpEscSellerTimeout": "Escalated: the seller did not respond in time.",
+  "cpEscBuyerRejected": "Escalated: the buyer disagreed.",
+  "cpEscBuyerTimeout": "Escalated: the buyer did not decide in time.",
+  "cpEscAuction": "Escalated (auction order).",
+  "cpResolution": "Outcome",
+  "cpOutFull": "Full refund (book and shipping)",
+  "cpOutPartial": "Partial refund: {amount}",
+  "@cpOutPartial": {"placeholders": {"amount": {"type": "String"}}},
+  "cpOutRelease": "No refund: money goes to the seller",
+  "cpReturnRequired": "An administrator asks the buyer to send the book back. Returning happens outside the system; the parties can talk in messages.",
+  "cpByAdmin": "Decided by an administrator",
+  "cpByAgreement": "Agreed by both parties",
+  "cpAuthorBuyer": "Buyer",
+  "cpAuthorSeller": "Seller",
+  "cpAuthorAdmin": "Administrator",
+  "cpAuthorSystem": "System",
+  "cpEntryOpened": "Complaint opened",
+  "cpEntrySellerResponse": "Seller responded",
+  "cpEntryBuyerDecision": "Buyer decided",
+  "cpEntryEscalated": "Escalated to an administrator",
+  "cpEntryResolved": "Resolved",
+  "cpRefundAmount": "Refund {amount}",
+  "@cpRefundAmount": {"placeholders": {"amount": {"type": "String"}}},
+  "cpRespond": "Respond",
+  "cpRespondTitle": "Respond to the complaint",
+  "cpActAccept": "Agree to a full refund (book and shipping)",
+  "cpActPartial": "Offer a partial refund",
+  "cpActReject": "Reject",
+  "cpAmountLabel": "Refund amount (of the book price)",
+  "cpAmountInvalid": "Amount must be between 1 and {max}.",
+  "@cpAmountInvalid": {"placeholders": {"max": {"type": "String"}}},
+  "cpRejectReason": "Reason for rejecting (add photo evidence if you can)",
+  "cpReasonInvalid": "The reason needs at least 10 characters.",
+  "cpRespondSubmit": "Send response",
+  "cpResponded": "Response sent.",
+  "cpRespondNote": "The buyer still has to confirm the result.",
+  "cpAccept": "Agree",
+  "cpDisagree": "Disagree, send to admin",
+  "cpAcceptTitle": "Agree with the response?",
+  "cpAcceptFull": "You get a full refund of the book price and shipping.",
+  "cpAcceptPartial": "You get {amount} back. The rest goes to the seller.",
+  "@cpAcceptPartial": {"placeholders": {"amount": {"type": "String"}}},
+  "cpAcceptReject": "The seller rejected. Agreeing means you WITHDRAW the complaint and the money goes to the seller.",
+  "cpDisagreeTitle": "Send to an administrator?",
+  "cpDisagreeBody": "An administrator will review and decide.",
+  "cpDecided": "Decision recorded.",
+  "cpMessageHint": "Type a message…",
+  "cpSend": "Send",
+  "cpMessageClosed": "The complaint is closed; messaging is off.",
+  "cpMessageNeed": "Enter a message or attach a file.",
+  "cpOpenVideo": "Open video",
+  "cpLockedNote": "The order's money is locked until the complaint is resolved.",
+  "otpSentToEmail": "Code sent to {email}. Check your Spam/Promotions folder too.",
+  "@otpSentToEmail": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "emailOtpHelper": "The OTP will be sent to this email.",
+  "emailNotSet": "No email",
+  "errEmailTakenLogin": "This email belongs to another account. If it's yours, sign in.",
+  "errEmailRequired": "This account has no email. Please contact support.",
+  "errOtpSendFailed": "Couldn't send the code. Try again later."
+}
