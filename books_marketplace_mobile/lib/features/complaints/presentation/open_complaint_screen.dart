@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -137,6 +138,10 @@ class _OpenComplaintScreenState extends ConsumerState<OpenComplaintScreen> {
               minLines: 4,
               maxLines: 8,
               maxLength: 2000,
+              // Đợi IME ghép xong dấu tiếng Việt rồi mới cắt (mặc định Android
+              // chặn ngay khi đang ghép, làm mất dấu ở sát giới hạn).
+              maxLengthEnforcement:
+                  MaxLengthEnforcement.truncateAfterCompositionEnds,
               onChanged: (_) => setState(() {}),
               decoration: InputDecoration(
                 labelText: l.cpDescLabel,
