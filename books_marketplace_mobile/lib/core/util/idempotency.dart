@@ -1,6 +1,25 @@
 import 'dart:math';
 
+import '../network/api_error.dart';
+
 final _random = Random.secure();
+
+/// Giữ `Idempotency-Key` cho MỘT thao tác của người dùng. Lấy [key] khi gửi;
+/// gọi [settle] sau khi có kết quả: thành công hoặc server đã trả lỗi thì bỏ
+/// key (lần bấm sau là thao tác mới), mất mạng thì giữ để thử lại cùng key.
+class IdempotentAction {
+  String? _key;
+
+  String get key => _key ??= newIdempotencyKey();
+
+  void settle([Object? error]) {
+    final networkFailure = error is ApiError && error.status == 0;
+    if (!networkFailure) _key = null;
+  }
+
+  /// Nội dung thao tác đã đổi (ví dụ số tiền trả giá): bắt buộc key mới.
+  void reset() => _key = null;
+}
 
 /// UUID v4 làm `Idempotency-Key`. Sinh MỘT lần cho mỗi hành động của người dùng
 /// (bấm "Nạp", "Rút") và giữ lại tới khi có kết quả cuối; gửi lại cùng key khi

@@ -13,7 +13,6 @@ import '../../../auctions/presentation/live_auction_strip.dart';
 import '../../../cart/application/cart_providers.dart';
 import '../../../categories/application/category_providers.dart';
 import '../../../notifications/application/notification_providers.dart';
-import '../../../sim/application/sim_providers.dart';
 import '../../application/listing_providers.dart';
 import '../../domain/listing.dart';
 import '../../domain/listing_query.dart';
@@ -71,7 +70,6 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
     final categories = ref.watch(categoryTreeProvider).value ?? const [];
     final unread = ref.watch(totalUnreadProvider);
     final cartCount = ref.watch(cartCountProvider);
-    final reserved = ref.watch(reservedListingIdsProvider);
     final searching = _query.isSearching;
 
     final header = _Header(
@@ -106,10 +104,7 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
             ],
           ),
           data: (data) {
-            final items = [
-              for (final x in data.items)
-                if (!reserved.contains(x.id)) x,
-            ];
+            final items = data.items;
             return RefreshIndicator(
               onRefresh: notifier.reload,
               child: NotificationListener<ScrollNotification>(

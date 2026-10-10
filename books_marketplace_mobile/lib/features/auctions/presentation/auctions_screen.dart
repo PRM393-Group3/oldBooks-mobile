@@ -4,26 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
-import '../../sim/application/sim_providers.dart';
-import '../../sim/presentation/sim_ticker.dart';
+import '../../../core/widgets/app_paged_list.dart';
+import '../../../core/widgets/app_state_views.dart';
+import '../application/auction_providers.dart';
 import '../domain/auction.dart';
 import 'auction_card.dart';
 
-enum AuctionFilter {
-  live,
-  register,
-  upcoming,
-  ended;
-
-  bool matches(Auction a) => switch (this) {
-    live => a.status.isRunning,
-    register => a.status == AuctionStatus.registrationOpen,
-    upcoming => a.status == AuctionStatus.confirmed,
-    ended => a.status.isEnded,
-  };
-}
-
-/// Tab Đấu giá: bộ lọc bốn trạng thái và danh sách phiên.
+/// Tab Đấu giá: bốn nhóm trạng thái và danh sách phiên công khai.
 class AuctionsScreen extends ConsumerStatefulWidget {
   const AuctionsScreen({super.key});
 
@@ -32,92 +19,91 @@ class AuctionsScreen extends ConsumerStatefulWidget {
 }
 
 class _AuctionsScreenState extends ConsumerState<AuctionsScreen> {
-  AuctionFilter _filter = AuctionFilter.live;
+  AuctionTab _tab = AuctionTab.live;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final colors = context.colors;
-    final now = ref.watch(simNowProvider);
-    final list = [
-      for (final a in ref.watch(auctionsProvider))
-        if (_filter.matches(a)) a,
-    ];
+    final provider = auctionListProvider(_tab);
     final labels = {
-      AuctionFilter.live: l.aucTabLive,
-      AuctionFilter.register: l.aucTabRegister,
-      AuctionFilter.upcoming: l.aucTabUpcoming,
-      AuctionFilter.ended: l.aucTabEnded,
+      AuctionTab.live: l.aucTabLive,
+      AuctionTab.register: l.aucTabRegister,
+      AuctionTab.upcoming: l.aucTabUpcoming,
+      AuctionTab.ended: l.aucTabEnded,
     };
 
-    return SimTicker(
-      child: Scaffold(
-        body: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.screen + 4,
-              AppSpacing.xs,
-              AppSpacing.screen + 4,
-              AppSpacing.lg,
-            ),
-            children: [
-              Text(
-                l.aucTitle,
-                style: context.text.headlineMedium?.copyWith(
-                  fontSize: 30,
-                  letterSpacing: -0.6,
-                ),
-              ),
-              Text(
-                l.aucSubtitle,
-                style: context.text.bodySmall?.copyWith(
-                  color: colors.textMuted,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: colors.surfaceMuted,
-                  borderRadius: AppRadius.smAll,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: Row(
-                    children: [
-                      for (final f in AuctionFilter.values)
-                        Expanded(
-                          child: _Segment(
-                            label: labels[f]!,
-                            selected: f == _filter,
-                            onTap: () => setState(() => _filter = f),
-                          ),
+    return Scaffold(
+      body: SafeArea(
+        child: AppPagedList<AuctionSummary>(
+          value: ref.watch(provider),
+          onLoadMore: ref.read(provider.notifier).loadMore,
+          onRefresh: ref.read(provider.notifier).reload,
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.screen + 4,
+            AppSpacing.xs,
+            AppSpacing.screen + 4,
+            AppSpacing.lg,
+          ),
+          separator: const SizedBox(height: AppSpacing.md),
+          header: Padding(
+            padding: const EdgeInsets.only(bottom: AppSpacing.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        l.aucTitle,
+                        style: context.text.headlineMedium?.copyWith(
+                          fontSize: 30,
+                          letterSpacing: -0.6,
                         ),
-                    ],
+                      ),
+                    ),
+                    TextButton.icon(
+                      onPressed: () => context.push('/auctions/mine'),
+                      icon: const Icon(Icons.gavel_outlined, size: 18),
+                      label: Text(l.myAuctionsShort),
+                    ),
+                  ],
+                ),
+                Text(
+                  l.aucSubtitle,
+                  style: context.text.bodySmall?.copyWith(
+                    color: colors.textMuted,
                   ),
                 ),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              for (final a in list)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                  child: AuctionCard(
-                    auction: a,
-                    now: now,
-                    onTap: () => context.push('/auctions/${a.id}'),
+                const SizedBox(height: AppSpacing.md),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: colors.surfaceMuted,
+                    borderRadius: AppRadius.smAll,
                   ),
-                ),
-              if (list.isEmpty)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-                  child: Text(
-                    l.aucEmpty,
-                    textAlign: TextAlign.center,
-                    style: context.text.bodyMedium?.copyWith(
-                      color: colors.textMuted,
+                  child: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Row(
+                      children: [
+                        for (final t in AuctionTab.values)
+                          Expanded(
+                            child: _Segment(
+                              label: labels[t]!,
+                              selected: t == _tab,
+                              onTap: () => setState(() => _tab = t),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ),
-            ],
+              ],
+            ),
+          ),
+          empty: AppEmptyView(icon: Icons.gavel_outlined, title: l.aucEmpty),
+          itemBuilder: (context, a) => AuctionCard(
+            auction: a,
+            onTap: () => context.push('/auctions/${a.id}'),
           ),
         ),
       ),

@@ -80,6 +80,19 @@ extension ApiErrorL10n on ApiError {
       ApiErrorCode.auctionEnded => l.errAuctionEnded,
       ApiErrorCode.auctionNotLive => l.errAuctionNotLive,
       ApiErrorCode.buyNowUnavailable => l.errBuyNowUnavailable,
+      ApiErrorCode.auctionNotFound => l.errAuctionNotFound,
+      ApiErrorCode.auctionOwn => l.errAuctionOwn,
+      ApiErrorCode.auctionAlreadyRegistered => l.errAuctionAlreadyRegistered,
+      ApiErrorCode.auctionRegistrationNotFound =>
+        l.errAuctionRegistrationNotFound,
+      ApiErrorCode.auctionStartTooSoon => l.errAuctionStartTooSoon,
+      ApiErrorCode.auctionRescheduleLimit => l.errAuctionRescheduleLimit,
+      ApiErrorCode.auctionPhotoInvalid => l.errAuctionPhotoInvalid,
+      ApiErrorCode.auctionOrderNotFound => l.errAuctionOrderNotFound,
+      ApiErrorCode.auctionOrderAddressRequired =>
+        l.errAuctionOrderAddressRequired,
+      ApiErrorCode.auctionOrderExtensionLimit =>
+        l.errAuctionOrderExtensionLimit,
       ApiErrorCode.complaintWindowClosed => l.errComplaintWindowClosed,
       ApiErrorCode.withdrawBelowMinimum => l.errWithdrawBelowMin,
       ApiErrorCode.rateLimited => l.errRateLimited,

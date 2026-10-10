@@ -19,6 +19,7 @@ import '../../orders/application/order_providers.dart';
 import '../../orders/domain/sale_order.dart';
 import '../../profile/application/address_providers.dart';
 import '../../profile/domain/address.dart';
+import '../../profile/presentation/address_picker.dart';
 import '../../sell/application/sell_rules_provider.dart';
 import '../../wallet/application/wallet_providers.dart';
 import '../../wallet/presentation/topup_sheet.dart';
@@ -168,39 +169,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   }
 
   Future<void> _pickAddress(List<Address> addresses) async {
-    final picked = await showAppSheet<String>(
+    final picked = await pickAddress(
       context,
-      builder: (sheet) {
-        final l = context.l10n;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AppSheetTitle(l.ckPickAddress),
-            RadioGroup<String>(
-              groupValue: _addressId,
-              onChanged: (v) => Navigator.of(sheet).pop(v),
-              child: Column(
-                children: [
-                  for (final a in addresses)
-                    RadioListTile<String>(
-                      value: a.id,
-                      contentPadding: EdgeInsets.zero,
-                      title: Text('${a.recipient} · ${a.phone}'),
-                      subtitle: Text(a.fullLine),
-                    ),
-                ],
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(sheet).pop();
-                context.push('/me/addresses');
-              },
-              child: Text(l.ckAddAddress),
-            ),
-          ],
-        );
-      },
+      addresses,
+      selectedId: _addressId,
     );
     if (picked != null && mounted) setState(() => _addressId = picked);
   }

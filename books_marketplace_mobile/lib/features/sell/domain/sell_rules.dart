@@ -246,16 +246,15 @@ List<SellError> validateSell(
     }
   }
   if (f.description.trim().isEmpty) e.add(SellError.description);
-  if (!f.isAuction) {
-    if (f.categoryId == null) e.add(SellError.category);
-    if (f.isbn.trim().isNotEmpty && !isValidIsbn(f.isbn)) {
-      e.add(SellError.isbn);
-    }
-    final year = int.tryParse(f.publishYear.trim());
-    if (f.publishYear.trim().isNotEmpty &&
-        (year == null || year < 1450 || year > DateTime.now().year + 1)) {
-      e.add(SellError.year);
-    }
+  // Tạo phiên đấu giá cũng bắt buộc thể loại và cùng quy tắc trường sách.
+  if (f.categoryId == null) e.add(SellError.category);
+  if (f.isbn.trim().isNotEmpty && !isValidIsbn(f.isbn)) {
+    e.add(SellError.isbn);
+  }
+  final year = int.tryParse(f.publishYear.trim());
+  if (f.publishYear.trim().isNotEmpty &&
+      (year == null || year < 1450 || year > DateTime.now().year + 1)) {
+    e.add(SellError.year);
   }
   return e;
 }

@@ -4,11 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../core/theme/theme_context.dart';
 import '../core/widgets/app_bottom_nav.dart';
-import '../core/widgets/app_snackbar.dart';
 import '../core/config/config_providers.dart';
 import '../features/notifications/application/notification_providers.dart';
-import '../features/sim/application/sim_providers.dart';
-import '../features/sim/presentation/sim_text.dart';
 import 'nav_config.dart';
 
 /// Khung có thanh điều hướng dưới 5 tab; mỗi tab giữ stack riêng nhờ
@@ -50,16 +47,6 @@ class _AppShellState extends ConsumerState<AppShell>
   Widget build(BuildContext context) {
     final l = context.l10n;
     final shell = widget.navigationShell;
-
-    // Thông báo nổi do kho mô phỏng phát ra (vượt giá, thắng phiên, hoàn tiền...).
-    ref.listen(simProvider.select((s) => s.toast), (prev, next) {
-      if (next == null || next.id == prev?.id) return;
-      AppSnackbar.show(
-        context,
-        simToastText(l, Localizations.localeOf(context).toString(), next),
-        type: simToastType(next.kind),
-      );
-    });
 
     return Scaffold(
       body: shell,

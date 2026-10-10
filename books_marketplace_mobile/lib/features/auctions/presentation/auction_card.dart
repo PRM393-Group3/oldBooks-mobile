@@ -5,21 +5,16 @@ import '../../../core/theme/theme_context.dart';
 import '../../../core/util/format.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_tag.dart';
+import '../../../core/widgets/countdown_text.dart';
 import '../../listings/presentation/widgets/book_tile.dart';
 import '../domain/auction.dart';
 import 'auction_text.dart';
 
-/// Thẻ phiên trong danh sách tab Đấu giá.
+/// Thẻ phiên trong danh sách (tab Đấu giá, Phiên của tôi).
 class AuctionCard extends StatelessWidget {
-  const AuctionCard({
-    super.key,
-    required this.auction,
-    required this.now,
-    required this.onTap,
-  });
+  const AuctionCard({super.key, required this.auction, required this.onTap});
 
-  final Auction auction;
-  final DateTime now;
+  final AuctionSummary auction;
   final VoidCallback onTap;
 
   @override
@@ -27,7 +22,9 @@ class AuctionCard extends StatelessWidget {
     final l = context.l10n;
     final colors = context.colors;
     final locale = Localizations.localeOf(context).toString();
-    final timer = auctionTimer(l, auction, now);
+    final a = auction;
+    final deadline = a.deadline;
+    final reg = a.myRegistration;
 
     return AppCard(
       padding: const EdgeInsets.all(14),
@@ -38,12 +35,7 @@ class AuctionCard extends StatelessWidget {
           SizedBox(
             width: 72,
             height: 100,
-            child: BookCover(
-              url: null,
-              hue: auction.coverHue,
-              label: auction.title,
-              radius: 7,
-            ),
+            child: BookCover(url: a.thumbnailUrl, label: a.title, radius: 7),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -54,14 +46,14 @@ class AuctionCard extends StatelessWidget {
                   children: [
                     Flexible(
                       child: AppTag(
-                        label: auctionStatusLabel(l, auction),
-                        tone: auctionStatusTone(auction),
+                        label: auctionStatusLabel(l, a.status),
+                        tone: auctionStatusTone(a.status),
                       ),
                     ),
                     const Spacer(),
-                    if (auction.registered)
+                    if (reg != null && reg.isHolding)
                       Text(
-                        l.aucRegisteredTag,
+                        registrationLabel(l, reg),
                         maxLines: 1,
                         style: context.text.labelSmall?.copyWith(
                           color: colors.success,
@@ -72,7 +64,7 @@ class AuctionCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  auction.title,
+                  a.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: context.text.titleMedium?.copyWith(
@@ -82,7 +74,7 @@ class AuctionCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  '${auction.author} · ${participantsText(l, auction)}',
+                  '${a.author} · ${l.aucParticipants(a.registeredCount)}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: context.text.labelSmall?.copyWith(
@@ -98,14 +90,14 @@ class AuctionCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            priceLabel(l, auction),
+                            priceLabel(l, a.status, a.currentPrice != null),
                             style: context.text.labelSmall?.copyWith(
                               color: colors.textMuted,
                               fontSize: 11,
                             ),
                           ),
                           Text(
-                            formatVnd(displayPrice(auction), locale),
+                            formatVnd(a.displayPrice, locale),
                             style: context.text.bodyLarge?.copyWith(
                               fontWeight: FontWeight.w700,
                             ),
@@ -113,29 +105,34 @@ class AuctionCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          timer.label,
-                          style: context.text.labelSmall?.copyWith(
-                            color: colors.textMuted,
-                            fontSize: 11,
+                    if (deadline != null)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            timerLabel(l, a.status),
+                            style: context.text.labelSmall?.copyWith(
+                              color: colors.textMuted,
+                              fontSize: 11,
+                            ),
                           ),
-                        ),
-                        Text(
-                          timer.value,
-                          style: TextStyle(
-                            fontFamily: AppTypography.monoFamily,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: timer.urgent
-                                ? colors.error
-                                : colors.textPrimary,
+                          Countdown(
+                            target: deadline,
+                            daysHours: l.remainingDaysHours,
+                            builder: (context, left, _) => Text(
+                              left,
+                              style: TextStyle(
+                                fontFamily: AppTypography.monoFamily,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: a.status.isRunning
+                                    ? colors.error
+                                    : colors.textPrimary,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
                   ],
                 ),
               ],
