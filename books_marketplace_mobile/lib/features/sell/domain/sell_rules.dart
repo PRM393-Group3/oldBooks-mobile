@@ -126,10 +126,11 @@ int minBuyNow(int startingPrice) => SellRules.defaults.minBuyNow(startingPrice);
 int sellerFee(int price) => SellRules.defaults.sellerFee(price);
 int auctionCommission(int price) => SellRules.defaults.auctionCommission(price);
 
-/// Thời điểm bắt đầu sớm nhất: 5 ngày gửi kho + 3 ngày đăng ký + 24 giờ (BR-18,
-/// BR-07, BR-08).
+/// Thời điểm bắt đầu sớm nhất app cho chọn: sau 5 phút. Mốc thật phụ thuộc cấu
+/// hình (gửi kho BR-18, mở đăng ký BR-07, đóng đăng ký BR-08) nên server kiểm
+/// tra lại và trả `AUCTION_START_TOO_SOON` nếu giờ chọn còn quá gần.
 DateTime earliestAuctionStart(DateTime now) =>
-    now.add(const Duration(days: 8, hours: 24));
+    now.add(const Duration(minutes: 5));
 
 enum SellError {
   photos,

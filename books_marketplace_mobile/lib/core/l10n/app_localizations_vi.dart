@@ -2374,6 +2374,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get sellDuration => 'Thời lượng phiên';
 
   @override
+  String get sellDuration5m => '5 phút';
+
+  @override
+  String get sellDuration15m => '15 phút';
+
+  @override
   String get sellDuration1h => '1 giờ';
 
   @override
@@ -2387,7 +2393,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String sellEarliestStart(String time) {
-    return 'Bắt đầu sớm nhất: $time (5 ngày gửi kho + 3 ngày đăng ký + 24 giờ)';
+    return 'Bắt đầu sớm nhất: $time (còn tùy cấu hình hệ thống; quá gần sẽ bị từ chối)';
   }
 
   @override

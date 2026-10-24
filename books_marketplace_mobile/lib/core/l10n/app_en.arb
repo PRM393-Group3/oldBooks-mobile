@@ -1587,11 +1587,13 @@
   },
   "sellStepHintEmpty": "1–10% of start",
   "sellDuration": "Auction length",
+  "sellDuration5m": "5 minutes",
+  "sellDuration15m": "15 minutes",
   "sellDuration1h": "1 hour",
   "sellDuration1d": "1 day",
   "sellDuration3d": "3 days",
   "sellDuration7d": "7 days",
-  "sellEarliestStart": "Earliest start: {time} (5 days to the warehouse + 3 days registration + 24 hours)",
+  "sellEarliestStart": "Earliest start: {time} (depends on system settings; too soon is rejected)",
   "@sellEarliestStart": {
     "placeholders": {
       "time": {

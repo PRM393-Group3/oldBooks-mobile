@@ -4220,6 +4220,18 @@ abstract class AppLocalizations {
   /// **'Thời lượng phiên'**
   String get sellDuration;
 
+  /// No description provided for @sellDuration5m.
+  ///
+  /// In vi, this message translates to:
+  /// **'5 phút'**
+  String get sellDuration5m;
+
+  /// No description provided for @sellDuration15m.
+  ///
+  /// In vi, this message translates to:
+  /// **'15 phút'**
+  String get sellDuration15m;
+
   /// No description provided for @sellDuration1h.
   ///
   /// In vi, this message translates to:
@@ -4247,7 +4259,7 @@ abstract class AppLocalizations {
   /// No description provided for @sellEarliestStart.
   ///
   /// In vi, this message translates to:
-  /// **'Bắt đầu sớm nhất: {time} (5 ngày gửi kho + 3 ngày đăng ký + 24 giờ)'**
+  /// **'Bắt đầu sớm nhất: {time} (còn tùy cấu hình hệ thống; quá gần sẽ bị từ chối)'**
   String sellEarliestStart(String time);
 
   /// No description provided for @sellFieldDesc.

@@ -1587,11 +1587,13 @@
   },
   "sellStepHintEmpty": "1–10% giá KĐ",
   "sellDuration": "Thời lượng phiên",
+  "sellDuration5m": "5 phút",
+  "sellDuration15m": "15 phút",
   "sellDuration1h": "1 giờ",
   "sellDuration1d": "1 ngày",
   "sellDuration3d": "3 ngày",
   "sellDuration7d": "7 ngày",
-  "sellEarliestStart": "Bắt đầu sớm nhất: {time} (5 ngày gửi kho + 3 ngày đăng ký + 24 giờ)",
+  "sellEarliestStart": "Bắt đầu sớm nhất: {time} (còn tùy cấu hình hệ thống; quá gần sẽ bị từ chối)",
   "@sellEarliestStart": {
     "placeholders": {
       "time": {

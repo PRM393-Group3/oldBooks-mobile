@@ -301,7 +301,7 @@ class _SellScreenState extends ConsumerState<SellScreen> {
   }
 
   /// Giờ bắt đầu gửi lên server: giờ người dùng chọn, không sớm hơn mốc tối
-  /// thiểu (gửi kho 5 ngày + mở đăng ký 3 ngày + đóng trước 24 giờ).
+  /// thiểu của app. Server kiểm tra lại theo cấu hình.
   DateTime _startFor(DateTime now) {
     final earliest = earliestAuctionStart(now);
     final chosen = _auctionStart;
@@ -1165,26 +1165,22 @@ class _Durations extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final options = [
+      (5, l.sellDuration5m),
+      (15, l.sellDuration15m),
       (60, l.sellDuration1h),
       (1440, l.sellDuration1d),
       (4320, l.sellDuration3d),
       (10080, l.sellDuration7d),
     ];
-    return Row(
+    return Wrap(
+      spacing: 6,
+      runSpacing: 6,
       children: [
         for (final (minutes, label) in options)
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 6),
-              child: ChoiceChip(
-                label: SizedBox(
-                  width: double.infinity,
-                  child: Text(label, textAlign: TextAlign.center),
-                ),
-                selected: selected == minutes,
-                onSelected: (_) => onChanged(minutes),
-              ),
-            ),
+          ChoiceChip(
+            label: Text(label),
+            selected: selected == minutes,
+            onSelected: (_) => onChanged(minutes),
           ),
       ],
     );

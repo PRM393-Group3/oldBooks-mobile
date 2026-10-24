@@ -2383,6 +2383,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellDuration => 'Auction length';
 
   @override
+  String get sellDuration5m => '5 minutes';
+
+  @override
+  String get sellDuration15m => '15 minutes';
+
+  @override
   String get sellDuration1h => '1 hour';
 
   @override
@@ -2396,7 +2402,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String sellEarliestStart(String time) {
-    return 'Earliest start: $time (5 days to the warehouse + 3 days registration + 24 hours)';
+    return 'Earliest start: $time (depends on system settings; too soon is rejected)';
   }
 
   @override
