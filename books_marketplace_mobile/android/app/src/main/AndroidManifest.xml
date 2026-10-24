@@ -25,6 +25,16 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Tắt deep link tự động của Flutter: nếu bật, router sẽ cố mở route "/payment" và báo lỗi không tìm thấy. -->
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="false"/>
+            <!-- Trang kết quả thanh toán của BE mở oldbooks://payment để đưa người dùng về app;
+                 màn nạp tiền tự kiểm tra lại trạng thái khi app quay về foreground. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="oldbooks" android:host="payment"/>
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
