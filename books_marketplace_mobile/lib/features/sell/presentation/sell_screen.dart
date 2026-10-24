@@ -11,6 +11,7 @@ import '../../../core/util/clock.dart';
 import '../../../core/util/format.dart';
 import '../../../core/util/image_picking.dart';
 import '../../../core/util/photo_picker.dart';
+import '../../../core/util/server_clock.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_dialog.dart';
@@ -22,7 +23,8 @@ import '../../listings/data/listing_repository.dart';
 import '../../listings/domain/listing.dart';
 import '../../listings/domain/listing_enums.dart';
 import '../../listings/domain/listing_query.dart';
-import '../../sim/application/sim_providers.dart';
+import '../../auctions/application/auction_providers.dart';
+import '../../auctions/domain/auction.dart';
 import '../application/listing_publisher.dart';
 import '../application/my_listings_provider.dart';
 import '../application/sell_rules_provider.dart';
@@ -33,7 +35,8 @@ import 'sell_text.dart';
 ///
 /// Bán giá cố định đi qua backend thật (tạo tin, tải ảnh, đặt danh sách ảnh,
 /// gửi duyệt). Truyền [editing] để sửa một tin đã có (nháp, cần sửa, đã gỡ hoặc
-/// đang bán). Đấu giá chưa có backend nên vẫn mô phỏng.
+/// đang bán). Đấu giá: tải từng ảnh lên kho công khai rồi `POST /auctions`,
+/// server trả mã nhập kho.
 class SellScreen extends ConsumerStatefulWidget {
   const SellScreen({super.key, this.editing});
 
@@ -47,6 +50,9 @@ class _SellScreenState extends ConsumerState<SellScreen> {
   SellForm _form = const SellForm();
   final List<PhotoSlot> _photos = [];
   bool _tried = false;
+
+  /// Giờ bắt đầu mong muốn của phiên (UTC); `null` là giờ sớm nhất cho phép.
+  DateTime? _auctionStart;
 
   /// Đang gọi backend; chặn bấm lặp.
   bool _busy = false;
@@ -240,12 +246,6 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     if (action == 'remove') _removePhoto(i);
   }
 
-  String _newCode() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    final rng = ref.read(randomProvider);
-    return 'OB-IN-${List.generate(4, (_) => chars[rng.nextInt(chars.length)]).join()}';
-  }
-
   /// Trường gửi lên server. Khi sửa, trường tùy chọn để trống gửi `""` để xóa
   /// giá trị cũ; khi tạo thì không gửi.
   ListingDraftInput _input(SellForm f) {
@@ -300,13 +300,114 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     await _submitFixed(form);
   }
 
+  /// Giờ bắt đầu gửi lên server: giờ người dùng chọn, không sớm hơn mốc tối
+  /// thiểu của app. Server kiểm tra lại theo cấu hình.
+  DateTime _startFor(DateTime now) {
+    final earliest = earliestAuctionStart(now);
+    final chosen = _auctionStart;
+    return chosen == null || chosen.isBefore(earliest) ? earliest : chosen;
+  }
+
+  Future<void> _pickAuctionStart() async {
+    final now = ServerClock.now();
+    final initial = _startFor(now).toLocal();
+    final first = earliestAuctionStart(now).toLocal();
+    final date = await showDatePicker(
+      context: context,
+      initialDate: initial,
+      firstDate: DateTime(first.year, first.month, first.day),
+      lastDate: first.add(const Duration(days: 90)),
+    );
+    if (date == null || !mounted) return;
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(initial),
+    );
+    if (time == null || !mounted) return;
+    setState(() {
+      _auctionStart = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        time.hour,
+        time.minute,
+      ).toUtc();
+    });
+  }
+
   Future<void> _submitAuction(SellForm form) async {
-    final first = _photos.isEmpty ? null : _photos.first.photo?.bytes;
-    final code = ref
-        .read(simAuctionListingsProvider.notifier)
-        .add(form, first, _newCode);
-    _resetForm(form.mode);
-    await _showDone(form, code);
+    final l = context.l10n;
+    final locale = Localizations.localeOf(context).toString();
+    final repo = ref.read(auctionRepositoryProvider);
+    setState(() => _busy = true);
+    try {
+      // Ảnh đã tải giữ `blobName` nên bấm lại sau lỗi không tải lại.
+      final pending = [
+        for (final p in _photos)
+          if (!p.isUploaded) p,
+      ];
+      var done = 0;
+      for (final slot in pending) {
+        setState(() => _stageText = l.sellProgressUpload(done, pending.length));
+        slot.blobName = await repo.uploadPhoto(slot.photo!);
+        done++;
+      }
+      setState(() => _stageText = l.sellProgressCreate);
+      String? opt(String v) => v.trim().isEmpty ? null : v.trim();
+      final auction = await repo.create(
+        CreateAuctionInput(
+          title: form.title,
+          author: form.author,
+          categoryId: form.categoryId!,
+          condition: form.condition.condition.api,
+          description: form.description,
+          startPrice: form.startingPrice,
+          bidStep: form.step,
+          buyNowPrice: form.buyNow > 0 ? form.buyNow : null,
+          durationMinutes: form.durationMinutes,
+          desiredStartAt: _startFor(ServerClock.now()),
+          photos: [for (final p in _photos) p.blobName!],
+          publisher: opt(form.publisher),
+          publishYear: int.tryParse(form.publishYear.trim()),
+          isbn: opt(form.isbn),
+          defectNotes: opt(form.defectNotes),
+        ),
+      );
+      refreshAuctionLists(ref);
+      if (!mounted) return;
+      _resetForm(form.mode);
+      setState(() {
+        _auctionStart = null;
+        _busy = false;
+        _stageText = null;
+      });
+      await _showDone(form, auction.owner?.inboundCode, auctionId: auction.id);
+    } on ApiError catch (e) {
+      if (!mounted) return;
+      if (e.code == ApiErrorCode.auctionStartTooSoon) {
+        // `details[0].message` là giờ sớm nhất server cho phép.
+        final earliest = e.detailMessages.isEmpty
+            ? null
+            : DateTime.tryParse(e.detailMessages.first);
+        if (earliest != null) {
+          setState(() => _auctionStart = earliest.toUtc());
+          AppSnackbar.show(
+            context,
+            l.sellStartTooSoon(formatDateTime(earliest, locale)),
+            type: AppSnackbarType.error,
+          );
+          return;
+        }
+      }
+      AppSnackbar.apiError(context, e);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _busy = false;
+          _stageText = null;
+        });
+      }
+    }
   }
 
   Future<void> _submitFixed(SellForm form) async {
@@ -359,6 +460,11 @@ class _SellScreenState extends ConsumerState<SellScreen> {
         context.pop();
       } else {
         _resetForm(form.mode);
+        // Tắt trạng thái bận trước khi mở sheet (sheet chờ người dùng đóng).
+        setState(() {
+          _busy = false;
+          _stageText = null;
+        });
         await _showDone(form, null);
       }
     } on ApiError catch (e) {
@@ -391,7 +497,7 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     });
   }
 
-  Future<void> _showDone(SellForm form, String? code) {
+  Future<void> _showDone(SellForm form, String? code, {String? auctionId}) {
     final router = GoRouter.of(context);
     return showAppSheet<void>(
       context,
@@ -461,10 +567,12 @@ class _SellScreenState extends ConsumerState<SellScreen> {
             ],
             const SizedBox(height: AppSpacing.md),
             AppButton(
-              label: l.sellDoneView,
+              label: auctionId != null ? l.sellDoneViewAuction : l.sellDoneView,
               onPressed: () {
                 Navigator.of(sheet).pop();
-                router.push('/me/listings');
+                router.push(
+                  auctionId != null ? '/auctions/$auctionId' : '/me/listings',
+                );
               },
             ),
           ],
@@ -633,6 +741,13 @@ class _SellScreenState extends ConsumerState<SellScreen> {
                 onChanged: (m) =>
                     _update((x) => x.copyWith(durationMinutes: m)),
               ),
+              const SizedBox(height: AppSpacing.sm),
+              _Label(l.sellStartAt),
+              OutlinedButton.icon(
+                onPressed: _busy ? null : _pickAuctionStart,
+                icon: const Icon(Icons.event_outlined),
+                label: Text(formatDateTime(_startFor(now), locale)),
+              ),
               const SizedBox(height: 6),
               Text(
                 l.sellEarliestStart(
@@ -651,7 +766,7 @@ class _SellScreenState extends ConsumerState<SellScreen> {
               lines: 3,
               onChanged: (_) => _sync(),
             ),
-            if (!f.isAuction) ...[
+            ...[
               _Field(
                 label: l.sellFieldPublisher,
                 controller: _publisher,
@@ -1050,26 +1165,22 @@ class _Durations extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final options = [
+      (5, l.sellDuration5m),
+      (15, l.sellDuration15m),
       (60, l.sellDuration1h),
       (1440, l.sellDuration1d),
       (4320, l.sellDuration3d),
       (10080, l.sellDuration7d),
     ];
-    return Row(
+    return Wrap(
+      spacing: 6,
+      runSpacing: 6,
       children: [
         for (final (minutes, label) in options)
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 6),
-              child: ChoiceChip(
-                label: SizedBox(
-                  width: double.infinity,
-                  child: Text(label, textAlign: TextAlign.center),
-                ),
-                selected: selected == minutes,
-                onSelected: (_) => onChanged(minutes),
-              ),
-            ),
+          ChoiceChip(
+            label: Text(label),
+            selected: selected == minutes,
+            onSelected: (_) => onChanged(minutes),
           ),
       ],
     );

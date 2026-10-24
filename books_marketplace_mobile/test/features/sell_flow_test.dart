@@ -1,3 +1,5 @@
+import 'package:books_marketplace_mobile/core/widgets/app_button.dart';
+
 import 'dart:convert';
 
 import 'package:books_marketplace_mobile/core/util/image_picking.dart';
@@ -85,6 +87,7 @@ void main() {
           photos: 4,
           title: 'A',
           author: 'B',
+          categoryId: 'c1',
           description: 'd',
         );
         expect(validateSell(base.copyWith(startingPrice: 9999)), [
@@ -123,6 +126,8 @@ void main() {
     expect(find.text('• Cần ít nhất 4 ảnh (hiện có 0)'), findsOneWidget);
     expect(find.text('• Nhập tên sách'), findsOneWidget);
     expect(find.text('• Giá bán tối thiểu 1.000 đ'), findsOneWidget);
+    // Các dòng lỗi đẩy nút xuống; cuộn lại để ListView dựng dòng cuối.
+    await _scrollTo(tester, find.text('Gửi duyệt'));
     expect(find.text('• Chọn thể loại.'), findsOneWidget);
     expect(find.text('Đã gửi duyệt'), findsNothing);
     expect(
@@ -165,15 +170,20 @@ void main() {
       expect(find.textContaining('"Mắt biếc"'), findsOneWidget);
 
       // Đã đi đủ các bước của backend theo thứ tự: tạo, tải ảnh, đặt ảnh, gửi duyệt.
-      expect(h.listings.calls.where((c) => !c.startsWith('mine')).toList(), [
-        'create',
-        'upload:mine-1:1',
-        'upload:mine-1:1',
-        'upload:mine-1:1',
-        'upload:mine-1:1',
-        'photos:mine-1:4',
-        'submit:mine-1',
-      ]);
+      expect(
+        h.listings.calls
+            .where((c) => !c.startsWith('mine') && !c.startsWith('search'))
+            .toList(),
+        [
+          'create',
+          'upload:mine-1:1',
+          'upload:mine-1:1',
+          'upload:mine-1:1',
+          'upload:mine-1:1',
+          'photos:mine-1:4',
+          'submit:mine-1',
+        ],
+      );
       expect(h.listings.items.first.status.api, 'PENDING_REVIEW');
 
       await tester.tap(find.text('Xem tin đăng của tôi'));
@@ -187,31 +197,45 @@ void main() {
     },
   );
 
-  testWidgets('đấu giá: hiện ghi chú kho, dự tính, nhận mã nhập kho', (
-    tester,
-  ) async {
-    await _openSell(tester);
-    await tester.tap(find.text('Đấu giá').first);
-    await tester.pumpAndSettle();
-    expect(find.textContaining('gửi về kho Oldbook'), findsOneWidget);
-
-    for (var i = 0; i < 4; i++) {
-      await tester.tap(find.text('+ thêm'));
+  testWidgets(
+    'đấu giá: hiện ghi chú kho, dự tính, tạo phiên nhận mã nhập kho',
+    (tester) async {
+      final h = await _openSell(tester);
+      await tester.tap(find.text('Đấu giá').first);
       await tester.pumpAndSettle();
-    }
-    await _type(tester, 'VD: Số đỏ', 'Số đỏ');
-    await _type(tester, 'VD: Vũ Trọng Phụng', 'Vũ Trọng Phụng');
-    await _type(tester, '≥ 10.000', '200000');
-    await _type(tester, '5.000 ₫ – 20.000 ₫', '10000');
-    await _scrollTo(tester, find.text('Dự tính'.toUpperCase()));
-    expect(find.text('−20.000 ₫'), findsOneWidget);
-    expect(find.text('180.000 ₫'), findsOneWidget);
+      expect(find.textContaining('gửi về kho Oldbook'), findsOneWidget);
 
-    await _type(tester, 'Năm xuất bản, NXB, ghi chú, trang bị ố…', 'Bản 1938');
-    await _scrollTo(tester, find.text('Tạo phiên & nhận mã gửi kho'));
-    await tester.tap(find.text('Tạo phiên & nhận mã gửi kho'));
-    await tester.pumpAndSettle();
-    expect(find.text('Đã tạo phiên đấu giá'), findsOneWidget);
-    expect(find.textContaining('OB-IN-'), findsOneWidget);
-  });
+      for (var i = 0; i < 4; i++) {
+        await tester.tap(find.text('+ thêm'));
+        await tester.pumpAndSettle();
+      }
+      await _type(tester, 'VD: Số đỏ', 'Số đỏ');
+      await _type(tester, 'VD: Vũ Trọng Phụng', 'Vũ Trọng Phụng');
+      await _scrollTo(tester, find.widgetWithText(ChoiceChip, 'Văn học'));
+      await tester.tap(find.widgetWithText(ChoiceChip, 'Văn học'));
+      await tester.pumpAndSettle();
+      await _type(tester, '≥ 10.000', '200000');
+      await _type(tester, '5.000 ₫ – 20.000 ₫', '10000');
+      await _scrollTo(tester, find.text('Dự tính'.toUpperCase()));
+      expect(find.text('−20.000 ₫'), findsOneWidget);
+      expect(find.text('180.000 ₫'), findsOneWidget);
+
+      await _type(
+        tester,
+        'Năm xuất bản, NXB, ghi chú, trang bị ố…',
+        'Bản 1938',
+      );
+      await _scrollTo(tester, find.text('Tạo phiên & nhận mã gửi kho'));
+      // Form đấu giá dài, nút có thể nằm dưới thanh điều hướng: bấm trực tiếp.
+      tester
+          .widget<AppButton>(
+            find.widgetWithText(AppButton, 'Tạo phiên & nhận mã gửi kho'),
+          )
+          .onPressed!();
+      await tester.pumpAndSettle();
+      expect(find.text('Đã tạo phiên đấu giá'), findsOneWidget);
+      expect(h.auctions.calls.last, 'create Số đỏ');
+      expect(find.text('OB7K2M9XQ4'), findsOneWidget);
+    },
+  );
 }

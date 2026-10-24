@@ -11,7 +11,11 @@ import 'package:books_marketplace_mobile/features/categories/application/categor
 import 'package:books_marketplace_mobile/features/listings/application/listing_providers.dart';
 import 'package:books_marketplace_mobile/features/notifications/application/notification_providers.dart';
 import 'package:books_marketplace_mobile/features/profile/application/profile_controller.dart';
-import 'package:books_marketplace_mobile/features/sim/application/sim_providers.dart';
+import 'package:books_marketplace_mobile/core/preview/preview_auctions.dart';
+import 'package:books_marketplace_mobile/features/auction_orders/application/auction_order_providers.dart';
+import 'package:books_marketplace_mobile/features/orders/application/order_providers.dart';
+import 'package:books_marketplace_mobile/features/auctions/application/auction_providers.dart';
+import 'package:books_marketplace_mobile/features/auctions/data/auction_hub.dart';
 import 'package:books_marketplace_mobile/features/profile/data/profile_repository.dart';
 import 'package:books_marketplace_mobile/features/profile/domain/profile.dart';
 import 'package:dio/dio.dart';
@@ -45,13 +49,25 @@ class Harness {
     : tokens = MemoryTokenStore(access: 'a', refresh: 'r'),
       listings = FakeListingRepository(),
       categories = FakeCategoryRepository(),
-      notifications = FakeNotificationRepository();
+      notifications = FakeNotificationRepository(),
+      auctions = InMemoryAuctionRepository(),
+      auctionOrders = InMemoryAuctionOrderRepository(),
+      orders = FakeOrderRepository(),
+      hub = OfflineAuctionHub();
 
   final UserRole role;
   final MemoryTokenStore tokens;
   final FakeListingRepository listings;
   final FakeCategoryRepository categories;
   final FakeNotificationRepository notifications;
+
+  /// Đấu giá trong bộ nhớ (dữ liệu mẫu của chế độ xem trước).
+  final InMemoryAuctionRepository auctions;
+  final InMemoryAuctionOrderRepository auctionOrders;
+  final FakeOrderRepository orders;
+
+  /// Hub không kết nối; test phát sự kiện bằng `hub.emit`.
+  final OfflineAuctionHub hub;
 
   /// Ví trong bộ nhớ; test đặt số dư/tài khoản trước khi [pump].
   InMemoryWalletRepository wallet = InMemoryWalletRepository();
@@ -95,10 +111,10 @@ class Harness {
           listingRepositoryProvider.overrideWithValue(listings),
           categoryRepositoryProvider.overrideWithValue(categories),
           notificationRepositoryProvider.overrideWithValue(notifications),
-          // Đồng hồ mô phỏng gần như đứng yên và không có đối thủ ảo, để
-          // pumpAndSettle kết thúc và kết quả xác định.
-          simTickIntervalProvider.overrideWithValue(const Duration(days: 1)),
-          simulateRivalsProvider.overrideWithValue(false),
+          auctionRepositoryProvider.overrideWithValue(auctions),
+          auctionOrderRepositoryProvider.overrideWithValue(auctionOrders),
+          orderRepositoryProvider.overrideWithValue(orders),
+          auctionHubProvider.overrideWithValue(hub),
           ...overrides,
         ],
         child: const App(),
@@ -129,9 +145,9 @@ Future<void> tapSellTab(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
-/// Kho mô phỏng của app đang chạy trong [tester], để chuẩn bị hoặc kiểm tra
+/// Container của app đang chạy trong [tester], để chuẩn bị hoặc kiểm tra
 /// trạng thái ngoài giao diện.
-ProviderContainer simContainer(WidgetTester tester) =>
+ProviderContainer appContainer(WidgetTester tester) =>
     ProviderScope.containerOf(tester.element(find.byType(MaterialApp)));
 
 var _fontsLoaded = false;

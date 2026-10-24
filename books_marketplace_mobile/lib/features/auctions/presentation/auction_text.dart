@@ -1,96 +1,103 @@
 import '../../../core/l10n/app_localizations.dart';
 import '../../../core/util/format.dart';
 import '../../../core/widgets/app_tag.dart';
-import '../../sim/domain/rules.dart';
-import '../../sim/presentation/sim_text.dart';
 import '../domain/auction.dart';
 
-String auctionStatusLabel(AppLocalizations l, Auction a) => switch (a.status) {
+String auctionStatusLabel(AppLocalizations l, AuctionStatus s) => switch (s) {
+  AuctionStatus.awaitingInbound => l.aucStatusAwaitingInbound,
+  AuctionStatus.pendingReview => l.aucStatusPendingReview,
+  AuctionStatus.registrationOpen => l.aucStatusRegistration,
+  AuctionStatus.notEnoughParticipants => l.aucStatusNotEnough,
+  AuctionStatus.confirmed => l.aucStatusConfirmed,
   AuctionStatus.live => l.aucStatusLive,
   AuctionStatus.buyNowCountdown => l.aucStatusBuyNow,
-  AuctionStatus.registrationOpen => l.aucStatusRegistration,
-  AuctionStatus.confirmed => l.aucStatusConfirmed,
   AuctionStatus.endedSold => l.aucStatusEnded,
   AuctionStatus.endedNoBid => l.aucStatusNoBid,
+  AuctionStatus.rejected => l.aucStatusRejected,
+  AuctionStatus.cancelled => l.aucStatusCancelled,
+  AuctionStatus.convertedToSale => l.aucStatusConverted,
+  AuctionStatus.returned => l.aucStatusReturned,
+  AuctionStatus.unknown => l.statusUnknown,
 };
 
-AppTagTone auctionStatusTone(Auction a) => switch (a.status) {
+AppTagTone auctionStatusTone(AuctionStatus s) => switch (s) {
   AuctionStatus.live || AuctionStatus.buyNowCountdown => AppTagTone.error,
   AuctionStatus.registrationOpen => AppTagTone.success,
-  AuctionStatus.confirmed => AppTagTone.warning,
+  AuctionStatus.confirmed ||
+  AuctionStatus.awaitingInbound ||
+  AuctionStatus.pendingReview ||
+  AuctionStatus.notEnoughParticipants => AppTagTone.warning,
   _ => AppTagTone.neutral,
 };
 
-String participantsText(AppLocalizations l, Auction a) =>
-    a.status == AuctionStatus.registrationOpen
-    ? l.aucParticipantsMin(a.participants, '${a.minParticipants}')
-    : l.aucParticipants(a.participants);
+/// Nhãn của giá đang hiển thị.
+String priceLabel(AppLocalizations l, AuctionStatus status, bool hasBids) =>
+    !hasBids
+    ? l.aucPriceStarting
+    : status.isEnded
+    ? l.aucPriceWinning
+    : l.aucPriceCurrent;
 
-String priceLabel(AppLocalizations l, Auction a) => a.hasBids
-    ? (a.status.isEnded ? l.aucPriceWinning : l.aucPriceCurrent)
-    : l.aucPriceStarting;
+/// Nhãn đồng hồ theo trạng thái phiên.
+String timerLabel(AppLocalizations l, AuctionStatus s) => switch (s) {
+  AuctionStatus.live => l.aucTimerEndsIn,
+  AuctionStatus.buyNowCountdown => l.aucTimerCountdown,
+  AuctionStatus.registrationOpen => l.aucTimerRegCloses,
+  AuctionStatus.confirmed => l.aucTimerStartsIn,
+  AuctionStatus.awaitingInbound => l.aucTimerInboundDeadline,
+  AuctionStatus.notEnoughParticipants ||
+  AuctionStatus.endedNoBid => l.aucTimerFallbackDeadline,
+  _ => l.aucTimerEndedAt,
+};
 
-int displayPrice(Auction a) => a.hasBids ? a.current : a.startingPrice;
+/// Thời gian còn lại theo ngôn ngữ (`mm:ss`, `h:mm:ss` hoặc `n ngày h giờ`).
+String remainingText(AppLocalizations l, Duration d) => formatRemaining(
+  d,
+  daysHours: (days, hours) => l.remainingDaysHours(days, hours),
+);
 
-/// Nhãn và giá trị đồng hồ của phiên tại thời điểm [now].
-({String label, String value, bool urgent}) auctionTimer(
-  AppLocalizations l,
-  Auction a,
-  DateTime now,
-) {
-  String dur(DateTime t) => remainingText(l, t.difference(now));
-  switch (a.status) {
-    case AuctionStatus.live:
-      final r = a.endsAt!.difference(now);
-      return (
-        label: l.aucTimerEndsIn,
-        value: dur(a.endsAt!),
-        urgent: r < antiSnipingWindow,
-      );
-    case AuctionStatus.buyNowCountdown:
-      return (
-        label: l.aucTimerCountdown,
-        value: dur(a.countdownEndsAt!),
-        urgent: true,
-      );
-    case AuctionStatus.registrationOpen:
-      return (
-        label: l.aucTimerRegCloses,
-        value: dur(a.registrationClosesAt!),
-        urgent: false,
-      );
-    case AuctionStatus.confirmed:
-      return (
-        label: l.aucTimerStartsIn,
-        value: dur(a.startsAt!),
-        urgent: false,
-      );
-    case AuctionStatus.endedSold || AuctionStatus.endedNoBid:
-      return (
-        label: l.aucTimerEndedAt,
-        value: formatShortDateTime(a.endedAt ?? now),
-        urgent: false,
-      );
-  }
+String agoText(AppLocalizations l, DateTime now, DateTime t) {
+  final s = now.difference(t).inSeconds;
+  if (s < 60) return l.agoNow;
+  if (s < 3600) return l.agoMinutes(s ~/ 60);
+  if (s < 86400) return l.agoHours(s ~/ 3600);
+  return l.agoDays(s ~/ 86400);
 }
 
+/// Dòng phụ dưới bảng giá.
 String? auctionTimerSub(AppLocalizations l, Auction a) => switch (a.status) {
   AuctionStatus.live => l.aucSubLive,
-  AuctionStatus.buyNowCountdown => l.aucSubCountdown(
-    formatShortDateTime(a.hardEndsAt!),
-  ),
-  AuctionStatus.registrationOpen => l.aucSubRegistration(
-    formatShortDateTime(a.startsAt!),
-    '${a.minParticipants}',
-  ),
-  AuctionStatus.confirmed => l.aucSubConfirmed(
-    formatShortDateTime(a.startsAt!),
+  AuctionStatus.buyNowCountdown when a.live?.hardEndAt != null =>
+    l.aucSubCountdown(formatShortDateTime(a.live!.hardEndAt!)),
+  AuctionStatus.registrationOpen when a.startAt != null =>
+    l.aucSubRegistrationOpen(formatShortDateTime(a.startAt!)),
+  AuctionStatus.confirmed when a.startAt != null => l.aucSubConfirmed(
+    formatShortDateTime(a.startAt!),
   ),
   _ => null,
 };
 
-String leaderText(AppLocalizations l, Auction a) => !a.hasBids
-    ? l.aucNoBids
-    : a.iAmLeading
-    ? l.aucLeaderMe
-    : l.aucLeaderOther(a.leaderName ?? '');
+String leaderText(AppLocalizations l, Auction a) {
+  if (!a.hasBids) return l.aucNoBids;
+  if (a.isLeading) return l.aucLeaderMe;
+  final name = a.status.isEnded ? a.live?.winner : a.live?.leader;
+  return name == null ? l.aucNoBids : l.aucLeaderOther(name);
+}
+
+String registrationLabel(AppLocalizations l, RegistrationStatus s) =>
+    switch (s) {
+      RegistrationStatus.active => l.aucRegisteredTag,
+      RegistrationStatus.confirmed => l.aucRegConfirmedTag,
+      RegistrationStatus.cancelled => l.aucRegCancelledTag,
+      RegistrationStatus.refunded => l.aucRegRefundedTag,
+      RegistrationStatus.completed => l.aucRegCompletedTag,
+      RegistrationStatus.unknown => l.statusUnknown,
+    };
+
+String returnStatusLabel(AppLocalizations l, ReturnOrderStatus s) =>
+    switch (s) {
+      ReturnOrderStatus.awaitingFee => l.aucReturnAwaitingFee,
+      ReturnOrderStatus.readyToDispatch => l.aucReturnReady,
+      ReturnOrderStatus.dispatched => l.aucReturnDispatched,
+      ReturnOrderStatus.unknown => l.statusUnknown,
+    };

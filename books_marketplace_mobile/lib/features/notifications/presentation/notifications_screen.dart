@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
+import '../../../core/navigation/notification_router.dart';
 import '../../../core/network/api_error.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
@@ -10,8 +10,6 @@ import '../../../core/widgets/app_page.dart';
 import '../../../core/widgets/app_paged_list.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_state_views.dart';
-import '../../sim/application/sim_providers.dart';
-import '../../sim/presentation/sim_text.dart';
 import '../application/notification_providers.dart';
 import '../domain/app_notification.dart';
 
@@ -29,7 +27,6 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   bool _unreadOnly = false;
 
   Future<void> _markAll() async {
-    ref.read(simProvider.notifier).markAllNotificationsRead();
     try {
       await ref.read(notificationActionsProvider).markAllRead();
     } on ApiError catch (e) {
@@ -46,16 +43,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
       }
     }
     if (!mounted) return;
-    // Thông báo khiếu nại ưu tiên khiếu nại (cũng có orderId); đơn hàng mở đơn.
-    if (n.type.isWallet) {
-      context.go('/wallet');
-    } else if (n.complaintId != null) {
-      context.push('/me/complaints/${n.complaintId}');
-    } else if (n.orderId != null) {
-      context.push('/me/orders/${n.orderId}');
-    } else if (n.listingId != null) {
-      context.push('/home/book/${n.listingId}');
-    }
+    notificationTarget(n)?.open(context);
   }
 
   @override
@@ -64,16 +52,18 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     final provider = notificationsProvider(_unreadOnly);
     final state = ref.watch(provider);
     final notifier = ref.read(provider.notifier);
-    final sim = ref.watch(simNotificationsProvider);
-    final simNow = ref.watch(simNowProvider);
-    final locale = Localizations.localeOf(context).toString();
 
     return AppPage(
       title: l.notificationsTitle,
       scrollable: false,
       actions: [TextButton(onPressed: _markAll, child: Text(l.markAllRead))],
       child: AppPagedList<AppNotification>(
-        value: state,
+        // Thông báo chỉ dành cho admin không hiển thị trên mobile.
+        value: state.whenData(
+          (s) => s.copyWith(
+            items: s.items.where((n) => !n.type.isAdminOnly).toList(),
+          ),
+        ),
         onLoadMore: notifier.loadMore,
         onRefresh: () async {
           ref.invalidate(unreadCountProvider);
@@ -100,26 +90,13 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 ],
               ),
             ),
-            for (final n in sim)
-              if (!_unreadOnly || !n.read)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.xs),
-                  child: _SimNotificationTile(
-                    title: simNotificationText(l, locale, n).title,
-                    body: simNotificationText(l, locale, n).body,
-                    ago: agoText(l, simNow, n.time),
-                    read: n.read,
-                  ),
-                ),
           ],
         ),
-        empty: sim.isNotEmpty
-            ? const SizedBox.shrink()
-            : AppEmptyView(
-                icon: Icons.notifications_none,
-                title: l.emptyNotificationsTitle,
-                message: l.emptyNotificationsMessage,
-              ),
+        empty: AppEmptyView(
+          icon: Icons.notifications_none,
+          title: l.emptyNotificationsTitle,
+          message: l.emptyNotificationsMessage,
+        ),
         separator: const SizedBox(height: AppSpacing.xs),
         itemBuilder: (context, n) =>
             _NotificationTile(notification: n, onTap: () => _open(n)),
@@ -201,6 +178,53 @@ class _NotificationTile extends StatelessWidget {
         colors.infoContainer,
         colors.onInfoContainer,
       ),
+      NotificationType.auctionOutbid ||
+      NotificationType.auctionLost ||
+      NotificationType.auctionRejected ||
+      NotificationType.auctionInboundTimeout ||
+      NotificationType.auctionDeliveryFailed ||
+      NotificationType.auctionStorageExpired ||
+      NotificationType.auctionAwaitingLiquidation ||
+      NotificationType.auctionShippingFeeNeeded ||
+      NotificationType.auctionShippingFeeDeferred ||
+      NotificationType.auctionNotEnough ||
+      NotificationType.auctionEndedNoBid ||
+      NotificationType.auctionFallbackTimeout ||
+      NotificationType.returnFeeNeeded ||
+      NotificationType.auctionInStorage => (
+        Icons.gavel_outlined,
+        colors.warningContainer,
+        colors.onWarningContainer,
+      ),
+      NotificationType.auctionWon ||
+      NotificationType.auctionSold ||
+      NotificationType.auctionApproved ||
+      NotificationType.auctionConfirmed ||
+      NotificationType.auctionOrderDelivered ||
+      NotificationType.auctionOrderCompleted ||
+      NotificationType.auctionReleasedToBuyer ||
+      NotificationType.auctionLiquidated ||
+      NotificationType.auctionRegistrationRefunded => (
+        Icons.emoji_events_outlined,
+        colors.successContainer,
+        colors.onSuccessContainer,
+      ),
+      NotificationType.auctionOrderDispatched ||
+      NotificationType.returnDispatched ||
+      NotificationType.returnReady => (
+        Icons.local_shipping_outlined,
+        colors.infoContainer,
+        colors.onInfoContainer,
+      ),
+      NotificationType.auctionStarted ||
+      NotificationType.auctionBuyNowStarted ||
+      NotificationType.auctionInboundReceived ||
+      NotificationType.auctionStorageExtended ||
+      NotificationType.auctionLiquidationNeedsAdmin => (
+        Icons.gavel_outlined,
+        colors.infoContainer,
+        colors.onInfoContainer,
+      ),
       NotificationType.unknown => (
         Icons.notifications_none,
         colors.infoContainer,
@@ -271,81 +295,6 @@ class _NotificationTile extends StatelessWidget {
                   ),
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Thông báo mô phỏng (đơn, ví, đấu giá): chỉ hiển thị, không có màn đích.
-class _SimNotificationTile extends StatelessWidget {
-  const _SimNotificationTile({
-    required this.title,
-    required this.body,
-    required this.ago,
-    required this.read,
-  });
-
-  final String title;
-  final String body;
-  final String ago;
-  final bool read;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    return Semantics(
-      label: title,
-      child: Material(
-        color: read ? colors.surface : colors.primaryContainer,
-        shape: RoundedRectangleBorder(
-          borderRadius: AppRadius.lgAll,
-          side: BorderSide(color: colors.divider),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.sm),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: context.text.titleMedium?.copyWith(
-                        fontWeight: read ? FontWeight.w500 : FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      body,
-                      style: context.text.bodySmall?.copyWith(
-                        color: colors.textSecondary,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      ago,
-                      style: context.text.labelSmall?.copyWith(
-                        color: colors.textMuted,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (!read)
-                Container(
-                  width: 10,
-                  height: 10,
-                  margin: const EdgeInsets.only(top: 6),
-                  decoration: BoxDecoration(
-                    color: colors.auction,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-            ],
           ),
         ),
       ),

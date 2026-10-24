@@ -4,123 +4,96 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../core/theme/app_dimens.dart';
-import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/theme_context.dart';
-import '../../../core/util/format.dart';
-import '../../../core/widgets/app_card.dart';
-import '../../../core/widgets/app_page.dart';
+import '../../../core/widgets/app_paged_list.dart';
 import '../../../core/widgets/app_state_views.dart';
-import '../../../core/widgets/app_tag.dart';
-import '../../listings/presentation/widgets/book_tile.dart';
-import '../../sim/application/sim_providers.dart';
+import '../application/auction_providers.dart';
 import '../domain/auction.dart';
-import 'auction_text.dart';
+import 'auction_card.dart';
 
-/// Vai trò của người dùng trong một phiên đã đăng ký, kèm màu nhấn.
-({String text, Color color}) myAuctionRole(
-  AppLocalizations l,
-  String locale,
-  Auction a,
-  Color good,
-  Color bad,
-  Color neutral,
-) {
-  final price = formatVnd(a.current, locale);
-  if (a.won) return (text: l.myAucWon(price), color: good);
-  if (a.iAmLeading) return (text: l.myAucLeading(price), color: good);
-  if (a.status.isEnded) return (text: l.myAucLost, color: neutral);
-  if (a.status.isRunning) return (text: l.myAucOutbid, color: bad);
-  return (text: l.myAucRegistered, color: neutral);
+String auctionRoleLabel(AppLocalizations l, AuctionRole r) => switch (r) {
+  AuctionRole.seller => l.myAucTabSeller,
+  AuctionRole.bidder => l.myAucTabBidder,
+  AuctionRole.leading => l.myAucTabLeading,
+  AuctionRole.winner => l.myAucTabWinner,
+};
+
+/// "Phiên của tôi": bốn tab theo vai trò (`GET /me/auctions?role=`). Mỗi tab
+/// chỉ tải khi được mở.
+class MyAuctionsScreen extends StatelessWidget {
+  const MyAuctionsScreen({super.key, this.initialRole = AuctionRole.bidder});
+
+  final AuctionRole initialRole;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return DefaultTabController(
+      length: AuctionRole.values.length,
+      initialIndex: AuctionRole.values.indexOf(initialRole),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(l.myAuctionsTitle),
+          bottom: TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            tabs: [
+              for (final r in AuctionRole.values)
+                Tab(text: auctionRoleLabel(l, r)),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [for (final r in AuctionRole.values) _RoleList(role: r)],
+        ),
+      ),
+    );
+  }
 }
 
-/// Các phiên người dùng đã đăng ký.
-class MyAuctionsScreen extends ConsumerWidget {
-  const MyAuctionsScreen({super.key});
+class _RoleList extends ConsumerWidget {
+  const _RoleList({required this.role});
+
+  final AuctionRole role;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
-    final colors = context.colors;
-    final locale = Localizations.localeOf(context).toString();
-    final mine = [
-      for (final a in ref.watch(auctionsProvider))
-        if (a.registered) a,
-    ];
-
-    return AppPage(
-      title: l.myAuctionsTitle,
-      scrollable: false,
-      child: mine.isEmpty
-          ? AppEmptyView(icon: Icons.gavel_outlined, title: l.myAuctionsEmpty)
-          : ListView.separated(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.screen + 4,
-                AppSpacing.md,
-                AppSpacing.screen + 4,
-                AppSpacing.xl,
+    final provider = myAuctionsProvider(role);
+    return AppPagedList<AuctionSummary>(
+      value: ref.watch(provider),
+      onLoadMore: ref.read(provider.notifier).loadMore,
+      onRefresh: ref.read(provider.notifier).reload,
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.screen + 4,
+        AppSpacing.md,
+        AppSpacing.screen + 4,
+        AppSpacing.xl,
+      ),
+      separator: const SizedBox(height: 12),
+      header: role == AuctionRole.seller
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              child: OutlinedButton.icon(
+                onPressed: () => context.go('/sell'),
+                icon: const Icon(Icons.add),
+                label: Text(l.myAucCreate),
               ),
-              itemCount: mine.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 12),
-              itemBuilder: (context, i) {
-                final a = mine[i];
-                final role = myAuctionRole(
-                  l,
-                  locale,
-                  a,
-                  colors.success,
-                  colors.error,
-                  colors.textSecondary,
-                );
-                return AppCard(
-                  padding: const EdgeInsets.all(12),
-                  onTap: () => context.push('/auctions/${a.id}'),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 52,
-                        height: 72,
-                        child: BookCover(
-                          url: null,
-                          hue: a.coverHue,
-                          label: a.title,
-                          radius: 6,
-                        ),
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AppTag(
-                              label: auctionStatusLabel(l, a),
-                              tone: auctionStatusTone(a),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              a.title,
-                              style: context.text.titleMedium?.copyWith(
-                                fontFamily: AppTypography.serifFamily,
-                                fontSize: 15.5,
-                                height: 1.2,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              role.text,
-                              style: context.text.labelSmall?.copyWith(
-                                color: role.color,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+            )
+          : null,
+      empty: AppEmptyView(
+        icon: Icons.gavel_outlined,
+        title: switch (role) {
+          AuctionRole.seller => l.myAucEmptySeller,
+          AuctionRole.bidder => l.myAuctionsEmpty,
+          AuctionRole.leading => l.myAucEmptyLeading,
+          AuctionRole.winner => l.myAucEmptyWinner,
+        },
+      ),
+      itemBuilder: (context, a) => AuctionCard(
+        auction: a,
+        onTap: () => context.push('/auctions/${a.id}'),
+      ),
     );
   }
 }

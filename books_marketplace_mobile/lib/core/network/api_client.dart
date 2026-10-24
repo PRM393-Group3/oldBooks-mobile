@@ -95,6 +95,10 @@ class ApiClient {
     required T Function(dynamic data) parse,
   }) => _send('PATCH', path, body: body, parse: parse);
 
+  /// DELETE trả dữ liệu trong envelope (ví dụ hủy đăng ký phiên).
+  Future<T> delete<T>(String path, {required T Function(dynamic data) parse}) =>
+      _send('DELETE', path, parse: parse);
+
   /// Endpoint trả `204 No Content`.
   Future<void> postNoContent(String path, {Object? body}) =>
       _send<void>('POST', path, body: body);

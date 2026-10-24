@@ -1,5 +1,4 @@
 import 'package:books_marketplace_mobile/app/nav_config.dart';
-import 'package:books_marketplace_mobile/core/l10n/app_localizations_vi.dart';
 import 'package:books_marketplace_mobile/core/network/paged_result.dart';
 import 'package:books_marketplace_mobile/core/util/format.dart';
 import 'package:books_marketplace_mobile/core/validation/isbn.dart';

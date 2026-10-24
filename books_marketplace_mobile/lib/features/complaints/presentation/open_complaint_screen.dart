@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,6 +8,7 @@ import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_snackbar.dart';
+import '../../auction_orders/application/auction_order_providers.dart';
 import '../../orders/application/order_providers.dart';
 import '../application/complaint_providers.dart';
 import '../data/complaint_repository.dart';
@@ -76,6 +78,7 @@ class _OpenComplaintScreenState extends ConsumerState<OpenComplaintScreen> {
       );
       refreshComplaints(ref);
       refreshOrders(ref, orderId: widget.orderId);
+      ref.invalidate(auctionOrderProvider);
       if (!mounted) return;
       AppSnackbar.success(context, l.cpOpened);
       context.pushReplacement('/me/complaints/${complaint.id}');
@@ -135,6 +138,10 @@ class _OpenComplaintScreenState extends ConsumerState<OpenComplaintScreen> {
               minLines: 4,
               maxLines: 8,
               maxLength: 2000,
+              // Đợi IME ghép xong dấu tiếng Việt rồi mới cắt (mặc định Android
+              // chặn ngay khi đang ghép, làm mất dấu ở sát giới hạn).
+              maxLengthEnforcement:
+                  MaxLengthEnforcement.truncateAfterCompositionEnds,
               onChanged: (_) => setState(() {}),
               decoration: InputDecoration(
                 labelText: l.cpDescLabel,

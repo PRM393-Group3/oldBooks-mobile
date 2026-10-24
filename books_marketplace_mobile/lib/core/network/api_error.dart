@@ -72,6 +72,16 @@ abstract final class ApiErrorCode {
   static const auctionEnded = 'AUCTION_ENDED';
   static const auctionNotLive = 'AUCTION_NOT_LIVE';
   static const buyNowUnavailable = 'BUY_NOW_UNAVAILABLE';
+  static const auctionNotFound = 'AUCTION_NOT_FOUND';
+  static const auctionOwn = 'AUCTION_OWN';
+  static const auctionAlreadyRegistered = 'AUCTION_ALREADY_REGISTERED';
+  static const auctionRegistrationNotFound = 'AUCTION_REGISTRATION_NOT_FOUND';
+  static const auctionStartTooSoon = 'AUCTION_START_TOO_SOON';
+  static const auctionRescheduleLimit = 'AUCTION_RESCHEDULE_LIMIT';
+  static const auctionPhotoInvalid = 'AUCTION_PHOTO_INVALID';
+  static const auctionOrderNotFound = 'AUCTION_ORDER_NOT_FOUND';
+  static const auctionOrderAddressRequired = 'AUCTION_ORDER_ADDRESS_REQUIRED';
+  static const auctionOrderExtensionLimit = 'AUCTION_ORDER_EXTENSION_LIMIT';
   static const complaintWindowClosed = 'COMPLAINT_WINDOW_CLOSED';
   static const withdrawBelowMinimum = 'WITHDRAW_BELOW_MINIMUM';
   static const rateLimited = 'RATE_LIMITED';

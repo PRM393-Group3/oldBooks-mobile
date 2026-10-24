@@ -2383,6 +2383,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellDuration => 'Auction length';
 
   @override
+  String get sellDuration5m => '5 minutes';
+
+  @override
+  String get sellDuration15m => '15 minutes';
+
+  @override
   String get sellDuration1h => '1 hour';
 
   @override
@@ -2396,7 +2402,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String sellEarliestStart(String time) {
-    return 'Earliest start: $time (5 days to the warehouse + 3 days registration + 24 hours)';
+    return 'Earliest start: $time (depends on system settings; too soon is rejected)';
   }
 
   @override
@@ -3941,4 +3947,677 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errOtpSendFailed => 'Couldn\'t send the code. Try again later.';
+
+  @override
+  String get aoTitle => 'Auction orders';
+
+  @override
+  String get aoDetailTitle => 'Auction order';
+
+  @override
+  String get aoTabBuyer => 'Won by me';
+
+  @override
+  String get aoTabSeller => 'Sold by me';
+
+  @override
+  String get aoFilterAction => 'Needs action';
+
+  @override
+  String get aoFilterShipping => 'Shipping';
+
+  @override
+  String get aoFilterFinished => 'Finished';
+
+  @override
+  String get aoEmpty => 'No auction orders yet.';
+
+  @override
+  String get aoEmptyBuyerHint => 'Win an auction and its order shows up here.';
+
+  @override
+  String aoWinningPrice(String amount) {
+    return 'Winning price $amount';
+  }
+
+  @override
+  String get aoStatusAwaitingFee => 'Awaiting shipping fee';
+
+  @override
+  String get aoStatusReadyToShip => 'Ready to ship';
+
+  @override
+  String get aoStatusInDelivery => 'In delivery';
+
+  @override
+  String get aoStatusInStorage => 'In storage';
+
+  @override
+  String get aoStatusDelivered => 'Delivered';
+
+  @override
+  String get aoStatusPickedUp => 'Picked up';
+
+  @override
+  String get aoStatusStorageExpired => 'Storage expired';
+
+  @override
+  String get aoStatusDisputed => 'Disputed';
+
+  @override
+  String get aoStatusCompleted => 'Completed';
+
+  @override
+  String get aoStatusRefunded => 'Refunded';
+
+  @override
+  String get aoStatusPartiallyRefunded => 'Partially refunded';
+
+  @override
+  String get aoPeAwaitingDecision => 'Waiting for your decision';
+
+  @override
+  String get aoPeExtended => 'Storage extended';
+
+  @override
+  String get aoPeAwaitingLiquidation => 'Book will be liquidated';
+
+  @override
+  String get aoPeLiquidated => 'Liquidated';
+
+  @override
+  String get aoPeReleased => 'Released to you';
+
+  @override
+  String get aoPeDecisionBody =>
+      'The seller has been paid and the book is still yours. Extend, pick up or request redelivery before the deadline, otherwise it will be liquidated.';
+
+  @override
+  String aoDecisionLeft(String left) {
+    return '$left left to decide';
+  }
+
+  @override
+  String aoExtendButton(String fee, int n) {
+    return 'Extend for $fee ($n left)';
+  }
+
+  @override
+  String get aoExtendTitle => 'Extend storage';
+
+  @override
+  String aoExtendBody(String fee, int days) {
+    return 'Prepay $fee to keep the book for $days more days.';
+  }
+
+  @override
+  String aoExtendedUntil(String date) {
+    return 'Extended until $date';
+  }
+
+  @override
+  String get aoLiquidationBody =>
+      'No decision was made in time. Admin will liquidate the book and credit the proceeds (minus fee) to your wallet.';
+
+  @override
+  String aoLiquidatedBody(String amount) {
+    return '$amount was credited to your wallet (after the liquidation fee).';
+  }
+
+  @override
+  String get aoAddressRequiredTitle => 'No delivery address';
+
+  @override
+  String get aoAddressRequiredBody =>
+      'The warehouse can only ship once the order has an address. Pick one from your address book.';
+
+  @override
+  String aoFeeNeededTitle(String amount) {
+    return '$amount shipping fee needed';
+  }
+
+  @override
+  String aoFeeNeededBefore(String amount, String date) {
+    return '$amount shipping fee needed by $date';
+  }
+
+  @override
+  String get aoFeeNeededBody =>
+      'After the deadline the book still ships and the fee is deducted from your deposit.';
+
+  @override
+  String aoTimeLeft(String left) {
+    return '$left left';
+  }
+
+  @override
+  String get aoPayFeeButton => 'Top up and pay shipping';
+
+  @override
+  String get aoPayFeeTitle => 'Pay shipping fee';
+
+  @override
+  String aoPayFeeBody(String amount) {
+    return '$amount will be held from your wallet for the next delivery.';
+  }
+
+  @override
+  String aoPayFeeConfirm(String amount) {
+    return 'Hold $amount';
+  }
+
+  @override
+  String get aoFeeHeld => 'Shipping fee held';
+
+  @override
+  String get aoFeeHeldBody => 'The warehouse will ship soon.';
+
+  @override
+  String get aoReadyTitle => 'Warehouse is preparing your book';
+
+  @override
+  String get aoReadyBody =>
+      'You can change the address until the book leaves the warehouse.';
+
+  @override
+  String get aoInDeliveryTitle => 'Out for delivery';
+
+  @override
+  String aoInDeliveryBody(int count, int max) {
+    return 'Attempt $count/$max. After too many failed attempts the book returns to storage.';
+  }
+
+  @override
+  String get aoInStorageTitle => 'Book is in storage';
+
+  @override
+  String aoInStorageBody(int max, String perDay, String accrued) {
+    return 'Delivery failed $max times so the book went back to storage. Storage fee $perDay/day, accrued $accrued (taken from your deposit).';
+  }
+
+  @override
+  String aoStorageLeft(String left) {
+    return '$left of storage left';
+  }
+
+  @override
+  String get aoChosenPickup => 'You chose to pick up at the warehouse.';
+
+  @override
+  String get aoChosenRedeliver => 'You chose redelivery.';
+
+  @override
+  String get aoPickup => 'Pick up';
+
+  @override
+  String get aoRedeliver => 'Redeliver';
+
+  @override
+  String get aoPickupTitle => 'Pick up at warehouse';
+
+  @override
+  String get aoPickupBody =>
+      'Collect the book at the Oldbook warehouse. Storage fees apply until pickup.';
+
+  @override
+  String get aoRedeliverTitle => 'Redeliver';
+
+  @override
+  String aoRedeliverBody(String amount) {
+    return '$amount more shipping fee will be held for redelivery.';
+  }
+
+  @override
+  String get aoChoiceSaved => 'Choice saved.';
+
+  @override
+  String get aoDeliveredTitle => 'Delivered';
+
+  @override
+  String get aoPickedUpTitle => 'Picked up';
+
+  @override
+  String get aoComplaintWindowBody =>
+      'Check the book. Report any issue before the deadline; auction complaints go straight to Oldbook.';
+
+  @override
+  String aoComplaintLeft(String left) {
+    return '$left left to complain';
+  }
+
+  @override
+  String get aoComplain => 'Report a problem';
+
+  @override
+  String get aoDisputedTitle => 'Complaint in progress';
+
+  @override
+  String get aoDisputedBody =>
+      'Oldbook is reviewing the evidence and will decide.';
+
+  @override
+  String get aoViewComplaint => 'View complaint';
+
+  @override
+  String aoFinishedAt(String date) {
+    return 'Finished at $date';
+  }
+
+  @override
+  String get aoUnsupportedStatus =>
+      'Unsupported status, please update the app.';
+
+  @override
+  String get aoDeadlinePassed => 'Deadline passed';
+
+  @override
+  String get aoSellerInProgress =>
+      'The Oldbook warehouse is handling delivery to the winner. You get paid when the order completes.';
+
+  @override
+  String get aoSellerFinished => 'This order is finished.';
+
+  @override
+  String get aoMoneyTitle => 'Money';
+
+  @override
+  String get aoMoneyFinal => 'Winning price';
+
+  @override
+  String get aoMoneyDeposit => 'Deposit held';
+
+  @override
+  String get aoMoneyShipping => 'Shipping fee per delivery';
+
+  @override
+  String get aoMoneyShippingUnpaid => 'Unpaid shipping (from deposit)';
+
+  @override
+  String get aoMoneyStorage => 'Storage fee (from deposit)';
+
+  @override
+  String get aoMoneyCommission => 'Commission';
+
+  @override
+  String get aoMoneyNet => 'You receive';
+
+  @override
+  String get aoMoneyNote =>
+      'The deposit is returned when the order completes, minus unpaid shipping and storage fees.';
+
+  @override
+  String get aoNoAddressYet => 'No delivery address yet';
+
+  @override
+  String get aoChangeAddress => 'Change';
+
+  @override
+  String get aoNoAddress => 'You have no addresses yet, add one first.';
+
+  @override
+  String get aoAddressSaved => 'Delivery address updated.';
+
+  @override
+  String get aoNeedAddressFirst => 'Pick a delivery address first.';
+
+  @override
+  String get aoDeliveryTitle => 'Delivery';
+
+  @override
+  String aoAttempt(int round, int n) {
+    return 'Round $round · attempt $n';
+  }
+
+  @override
+  String get aoViewAuction => 'View auction';
+
+  @override
+  String get aucStatusAwaitingInbound => 'Awaiting warehouse';
+
+  @override
+  String get aucStatusPendingReview => 'Pending review';
+
+  @override
+  String get aucStatusNotEnough => 'Not enough bidders';
+
+  @override
+  String get aucStatusRejected => 'Rejected';
+
+  @override
+  String get aucStatusCancelled => 'Cancelled';
+
+  @override
+  String get aucStatusConverted => 'Converted to sale';
+
+  @override
+  String get aucStatusReturned => 'Returned';
+
+  @override
+  String get aucTimerInboundDeadline => 'Ship by';
+
+  @override
+  String get aucTimerFallbackDeadline => 'Decide by';
+
+  @override
+  String aucSubRegistrationOpen(String time) {
+    return 'Auction starts $time.';
+  }
+
+  @override
+  String get aucRegConfirmedTag => 'Confirmed';
+
+  @override
+  String get aucRegCancelledTag => 'Cancelled';
+
+  @override
+  String get aucRegRefundedTag => 'Refunded';
+
+  @override
+  String get aucRegCompletedTag => 'Participated';
+
+  @override
+  String get aucReturnAwaitingFee => 'Awaiting fee';
+
+  @override
+  String get aucReturnReady => 'Ready to dispatch';
+
+  @override
+  String get aucReturnDispatched => 'Dispatched';
+
+  @override
+  String aucNeedTopup(String amount) {
+    return 'Your wallet is short by $amount.';
+  }
+
+  @override
+  String aucErrTooLowMin(String amount) {
+    return 'Bid is below the minimum of $amount.';
+  }
+
+  @override
+  String bidConfirmTitle(String amount) {
+    return 'Bid $amount?';
+  }
+
+  @override
+  String bidConfirmHold(String amount) {
+    return '$amount will be held in your wallet while you lead.';
+  }
+
+  @override
+  String get bidConfirmOutbid =>
+      'If you are outbid, the hold is released immediately.';
+
+  @override
+  String get aucWillHold => 'Will hold';
+
+  @override
+  String get fbTitle => 'Choose an option';
+
+  @override
+  String get fbReschedule => 'Reschedule';
+
+  @override
+  String fbRescheduleSub(int n) {
+    return 'Reopen registration with a new start time · $n left';
+  }
+
+  @override
+  String get fbConvert => 'Convert to fixed-price sale';
+
+  @override
+  String get fbConvertSub =>
+      'Creates a listing at your price; the warehouse returns the book to you first';
+
+  @override
+  String get fbReturn => 'Get the book back';
+
+  @override
+  String get fbReturnSub =>
+      'The warehouse returns the book at your shipping cost';
+
+  @override
+  String get fbPickStart => 'Pick a new start time';
+
+  @override
+  String get fbPrice => 'Sale price (VND)';
+
+  @override
+  String get fbPriceInvalid => 'Minimum 1,000 VND';
+
+  @override
+  String get fbReturnNote =>
+      'The return shipping fee will be held from your wallet.';
+
+  @override
+  String get fbConfirm => 'Confirm';
+
+  @override
+  String get fbDone => 'Option saved.';
+
+  @override
+  String get aucCancel => 'Cancel auction';
+
+  @override
+  String get aucCancelConfirm =>
+      'Cancel this auction? The book has not reached the warehouse, so there is no fee.';
+
+  @override
+  String get aucCancelConfirmInWarehouse =>
+      'The book is in the warehouse: cancelling creates a return and you pay the shipping.';
+
+  @override
+  String get aucCancelledBySeller => 'You cancelled this auction.';
+
+  @override
+  String get aucCancelledTimeout =>
+      'The warehouse did not receive the book in time, so the auction was cancelled.';
+
+  @override
+  String get aucPendingReviewTitle => 'Book received';
+
+  @override
+  String get aucPendingReviewBody =>
+      'Admin is inspecting the book and reviewing the auction.';
+
+  @override
+  String get aucRejectedTitle => 'Auction rejected';
+
+  @override
+  String get aucSellerWaitingTitle => 'Waiting for the auction';
+
+  @override
+  String get aucNotEnoughTitle => 'Not enough participants';
+
+  @override
+  String get aucNoBidTitle => 'No bids were placed';
+
+  @override
+  String get aucFallbackBody =>
+      'Reschedule, convert to a sale or get the book back. If you do nothing, the book is returned automatically.';
+
+  @override
+  String aucFallbackLeft(String left) {
+    return '$left left to decide';
+  }
+
+  @override
+  String get aucFallbackExpired => 'Decision deadline passed';
+
+  @override
+  String get aucSoldTitle => 'Auction sold';
+
+  @override
+  String aucSoldBody(String amount) {
+    return 'Final price $amount. You get paid when the order completes.';
+  }
+
+  @override
+  String get aucViewOrder => 'View order';
+
+  @override
+  String get aucConvertedTitle => 'Converted to a sale';
+
+  @override
+  String get aucConvertedBody =>
+      'The warehouse returns the book to you first so you can ship it to the buyer.';
+
+  @override
+  String get aucViewListing => 'View listing';
+
+  @override
+  String get aucReturnedBody => 'The book is being returned to you.';
+
+  @override
+  String get aucSellerSection => 'Your auction';
+
+  @override
+  String get aucInboundHint =>
+      'Write this code on the package and send it to the warehouse before the deadline, or the auction is cancelled.';
+
+  @override
+  String aucInboundLeft(String left) {
+    return '$left left to ship the book';
+  }
+
+  @override
+  String get aucInboundExpired => 'Shipping deadline passed';
+
+  @override
+  String get aucWarehouse => 'Warehouse address';
+
+  @override
+  String get aucCopyShipping => 'Copy shipping details';
+
+  @override
+  String get aucReturnTitle => 'Book return';
+
+  @override
+  String aucReturnFeeNeeded(String amount) {
+    return 'Your wallet lacks the $amount return shipping fee. Top up and it will be held within an hour.';
+  }
+
+  @override
+  String aucReturnFee(String amount) {
+    return 'Return shipping fee $amount.';
+  }
+
+  @override
+  String aucReturnTracking(String carrier, String tracking) {
+    return '$carrier · $tracking';
+  }
+
+  @override
+  String get aucClosing => 'Closing…';
+
+  @override
+  String get aucRealtimeOffline =>
+      'Realtime disconnected, prices may lag. Pull to refresh.';
+
+  @override
+  String get aucBuyNowTag => 'Buy now';
+
+  @override
+  String aucOutbidToast(String amount) {
+    return 'You were outbid ($amount). Your hold was released.';
+  }
+
+  @override
+  String get aucEndedToast => 'The auction has ended.';
+
+  @override
+  String aucUnregisterConfirm(String amount) {
+    return 'Cancel registration? $amount in fee and deposit returns to your wallet.';
+  }
+
+  @override
+  String get aucRegistrationUnavailable =>
+      'Registration is closed for this auction.';
+
+  @override
+  String get myAuctionsShort => 'Mine';
+
+  @override
+  String get myAucTabSeller => 'Selling';
+
+  @override
+  String get myAucTabBidder => 'Joined';
+
+  @override
+  String get myAucTabLeading => 'Leading';
+
+  @override
+  String get myAucTabWinner => 'Won';
+
+  @override
+  String get myAucCreate => 'Create an auction';
+
+  @override
+  String get myAucEmptySeller => 'You have not created any auctions.';
+
+  @override
+  String get myAucEmptyLeading => 'You are not leading any auction.';
+
+  @override
+  String get myAucEmptyWinner => 'You have not won any auction yet.';
+
+  @override
+  String get meAuctionOrdersSub => 'Shipping, delivery, storage';
+
+  @override
+  String get mlAuctionsLink => 'Your auctions';
+
+  @override
+  String get soAuctionOrdersLink => 'Auction orders';
+
+  @override
+  String get sellDoneViewAuction => 'View auction';
+
+  @override
+  String get sellStartAt => 'Desired start time';
+
+  @override
+  String sellStartTooSoon(String date) {
+    return 'Start time too soon. Earliest: $date. Updated, please submit again.';
+  }
+
+  @override
+  String get copy => 'Copy';
+
+  @override
+  String get copied => 'Copied';
+
+  @override
+  String get loadMore => 'Load more';
+
+  @override
+  String get errAuctionNotFound => 'Auction not found.';
+
+  @override
+  String get errAuctionOwn => 'This is your own auction.';
+
+  @override
+  String get errAuctionAlreadyRegistered => 'You are already registered.';
+
+  @override
+  String get errAuctionRegistrationNotFound =>
+      'You are not registered for this auction.';
+
+  @override
+  String get errAuctionStartTooSoon => 'Start time is too soon.';
+
+  @override
+  String get errAuctionRescheduleLimit => 'No reschedules left.';
+
+  @override
+  String get errAuctionPhotoInvalid => 'Invalid photo, please pick again.';
+
+  @override
+  String get errAuctionOrderNotFound => 'Auction order not found.';
+
+  @override
+  String get errAuctionOrderAddressRequired => 'Pick a delivery address first.';
+
+  @override
+  String get errAuctionOrderExtensionLimit => 'No extensions left.';
 }
