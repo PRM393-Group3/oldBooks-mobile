@@ -32,6 +32,8 @@ void main() {
       lessThan(100),
       reason: 'đầu trang Khám phá nằm ở trên cùng, không bị cuộn mất',
     );
-    expect(find.text('Nhà giả kim'), findsOneWidget);
+    // Dải "Đang đấu giá" nằm trên lưới nên chỉ vài sách đầu được dựng.
+    expect(find.text('Đang đấu giá'), findsOneWidget);
+    expect(find.text('Sapiens: Lược sử loài người'), findsOneWidget);
   });
 }

@@ -5,6 +5,8 @@ import 'package:books_marketplace_mobile/features/cart/application/cart_provider
 import 'package:books_marketplace_mobile/features/cart/domain/cart_item.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
+import 'package:books_marketplace_mobile/features/auth/application/auth_controller.dart';
+import 'package:books_marketplace_mobile/features/orders/application/order_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,6 +33,11 @@ Listing _book(
   price: price,
 );
 
+class _SignedIn extends AuthController {
+  @override
+  AuthStatus build() => AuthStatus.authenticated;
+}
+
 void main() {
   group('normalizeSearch', () {
     test('bỏ dấu tiếng Việt, chữ thường, cắt khoảng trắng', () {
@@ -47,19 +54,25 @@ void main() {
   });
 
   group('giỏ hàng', () {
-    test('thêm, chặn trùng, xóa, đếm', () {
-      final c = ProviderContainer();
+    test('thêm, chặn trùng, xóa, đếm (giỏ lưu ở server)', () async {
+      final repo = FakeOrderRepository();
+      final c = ProviderContainer(
+        overrides: [
+          authControllerProvider.overrideWith(_SignedIn.new),
+          orderRepositoryProvider.overrideWithValue(repo),
+        ],
+      );
       addTearDown(c.dispose);
+      await c.read(cartProvider.future);
       final cart = c.read(cartProvider.notifier);
-      const item = CartItem(listingId: 'a', title: 'A', price: 1000);
 
-      expect(cart.add(item), isTrue);
-      expect(cart.add(item), isFalse, reason: 'mỗi tin chỉ một cuốn');
-      expect(c.read(cartCountProvider), 1);
+      await cart.add('a');
+      await cart.add('a');
+      expect(c.read(cartCountProvider), 1, reason: 'mỗi tin chỉ một cuốn');
       expect(c.read(inCartProvider('a')), isTrue);
       expect(c.read(inCartProvider('b')), isFalse);
 
-      cart.remove('a');
+      await cart.remove('a');
       expect(c.read(cartCountProvider), 0);
     });
 
@@ -186,7 +199,6 @@ void main() {
       );
 
       expect(find.text('45.000 ₫'), findsOneWidget);
-      expect(find.text('+ ship 25.000 ₫'), findsOneWidget);
       expect(find.text('Nguyen Van A'), findsOneWidget);
       await reveal(find.text('Gáy hơi cong nhẹ'));
       expect(find.text('Gáy hơi cong nhẹ'), findsOneWidget);

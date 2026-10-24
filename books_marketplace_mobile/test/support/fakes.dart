@@ -2,17 +2,17 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:books_marketplace_mobile/core/network/api_client.dart';
-import 'package:books_marketplace_mobile/core/network/api_error.dart';
 import 'package:books_marketplace_mobile/core/network/paged_result.dart';
 import 'package:books_marketplace_mobile/core/preview/in_memory_listings.dart';
 import 'package:books_marketplace_mobile/core/storage/token_store.dart';
 import 'package:books_marketplace_mobile/features/categories/data/category_repository.dart';
 import 'package:books_marketplace_mobile/features/categories/domain/category.dart';
-import 'package:books_marketplace_mobile/features/listings/data/listing_repository.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
 import 'package:books_marketplace_mobile/features/notifications/data/notification_repository.dart';
 import 'package:books_marketplace_mobile/features/notifications/domain/app_notification.dart';
+import 'package:books_marketplace_mobile/features/orders/data/order_repository.dart';
+import 'package:books_marketplace_mobile/features/orders/domain/sale_order.dart';
 import 'package:dio/dio.dart';
 
 /// TokenStore chạy trong bộ nhớ, không chạm Keychain.
@@ -229,4 +229,30 @@ class FakeNotificationRepository extends NotificationRepository {
       auctionWatch: auctionWatch,
     );
   }
+}
+
+/// Giỏ của server: thêm trùng không đổi gì, xóa không có thì vẫn thành công.
+class FakeOrderRepository extends OrderRepository {
+  FakeOrderRepository() : super(ApiClient(Dio()));
+
+  final List<String> _ids = [];
+
+  CartData get _data => CartData(
+    items: [
+      for (final id in _ids) CartLine(listingId: id, title: id, price: 1000),
+    ],
+    availableSubtotal: _ids.length * 1000,
+  );
+
+  @override
+  Future<CartData> cart() async => _data;
+
+  @override
+  Future<CartData> addToCart(String listingId) async {
+    if (!_ids.contains(listingId)) _ids.add(listingId);
+    return _data;
+  }
+
+  @override
+  Future<void> removeFromCart(String listingId) async => _ids.remove(listingId);
 }

@@ -126,6 +126,8 @@ void main() {
     expect(find.text('• Cần ít nhất 4 ảnh (hiện có 0)'), findsOneWidget);
     expect(find.text('• Nhập tên sách'), findsOneWidget);
     expect(find.text('• Giá bán tối thiểu 1.000 đ'), findsOneWidget);
+    // Các dòng lỗi đẩy nút xuống; cuộn lại để ListView dựng dòng cuối.
+    await _scrollTo(tester, find.text('Gửi duyệt'));
     expect(find.text('• Chọn thể loại.'), findsOneWidget);
     expect(find.text('Đã gửi duyệt'), findsNothing);
     expect(
@@ -168,15 +170,20 @@ void main() {
       expect(find.textContaining('"Mắt biếc"'), findsOneWidget);
 
       // Đã đi đủ các bước của backend theo thứ tự: tạo, tải ảnh, đặt ảnh, gửi duyệt.
-      expect(h.listings.calls.where((c) => !c.startsWith('mine')).toList(), [
-        'create',
-        'upload:mine-1:1',
-        'upload:mine-1:1',
-        'upload:mine-1:1',
-        'upload:mine-1:1',
-        'photos:mine-1:4',
-        'submit:mine-1',
-      ]);
+      expect(
+        h.listings.calls
+            .where((c) => !c.startsWith('mine') && !c.startsWith('search'))
+            .toList(),
+        [
+          'create',
+          'upload:mine-1:1',
+          'upload:mine-1:1',
+          'upload:mine-1:1',
+          'upload:mine-1:1',
+          'photos:mine-1:4',
+          'submit:mine-1',
+        ],
+      );
       expect(h.listings.items.first.status.api, 'PENDING_REVIEW');
 
       await tester.tap(find.text('Xem tin đăng của tôi'));

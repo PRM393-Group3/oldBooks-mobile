@@ -13,6 +13,7 @@ import 'package:books_marketplace_mobile/features/notifications/application/noti
 import 'package:books_marketplace_mobile/features/profile/application/profile_controller.dart';
 import 'package:books_marketplace_mobile/core/preview/preview_auctions.dart';
 import 'package:books_marketplace_mobile/features/auction_orders/application/auction_order_providers.dart';
+import 'package:books_marketplace_mobile/features/orders/application/order_providers.dart';
 import 'package:books_marketplace_mobile/features/auctions/application/auction_providers.dart';
 import 'package:books_marketplace_mobile/features/auctions/data/auction_hub.dart';
 import 'package:books_marketplace_mobile/features/profile/data/profile_repository.dart';
@@ -51,6 +52,7 @@ class Harness {
       notifications = FakeNotificationRepository(),
       auctions = InMemoryAuctionRepository(),
       auctionOrders = InMemoryAuctionOrderRepository(),
+      orders = FakeOrderRepository(),
       hub = OfflineAuctionHub();
 
   final UserRole role;
@@ -62,6 +64,7 @@ class Harness {
   /// Đấu giá trong bộ nhớ (dữ liệu mẫu của chế độ xem trước).
   final InMemoryAuctionRepository auctions;
   final InMemoryAuctionOrderRepository auctionOrders;
+  final FakeOrderRepository orders;
 
   /// Hub không kết nối; test phát sự kiện bằng `hub.emit`.
   final OfflineAuctionHub hub;
@@ -110,6 +113,7 @@ class Harness {
           notificationRepositoryProvider.overrideWithValue(notifications),
           auctionRepositoryProvider.overrideWithValue(auctions),
           auctionOrderRepositoryProvider.overrideWithValue(auctionOrders),
+          orderRepositoryProvider.overrideWithValue(orders),
           auctionHubProvider.overrideWithValue(hub),
           ...overrides,
         ],
