@@ -5,15 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/paging/cursor_notifier.dart';
+import '../../../../core/network/api_error.dart';
 import '../../../../core/theme/app_dimens.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/theme_context.dart';
+import '../../../../core/widgets/app_logo.dart';
+import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/app_state_views.dart';
 import '../../../auctions/presentation/live_auction_strip.dart';
 import '../../../cart/application/cart_providers.dart';
 import '../../../categories/application/category_providers.dart';
 import '../../../notifications/application/notification_providers.dart';
-import '../../../sim/application/sim_providers.dart';
 import '../../application/listing_providers.dart';
 import '../../domain/listing.dart';
 import '../../domain/listing_query.dart';
@@ -57,6 +59,23 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
     });
   }
 
+  Future<void> _addToCart(Listing listing) async {
+    final l = context.l10n;
+    final already = ref
+        .read(cartProvider)
+        .value
+        ?.items
+        .any((i) => i.listingId == listing.id);
+    try {
+      await ref.read(cartProvider.notifier).add(listing.id);
+      if (mounted) {
+        AppSnackbar.show(context, already == true ? l.ckAlready : l.ckAdded);
+      }
+    } on ApiError catch (e) {
+      if (mounted) AppSnackbar.apiError(context, e);
+    }
+  }
+
   Future<void> _openFilters() async {
     final next = await showListingFilterSheet(context, _query);
     if (next != null && mounted) setState(() => _query = next);
@@ -71,8 +90,11 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
     final categories = ref.watch(categoryTreeProvider).value ?? const [];
     final unread = ref.watch(totalUnreadProvider);
     final cartCount = ref.watch(cartCountProvider);
-    final reserved = ref.watch(reservedListingIdsProvider);
     final searching = _query.isSearching;
+    final inCartIds = {
+      for (final i in ref.watch(cartProvider).value?.items ?? const [])
+        i.listingId,
+    };
 
     final header = _Header(
       unread: unread,
@@ -106,10 +128,7 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
             ],
           ),
           data: (data) {
-            final items = [
-              for (final x in data.items)
-                if (!reserved.contains(x.id)) x,
-            ];
+            final items = data.items;
             return RefreshIndicator(
               onRefresh: notifier.reload,
               child: NotificationListener<ScrollNotification>(
@@ -185,7 +204,7 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
                                 (constraints.crossAxisExtent - _gridGap) / 2;
                             final textScaler = MediaQuery.textScalerOf(context);
                             final extent =
-                                tileWidth * 4 / 3 + textScaler.scale(112);
+                                tileWidth * 4 / 3 + textScaler.scale(150);
                             return SliverGrid.builder(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -199,6 +218,10 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
                                 listing: items[i],
                                 onTap: () =>
                                     context.push('/home/book/${items[i].id}'),
+                                onAddToCart: items[i].fixedPrice == null
+                                    ? null
+                                    : () => _addToCart(items[i]),
+                                inCart: inCartIds.contains(items[i].id),
                               ),
                             );
                           },
@@ -278,13 +301,12 @@ class _Header extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screen),
             child: Row(
               children: [
-                Expanded(
-                  child: Text(
-                    l.brandName,
-                    style: context.text.headlineMedium?.copyWith(
-                      fontSize: 30,
-                      letterSpacing: -0.6,
-                    ),
+                const Expanded(
+                  // Co lại khi hai nút bên phải chiếm nhiều chỗ (chữ lớn).
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: AppLogo.full(size: 36),
                   ),
                 ),
                 _HeaderPill(
@@ -427,7 +449,7 @@ class _HeaderPill extends StatelessWidget {
                     child: Text(
                       badge > 99 ? '99+' : '$badge',
                       style: context.text.labelSmall?.copyWith(
-                        color: Colors.white,
+                        color: colors.onAuction,
                         fontWeight: FontWeight.w700,
                         fontSize: 11,
                       ),

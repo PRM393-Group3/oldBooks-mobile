@@ -50,3 +50,33 @@ final inCartProvider = Provider.family<bool, String>(
       ref.watch(cartProvider).value?.items.any((i) => i.listingId == id) ??
       false,
 );
+
+/// Các tin người dùng đã bỏ chọn trong giỏ. Lưu phần bỏ chọn (không phải phần
+/// được chọn) để sách mới thêm vào giỏ mặc định được chọn.
+class CartDeselected extends Notifier<Set<String>> {
+  @override
+  Set<String> build() => const {};
+
+  void toggle(String id) =>
+      state = state.contains(id) ? ({...state}..remove(id)) : {...state, id};
+
+  /// Chọn hết [ids] khi [on], bỏ chọn hết [ids] khi không.
+  void setAll(Iterable<String> ids, {required bool on}) =>
+      state = on ? ({...state}..removeAll(ids)) : {...state, ...ids};
+
+  void clear() => state = const {};
+}
+
+final cartDeselectedProvider = NotifierProvider<CartDeselected, Set<String>>(
+  CartDeselected.new,
+);
+
+/// Món khả dụng và đang được chọn: thứ sẽ đi qua bước thanh toán.
+final cartSelectedProvider = Provider<List<CartLine>>((ref) {
+  final off = ref.watch(cartDeselectedProvider);
+  final items = ref.watch(cartProvider).value?.items ?? const <CartLine>[];
+  return [
+    for (final i in items)
+      if (i.isAvailable && !off.contains(i.listingId)) i,
+  ];
+});

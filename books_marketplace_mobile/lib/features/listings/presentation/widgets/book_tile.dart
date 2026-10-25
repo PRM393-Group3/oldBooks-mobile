@@ -9,10 +9,20 @@ import 'listing_format.dart';
 /// Ô sách trong lưới Khám phá: bìa 3:4, nhãn tình trạng, tên (serif), tác giả,
 /// giá. Không có viền thẻ; chỉ ảnh bìa bo góc như prototype.
 class BookTile extends StatelessWidget {
-  const BookTile({super.key, required this.listing, required this.onTap});
+  const BookTile({
+    super.key,
+    required this.listing,
+    required this.onTap,
+    this.onAddToCart,
+    this.inCart = false,
+  });
 
   final Listing listing;
   final VoidCallback onTap;
+
+  /// Có thì hiện nút thêm vào giỏ cạnh giá (chỉ tin bán giá cố định).
+  final VoidCallback? onAddToCart;
+  final bool inCart;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +32,7 @@ class BookTile extends StatelessWidget {
     final condition = listing.bookInfo.condition?.label(l);
     final author = listing.bookInfo.author;
     final price = listingPriceText(listing, l, locale);
+    final seller = listing.seller?.name;
 
     return Semantics(
       button: true,
@@ -57,6 +68,7 @@ class BookTile extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: context.text.titleMedium?.copyWith(
                 fontFamily: AppTypography.serifFamily,
+                fontVariations: AppTypography.serifSemiBold,
                 fontSize: 16,
                 height: 1.2,
               ),
@@ -76,14 +88,89 @@ class BookTile extends StatelessWidget {
             if (price != null)
               Padding(
                 padding: const EdgeInsets.only(top: AppSpacing.xxs),
-                child: Text(
-                  price,
-                  style: context.text.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        price,
+                        style: context.text.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    if (onAddToCart != null)
+                      _AddToCartButton(
+                        inCart: inCart,
+                        label: inCart ? l.inCart : l.addToCart,
+                        onTap: onAddToCart!,
+                      ),
+                  ],
                 ),
               ),
+            if (seller != null && seller.isNotEmpty)
+              Row(
+                children: [
+                  Icon(
+                    Icons.storefront_outlined,
+                    size: 14,
+                    color: colors.textSecondary,
+                  ),
+                  const SizedBox(width: AppSpacing.xxs),
+                  Expanded(
+                    child: Text(
+                      seller,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.text.labelSmall?.copyWith(
+                        color: colors.textSecondary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AddToCartButton extends StatelessWidget {
+  const _AddToCartButton({
+    required this.inCart,
+    required this.label,
+    required this.onTap,
+  });
+
+  final bool inCart;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return Semantics(
+      button: true,
+      label: label,
+      excludeSemantics: true,
+      child: Material(
+        color: inCart ? colors.primaryContainer : colors.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: AppRadius.mdAll,
+          side: BorderSide(color: inCart ? colors.primary : colors.divider),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          customBorder: RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
+          child: SizedBox(
+            width: 44,
+            height: 44,
+            child: Icon(
+              inCart ? Icons.check : Icons.add_shopping_cart_outlined,
+              size: 20,
+              color: colors.primary,
+            ),
+          ),
         ),
       ),
     );
@@ -157,16 +244,18 @@ class BookBadge extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colors.surface,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(AppRadius.full),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.xs,
+          vertical: 2,
+        ),
         child: Text(
           label,
           style: context.text.labelSmall?.copyWith(
             color: colors.textSecondary,
-            fontWeight: FontWeight.w600,
-            fontSize: 10.5,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),

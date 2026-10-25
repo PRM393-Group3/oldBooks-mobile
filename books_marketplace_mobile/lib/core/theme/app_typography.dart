@@ -11,6 +11,12 @@ abstract final class AppTypography {
   static const String serifFamily = 'Newsreader';
   static const String monoFamily = 'JetBrainsMono';
 
+  /// Newsreader và JetBrains Mono là font biến thiên. Android không tự suy ra
+  /// độ đậm từ `fontWeight` cho font biến thiên (iOS thì có), nên mọi chỗ đổi
+  /// `fontFamily` sang hai font này phải kèm trục `wght` rõ ràng.
+  static const List<FontVariation> serifSemiBold = [FontVariation('wght', 600)];
+  static const List<FontVariation> monoSemiBold = [FontVariation('wght', 600)];
+
   static TextStyle _style(double size, double lineHeight, FontWeight weight) {
     return TextStyle(
       fontFamily: fontFamily,

@@ -4,9 +4,13 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 
+import '../../features/auction_orders/application/auction_order_providers.dart';
+import '../../features/auctions/application/auction_providers.dart';
+import '../../features/auctions/data/auction_hub.dart';
 import '../../features/auth/application/auth_controller.dart';
 import '../../features/profile/application/address_providers.dart';
 import 'in_memory_listings.dart';
+import 'preview_auctions.dart';
 import '../../features/wallet/application/wallet_providers.dart';
 import '../../features/wallet/data/wallet_repository.dart';
 import '../../features/wallet/domain/wallet_models.dart';
@@ -662,5 +666,14 @@ List<Override> previewOverrides(TokenStore tokens, SharedPreferences prefs) {
     notificationRepositoryProvider.overrideWithValue(
       PreviewNotificationRepository(api),
     ),
+    auctionRepositoryProvider.overrideWithValue(InMemoryAuctionRepository()),
+    auctionOrderRepositoryProvider.overrideWithValue(
+      InMemoryAuctionOrderRepository(),
+    ),
+    auctionHubProvider.overrideWith((ref) {
+      final hub = OfflineAuctionHub();
+      ref.onDispose(hub.dispose);
+      return hub;
+    }),
   ];
 }

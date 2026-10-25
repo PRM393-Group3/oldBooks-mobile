@@ -126,10 +126,11 @@ int minBuyNow(int startingPrice) => SellRules.defaults.minBuyNow(startingPrice);
 int sellerFee(int price) => SellRules.defaults.sellerFee(price);
 int auctionCommission(int price) => SellRules.defaults.auctionCommission(price);
 
-/// Thời điểm bắt đầu sớm nhất: 5 ngày gửi kho + 3 ngày đăng ký + 24 giờ (BR-18,
-/// BR-07, BR-08).
+/// Thời điểm bắt đầu sớm nhất app cho chọn: sau 5 phút. Mốc thật phụ thuộc cấu
+/// hình (gửi kho BR-18, mở đăng ký BR-07, đóng đăng ký BR-08) nên server kiểm
+/// tra lại và trả `AUCTION_START_TOO_SOON` nếu giờ chọn còn quá gần.
 DateTime earliestAuctionStart(DateTime now) =>
-    now.add(const Duration(days: 8, hours: 24));
+    now.add(const Duration(minutes: 5));
 
 enum SellError {
   photos,
@@ -246,16 +247,15 @@ List<SellError> validateSell(
     }
   }
   if (f.description.trim().isEmpty) e.add(SellError.description);
-  if (!f.isAuction) {
-    if (f.categoryId == null) e.add(SellError.category);
-    if (f.isbn.trim().isNotEmpty && !isValidIsbn(f.isbn)) {
-      e.add(SellError.isbn);
-    }
-    final year = int.tryParse(f.publishYear.trim());
-    if (f.publishYear.trim().isNotEmpty &&
-        (year == null || year < 1450 || year > DateTime.now().year + 1)) {
-      e.add(SellError.year);
-    }
+  // Tạo phiên đấu giá cũng bắt buộc thể loại và cùng quy tắc trường sách.
+  if (f.categoryId == null) e.add(SellError.category);
+  if (f.isbn.trim().isNotEmpty && !isValidIsbn(f.isbn)) {
+    e.add(SellError.isbn);
+  }
+  final year = int.tryParse(f.publishYear.trim());
+  if (f.publishYear.trim().isNotEmpty &&
+      (year == null || year < 1450 || year > DateTime.now().year + 1)) {
+    e.add(SellError.year);
   }
   return e;
 }

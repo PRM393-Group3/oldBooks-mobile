@@ -2374,6 +2374,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get sellDuration => 'Thời lượng phiên';
 
   @override
+  String get sellDuration5m => '5 phút';
+
+  @override
+  String get sellDuration15m => '15 phút';
+
+  @override
   String get sellDuration1h => '1 giờ';
 
   @override
@@ -2387,7 +2393,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String sellEarliestStart(String time) {
-    return 'Bắt đầu sớm nhất: $time (5 ngày gửi kho + 3 ngày đăng ký + 24 giờ)';
+    return 'Bắt đầu sớm nhất: $time (còn tùy cấu hình hệ thống; quá gần sẽ bị từ chối)';
   }
 
   @override
@@ -3920,4 +3926,795 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get errOtpSendFailed => 'Không gửi được mã, hãy thử lại sau.';
+
+  @override
+  String get aoTitle => 'Đơn đấu giá';
+
+  @override
+  String get aoDetailTitle => 'Chi tiết đơn đấu giá';
+
+  @override
+  String get aoTabBuyer => 'Tôi thắng';
+
+  @override
+  String get aoTabSeller => 'Tôi bán';
+
+  @override
+  String get aoFilterAction => 'Cần xử lý';
+
+  @override
+  String get aoFilterShipping => 'Đang giao';
+
+  @override
+  String get aoFilterFinished => 'Đã xong';
+
+  @override
+  String get aoEmpty => 'Chưa có đơn đấu giá.';
+
+  @override
+  String get aoEmptyBuyerHint => 'Thắng một phiên đấu giá, đơn sẽ hiện ở đây.';
+
+  @override
+  String aoWinningPrice(String amount) {
+    return 'Giá thắng $amount';
+  }
+
+  @override
+  String get aoStatusAwaitingFee => 'Chờ phí ship';
+
+  @override
+  String get aoStatusReadyToShip => 'Chờ kho gửi';
+
+  @override
+  String get aoStatusInDelivery => 'Đang giao';
+
+  @override
+  String get aoStatusInStorage => 'Đang lưu kho';
+
+  @override
+  String get aoStatusDelivered => 'Đã giao';
+
+  @override
+  String get aoStatusPickedUp => 'Đã nhận tại kho';
+
+  @override
+  String get aoStatusStorageExpired => 'Hết hạn lưu kho';
+
+  @override
+  String get aoStatusDisputed => 'Đang khiếu nại';
+
+  @override
+  String get aoStatusCompleted => 'Hoàn tất';
+
+  @override
+  String get aoStatusRefunded => 'Đã hoàn tiền';
+
+  @override
+  String get aoStatusPartiallyRefunded => 'Hoàn một phần';
+
+  @override
+  String get aoPeAwaitingDecision => 'Chờ bạn chọn cách nhận sách';
+
+  @override
+  String get aoPeExtended => 'Đã gia hạn lưu kho';
+
+  @override
+  String get aoPeAwaitingLiquidation => 'Sách sẽ được thanh lý';
+
+  @override
+  String get aoPeLiquidated => 'Đã thanh lý';
+
+  @override
+  String get aoPeReleased => 'Kho đã giao sách';
+
+  @override
+  String get aoPeDecisionBody =>
+      'Người bán đã được thanh toán, sách vẫn thuộc về bạn. Hãy chọn gia hạn, nhận tại kho hoặc giao lại trước hạn, nếu không sách sẽ bị thanh lý.';
+
+  @override
+  String aoDecisionLeft(String left) {
+    return 'Còn $left để chọn';
+  }
+
+  @override
+  String aoExtendButton(String fee, int n) {
+    return 'Gia hạn $fee (còn $n lần)';
+  }
+
+  @override
+  String get aoExtendTitle => 'Gia hạn lưu kho';
+
+  @override
+  String aoExtendBody(String fee, int days) {
+    return 'Trả trước $fee để giữ sách thêm $days ngày.';
+  }
+
+  @override
+  String aoExtendedUntil(String date) {
+    return 'Đã gia hạn tới $date';
+  }
+
+  @override
+  String get aoLiquidationBody =>
+      'Bạn không chọn cách nhận sách kịp hạn. Admin sẽ thanh lý, tiền thu được (trừ phí) sẽ cộng vào ví.';
+
+  @override
+  String aoLiquidatedBody(String amount) {
+    return '$amount đã được cộng vào ví (sau phí thanh lý).';
+  }
+
+  @override
+  String get aoAddressRequiredTitle => 'Chưa có địa chỉ giao';
+
+  @override
+  String get aoAddressRequiredBody =>
+      'Kho chỉ gửi được khi đơn có địa chỉ. Chọn một địa chỉ trong sổ địa chỉ.';
+
+  @override
+  String aoFeeNeededTitle(String amount) {
+    return 'Cần $amount phí ship';
+  }
+
+  @override
+  String aoFeeNeededBefore(String amount, String date) {
+    return 'Cần $amount phí ship trước $date';
+  }
+
+  @override
+  String get aoFeeNeededBody =>
+      'Quá hạn kho vẫn gửi sách và phí ship sẽ bị trừ vào cọc.';
+
+  @override
+  String aoTimeLeft(String left) {
+    return 'Còn $left';
+  }
+
+  @override
+  String get aoPayFeeButton => 'Nạp và thanh toán phí ship';
+
+  @override
+  String get aoPayFeeTitle => 'Thanh toán phí ship';
+
+  @override
+  String aoPayFeeBody(String amount) {
+    return 'Ví sẽ giữ $amount cho lần giao sắp tới.';
+  }
+
+  @override
+  String aoPayFeeConfirm(String amount) {
+    return 'Giữ $amount';
+  }
+
+  @override
+  String get aoFeeHeld => 'Đã giữ phí ship';
+
+  @override
+  String get aoFeeHeldBody => 'Kho sẽ gửi sách sớm.';
+
+  @override
+  String get aoReadyTitle => 'Kho đang chuẩn bị gửi';
+
+  @override
+  String get aoReadyBody =>
+      'Bạn vẫn đổi được địa chỉ cho tới khi sách rời kho.';
+
+  @override
+  String get aoInDeliveryTitle => 'Đang giao hàng';
+
+  @override
+  String aoInDeliveryBody(int count, int max) {
+    return 'Lần giao $count/$max. Không giao được đủ số lần thì sách về kho lưu.';
+  }
+
+  @override
+  String get aoInStorageTitle => 'Sách đang lưu kho';
+
+  @override
+  String aoInStorageBody(int max, String perDay, String accrued) {
+    return 'Giao thất bại $max lần nên sách về kho. Phí lưu kho $perDay/ngày, đã cộng dồn $accrued (trừ vào cọc).';
+  }
+
+  @override
+  String aoStorageLeft(String left) {
+    return 'Lưu kho còn $left';
+  }
+
+  @override
+  String get aoChosenPickup => 'Bạn đã chọn nhận tại kho.';
+
+  @override
+  String get aoChosenRedeliver => 'Bạn đã chọn giao lại.';
+
+  @override
+  String get aoPickup => 'Nhận tại kho';
+
+  @override
+  String get aoRedeliver => 'Giao lại';
+
+  @override
+  String get aoPickupTitle => 'Nhận tại kho';
+
+  @override
+  String get aoPickupBody =>
+      'Bạn đến kho Oldbook nhận sách. Phí lưu kho tính tới ngày nhận.';
+
+  @override
+  String get aoRedeliverTitle => 'Giao lại';
+
+  @override
+  String aoRedeliverBody(String amount) {
+    return 'Ví sẽ giữ thêm $amount phí ship cho lần giao lại.';
+  }
+
+  @override
+  String get aoChoiceSaved => 'Đã ghi nhận lựa chọn.';
+
+  @override
+  String get aoDeliveredTitle => 'Đã giao thành công';
+
+  @override
+  String get aoPickedUpTitle => 'Đã nhận tại kho';
+
+  @override
+  String get aoComplaintWindowBody =>
+      'Kiểm tra sách. Có vấn đề thì khiếu nại trong hạn, khiếu nại đi thẳng tới Oldbook.';
+
+  @override
+  String aoComplaintLeft(String left) {
+    return 'Còn $left để khiếu nại';
+  }
+
+  @override
+  String get aoComplain => 'Khiếu nại';
+
+  @override
+  String get aoDisputedTitle => 'Đang xử lý khiếu nại';
+
+  @override
+  String get aoDisputedBody =>
+      'Oldbook đang xem xét bằng chứng và sẽ ra phán quyết.';
+
+  @override
+  String get aoViewComplaint => 'Xem khiếu nại';
+
+  @override
+  String aoFinishedAt(String date) {
+    return 'Kết thúc lúc $date';
+  }
+
+  @override
+  String get aoUnsupportedStatus =>
+      'Trạng thái chưa hỗ trợ, hãy cập nhật ứng dụng.';
+
+  @override
+  String get aoDeadlinePassed => 'Đã quá hạn';
+
+  @override
+  String get aoSellerInProgress =>
+      'Kho Oldbook đang xử lý giao sách cho người thắng. Bạn được thanh toán khi đơn hoàn tất.';
+
+  @override
+  String get aoSellerFinished => 'Đơn đã kết thúc.';
+
+  @override
+  String get aoMoneyTitle => 'Tiền';
+
+  @override
+  String get aoMoneyFinal => 'Giá thắng';
+
+  @override
+  String get aoMoneyDeposit => 'Cọc đang giữ';
+
+  @override
+  String get aoMoneyShipping => 'Phí ship mỗi lần giao';
+
+  @override
+  String get aoMoneyShippingUnpaid => 'Phí ship chưa thu (trừ vào cọc)';
+
+  @override
+  String get aoMoneyStorage => 'Phí lưu kho (trừ vào cọc)';
+
+  @override
+  String get aoMoneyCommission => 'Hoa hồng';
+
+  @override
+  String get aoMoneyNet => 'Bạn nhận';
+
+  @override
+  String get aoMoneyNote =>
+      'Cọc được hoàn khi đơn hoàn tất, sau khi trừ phí ship chưa thu và phí lưu kho.';
+
+  @override
+  String get aoNoAddressYet => 'Chưa có địa chỉ giao hàng';
+
+  @override
+  String get aoChangeAddress => 'Đổi';
+
+  @override
+  String get aoNoAddress => 'Bạn chưa có địa chỉ nào, hãy thêm một địa chỉ.';
+
+  @override
+  String get aoAddressSaved => 'Đã cập nhật địa chỉ giao.';
+
+  @override
+  String get aoNeedAddressFirst => 'Hãy chọn địa chỉ giao trước.';
+
+  @override
+  String get aoDeliveryTitle => 'Giao hàng';
+
+  @override
+  String aoAttempt(int round, int n) {
+    return 'Đợt $round · lần $n';
+  }
+
+  @override
+  String get aoViewAuction => 'Xem phiên đấu giá';
+
+  @override
+  String get aucStatusAwaitingInbound => 'Chờ gửi kho';
+
+  @override
+  String get aucStatusPendingReview => 'Chờ duyệt';
+
+  @override
+  String get aucStatusNotEnough => 'Không đủ người';
+
+  @override
+  String get aucStatusRejected => 'Bị từ chối';
+
+  @override
+  String get aucStatusCancelled => 'Đã hủy';
+
+  @override
+  String get aucStatusConverted => 'Đã chuyển bán thường';
+
+  @override
+  String get aucStatusReturned => 'Đã trả sách';
+
+  @override
+  String get aucTimerInboundDeadline => 'Hạn gửi kho';
+
+  @override
+  String get aucTimerFallbackDeadline => 'Hạn chọn phương án';
+
+  @override
+  String aucSubRegistrationOpen(String time) {
+    return 'Phiên bắt đầu $time.';
+  }
+
+  @override
+  String get aucRegConfirmedTag => 'Đã xác nhận';
+
+  @override
+  String get aucRegCancelledTag => 'Đã hủy đăng ký';
+
+  @override
+  String get aucRegRefundedTag => 'Đã hoàn tiền';
+
+  @override
+  String get aucRegCompletedTag => 'Đã tham gia';
+
+  @override
+  String get aucReturnAwaitingFee => 'Chờ phí ship';
+
+  @override
+  String get aucReturnReady => 'Chờ kho gửi';
+
+  @override
+  String get aucReturnDispatched => 'Đã gửi';
+
+  @override
+  String aucNeedTopup(String amount) {
+    return 'Ví còn thiếu $amount.';
+  }
+
+  @override
+  String aucErrTooLowMin(String amount) {
+    return 'Giá thấp hơn mức tối thiểu $amount.';
+  }
+
+  @override
+  String bidConfirmTitle(String amount) {
+    return 'Trả giá $amount?';
+  }
+
+  @override
+  String bidConfirmHold(String amount) {
+    return 'Ví sẽ tạm giữ $amount khi bạn đang dẫn đầu.';
+  }
+
+  @override
+  String get bidConfirmOutbid => 'Bị vượt giá thì số tiền được trả về ví ngay.';
+
+  @override
+  String get aucWillHold => 'Sẽ tạm giữ';
+
+  @override
+  String get fbTitle => 'Chọn phương án';
+
+  @override
+  String get fbReschedule => 'Dời lịch';
+
+  @override
+  String fbRescheduleSub(int n) {
+    return 'Mở đăng ký lại với giờ bắt đầu mới · còn $n lần';
+  }
+
+  @override
+  String get fbConvert => 'Chuyển bán thường';
+
+  @override
+  String get fbConvertSub =>
+      'Tạo tin bán với giá bạn đặt; kho gửi sách về bạn trước';
+
+  @override
+  String get fbReturn => 'Nhận lại sách';
+
+  @override
+  String get fbReturnSub => 'Kho gửi trả sách, bạn chịu phí ship';
+
+  @override
+  String get fbPickStart => 'Chọn giờ bắt đầu mới';
+
+  @override
+  String get fbPrice => 'Giá bán (đ)';
+
+  @override
+  String get fbPriceInvalid => 'Giá tối thiểu 1.000 đ';
+
+  @override
+  String get fbReturnNote => 'Phí ship trả sách sẽ được giữ từ ví của bạn.';
+
+  @override
+  String get fbConfirm => 'Xác nhận';
+
+  @override
+  String get fbDone => 'Đã ghi nhận phương án.';
+
+  @override
+  String get aucCancel => 'Hủy phiên';
+
+  @override
+  String get aucCancelConfirm =>
+      'Hủy phiên này? Sách chưa về kho nên không mất phí.';
+
+  @override
+  String get aucCancelConfirmInWarehouse =>
+      'Sách đã ở kho: hủy sẽ tạo lệnh trả sách và bạn chịu phí ship.';
+
+  @override
+  String get aucCancelledBySeller => 'Bạn đã hủy phiên.';
+
+  @override
+  String get aucCancelledTimeout =>
+      'Kho chưa nhận sách đúng hạn nên phiên tự hủy.';
+
+  @override
+  String get aucPendingReviewTitle => 'Kho đã nhận sách';
+
+  @override
+  String get aucPendingReviewBody => 'Admin đang kiểm tra và duyệt phiên.';
+
+  @override
+  String get aucRejectedTitle => 'Phiên bị từ chối';
+
+  @override
+  String get aucSellerWaitingTitle => 'Đang chờ phiên diễn ra';
+
+  @override
+  String get aucNotEnoughTitle => 'Không đủ người tham gia';
+
+  @override
+  String get aucNoBidTitle => 'Phiên không có lượt trả giá';
+
+  @override
+  String get aucFallbackBody =>
+      'Chọn dời lịch, chuyển bán thường hoặc nhận lại sách. Quá hạn hệ thống tự trả sách.';
+
+  @override
+  String aucFallbackLeft(String left) {
+    return 'Còn $left để chọn';
+  }
+
+  @override
+  String get aucFallbackExpired => 'Đã quá hạn chọn';
+
+  @override
+  String get aucSoldTitle => 'Phiên đã bán';
+
+  @override
+  String aucSoldBody(String amount) {
+    return 'Giá chốt $amount. Bạn được thanh toán khi đơn hoàn tất.';
+  }
+
+  @override
+  String get aucViewOrder => 'Xem đơn';
+
+  @override
+  String get aucConvertedTitle => 'Đã chuyển thành tin bán thường';
+
+  @override
+  String get aucConvertedBody =>
+      'Kho gửi sách về bạn trước để bạn giao cho người mua.';
+
+  @override
+  String get aucViewListing => 'Xem tin bán';
+
+  @override
+  String get aucReturnedBody => 'Sách được trả về cho bạn.';
+
+  @override
+  String get aucSellerSection => 'Phiên của bạn';
+
+  @override
+  String get aucInboundHint =>
+      'Ghi mã này lên gói sách rồi gửi tới kho trước hạn. Quá hạn phiên tự hủy.';
+
+  @override
+  String aucInboundLeft(String left) {
+    return 'Còn $left để gửi sách';
+  }
+
+  @override
+  String get aucInboundExpired => 'Đã quá hạn gửi sách';
+
+  @override
+  String get aucWarehouse => 'Địa chỉ kho';
+
+  @override
+  String get aucCopyShipping => 'Sao chép thông tin gửi';
+
+  @override
+  String get aucReturnTitle => 'Lệnh trả sách';
+
+  @override
+  String aucReturnFeeNeeded(String amount) {
+    return 'Ví chưa đủ $amount phí ship trả sách. Nạp tiền, hệ thống tự giữ phí trong vòng một giờ.';
+  }
+
+  @override
+  String aucReturnFee(String amount) {
+    return 'Phí ship trả sách $amount.';
+  }
+
+  @override
+  String aucReturnTracking(String carrier, String tracking) {
+    return '$carrier · $tracking';
+  }
+
+  @override
+  String get aucClosing => 'Đang chốt…';
+
+  @override
+  String get aucRealtimeOffline =>
+      'Mất kết nối realtime, giá có thể chậm. Kéo xuống để tải lại.';
+
+  @override
+  String get aucBuyNowTag => 'Mua ngay';
+
+  @override
+  String aucOutbidToast(String amount) {
+    return 'Bạn đã bị vượt giá ($amount). Tiền giữ đã về ví.';
+  }
+
+  @override
+  String get aucEndedToast => 'Phiên đã kết thúc.';
+
+  @override
+  String aucUnregisterConfirm(String amount) {
+    return 'Hủy đăng ký, $amount phí và cọc sẽ về ví.';
+  }
+
+  @override
+  String get aucRegistrationUnavailable => 'Phiên không nhận đăng ký nữa.';
+
+  @override
+  String get myAuctionsShort => 'Của tôi';
+
+  @override
+  String get myAucTabSeller => 'Đang bán';
+
+  @override
+  String get myAucTabBidder => 'Đã tham gia';
+
+  @override
+  String get myAucTabLeading => 'Đang dẫn đầu';
+
+  @override
+  String get myAucTabWinner => 'Đã thắng';
+
+  @override
+  String get myAucCreate => 'Tạo phiên mới';
+
+  @override
+  String get myAucEmptySeller => 'Bạn chưa tạo phiên nào.';
+
+  @override
+  String get myAucEmptyLeading => 'Bạn không dẫn đầu phiên nào.';
+
+  @override
+  String get myAucEmptyWinner => 'Bạn chưa thắng phiên nào.';
+
+  @override
+  String get meAuctionOrdersSub => 'Phí ship, giao hàng, lưu kho';
+
+  @override
+  String get mlAuctionsLink => 'Phiên đấu giá của bạn';
+
+  @override
+  String get soAuctionOrdersLink => 'Đơn đấu giá';
+
+  @override
+  String get sellDoneViewAuction => 'Xem phiên';
+
+  @override
+  String get sellStartAt => 'Giờ bắt đầu mong muốn';
+
+  @override
+  String sellStartTooSoon(String date) {
+    return 'Giờ bắt đầu quá sớm. Sớm nhất: $date. Đã cập nhật, hãy bấm tạo lại.';
+  }
+
+  @override
+  String get copy => 'Sao chép';
+
+  @override
+  String get copied => 'Đã sao chép';
+
+  @override
+  String get loadMore => 'Tải thêm';
+
+  @override
+  String get errAuctionNotFound => 'Không tìm thấy phiên đấu giá.';
+
+  @override
+  String get errAuctionOwn => 'Đây là phiên của bạn.';
+
+  @override
+  String get errAuctionAlreadyRegistered => 'Bạn đã đăng ký phiên này.';
+
+  @override
+  String get errAuctionRegistrationNotFound =>
+      'Bạn chưa đăng ký hoặc đã hủy đăng ký.';
+
+  @override
+  String get errAuctionStartTooSoon => 'Giờ bắt đầu quá sớm.';
+
+  @override
+  String get errAuctionRescheduleLimit => 'Đã hết số lần dời lịch.';
+
+  @override
+  String get errAuctionPhotoInvalid => 'Ảnh không hợp lệ, hãy chọn lại ảnh.';
+
+  @override
+  String get errAuctionOrderNotFound => 'Không tìm thấy đơn đấu giá.';
+
+  @override
+  String get errAuctionOrderAddressRequired => 'Hãy chọn địa chỉ giao trước.';
+
+  @override
+  String get errAuctionOrderExtensionLimit => 'Đã hết số lần gia hạn.';
+
+  @override
+  String get ckRemoveSelected => 'Xóa đã chọn';
+
+  @override
+  String get ckAll => 'Tất cả';
+
+  @override
+  String get ckSelectToPay => 'Chọn sách để thanh toán';
+
+  @override
+  String ckPay(String amount) {
+    return 'Thanh toán $amount';
+  }
+
+  @override
+  String ckSelectedCount(int count) {
+    return '$count cuốn đã chọn';
+  }
+
+  @override
+  String get ckNoneSelected => 'Chưa chọn cuốn nào';
+
+  @override
+  String get ckPayWith => 'Thanh toán bằng';
+
+  @override
+  String get ckWallet => 'Ví Oldbook';
+
+  @override
+  String ckWalletAfter(String balance, String left) {
+    return 'Số dư $balance · còn $left sau khi trả';
+  }
+
+  @override
+  String get ckChange => 'Đổi';
+
+  @override
+  String ckItemsCount(int count) {
+    return '$count cuốn';
+  }
+
+  @override
+  String ckPlacedCount(int count) {
+    return 'Đã đặt $count đơn';
+  }
+
+  @override
+  String ckTrackOrders(int count) {
+    return 'Theo dõi $count đơn hàng';
+  }
+
+  @override
+  String get ckNotifyHint =>
+      'Bạn sẽ nhận thông báo khi từng đơn được gửi đi kèm mã vận đơn.';
+
+  @override
+  String get ckSeparateOrders =>
+      'Mỗi sách tạo một đơn riêng. Tiền được giữ trong ví đến khi bạn nhận hàng.';
+
+  @override
+  String ckOrderLine(String code) {
+    return 'ĐƠN #$code';
+  }
+
+  @override
+  String ckAllOrNothing(int count) {
+    return 'Tạo $count đơn riêng. Một đơn lỗi thì không đơn nào bị trừ tiền.';
+  }
+
+  @override
+  String get ckPayTitle => 'Thanh toán';
+
+  @override
+  String get sellStepMode => 'Hình thức';
+
+  @override
+  String get sellStepBook => 'Sách';
+
+  @override
+  String get sellStepPrice => 'Giá';
+
+  @override
+  String get sellStepReview => 'Xem lại';
+
+  @override
+  String get sellModeQuestion => 'Bạn muốn bán thế nào?';
+
+  @override
+  String get sellModeHint =>
+      'Chọn một hình thức. Bạn có thể đổi trước khi gửi duyệt.';
+
+  @override
+  String get sellModeFixedDesc =>
+      'Đặt giá cố định, người mua đặt ngay. Hợp với sách thông dụng.';
+
+  @override
+  String get sellModeAuctionDesc =>
+      'Người mua trả giá cạnh tranh trong phiên. Hợp với sách hiếm, bản cũ.';
+
+  @override
+  String get sellNext => 'Tiếp tục';
+
+  @override
+  String get sellBack => 'Quay lại';
+
+  @override
+  String get sellEdit => 'Sửa';
+
+  @override
+  String get sellReviewHeader => 'Người mua sẽ thấy';
+
+  @override
+  String get sellDoneAnother => 'Đăng thêm sách';
+
+  @override
+  String get sellReviewPrice => 'Giá';
+
+  @override
+  String get sellReviewDuration => 'Thời lượng';
+
+  @override
+  String get sellReviewStartAt => 'Bắt đầu';
 }

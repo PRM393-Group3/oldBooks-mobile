@@ -3,7 +3,16 @@ import 'package:flutter/material.dart';
 import '../theme/app_dimens.dart';
 import '../theme/theme_context.dart';
 
-enum AppTagTone { neutral, brand, success, warning, error, info, auction }
+enum AppTagTone {
+  neutral,
+  brand,
+  accent,
+  success,
+  warning,
+  error,
+  info,
+  auction,
+}
 
 /// Nhãn nhỏ dạng viên thuốc. Nền tảng cho badge trạng thái tin đăng, đơn hàng,
 /// phiên đấu giá: mỗi trạng thái chỉ cần ánh xạ sang một [AppTagTone].
@@ -25,6 +34,7 @@ class AppTag extends StatelessWidget {
     final (Color bg, Color fg) = switch (tone) {
       AppTagTone.neutral => (c.surfaceMuted, c.textSecondary),
       AppTagTone.brand => (c.primaryContainer, c.onPrimaryContainer),
+      AppTagTone.accent => (c.accentContainer, c.onAccentContainer),
       AppTagTone.success => (c.successContainer, c.onSuccessContainer),
       AppTagTone.warning => (c.warningContainer, c.onWarningContainer),
       AppTagTone.error => (c.errorContainer, c.onErrorContainer),

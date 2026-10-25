@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -169,6 +170,7 @@ class _BodyState extends ConsumerState<_Body> {
                       o.title,
                       style: context.text.titleMedium?.copyWith(
                         fontFamily: AppTypography.serifFamily,
+                        fontVariations: AppTypography.serifSemiBold,
                         height: 1.2,
                       ),
                     ),
@@ -526,6 +528,8 @@ class _ShipFormState extends State<_ShipForm> {
         TextField(
           controller: _carrier,
           maxLength: 50,
+          maxLengthEnforcement:
+              MaxLengthEnforcement.truncateAfterCompositionEnds,
           textCapitalization: TextCapitalization.characters,
           onChanged: (_) => setState(() {}),
           decoration: InputDecoration(
@@ -536,6 +540,8 @@ class _ShipFormState extends State<_ShipForm> {
         TextField(
           controller: _tracking,
           maxLength: 50,
+          maxLengthEnforcement:
+              MaxLengthEnforcement.truncateAfterCompositionEnds,
           onChanged: (_) => setState(() {}),
           decoration: InputDecoration(labelText: l.soShipTracking),
         ),

@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/auction_orders/domain/auction_order.dart';
+import '../features/auction_orders/presentation/auction_order_detail_screen.dart';
+import '../features/auction_orders/presentation/auction_orders_screen.dart';
+import '../features/auctions/domain/auction.dart';
 import '../features/auctions/presentation/auction_detail_screen.dart';
 import '../features/auctions/presentation/auctions_screen.dart';
 import '../features/auctions/presentation/my_auctions_screen.dart';
 import '../features/auth/application/auth_controller.dart';
+import '../features/cart/presentation/checkout_screen.dart';
+import '../features/cart/presentation/order_placed_screen.dart';
+import '../features/orders/domain/sale_order.dart';
 import '../features/cart/presentation/cart_screen.dart';
 import '../features/auth/presentation/forgot_password_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
@@ -18,8 +25,6 @@ import '../features/listings/presentation/browse/browse_screen.dart';
 import '../features/notifications/presentation/notification_settings_screen.dart';
 import '../features/notifications/presentation/notifications_screen.dart';
 import '../features/orders/presentation/order_detail_screen.dart';
-import '../features/orders/presentation/sim_order_detail_screen.dart';
-import '../features/orders/presentation/sim_orders_screen.dart';
 import '../features/orders/presentation/orders_screen.dart';
 import '../features/profile/presentation/addresses_screen.dart';
 import '../features/profile/presentation/bank_accounts_screen.dart';
@@ -159,16 +164,29 @@ final routerProvider = Provider<GoRouter>((ref) {
                     ],
                   ),
                   GoRoute(
-                    path: 'sim-orders',
+                    path: 'auction-orders',
                     parentNavigatorKey: rootKey,
-                    builder: (_, _) => const SimOrdersScreen(),
+                    builder: (_, state) => AuctionOrdersScreen(
+                      initialRole: state.uri.queryParameters['role'] == 'seller'
+                          ? OrderViewerRole.seller
+                          : OrderViewerRole.buyer,
+                    ),
                     routes: [
                       GoRoute(
                         path: ':id',
                         parentNavigatorKey: rootKey,
-                        builder: (_, state) => SimOrderDetailScreen(
+                        builder: (_, state) => AuctionOrderDetailScreen(
                           orderId: state.pathParameters['id']!,
                         ),
+                        routes: [
+                          GoRoute(
+                            path: 'complain',
+                            parentNavigatorKey: rootKey,
+                            builder: (_, state) => OpenComplaintScreen(
+                              orderId: state.pathParameters['id']!,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -246,7 +264,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/auctions/mine',
         parentNavigatorKey: rootKey,
-        builder: (_, _) => const MyAuctionsScreen(),
+        builder: (_, state) => MyAuctionsScreen(
+          initialRole:
+              AuctionRole.fromName(state.uri.queryParameters['tab']) ??
+              AuctionRole.bidder,
+        ),
       ),
       GoRoute(
         path: '/auctions/:id',
@@ -258,6 +280,18 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/cart',
         parentNavigatorKey: rootKey,
         builder: (_, _) => const CartScreen(),
+      ),
+      GoRoute(
+        path: '/checkout',
+        parentNavigatorKey: rootKey,
+        builder: (_, _) => const CheckoutScreen(),
+      ),
+      GoRoute(
+        path: '/order-placed',
+        parentNavigatorKey: rootKey,
+        builder: (_, state) => OrderPlacedScreen(
+          orders: state.extra as List<SaleOrder>? ?? const [],
+        ),
       ),
     ],
   );

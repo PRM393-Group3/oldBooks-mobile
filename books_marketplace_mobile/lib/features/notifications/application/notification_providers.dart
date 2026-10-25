@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/network/network_providers.dart';
 import '../../../core/network/paged_result.dart';
 import '../../../core/paging/paged_notifier.dart';
-import '../../sim/application/sim_providers.dart';
 import '../data/notification_repository.dart';
 import '../domain/app_notification.dart';
 
@@ -36,11 +35,9 @@ final unreadCountProvider = FutureProvider.autoDispose<int>(
   (ref) => ref.watch(notificationRepositoryProvider).unreadCount(),
 );
 
-/// Tổng chưa đọc: thông báo từ backend cộng thông báo mô phỏng (đơn, ví, đấu giá).
+/// Tổng chưa đọc cho badge (chỉ lấy từ backend).
 final totalUnreadProvider = Provider.autoDispose<int>(
-  (ref) =>
-      (ref.watch(unreadCountProvider).value ?? 0) +
-      ref.watch(simUnreadCountProvider),
+  (ref) => ref.watch(unreadCountProvider).value ?? 0,
 );
 
 class NotificationActions {

@@ -12,9 +12,7 @@ import '../../../core/widgets/app_paged_list.dart';
 import '../../../core/widgets/app_state_views.dart';
 import '../../../core/widgets/app_tag.dart';
 import '../../listings/presentation/widgets/book_tile.dart';
-import '../../sim/application/sim_providers.dart';
 import '../application/order_providers.dart';
-import '../domain/order.dart' as sim;
 import '../domain/sale_order.dart';
 
 AppTagTone orderTone(SaleOrderStatus s) => switch (s) {
@@ -84,12 +82,6 @@ class _OrderListState extends ConsumerState<_OrderList>
     final provider = saleOrdersProvider(filter);
     final state = ref.watch(provider);
     final notifier = ref.read(provider.notifier);
-    final simAuctionOrders = widget.role == OrderRole.buyer
-        ? ref
-              .watch(ordersProvider)
-              .where((o) => o.type == sim.OrderType.auction)
-              .length
-        : 0;
 
     return AppPagedList<SaleOrder>(
       value: state,
@@ -128,24 +120,28 @@ class _OrderListState extends ConsumerState<_OrderList>
               ],
             ),
           ),
-          if (simAuctionOrders > 0)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: AppCard(
-                onTap: () => context.push('/me/sim-orders'),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '${l.soSimLink} ($simAuctionOrders)',
-                        style: context.text.labelLarge,
-                      ),
+          // Đơn đấu giá có vòng đời riêng (kho gửi, lưu kho), xem ở màn khác.
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: AppCard(
+              onTap: () => context.push(
+                '/me/auction-orders?role=${widget.role == OrderRole.seller ? 'seller' : 'buyer'}',
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.gavel_outlined, size: 20),
+                  const SizedBox(width: AppSpacing.xs),
+                  Expanded(
+                    child: Text(
+                      l.soAuctionOrdersLink,
+                      style: context.text.labelLarge,
                     ),
-                    const Icon(Icons.chevron_right),
-                  ],
-                ),
+                  ),
+                  const Icon(Icons.chevron_right),
+                ],
               ),
             ),
+          ),
         ],
       ),
       empty: AppEmptyView(icon: Icons.receipt_long_outlined, title: l.soEmpty),
@@ -229,6 +225,7 @@ class _OrderCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: context.text.titleMedium?.copyWith(
                     fontFamily: AppTypography.serifFamily,
+                    fontVariations: AppTypography.serifSemiBold,
                     fontSize: 15.5,
                     height: 1.2,
                   ),

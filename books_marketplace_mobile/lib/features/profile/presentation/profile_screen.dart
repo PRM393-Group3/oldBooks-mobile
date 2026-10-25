@@ -17,7 +17,7 @@ import '../../sell/application/my_listings_provider.dart';
 import '../../orders/application/order_providers.dart';
 import '../application/address_providers.dart';
 import '../../notifications/application/notification_providers.dart';
-import '../../sim/application/sim_providers.dart';
+import '../../auctions/application/auction_providers.dart';
 import '../application/profile_controller.dart';
 import '../domain/profile.dart';
 import 'language_sheet.dart';
@@ -188,6 +188,12 @@ class _ProfileBody extends ConsumerWidget {
               onTap: () => context.push('/auctions/mine'),
             ),
             AppMenuTile(
+              icon: Icons.local_shipping_outlined,
+              title: l.aoTitle,
+              subtitle: l.meAuctionOrdersSub,
+              onTap: () => context.push('/me/auction-orders'),
+            ),
+            AppMenuTile(
               icon: Icons.notifications_none,
               title: l.notificationsTitle,
               subtitle: unread > 0
@@ -305,10 +311,7 @@ class _StatTiles extends ConsumerWidget {
     final l = context.l10n;
     final orders = ref.watch(openBuyOrderCountProvider).value ?? 0;
     final activeListings = ref.watch(publishedListingCountProvider).value ?? 0;
-    final auctions = ref
-        .watch(auctionsProvider)
-        .where((a) => a.registered && !a.status.isEnded)
-        .length;
+    final auctions = ref.watch(myBidderAuctionCountProvider).value ?? 0;
 
     Widget tile(String value, String label, VoidCallback onTap) => Expanded(
       child: AppCard(

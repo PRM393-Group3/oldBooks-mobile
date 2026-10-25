@@ -49,7 +49,11 @@ void main() {
       setup(
         (o) => jsonResponse(
           200,
-          okBody({'expiresInSeconds': 180, 'sentTo': 'n*******a@gmail.com'}),
+          okBody({
+            'expiresInSeconds': 180,
+            'sentTo': 'n*******a@gmail.com',
+            'resendAfterSeconds': 45,
+          }),
         ),
       );
 
@@ -59,6 +63,7 @@ void main() {
       );
 
       expect(otp.expiresInSeconds, 180);
+      expect(otp.resendAfterSeconds, 45);
       expect(otp.sentTo, 'n*******a@gmail.com');
       expect(sent.single.data, {
         'phone': '0912345678',

@@ -69,31 +69,39 @@ class _TopBar extends ConsumerWidget {
     final l = context.l10n;
     final colors = context.colors;
     final count = ref.watch(cartCountProvider);
+    Widget round(Widget child) => DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.surface,
+        shape: BoxShape.circle,
+        border: Border.all(color: colors.divider),
+      ),
+      child: child,
+    );
     return SizedBox(
-      height: 56,
+      height: 60,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
         child: Row(
           children: [
-            IconButton(
-              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-              onPressed: () => context.pop(),
-              icon: const Icon(Icons.chevron_left, size: 32),
+            round(
+              IconButton(
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                onPressed: () => context.pop(),
+                icon: const Icon(Icons.chevron_left, size: 28),
+              ),
             ),
             const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: AppSpacing.xs),
-              child: OutlinedButton(
+            round(
+              IconButton(
+                tooltip: l.cartButton(count),
                 onPressed: () => context.push('/cart'),
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(0, 36),
-                  shape: const StadiumBorder(),
-                  foregroundColor: colors.textPrimary,
-                  side: BorderSide(color: colors.divider),
-                  backgroundColor: colors.surface,
-                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                icon: Badge(
+                  isLabelVisible: count > 0,
+                  label: Text('$count'),
+                  backgroundColor: colors.primary,
+                  textColor: colors.onPrimary,
+                  child: const Icon(Icons.shopping_cart_outlined),
                 ),
-                child: Text(l.cartButton(count)),
               ),
             ),
           ],
@@ -151,12 +159,12 @@ class _Detail extends ConsumerWidget {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: colors.successContainer,
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(AppRadius.full),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 3,
+                        horizontal: 10,
+                        vertical: 2,
                       ),
                       child: Text(
                         [
@@ -391,14 +399,14 @@ class _SellerCard extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 20,
-              backgroundColor: colors.surfaceMuted,
+              backgroundColor: colors.accentContainer,
               foregroundImage: seller.avatarUrl == null
                   ? null
                   : NetworkImage(seller.avatarUrl!),
               child: Text(
                 initials,
                 style: context.text.labelMedium?.copyWith(
-                  color: colors.textSecondary,
+                  color: colors.onAccentContainer,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -557,46 +565,59 @@ class _ActionBarState extends ConsumerState<_ActionBar> {
     final colors = context.colors;
     final inCart = ref.watch(inCartProvider(widget.listing.id));
 
-    return Material(
-      color: colors.surface,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: colors.divider)),
-        ),
-        child: SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.md,
-              AppSpacing.sm,
-              AppSpacing.md,
-              AppSpacing.sm,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: AppButton(
-                    label: inCart ? l.inCart : l.addToCart,
-                    variant: AppButtonVariant.secondary,
-                    loading: _busy,
-                    onPressed: _add,
-                  ),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.surface,
+        boxShadow: colors.barShadow,
+      ),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.md,
+            AppSpacing.sm,
+            AppSpacing.md,
+            AppSpacing.md,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: AppButton(
+                  label: inCart ? l.inCart : l.addToCart,
+                  variant: AppButtonVariant.secondary,
+                  icon: inCart ? Icons.check : Icons.add,
+                  large: true,
+                  loading: _busy,
+                  onPressed: _add,
                 ),
-                const SizedBox(width: AppSpacing.sm),
-                Expanded(
-                  child: AppButton(
-                    label: l.buyNow,
-                    onPressed: _busy
-                        ? null
-                        : () async {
-                            if (inCart || await _add()) {
-                              if (context.mounted) context.push('/cart');
-                            }
-                          },
-                  ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: AppButton(
+                  label: l.buyNow,
+                  large: true,
+                  onPressed: _busy
+                      ? null
+                      : () async {
+                          if (inCart || await _add()) {
+                            if (!context.mounted) return;
+                            // Mua ngay: chỉ thanh toán cuốn này.
+                            final cart = ref.read(cartProvider).value?.items;
+                            final notifier = ref.read(
+                              cartDeselectedProvider.notifier,
+                            );
+                            notifier.setAll([
+                              for (final i in cart ?? const [])
+                                if (i.listingId != widget.listing.id)
+                                  i.listingId,
+                            ], on: false);
+                            notifier.setAll([widget.listing.id], on: true);
+                            context.push('/checkout');
+                          }
+                        },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

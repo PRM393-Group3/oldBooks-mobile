@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -19,9 +17,7 @@ import '../../listings/application/listing_providers.dart';
 import '../../listings/domain/listing.dart';
 import '../../listings/domain/listing_enums.dart';
 import '../../listings/presentation/widgets/book_tile.dart';
-import '../../sim/application/sim_providers.dart';
 import '../application/my_listings_provider.dart';
-import 'sell_text.dart';
 
 /// Các tab theo trạng thái. `null` là tất cả (gồm cả tin `RESERVED`, không có
 /// tab riêng).
@@ -84,11 +80,6 @@ class _StatusList extends ConsumerWidget {
     final provider = myListingsProvider(status);
     final state = ref.watch(provider);
     final notifier = ref.read(provider.notifier);
-    final sim = status == null
-        ? ref.watch(simAuctionListingsProvider)
-        : const [];
-    final now = ref.watch(simNowProvider);
-    final locale = Localizations.localeOf(context).toString();
 
     return AppPagedList<Listing>(
       value: state,
@@ -104,28 +95,32 @@ class _StatusList extends ConsumerWidget {
         AppSpacing.xl,
       ),
       separator: const SizedBox(height: 12),
-      header: sim.isEmpty
-          ? null
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.xs),
-                  child: Text(l.mlSimHeader, style: context.text.labelMedium),
+      // Phiên đấu giá của người bán nằm ở "Phiên của tôi" (tab Đang bán).
+      header: status == null
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: AppCard(
+                onTap: () => context.push('/auctions/mine?tab=seller'),
+                child: Row(
+                  children: [
+                    const Icon(Icons.gavel_outlined, size: 20),
+                    const SizedBox(width: AppSpacing.xs),
+                    Expanded(
+                      child: Text(
+                        l.mlAuctionsLink,
+                        style: context.text.labelLarge,
+                      ),
+                    ),
+                    const Icon(Icons.chevron_right),
+                  ],
                 ),
-                for (final m in sim)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _SimCard(item: m, now: now, locale: locale),
-                  ),
-              ],
-            ),
-      empty: sim.isNotEmpty
-          ? const SizedBox.shrink()
-          : AppEmptyView(
-              icon: Icons.inventory_2_outlined,
-              title: l.myListingsEmpty,
-            ),
+              ),
+            )
+          : null,
+      empty: AppEmptyView(
+        icon: Icons.inventory_2_outlined,
+        title: l.myListingsEmpty,
+      ),
       itemBuilder: (context, listing) => _ListingCard(listing: listing),
     );
   }
@@ -243,6 +238,7 @@ class _ListingCardState extends ConsumerState<_ListingCard> {
                       m.title.isEmpty ? '—' : m.title,
                       style: context.text.titleMedium?.copyWith(
                         fontFamily: AppTypography.serifFamily,
+                        fontVariations: AppTypography.serifSemiBold,
                         fontSize: 15.5,
                         height: 1.2,
                       ),
@@ -312,78 +308,6 @@ class _ListingCardState extends ConsumerState<_ListingCard> {
                 ],
               ),
             ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Tin đấu giá mô phỏng (đấu giá chưa có backend).
-class _SimCard extends StatelessWidget {
-  const _SimCard({required this.item, required this.now, required this.locale});
-
-  final dynamic item;
-  final DateTime now;
-  final String locale;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final colors = context.colors;
-    final m = item;
-    return AppCard(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 52,
-            height: 72,
-            child: m.photoBytes != null
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: Image.memory(
-                      Uint8List.fromList(m.photoBytes!),
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : BookCover(url: null, label: m.title, radius: 6),
-          ),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        myListingKind(l, locale, m),
-                        overflow: TextOverflow.ellipsis,
-                        style: context.text.labelSmall?.copyWith(
-                          color: colors.textMuted,
-                        ),
-                      ),
-                    ),
-                    AppTag(
-                      label: myListingStatusLabel(l, m.status),
-                      tone: myListingStatusTone(m.status),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(m.title, style: context.text.titleMedium),
-                const SizedBox(height: 4),
-                Text(
-                  myListingNote(l, locale, m, now),
-                  style: context.text.labelSmall?.copyWith(
-                    color: colors.textMuted,
-                    height: 1.45,
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

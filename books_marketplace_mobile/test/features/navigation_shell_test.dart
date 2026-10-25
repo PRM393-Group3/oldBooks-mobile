@@ -77,16 +77,11 @@ void main() {
     final h = Harness(UserRole.seller);
     h.notifications.unread = 3;
     await h.pump(tester);
-    // 3 chưa đọc từ backend cộng 2 thông báo mô phỏng chưa đọc.
-    expect(find.text('5'), findsOneWidget);
+    expect(find.text('3'), findsOneWidget);
 
     final h0 = Harness(UserRole.seller);
     await h0.pump(tester);
-    expect(
-      find.text('2'),
-      findsOneWidget,
-      reason: 'chỉ còn thông báo mô phỏng',
-    );
+    expect(find.text('0'), findsNothing, reason: 'không hiện badge số 0');
   });
 
   testWidgets(
@@ -134,15 +129,35 @@ void main() {
     },
   );
 
-  testWidgets('không có thông báo backend vẫn thấy thông báo mô phỏng', (
+  testWidgets('thông báo đấu giá: chạm mở đúng phiên, ẩn loại chỉ cho admin', (
     tester,
   ) async {
     final h = Harness(UserRole.buyer);
+    h.notifications.items = [
+      const AppNotification(
+        id: 'n1',
+        type: NotificationType.auctionOutbid,
+        title: 'Bạn đã bị vượt giá',
+        body: '',
+        isRead: true,
+        data: {'auctionId': 'a-live'},
+      ),
+      const AppNotification(
+        id: 'n2',
+        type: NotificationType.auctionLiquidationNeedsAdmin,
+        title: 'Cần admin thanh lý',
+        body: '',
+        isRead: true,
+        data: {'auctionOrderId': 'o1'},
+      ),
+    ];
     await h.pump(tester);
     await tester.tap(find.text('Thông báo'));
     await tester.pumpAndSettle();
-    // Không có thông báo từ backend; vẫn thấy các thông báo mô phỏng.
-    expect(find.text('Nạp tiền thành công'), findsOneWidget);
-    expect(find.text('Đơn OB-24790 đã giao'), findsOneWidget);
+    expect(find.text('Cần admin thanh lý'), findsNothing);
+
+    await tester.tap(find.text('Bạn đã bị vượt giá'));
+    await tester.pumpAndSettle();
+    expect(find.text('Truyện Kiều (bản 1925)'), findsOneWidget);
   });
 }

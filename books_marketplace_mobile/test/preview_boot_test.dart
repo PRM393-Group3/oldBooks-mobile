@@ -1,3 +1,4 @@
+import 'package:books_marketplace_mobile/core/widgets/app_logo.dart';
 import 'package:books_marketplace_mobile/app/app.dart';
 import 'package:books_marketplace_mobile/core/preview/preview_overrides.dart';
 import 'package:books_marketplace_mobile/core/storage/storage_providers.dart';
@@ -26,12 +27,14 @@ void main() {
     );
     await tester.pumpAndSettle(const Duration(seconds: 1));
     expect(tester.takeException(), isNull);
-    expect(find.text('Oldbook'), findsOneWidget);
+    expect(find.byType(AppLogo), findsOneWidget);
     expect(
-      tester.getTopLeft(find.text('Oldbook')).dy,
+      tester.getTopLeft(find.byType(AppLogo)).dy,
       lessThan(100),
       reason: 'đầu trang Khám phá nằm ở trên cùng, không bị cuộn mất',
     );
-    expect(find.text('Nhà giả kim'), findsOneWidget);
+    // Dải "Đang đấu giá" nằm trên lưới nên chỉ vài sách đầu được dựng.
+    expect(find.text('Đang đấu giá'), findsOneWidget);
+    expect(find.text('Sapiens: Lược sử loài người'), findsOneWidget);
   });
 }
