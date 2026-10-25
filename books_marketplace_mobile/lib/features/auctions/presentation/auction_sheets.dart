@@ -217,7 +217,7 @@ Future<bool> _confirmMoneySheet(
           FilledButton(
             style: FilledButton.styleFrom(
               backgroundColor: colors.auction,
-              foregroundColor: Colors.white,
+              foregroundColor: colors.onAuction,
               minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
             ),
             onPressed: () => Navigator.of(sheet).pop(true),

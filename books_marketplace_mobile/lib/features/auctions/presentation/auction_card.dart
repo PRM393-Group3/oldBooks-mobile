@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/util/format.dart';
+import '../../../core/util/server_clock.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_tag.dart';
 import '../../../core/widgets/countdown_text.dart';
@@ -27,119 +29,152 @@ class AuctionCard extends StatelessWidget {
     final reg = a.myRegistration;
 
     return AppCard(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(AppSpacing.sm),
       onTap: onTap,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(
-            width: 72,
-            height: 100,
-            child: BookCover(url: a.thumbnailUrl, label: a.title, radius: 7),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 64,
+                height: 88,
+                child: BookCover(
+                  url: a.thumbnailUrl,
+                  label: a.title,
+                  radius: AppRadius.xs,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(
-                      child: AppTag(
-                        label: auctionStatusLabel(l, a.status),
-                        tone: auctionStatusTone(a.status),
-                      ),
-                    ),
-                    const Spacer(),
-                    if (reg != null && reg.isHolding)
-                      Text(
-                        registrationLabel(l, reg),
-                        maxLines: 1,
-                        style: context.text.labelSmall?.copyWith(
-                          color: colors.success,
-                          fontWeight: FontWeight.w600,
+                    Row(
+                      children: [
+                        Flexible(
+                          child: AppTag(
+                            label: auctionStatusLabel(l, a.status),
+                            tone: auctionStatusTone(a.status),
+                          ),
                         ),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  a.title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.text.titleMedium?.copyWith(
-                    fontFamily: AppTypography.serifFamily,
-                    height: 1.2,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  '${a.author} · ${l.aucParticipants(a.registeredCount)}',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.text.labelSmall?.copyWith(
-                    color: colors.textMuted,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        const Spacer(),
+                        if (reg != null && reg.isHolding)
                           Text(
-                            priceLabel(l, a.status, a.currentPrice != null),
+                            registrationLabel(l, reg),
+                            maxLines: 1,
                             style: context.text.labelSmall?.copyWith(
-                              color: colors.textMuted,
-                              fontSize: 11,
+                              color: colors.success,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Text(
-                            formatVnd(a.displayPrice, locale),
-                            style: context.text.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.xxs),
+                    Text(
+                      a.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.text.titleMedium?.copyWith(
+                        fontFamily: AppTypography.serifFamily,
+                        fontVariations: AppTypography.serifSemiBold,
+                        fontSize: 16,
+                        height: 19 / 16,
                       ),
                     ),
-                    if (deadline != null)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            timerLabel(l, a.status),
-                            style: context.text.labelSmall?.copyWith(
-                              color: colors.textMuted,
-                              fontSize: 11,
-                            ),
-                          ),
-                          Countdown(
-                            target: deadline,
-                            daysHours: l.remainingDaysHours,
-                            builder: (context, left, _) => Text(
-                              left,
-                              style: TextStyle(
-                                fontFamily: AppTypography.monoFamily,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: a.status.isRunning
-                                    ? colors.error
-                                    : colors.textPrimary,
-                              ),
-                            ),
-                          ),
-                        ],
+                    const SizedBox(height: AppSpacing.xxs),
+                    Text(
+                      '${a.author} · ${l.aucParticipants(a.registeredCount)}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.text.labelSmall?.copyWith(
+                        color: colors.textMuted,
                       ),
+                    ),
                   ],
                 ),
-              ],
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          // Bảng giá thu nhỏ: khối tương phản cao gom ánh mắt vào giá và giờ.
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: colors.surfaceInverse,
+              borderRadius: AppRadius.smAll,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.sm,
+                vertical: 10,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          priceLabel(l, a.status, a.currentPrice != null),
+                          style: context.text.labelSmall?.copyWith(
+                            color: colors.inverseMuted,
+                            fontSize: 11,
+                          ),
+                        ),
+                        Text(
+                          formatVnd(a.displayPrice, locale),
+                          style: context.text.titleMedium?.copyWith(
+                            color: colors.onInverse,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            fontFeatures: const [FontFeature.tabularFigures()],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (deadline != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          timerLabel(l, a.status),
+                          style: context.text.labelSmall?.copyWith(
+                            color: colors.inverseMuted,
+                            fontSize: 11,
+                          ),
+                        ),
+                        Countdown(
+                          target: deadline,
+                          daysHours: l.remainingDaysHours,
+                          builder: (context, left, _) => Text(
+                            left,
+                            style: TextStyle(
+                              fontFamily: AppTypography.monoFamily,
+                              fontVariations: AppTypography.monoSemiBold,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: a.status.isRunning && _isUrgent(deadline)
+                                  ? colors.inverseUrgent
+                                  : colors.onInverse,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
             ),
           ),
         ],
       ),
     );
   }
+
+  /// Còn dưới 2 phút: đổi sang màu khẩn trên nền tối.
+  static bool _isUrgent(DateTime deadline) =>
+      deadline.toUtc().difference(ServerClock.now()) <
+      const Duration(minutes: 2);
 }

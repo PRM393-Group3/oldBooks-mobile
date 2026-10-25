@@ -10,6 +10,9 @@ import '../features/auctions/presentation/auction_detail_screen.dart';
 import '../features/auctions/presentation/auctions_screen.dart';
 import '../features/auctions/presentation/my_auctions_screen.dart';
 import '../features/auth/application/auth_controller.dart';
+import '../features/cart/presentation/checkout_screen.dart';
+import '../features/cart/presentation/order_placed_screen.dart';
+import '../features/orders/domain/sale_order.dart';
 import '../features/cart/presentation/cart_screen.dart';
 import '../features/auth/presentation/forgot_password_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
@@ -277,6 +280,18 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/cart',
         parentNavigatorKey: rootKey,
         builder: (_, _) => const CartScreen(),
+      ),
+      GoRoute(
+        path: '/checkout',
+        parentNavigatorKey: rootKey,
+        builder: (_, _) => const CheckoutScreen(),
+      ),
+      GoRoute(
+        path: '/order-placed',
+        parentNavigatorKey: rootKey,
+        builder: (_, state) => OrderPlacedScreen(
+          orders: state.extra as List<SaleOrder>? ?? const [],
+        ),
       ),
     ],
   );

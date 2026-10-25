@@ -8161,6 +8161,210 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đã hết số lần gia hạn.'**
   String get errAuctionOrderExtensionLimit;
+
+  /// No description provided for @ckRemoveSelected.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa đã chọn'**
+  String get ckRemoveSelected;
+
+  /// No description provided for @ckAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả'**
+  String get ckAll;
+
+  /// No description provided for @ckSelectToPay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn sách để thanh toán'**
+  String get ckSelectToPay;
+
+  /// No description provided for @ckPay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thanh toán {amount}'**
+  String ckPay(String amount);
+
+  /// No description provided for @ckSelectedCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} cuốn đã chọn'**
+  String ckSelectedCount(int count);
+
+  /// No description provided for @ckNoneSelected.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa chọn cuốn nào'**
+  String get ckNoneSelected;
+
+  /// No description provided for @ckPayWith.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thanh toán bằng'**
+  String get ckPayWith;
+
+  /// No description provided for @ckWallet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví Oldbook'**
+  String get ckWallet;
+
+  /// No description provided for @ckWalletAfter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư {balance} · còn {left} sau khi trả'**
+  String ckWalletAfter(String balance, String left);
+
+  /// No description provided for @ckChange.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi'**
+  String get ckChange;
+
+  /// No description provided for @ckItemsCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} cuốn'**
+  String ckItemsCount(int count);
+
+  /// No description provided for @ckPlacedCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đặt {count} đơn'**
+  String ckPlacedCount(int count);
+
+  /// No description provided for @ckTrackOrders.
+  ///
+  /// In vi, this message translates to:
+  /// **'Theo dõi {count} đơn hàng'**
+  String ckTrackOrders(int count);
+
+  /// No description provided for @ckNotifyHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn sẽ nhận thông báo khi từng đơn được gửi đi kèm mã vận đơn.'**
+  String get ckNotifyHint;
+
+  /// No description provided for @ckSeparateOrders.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi sách tạo một đơn riêng. Tiền được giữ trong ví đến khi bạn nhận hàng.'**
+  String get ckSeparateOrders;
+
+  /// No description provided for @ckOrderLine.
+  ///
+  /// In vi, this message translates to:
+  /// **'ĐƠN #{code}'**
+  String ckOrderLine(String code);
+
+  /// No description provided for @ckAllOrNothing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo {count} đơn riêng. Một đơn lỗi thì không đơn nào bị trừ tiền.'**
+  String ckAllOrNothing(int count);
+
+  /// No description provided for @ckPayTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thanh toán'**
+  String get ckPayTitle;
+
+  /// No description provided for @sellStepMode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hình thức'**
+  String get sellStepMode;
+
+  /// No description provided for @sellStepBook.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sách'**
+  String get sellStepBook;
+
+  /// No description provided for @sellStepPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá'**
+  String get sellStepPrice;
+
+  /// No description provided for @sellStepReview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem lại'**
+  String get sellStepReview;
+
+  /// No description provided for @sellModeQuestion.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn muốn bán thế nào?'**
+  String get sellModeQuestion;
+
+  /// No description provided for @sellModeHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn một hình thức. Bạn có thể đổi trước khi gửi duyệt.'**
+  String get sellModeHint;
+
+  /// No description provided for @sellModeFixedDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt giá cố định, người mua đặt ngay. Hợp với sách thông dụng.'**
+  String get sellModeFixedDesc;
+
+  /// No description provided for @sellModeAuctionDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người mua trả giá cạnh tranh trong phiên. Hợp với sách hiếm, bản cũ.'**
+  String get sellModeAuctionDesc;
+
+  /// No description provided for @sellNext.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục'**
+  String get sellNext;
+
+  /// No description provided for @sellBack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại'**
+  String get sellBack;
+
+  /// No description provided for @sellEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa'**
+  String get sellEdit;
+
+  /// No description provided for @sellReviewHeader.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người mua sẽ thấy'**
+  String get sellReviewHeader;
+
+  /// No description provided for @sellDoneAnother.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng thêm sách'**
+  String get sellDoneAnother;
+
+  /// No description provided for @sellReviewPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá'**
+  String get sellReviewPrice;
+
+  /// No description provided for @sellReviewDuration.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thời lượng'**
+  String get sellReviewDuration;
+
+  /// No description provided for @sellReviewStartAt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu'**
+  String get sellReviewStartAt;
 }
 
 class _AppLocalizationsDelegate

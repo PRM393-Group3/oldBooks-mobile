@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/widgets/app_paged_list.dart';
+import '../../../core/widgets/app_segmented.dart';
 import '../../../core/widgets/app_state_views.dart';
 import '../application/auction_providers.dart';
 import '../domain/auction.dart';
@@ -76,26 +77,11 @@ class _AuctionsScreenState extends ConsumerState<AuctionsScreen> {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: colors.surfaceMuted,
-                    borderRadius: AppRadius.smAll,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Row(
-                      children: [
-                        for (final t in AuctionTab.values)
-                          Expanded(
-                            child: _Segment(
-                              label: labels[t]!,
-                              selected: t == _tab,
-                              onTap: () => setState(() => _tab = t),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
+                AppSegmented(
+                  labels: [for (final t in AuctionTab.values) labels[t]!],
+                  selected: AuctionTab.values.indexOf(_tab),
+                  onSelected: (i) =>
+                      setState(() => _tab = AuctionTab.values[i]),
                 ),
               ],
             ),
@@ -104,50 +90,6 @@ class _AuctionsScreenState extends ConsumerState<AuctionsScreen> {
           itemBuilder: (context, a) => AuctionCard(
             auction: a,
             onTap: () => context.push('/auctions/${a.id}'),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Segment extends StatelessWidget {
-  const _Segment({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    return Semantics(
-      button: true,
-      selected: selected,
-      child: Material(
-        color: selected ? colors.surface : Colors.transparent,
-        borderRadius: BorderRadius.circular(9),
-        elevation: selected ? 1 : 0,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(9),
-          child: SizedBox(
-            height: 40,
-            child: Center(
-              child: Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: context.text.labelSmall?.copyWith(
-                  fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-                  color: colors.textPrimary,
-                ),
-              ),
-            ),
           ),
         ),
       ),

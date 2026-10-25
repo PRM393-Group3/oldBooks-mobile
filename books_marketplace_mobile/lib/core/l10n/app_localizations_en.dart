@@ -4620,4 +4620,126 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errAuctionOrderExtensionLimit => 'No extensions left.';
+
+  @override
+  String get ckRemoveSelected => 'Remove selected';
+
+  @override
+  String get ckAll => 'All';
+
+  @override
+  String get ckSelectToPay => 'Select books to check out';
+
+  @override
+  String ckPay(String amount) {
+    return 'Pay $amount';
+  }
+
+  @override
+  String ckSelectedCount(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String get ckNoneSelected => 'Nothing selected';
+
+  @override
+  String get ckPayWith => 'Pay with';
+
+  @override
+  String get ckWallet => 'Oldbook wallet';
+
+  @override
+  String ckWalletAfter(String balance, String left) {
+    return 'Balance $balance · $left left after paying';
+  }
+
+  @override
+  String get ckChange => 'Change';
+
+  @override
+  String ckItemsCount(int count) {
+    return '$count books';
+  }
+
+  @override
+  String ckPlacedCount(int count) {
+    return '$count orders placed';
+  }
+
+  @override
+  String ckTrackOrders(int count) {
+    return 'Track $count orders';
+  }
+
+  @override
+  String get ckNotifyHint =>
+      'You will be notified when each order ships, with its tracking code.';
+
+  @override
+  String get ckSeparateOrders =>
+      'Each book creates its own order. Money is held in your wallet until you receive it.';
+
+  @override
+  String ckOrderLine(String code) {
+    return 'ORDER #$code';
+  }
+
+  @override
+  String ckAllOrNothing(int count) {
+    return 'Creates $count separate orders. If one fails, none is charged.';
+  }
+
+  @override
+  String get ckPayTitle => 'Checkout';
+
+  @override
+  String get sellStepMode => 'Format';
+
+  @override
+  String get sellStepBook => 'Book';
+
+  @override
+  String get sellStepPrice => 'Price';
+
+  @override
+  String get sellStepReview => 'Review';
+
+  @override
+  String get sellModeQuestion => 'How do you want to sell?';
+
+  @override
+  String get sellModeHint => 'Pick one. You can change it before submitting.';
+
+  @override
+  String get sellModeFixedDesc =>
+      'Set a fixed price, buyers order right away. Good for common books.';
+
+  @override
+  String get sellModeAuctionDesc =>
+      'Buyers bid against each other. Good for rare or old editions.';
+
+  @override
+  String get sellNext => 'Continue';
+
+  @override
+  String get sellBack => 'Back';
+
+  @override
+  String get sellEdit => 'Edit';
+
+  @override
+  String get sellReviewHeader => 'Buyers will see';
+
+  @override
+  String get sellDoneAnother => 'List another book';
+
+  @override
+  String get sellReviewPrice => 'Price';
+
+  @override
+  String get sellReviewDuration => 'Duration';
+
+  @override
+  String get sellReviewStartAt => 'Starts';
 }

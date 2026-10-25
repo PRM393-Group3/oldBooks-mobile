@@ -7,7 +7,6 @@ import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/util/format.dart';
 import '../../../core/widgets/app_card.dart';
-import '../../../core/widgets/app_tag.dart';
 import '../../../core/widgets/countdown_text.dart';
 import '../../listings/presentation/widgets/book_tile.dart';
 import '../application/auction_providers.dart';
@@ -51,7 +50,7 @@ class LiveAuctionStrip extends ConsumerWidget {
             ),
           ),
           SizedBox(
-            height: 132,
+            height: 120,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(
@@ -63,71 +62,97 @@ class LiveAuctionStrip extends ConsumerWidget {
                 final a = live[i];
                 final deadline = a.deadline;
                 return SizedBox(
-                  width: 264,
+                  width: 248,
                   child: AppCard(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppSpacing.sm),
                     onTap: () => context.push('/auctions/${a.id}'),
                     child: Row(
                       children: [
                         SizedBox(
-                          width: 62,
-                          height: 86,
+                          width: 56,
+                          height: 76,
                           child: BookCover(
                             url: a.thumbnailUrl,
                             label: a.title,
-                            radius: 6,
+                            radius: AppRadius.xs,
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppSpacing.sm),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              AppTag(
-                                label: auctionStatusLabel(l, a.status),
-                                tone: auctionStatusTone(a.status),
-                              ),
-                              const SizedBox(height: 4),
                               Text(
                                 a.title,
-                                maxLines: 2,
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: context.text.titleMedium?.copyWith(
                                   fontFamily: AppTypography.serifFamily,
-                                  fontSize: 15,
-                                  height: 1.2,
+                                  fontVariations: AppTypography.serifSemiBold,
+                                  fontSize: 16,
+                                  height: 19 / 16,
                                 ),
                               ),
-                              const Spacer(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Flexible(
-                                    child: Text(
-                                      formatVnd(a.displayPrice, locale),
-                                      overflow: TextOverflow.ellipsis,
-                                      style: context.text.labelMedium?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                              const SizedBox(height: AppSpacing.xxs),
+                              Text(
+                                priceLabel(l, a.status, a.currentPrice != null),
+                                style: context.text.labelSmall?.copyWith(
+                                  color: colors.textMuted,
+                                ),
+                              ),
+                              Text(
+                                formatVnd(a.displayPrice, locale),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: context.text.labelLarge?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              if (deadline != null) ...[
+                                const SizedBox(height: AppSpacing.xxs),
+                                DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    color: colors.auctionContainer,
+                                    borderRadius: BorderRadius.circular(
+                                      AppRadius.full,
                                     ),
                                   ),
-                                  if (deadline != null)
-                                    Countdown(
-                                      target: deadline,
-                                      daysHours: l.remainingDaysHours,
-                                      builder: (context, left, _) => Text(
-                                        left,
-                                        style: TextStyle(
-                                          fontFamily: AppTypography.monoFamily,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: colors.error,
-                                        ),
-                                      ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: AppSpacing.xs,
+                                      vertical: 2,
                                     ),
-                                ],
-                              ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.schedule,
+                                          size: 14,
+                                          color: colors.onAuctionContainer,
+                                        ),
+                                        const SizedBox(width: AppSpacing.xxs),
+                                        Countdown(
+                                          target: deadline,
+                                          daysHours: l.remainingDaysHours,
+                                          builder: (context, left, _) => Text(
+                                            left,
+                                            style: TextStyle(
+                                              fontFamily:
+                                                  AppTypography.monoFamily,
+                                              fontVariations:
+                                                  AppTypography.monoSemiBold,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              color: colors.onAuctionContainer,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ],
                           ),
                         ),

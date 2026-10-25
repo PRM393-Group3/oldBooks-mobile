@@ -4594,4 +4594,127 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get errAuctionOrderExtensionLimit => 'Đã hết số lần gia hạn.';
+
+  @override
+  String get ckRemoveSelected => 'Xóa đã chọn';
+
+  @override
+  String get ckAll => 'Tất cả';
+
+  @override
+  String get ckSelectToPay => 'Chọn sách để thanh toán';
+
+  @override
+  String ckPay(String amount) {
+    return 'Thanh toán $amount';
+  }
+
+  @override
+  String ckSelectedCount(int count) {
+    return '$count cuốn đã chọn';
+  }
+
+  @override
+  String get ckNoneSelected => 'Chưa chọn cuốn nào';
+
+  @override
+  String get ckPayWith => 'Thanh toán bằng';
+
+  @override
+  String get ckWallet => 'Ví Oldbook';
+
+  @override
+  String ckWalletAfter(String balance, String left) {
+    return 'Số dư $balance · còn $left sau khi trả';
+  }
+
+  @override
+  String get ckChange => 'Đổi';
+
+  @override
+  String ckItemsCount(int count) {
+    return '$count cuốn';
+  }
+
+  @override
+  String ckPlacedCount(int count) {
+    return 'Đã đặt $count đơn';
+  }
+
+  @override
+  String ckTrackOrders(int count) {
+    return 'Theo dõi $count đơn hàng';
+  }
+
+  @override
+  String get ckNotifyHint =>
+      'Bạn sẽ nhận thông báo khi từng đơn được gửi đi kèm mã vận đơn.';
+
+  @override
+  String get ckSeparateOrders =>
+      'Mỗi sách tạo một đơn riêng. Tiền được giữ trong ví đến khi bạn nhận hàng.';
+
+  @override
+  String ckOrderLine(String code) {
+    return 'ĐƠN #$code';
+  }
+
+  @override
+  String ckAllOrNothing(int count) {
+    return 'Tạo $count đơn riêng. Một đơn lỗi thì không đơn nào bị trừ tiền.';
+  }
+
+  @override
+  String get ckPayTitle => 'Thanh toán';
+
+  @override
+  String get sellStepMode => 'Hình thức';
+
+  @override
+  String get sellStepBook => 'Sách';
+
+  @override
+  String get sellStepPrice => 'Giá';
+
+  @override
+  String get sellStepReview => 'Xem lại';
+
+  @override
+  String get sellModeQuestion => 'Bạn muốn bán thế nào?';
+
+  @override
+  String get sellModeHint =>
+      'Chọn một hình thức. Bạn có thể đổi trước khi gửi duyệt.';
+
+  @override
+  String get sellModeFixedDesc =>
+      'Đặt giá cố định, người mua đặt ngay. Hợp với sách thông dụng.';
+
+  @override
+  String get sellModeAuctionDesc =>
+      'Người mua trả giá cạnh tranh trong phiên. Hợp với sách hiếm, bản cũ.';
+
+  @override
+  String get sellNext => 'Tiếp tục';
+
+  @override
+  String get sellBack => 'Quay lại';
+
+  @override
+  String get sellEdit => 'Sửa';
+
+  @override
+  String get sellReviewHeader => 'Người mua sẽ thấy';
+
+  @override
+  String get sellDoneAnother => 'Đăng thêm sách';
+
+  @override
+  String get sellReviewPrice => 'Giá';
+
+  @override
+  String get sellReviewDuration => 'Thời lượng';
+
+  @override
+  String get sellReviewStartAt => 'Bắt đầu';
 }

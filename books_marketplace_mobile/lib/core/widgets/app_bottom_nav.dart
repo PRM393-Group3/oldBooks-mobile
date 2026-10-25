@@ -50,7 +50,7 @@ class AppBottomNav extends StatelessWidget {
         child: SafeArea(
           top: false,
           child: SizedBox(
-            height: 64,
+            height: AppSizes.navHeight,
             child: Row(
               children: [
                 for (var i = 0; i < items.length; i++)
@@ -92,10 +92,11 @@ class _NavButton extends StatelessWidget {
         width: AppSizes.minTouchTarget,
         height: AppSizes.minTouchTarget,
         decoration: BoxDecoration(
-          color: colors.primary,
+          color: colors.accent,
           shape: BoxShape.circle,
+          boxShadow: colors.popShadow,
         ),
-        child: Icon(item.icon, color: colors.onPrimary, size: 28),
+        child: Icon(item.icon, color: colors.onAccent, size: 28),
       );
     } else {
       final icon = Icon(selected ? item.selectedIcon : item.icon, color: color);

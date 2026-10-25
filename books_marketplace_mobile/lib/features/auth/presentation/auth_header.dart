@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
+import '../../../core/widgets/app_logo.dart';
 
 /// Đầu màn hình đăng nhập/đăng ký: biểu tượng thương hiệu, tiêu đề, phụ đề.
 class AuthHeader extends StatelessWidget {
@@ -17,20 +18,7 @@ class AuthHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: AppSpacing.lg),
-        Container(
-          width: 64,
-          height: 64,
-          decoration: BoxDecoration(
-            gradient: colors.brandGradient,
-            borderRadius: AppRadius.lgAll,
-            boxShadow: colors.softShadow,
-          ),
-          child: Icon(
-            Icons.menu_book_rounded,
-            color: colors.onPrimary,
-            size: 34,
-          ),
-        ),
+        const AppLogo.full(size: 40),
         const SizedBox(height: AppSpacing.lg),
         Semantics(
           header: true,

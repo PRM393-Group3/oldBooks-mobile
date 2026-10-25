@@ -8,6 +8,7 @@ import 'app_typography.dart';
 /// ở đây để các màn hình không phải tự chỉnh từng widget.
 abstract final class AppTheme {
   static ThemeData light() => _build(AppColors.light, Brightness.light);
+  static ThemeData dark() => _build(AppColors.dark, Brightness.dark);
 
   static ThemeData _build(AppColors c, Brightness brightness) {
     final scheme = ColorScheme(
@@ -16,10 +17,14 @@ abstract final class AppTheme {
       onPrimary: c.onPrimary,
       primaryContainer: c.primaryContainer,
       onPrimaryContainer: c.onPrimaryContainer,
-      secondary: c.primary,
-      onSecondary: c.onPrimary,
-      secondaryContainer: c.primaryContainer,
-      onSecondaryContainer: c.onPrimaryContainer,
+      secondary: c.accent,
+      onSecondary: c.onAccent,
+      secondaryContainer: c.accentContainer,
+      onSecondaryContainer: c.onAccentContainer,
+      tertiary: c.auction,
+      onTertiary: c.onAuction,
+      tertiaryContainer: c.auctionContainer,
+      onTertiaryContainer: c.onAuctionContainer,
       error: c.error,
       onError: c.onPrimary,
       errorContainer: c.errorContainer,
@@ -28,6 +33,11 @@ abstract final class AppTheme {
       onSurface: c.textPrimary,
       onSurfaceVariant: c.textSecondary,
       surfaceContainerHighest: c.surfaceMuted,
+      inverseSurface: c.surfaceInverse,
+      onInverseSurface: c.onInverse,
+      inversePrimary: c.inverseLeading,
+      scrim: c.scrim,
+      shadow: c.scrim,
       outline: c.border,
       outlineVariant: c.divider,
     );
@@ -48,6 +58,9 @@ abstract final class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
+      // Font mặc định cho mọi widget không đi qua textTheme (Android dùng Roboto
+      // nếu không đặt).
+      fontFamily: AppTypography.fontFamily,
       brightness: brightness,
       colorScheme: scheme,
       scaffoldBackgroundColor: c.background,
@@ -94,7 +107,7 @@ abstract final class AppTheme {
           backgroundColor: c.primary,
           foregroundColor: c.onPrimary,
           disabledBackgroundColor: c.disabledBackground,
-          disabledForegroundColor: c.textMuted,
+          disabledForegroundColor: c.disabledForeground,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -152,8 +165,9 @@ abstract final class AppTheme {
       ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: c.textPrimary,
-        contentTextStyle: textTheme.bodySmall?.copyWith(color: c.surface),
+        backgroundColor: c.surfaceInverse,
+        contentTextStyle: textTheme.bodySmall?.copyWith(color: c.onInverse),
+        actionTextColor: c.inverseLeading,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
       ),
       dialogTheme: DialogThemeData(
@@ -186,6 +200,10 @@ abstract final class AppTheme {
         ),
         showCheckmark: false,
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+      ),
+      badgeTheme: BadgeThemeData(
+        backgroundColor: c.auction,
+        textColor: c.onAuction,
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(color: c.primary),
       listTileTheme: ListTileThemeData(

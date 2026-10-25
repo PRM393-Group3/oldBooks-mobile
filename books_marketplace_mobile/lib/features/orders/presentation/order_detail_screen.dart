@@ -170,6 +170,7 @@ class _BodyState extends ConsumerState<_Body> {
                       o.title,
                       style: context.text.titleMedium?.copyWith(
                         fontFamily: AppTypography.serifFamily,
+                        fontVariations: AppTypography.serifSemiBold,
                         height: 1.2,
                       ),
                     ),

@@ -21,7 +21,7 @@ String auctionStatusLabel(AppLocalizations l, AuctionStatus s) => switch (s) {
 };
 
 AppTagTone auctionStatusTone(AuctionStatus s) => switch (s) {
-  AuctionStatus.live || AuctionStatus.buyNowCountdown => AppTagTone.error,
+  AuctionStatus.live || AuctionStatus.buyNowCountdown => AppTagTone.auction,
   AuctionStatus.registrationOpen => AppTagTone.success,
   AuctionStatus.confirmed ||
   AuctionStatus.awaitingInbound ||
