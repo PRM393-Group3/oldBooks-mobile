@@ -11,6 +11,7 @@ import '../../../core/theme/theme_context.dart';
 import '../../../core/util/format.dart';
 import '../../../core/util/idempotency.dart';
 import '../../../core/util/server_clock.dart';
+import '../../../core/widgets/app_banner.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_dialog.dart';
@@ -339,6 +340,16 @@ class _AuctionDetailScreenState extends ConsumerState<AuctionDetailScreen> {
           const SizedBox(height: AppSpacing.md),
           _PriceBoard(auction: a, onExpired: _controller.refresh),
           if (a.status.isRunning) const _RealtimeChip(),
+          if (a.canBid && a.hasBids) ...[
+            const SizedBox(height: AppSpacing.sm),
+            AppBanner(
+              message: l.myAucOutbid,
+              tone: AppTagTone.auction,
+              icon: Icons.error_outline,
+              bold: true,
+              liveRegion: true,
+            ),
+          ],
           if (a.isSeller)
             SellerPanel(
               auction: a,
@@ -504,7 +515,8 @@ class _PriceBoard extends StatelessWidget {
     final locale = Localizations.localeOf(context).toString();
     final a = auction;
     final sub = auctionTimerSub(l, a);
-    final fg = colors.background;
+    final fg = colors.onInverse;
+    final muted = colors.inverseMuted;
     final deadline = a.deadline;
     final endedAt = a.live?.endedAt;
 
@@ -512,9 +524,10 @@ class _PriceBoard extends StatelessWidget {
       text,
       style: TextStyle(
         fontFamily: AppTypography.monoFamily,
+        fontVariations: AppTypography.monoSemiBold,
         fontWeight: FontWeight.w600,
         fontSize: text.length > 9 ? 16 : 24,
-        color: urgent ? const Color(0xFFFF9B7A) : fg,
+        color: urgent ? colors.inverseUrgent : fg,
       ),
     );
 
@@ -538,8 +551,8 @@ class _PriceBoard extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colors.textPrimary,
-        borderRadius: BorderRadius.circular(18),
+        color: colors.surfaceInverse,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
       ),
       child: Padding(
         padding: const EdgeInsets.all(18),
@@ -555,9 +568,7 @@ class _PriceBoard extends StatelessWidget {
                     children: [
                       Text(
                         priceLabel(l, a.status, a.hasBids),
-                        style: context.text.labelSmall?.copyWith(
-                          color: fg.withValues(alpha: 0.7),
-                        ),
+                        style: context.text.labelSmall?.copyWith(color: muted),
                       ),
                       FittedBox(
                         fit: BoxFit.scaleDown,
@@ -592,9 +603,7 @@ class _PriceBoard extends StatelessWidget {
                     children: [
                       Text(
                         timerLabel(l, a.status),
-                        style: context.text.labelSmall?.copyWith(
-                          color: fg.withValues(alpha: 0.7),
-                        ),
+                        style: context.text.labelSmall?.copyWith(color: muted),
                       ),
                       timer,
                     ],
@@ -603,12 +612,12 @@ class _PriceBoard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            Divider(color: fg.withValues(alpha: 0.15), height: 1),
+            Divider(color: muted.withValues(alpha: 0.35), height: 1),
             const SizedBox(height: 12),
             Text(
               leaderText(l, a),
               style: context.text.labelMedium?.copyWith(
-                color: a.isLeading ? const Color(0xFF9FD8B8) : fg,
+                color: a.isLeading ? colors.inverseLeading : fg,
               ),
             ),
             if (sub != null) ...[
@@ -616,7 +625,7 @@ class _PriceBoard extends StatelessWidget {
               Text(
                 sub,
                 style: context.text.labelSmall?.copyWith(
-                  color: fg.withValues(alpha: 0.75),
+                  color: muted,
                   height: 1.45,
                 ),
               ),
@@ -796,7 +805,10 @@ class _BidHistory extends ConsumerWidget {
                         ),
                         if (bids[i].kind == BidKind.buyNow) ...[
                           const SizedBox(width: 6),
-                          AppTag(label: l.aucBuyNowTag, tone: AppTagTone.error),
+                          AppTag(
+                            label: l.aucBuyNowTag,
+                            tone: AppTagTone.auction,
+                          ),
                         ],
                         const SizedBox(width: 10),
                         if (bids[i].placedAt != null)
@@ -879,7 +891,7 @@ class _BottomPanel extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               foregroundColor: colors.textPrimary,
               side: BorderSide(color: colors.textPrimary),
-              minimumSize: const Size.fromHeight(50),
+              minimumSize: const Size.fromHeight(AppSizes.ctaHeight),
             ),
             onPressed: busy ? null : onBuyNow,
             child: Text(
@@ -1034,7 +1046,7 @@ class _BottomPanel extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 spacing: 6,
                 children: [
-                  for (final n in const [2, 5])
+                  for (final n in const [1, 2, 5])
                     ActionChip(
                       label: Text('+${formatVnd(a.bidStep * n, locale)}'),
                       onPressed: () => onInc(n),
@@ -1051,17 +1063,17 @@ class _BottomPanel extends StatelessWidget {
                     child: FilledButton(
                       style: FilledButton.styleFrom(
                         backgroundColor: colors.auction,
-                        foregroundColor: Colors.white,
-                        minimumSize: const Size.fromHeight(50),
+                        foregroundColor: colors.onAuction,
+                        minimumSize: const Size.fromHeight(AppSizes.ctaHeight),
                       ),
                       onPressed: busy ? null : onBid,
                       child: busy
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: Colors.white,
+                                color: colors.onAuction,
                               ),
                             )
                           : Text(l.aucBid),

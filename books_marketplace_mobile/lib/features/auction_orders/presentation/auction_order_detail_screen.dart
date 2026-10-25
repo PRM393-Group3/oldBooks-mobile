@@ -323,6 +323,7 @@ class _Header extends StatelessWidget {
                 order.bookTitle,
                 style: context.text.titleMedium?.copyWith(
                   fontFamily: AppTypography.serifFamily,
+                  fontVariations: AppTypography.serifSemiBold,
                   fontSize: 18,
                   height: 1.2,
                 ),

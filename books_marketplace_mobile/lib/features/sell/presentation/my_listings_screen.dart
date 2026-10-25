@@ -238,6 +238,7 @@ class _ListingCardState extends ConsumerState<_ListingCard> {
                       m.title.isEmpty ? '—' : m.title,
                       style: context.text.titleMedium?.copyWith(
                         fontFamily: AppTypography.serifFamily,
+                        fontVariations: AppTypography.serifSemiBold,
                         fontSize: 15.5,
                         height: 1.2,
                       ),

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="200" viewBox="0 0 144 40" role="img" aria-label="Oldbook">
+  <g transform="translate(4 4)">
+    <path d="M4 10c4-1.5 8-1 12 1.5V27c-4-2.5-8-3-12-1.5z" fill="#4FD1A0"/>
+    <path d="M28 10c-4-1.5-8-1-12 1.5V27c4-2.5 8-3 12-1.5z" fill="#7FE0BB"/>
+    <circle cx="16" cy="5.5" r="3" fill="#FFC24D"/>
+  </g>
+  <text x="42" y="29" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="21" font-weight="700" letter-spacing="-0.4" fill="#F1EDE5">Oldbook</text>
+</svg>

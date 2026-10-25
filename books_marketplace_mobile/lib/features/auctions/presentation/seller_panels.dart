@@ -229,6 +229,7 @@ class InboundCodeCard extends StatelessWidget {
                   owner.inboundCode,
                   style: TextStyle(
                     fontFamily: AppTypography.monoFamily,
+                    fontVariations: AppTypography.monoSemiBold,
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.5,

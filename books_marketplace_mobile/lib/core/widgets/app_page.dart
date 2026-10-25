@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_dimens.dart';
+import '../theme/theme_context.dart';
 
 /// Khung màn hình chuẩn: AppBar tùy chọn, nội dung cuộn, thanh hành động dính đáy.
 ///
@@ -71,19 +72,25 @@ class AppPage extends StatelessWidget {
           children: [
             Expanded(child: body),
             if (bottom != null)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.md,
-                  AppSpacing.xs,
-                  AppSpacing.md,
-                  AppSpacing.md,
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: context.colors.surface,
+                  boxShadow: context.colors.barShadow,
                 ),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxWidth: AppSizes.formMaxWidth,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.md,
+                    AppSpacing.sm,
+                    AppSpacing.md,
+                    AppSpacing.md,
+                  ),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: AppSizes.formMaxWidth,
+                      ),
+                      child: bottom,
                     ),
-                    child: bottom,
                   ),
                 ),
               ),

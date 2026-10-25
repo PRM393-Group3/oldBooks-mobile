@@ -12,11 +12,13 @@ import '../../../core/util/format.dart';
 import '../../../core/util/image_picking.dart';
 import '../../../core/util/photo_picker.dart';
 import '../../../core/util/server_clock.dart';
+import '../../../core/widgets/app_banner.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_dialog.dart';
-import '../../../core/widgets/app_sheet.dart';
 import '../../../core/widgets/app_snackbar.dart';
+import '../../../core/widgets/app_step_progress.dart';
+import '../../../core/widgets/app_tag.dart';
 import '../../categories/application/category_providers.dart';
 import '../../listings/application/listing_providers.dart';
 import '../../listings/data/listing_repository.dart';
@@ -50,6 +52,13 @@ class _SellScreenState extends ConsumerState<SellScreen> {
   SellForm _form = const SellForm();
   final List<PhotoSlot> _photos = [];
   bool _tried = false;
+
+  /// Bước đang xem của wizard (0 Hình thức, 1 Sách, 2 Giá, 3 Xem lại).
+  int _wizardStep = 0;
+  final _scroll = ScrollController();
+
+  /// Có giá trị khi đã gửi xong: hiện màn kết quả thay cho form.
+  _SellDone? _done;
 
   /// Giờ bắt đầu mong muốn của phiên (UTC); `null` là giờ sớm nhất cho phép.
   DateTime? _auctionStart;
@@ -139,6 +148,7 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     for (final c in _controllers) {
       c.dispose();
     }
+    _scroll.dispose();
     super.dispose();
   }
 
@@ -498,86 +508,483 @@ class _SellScreenState extends ConsumerState<SellScreen> {
   }
 
   Future<void> _showDone(SellForm form, String? code, {String? auctionId}) {
-    final router = GoRouter.of(context);
-    return showAppSheet<void>(
-      context,
-      builder: (sheet) {
-        final l = context.l10n;
-        final colors = context.colors;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(
-              child: CircleAvatar(
-                radius: 26,
-                backgroundColor: colors.warningContainer,
-                child: Icon(Icons.check, color: colors.warning, size: 26),
-              ),
+    setState(() {
+      _wizardStep = 0;
+      _done = _SellDone(
+        title: form.title.trim(),
+        isAuction: form.isAuction,
+        code: code,
+        auctionId: auctionId,
+      );
+    });
+    return Future.value();
+  }
+
+  /// Các trường được kiểm ở mỗi bước, để báo lỗi đúng chỗ.
+  static const _bookErrors = {
+    SellError.photos,
+    SellError.title,
+    SellError.author,
+    SellError.category,
+    SellError.description,
+    SellError.isbn,
+    SellError.year,
+  };
+
+  void _next() {
+    _sync();
+    final rules = ref.read(sellRulesProvider);
+    final errors = validateSell(_form, rules: rules).toSet();
+    final scope = _wizardStep == 1
+        ? _bookErrors
+        : errors.difference(_bookErrors);
+    if (_wizardStep >= 1 && errors.intersection(scope).isNotEmpty) {
+      setState(() => _tried = true);
+      return;
+    }
+    setState(() {
+      _tried = false;
+      _wizardStep++;
+    });
+    _scrollTop();
+  }
+
+  /// Bước mới bắt đầu từ đầu trang, không giữ vị trí cuộn của bước trước.
+  void _scrollTop() {
+    if (_scroll.hasClients) _scroll.jumpTo(0);
+  }
+
+  void _goTo(int step) {
+    setState(() {
+      _tried = false;
+      _wizardStep = step;
+    });
+    _scrollTop();
+  }
+
+  List<Widget> _bookSection(BuildContext context, SellForm f, SellRules rules) {
+    final l = context.l10n;
+    final categories = ref.watch(categoryTreeProvider).value ?? const [];
+    return [
+      _PhotoGrid(
+        photos: _photos,
+        minPhotos: rules.minPhotos,
+        onAdd: _addPhoto,
+        onTapPhoto: _photoActions,
+      ),
+      _Field(
+        label: l.sellFieldTitle,
+        controller: _title,
+        hint: l.sellFieldTitleHint,
+        onChanged: (_) => _sync(),
+      ),
+      _Field(
+        label: l.sellFieldAuthor,
+        controller: _author,
+        hint: l.sellFieldAuthorHint,
+        onChanged: (_) => _sync(),
+      ),
+      _Label(l.sellFieldCategory),
+      Wrap(
+        spacing: 6,
+        runSpacing: 6,
+        children: [
+          for (final c in categories)
+            ChoiceChip(
+              label: Text(c.name),
+              selected: f.categoryId == c.id,
+              onSelected: (_) =>
+                  _update((x) => x.copyWith(categoryId: () => c.id)),
             ),
-            const SizedBox(height: AppSpacing.sm),
-            AppSheetTitle(
-              form.isAuction ? l.sellDoneAuctionTitle : l.sellDoneSaleTitle,
-              center: true,
-            ),
-            const SizedBox(height: AppSpacing.xs),
-            Text(
-              form.isAuction
-                  ? l.sellDoneAuctionBody
-                  : l.sellDoneSaleBody(form.title.trim()),
-              textAlign: TextAlign.center,
-              style: context.text.bodyMedium?.copyWith(
-                color: colors.textSecondary,
-                height: 1.55,
-              ),
-            ),
-            if (code != null) ...[
-              const SizedBox(height: AppSpacing.sm),
-              AppCard(
-                color: colors.background,
-                child: Column(
-                  children: [
-                    Text(
-                      l.sellDoneCode,
-                      style: context.text.labelSmall?.copyWith(
-                        color: colors.textMuted,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      code,
-                      style: TextStyle(
-                        fontFamily: AppTypography.monoFamily,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.3,
-                        color: colors.textPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l.sellDoneWarehouse,
-                      textAlign: TextAlign.center,
-                      style: context.text.labelSmall?.copyWith(
-                        color: colors.textSecondary,
-                      ),
-                    ),
-                  ],
+        ],
+      ),
+      const SizedBox(height: AppSpacing.md),
+      _Label(l.sellFieldCondition),
+      Row(
+        children: [
+          for (final c in SellCondition.values)
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 6),
+                child: _ConditionTile(
+                  label: sellConditionLabel(l, c),
+                  code: c.code,
+                  selected: f.condition == c,
+                  onTap: () => _update((x) => x.copyWith(condition: c)),
                 ),
               ),
-            ],
-            const SizedBox(height: AppSpacing.md),
-            AppButton(
-              label: auctionId != null ? l.sellDoneViewAuction : l.sellDoneView,
-              onPressed: () {
-                Navigator.of(sheet).pop();
-                router.push(
-                  auctionId != null ? '/auctions/$auctionId' : '/me/listings',
-                );
-              },
+            ),
+        ],
+      ),
+      const SizedBox(height: AppSpacing.md),
+      _Field(
+        label: l.sellFieldDesc,
+        controller: _desc,
+        hint: l.sellFieldDescHint,
+        lines: 3,
+        onChanged: (_) => _sync(),
+      ),
+      ...[
+        _Field(
+          label: l.sellFieldPublisher,
+          controller: _publisher,
+          hint: '',
+          onChanged: (_) => _sync(),
+        ),
+        _Field(
+          label: l.sellFieldYear,
+          controller: _year,
+          hint: '',
+          numeric: true,
+          onChanged: (_) => _sync(),
+        ),
+        _Field(
+          label: l.sellFieldIsbn,
+          controller: _isbn,
+          hint: '978-0-671-02703-2',
+          onChanged: (_) => _sync(),
+        ),
+        _Field(
+          label: l.sellFieldDefects,
+          controller: _defects,
+          hint: '',
+          lines: 2,
+          onChanged: (_) => _sync(),
+        ),
+      ],
+    ];
+  }
+
+  List<Widget> _pricingSection(
+    BuildContext context,
+    SellForm f,
+    SellRules rules,
+    String locale,
+    DateTime now,
+  ) {
+    final l = context.l10n;
+    final colors = context.colors;
+    return [
+      if (!f.isAuction)
+        _Field(
+          label: l.sellFieldPrice,
+          controller: _price,
+          hint: l.sellFieldPriceHint,
+          numeric: true,
+          onChanged: (_) => _sync(),
+        )
+      else ...[
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: _Field(
+                label: l.sellFieldStart,
+                controller: _start,
+                hint: l.sellFieldStartHint,
+                numeric: true,
+                onChanged: (_) => _sync(),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: _Field(
+                label: l.sellFieldStep,
+                controller: _step,
+                hint: f.startingPrice >= minStartingPrice
+                    ? '${formatVnd(rules.stepRange(f.startingPrice).lo, locale)} – ${formatVnd(rules.stepRange(f.startingPrice).hi, locale)}'
+                    : l.sellStepHintEmpty,
+                numeric: true,
+                onChanged: (_) => _sync(),
+              ),
             ),
           ],
-        );
-      },
+        ),
+        _Field(
+          label: '${l.sellFieldBuyNow} ${l.sellFieldBuyNowOptional}',
+          controller: _buyNow,
+          hint: f.startingPrice > 0
+              ? l.sellBuyNowHint(
+                  formatVnd(rules.minBuyNow(f.startingPrice), locale),
+                )
+              : l.sellBuyNowHintEmpty,
+          numeric: true,
+          onChanged: (_) => _sync(),
+        ),
+        _Label(l.sellDuration),
+        _Durations(
+          selected: f.durationMinutes,
+          onChanged: (m) => _update((x) => x.copyWith(durationMinutes: m)),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        _Label(l.sellStartAt),
+        OutlinedButton.icon(
+          onPressed: _busy ? null : _pickAuctionStart,
+          icon: const Icon(Icons.event_outlined),
+          label: Text(formatDateTime(_startFor(now), locale)),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          l.sellEarliestStart(formatShortDateTime(earliestAuctionStart(now))),
+          style: context.text.labelSmall?.copyWith(color: colors.textMuted),
+        ),
+        const SizedBox(height: AppSpacing.md),
+      ],
+      _PreviewCard(form: f, locale: locale, rules: rules),
+    ];
+  }
+
+  Widget _stepHeader(BuildContext context, String title, {String? hint}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Semantics(
+            header: true,
+            child: Text(title, style: context.text.headlineMedium),
+          ),
+          if (hint != null)
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpacing.xxs),
+              child: Text(
+                hint,
+                style: context.text.bodySmall?.copyWith(
+                  color: context.colors.textMuted,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _modeSection(BuildContext context, SellForm f) {
+    final l = context.l10n;
+    return [
+      _stepHeader(context, l.sellModeQuestion, hint: l.sellModeHint),
+      _ModeCard(
+        icon: Icons.sell_outlined,
+        title: l.sellModeFixed,
+        description: l.sellModeFixedDesc,
+        selected: f.mode == SellMode.fixedPrice,
+        onTap: () => _update((x) => x.copyWith(mode: SellMode.fixedPrice)),
+      ),
+      const SizedBox(height: AppSpacing.sm),
+      _ModeCard(
+        icon: Icons.gavel_outlined,
+        title: l.sellModeAuction,
+        description: l.sellModeAuctionDesc,
+        selected: f.mode == SellMode.auction,
+        onTap: () => _update((x) => x.copyWith(mode: SellMode.auction)),
+      ),
+      if (f.isAuction) ...[
+        const SizedBox(height: AppSpacing.md),
+        AppBanner(
+          message: l.sellAuctionNote,
+          tone: AppTagTone.warning,
+          icon: Icons.info_outline,
+        ),
+      ],
+    ];
+  }
+
+  List<Widget> _reviewSection(
+    BuildContext context,
+    SellForm f,
+    SellRules rules,
+    String locale,
+    DateTime now,
+  ) {
+    final l = context.l10n;
+    final colors = context.colors;
+    final categories = ref.watch(categoryTreeProvider).value ?? const [];
+    final category = categories
+        .where((c) => c.id == f.categoryId)
+        .map((c) => c.name)
+        .firstOrNull;
+    Widget row(String label, String value, int step) => Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxs),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: context.text.bodySmall?.copyWith(
+                color: colors.textSecondary,
+              ),
+            ),
+          ),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: context.text.labelLarge,
+            ),
+          ),
+          TextButton(
+            onPressed: () => _goTo(step),
+            style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+            child: Text(l.sellEdit),
+          ),
+        ],
+      ),
+    );
+    return [
+      _stepHeader(context, l.sellReviewHeader),
+      AppCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              f.title.trim().isEmpty ? '—' : f.title.trim(),
+              style: context.text.titleLarge,
+            ),
+            Text(
+              [
+                f.author.trim(),
+                ?category,
+              ].where((e) => e.isNotEmpty).join(' · '),
+              style: context.text.bodySmall?.copyWith(
+                color: colors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: AppTag(
+                label: sellConditionLabel(l, f.condition),
+                tone: AppTagTone.success,
+              ),
+            ),
+            const Divider(height: AppSpacing.lg),
+            row(l.sellPhotos, l.sellPhotoCount(_photos.length), 1),
+            if (f.isAuction) ...[
+              row(l.sellFieldStart, formatVnd(f.startingPrice, locale), 2),
+              row(l.sellFieldStep, formatVnd(f.step, locale), 2),
+              if (f.buyNow > 0)
+                row(l.sellFieldBuyNow, formatVnd(f.buyNow, locale), 2),
+              row(
+                l.sellReviewStartAt,
+                formatDateTime(_startFor(now), locale),
+                2,
+              ),
+            ] else
+              row(l.sellReviewPrice, formatVnd(f.price, locale), 2),
+          ],
+        ),
+      ),
+      const SizedBox(height: AppSpacing.md),
+      _PreviewCard(form: f, locale: locale, rules: rules),
+    ];
+  }
+
+  Widget _doneView(BuildContext context, _SellDone done) {
+    final l = context.l10n;
+    final colors = context.colors;
+    final router = GoRouter.of(context);
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.xxl,
+        AppSpacing.md,
+        AppSpacing.xl,
+      ),
+      children: [
+        Center(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: colors.successContainer,
+              shape: BoxShape.circle,
+            ),
+            child: SizedBox(
+              width: 72,
+              height: 72,
+              child: Icon(Icons.check, size: 36, color: colors.success),
+            ),
+          ),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Semantics(
+          header: true,
+          child: Text(
+            done.isAuction ? l.sellDoneAuctionTitle : l.sellDoneSaleTitle,
+            textAlign: TextAlign.center,
+            style: context.text.headlineMedium,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          done.isAuction
+              ? l.sellDoneAuctionBody
+              : l.sellDoneSaleBody(done.title),
+          textAlign: TextAlign.center,
+          style: context.text.bodyMedium?.copyWith(color: colors.textSecondary),
+        ),
+        if (done.code != null) ...[
+          const SizedBox(height: AppSpacing.lg),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: colors.surfaceInverse,
+              borderRadius: AppRadius.lgAll,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              child: Column(
+                children: [
+                  Text(
+                    l.sellDoneCode.toUpperCase(),
+                    style: AppTypography.overline.copyWith(
+                      color: colors.inverseMuted,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xxs),
+                  SelectableText(
+                    done.code!,
+                    style: TextStyle(
+                      fontFamily: AppTypography.monoFamily,
+                      fontVariations: AppTypography.monoSemiBold,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 1.3,
+                      color: colors.onInverse,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xxs),
+                  Text(
+                    l.sellDoneWarehouse,
+                    textAlign: TextAlign.center,
+                    style: context.text.labelSmall?.copyWith(
+                      color: colors.inverseMuted,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+        const SizedBox(height: AppSpacing.lg),
+        AppButton(
+          label: done.auctionId != null
+              ? l.sellDoneViewAuction
+              : l.sellDoneView,
+          large: true,
+          onPressed: () => router.push(
+            done.auctionId != null
+                ? '/auctions/${done.auctionId}'
+                : '/me/listings',
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        AppButton(
+          label: l.sellDoneAnother,
+          variant: AppButtonVariant.text,
+          onPressed: () => setState(() {
+            _done = null;
+            _wizardStep = 0;
+          }),
+        ),
+      ],
     );
   }
 
@@ -590,246 +997,250 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     final rules = ref.watch(sellRulesProvider);
     final errors = validateSell(f, rules: rules);
     final now = ref.watch(clockProvider)();
-
-    final categories = ref.watch(categoryTreeProvider).value ?? const [];
     final existingStatus = widget.editing?.status;
+
+    if (_done != null) {
+      return Scaffold(body: SafeArea(child: _doneView(context, _done!)));
+    }
+
+    final wizard = !_editing;
+    final lastStep = _wizardStep == 3;
+
+    // Lỗi hiện dưới nội dung của bước đang xem.
+    final shownErrors = [
+      for (final e in errors)
+        if (!wizard ||
+            (_wizardStep == 1 && _bookErrors.contains(e)) ||
+            (_wizardStep == 2 && !_bookErrors.contains(e)) ||
+            _wizardStep == 3)
+          e,
+    ];
+
+    final List<Widget> content;
+    if (!wizard) {
+      content = [
+        ..._bookSection(context, f, rules),
+        ..._pricingSection(context, f, rules, locale, now),
+      ];
+    } else {
+      content = switch (_wizardStep) {
+        0 => _modeSection(context, f),
+        1 => [
+          _stepHeader(context, l.sellStepBook),
+          ..._bookSection(context, f, rules),
+        ],
+        2 => [
+          _stepHeader(context, l.sellStepPrice),
+          ..._pricingSection(context, f, rules, locale, now),
+        ],
+        _ => _reviewSection(context, f, rules, locale, now),
+      };
+    }
+
+    final submitLabel = f.isAuction
+        ? l.sellSubmitAuction
+        : _editing
+        ? (existingStatus != null && existingStatus.canSubmit
+              ? l.sellEditSaveSubmit
+              : l.sellEditSave)
+        : l.sellSubmitSale;
 
     return Scaffold(
       appBar: _editing ? AppBar(title: Text(l.sellEditTitle)) : null,
       body: SafeArea(
-        child: ListView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          padding: const EdgeInsets.fromLTRB(
-            AppSpacing.screen + 4,
-            AppSpacing.xs,
-            AppSpacing.screen + 4,
-            AppSpacing.xl,
-          ),
+        child: Column(
           children: [
-            if (!_editing) ...[
-              Text(
-                l.sellTitle,
-                style: context.text.headlineMedium?.copyWith(
-                  fontSize: 30,
-                  letterSpacing: -0.6,
+            if (wizard)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.md,
+                  AppSpacing.sm,
+                  AppSpacing.md,
+                  0,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(l.sellTitle, style: context.text.titleLarge),
                 ),
               ),
-              const SizedBox(height: AppSpacing.md),
-              _ModeToggle(
-                mode: f.mode,
-                onChanged: (m) => _update((x) => x.copyWith(mode: m)),
-              ),
-            ],
-            if (f.isAuction) ...[
-              const SizedBox(height: AppSpacing.md),
-              AppCard(
-                color: colors.warningContainer,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 12,
-                ),
-                child: Text(
-                  l.sellAuctionNote,
-                  style: context.text.labelSmall?.copyWith(
-                    color: colors.onWarningContainer,
-                    height: 1.5,
-                  ),
-                ),
-              ),
-            ],
-            const SizedBox(height: AppSpacing.md),
-            _PhotoGrid(
-              photos: _photos,
-              minPhotos: rules.minPhotos,
-              onAdd: _addPhoto,
-              onTapPhoto: _photoActions,
-            ),
-            _Field(
-              label: l.sellFieldTitle,
-              controller: _title,
-              hint: l.sellFieldTitleHint,
-              onChanged: (_) => _sync(),
-            ),
-            _Field(
-              label: l.sellFieldAuthor,
-              controller: _author,
-              hint: l.sellFieldAuthorHint,
-              onChanged: (_) => _sync(),
-            ),
-            _Label(l.sellFieldCategory),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: [
-                for (final c in categories)
-                  ChoiceChip(
-                    label: Text(c.name),
-                    selected: f.categoryId == c.id,
-                    onSelected: (_) =>
-                        _update((x) => x.copyWith(categoryId: () => c.id)),
-                  ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.md),
-            _Label(l.sellFieldCondition),
-            Row(
-              children: [
-                for (final c in SellCondition.values)
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 6),
-                      child: _ConditionTile(
-                        label: sellConditionLabel(l, c),
-                        code: c.code,
-                        selected: f.condition == c,
-                        onTap: () => _update((x) => x.copyWith(condition: c)),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.md),
-            if (!f.isAuction)
-              _Field(
-                label: l.sellFieldPrice,
-                controller: _price,
-                hint: l.sellFieldPriceHint,
-                numeric: true,
-                onChanged: (_) => _sync(),
-              )
-            else ...[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: _Field(
-                      label: l.sellFieldStart,
-                      controller: _start,
-                      hint: l.sellFieldStartHint,
-                      numeric: true,
-                      onChanged: (_) => _sync(),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: _Field(
-                      label: l.sellFieldStep,
-                      controller: _step,
-                      hint: f.startingPrice >= minStartingPrice
-                          ? '${formatVnd(rules.stepRange(f.startingPrice).lo, locale)} – ${formatVnd(rules.stepRange(f.startingPrice).hi, locale)}'
-                          : l.sellStepHintEmpty,
-                      numeric: true,
-                      onChanged: (_) => _sync(),
-                    ),
-                  ),
+            if (wizard)
+              AppStepProgress(
+                current: _wizardStep,
+                labels: [
+                  l.sellStepMode,
+                  l.sellStepBook,
+                  l.sellStepPrice,
+                  l.sellStepReview,
                 ],
               ),
-              _Field(
-                label: '${l.sellFieldBuyNow} ${l.sellFieldBuyNowOptional}',
-                controller: _buyNow,
-                hint: f.startingPrice > 0
-                    ? l.sellBuyNowHint(
-                        formatVnd(rules.minBuyNow(f.startingPrice), locale),
-                      )
-                    : l.sellBuyNowHintEmpty,
-                numeric: true,
-                onChanged: (_) => _sync(),
-              ),
-              _Label(l.sellDuration),
-              _Durations(
-                selected: f.durationMinutes,
-                onChanged: (m) =>
-                    _update((x) => x.copyWith(durationMinutes: m)),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              _Label(l.sellStartAt),
-              OutlinedButton.icon(
-                onPressed: _busy ? null : _pickAuctionStart,
-                icon: const Icon(Icons.event_outlined),
-                label: Text(formatDateTime(_startFor(now), locale)),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                l.sellEarliestStart(
-                  formatShortDateTime(earliestAuctionStart(now)),
+            Expanded(
+              child: ListView(
+                controller: _scroll,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.md,
+                  AppSpacing.xs,
+                  AppSpacing.md,
+                  AppSpacing.xl,
                 ),
-                style: context.text.labelSmall?.copyWith(
-                  color: colors.textMuted,
-                ),
+                children: [
+                  ...content,
+                  if (_tried && shownErrors.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    for (final e in shownErrors)
+                      Text(
+                        '• ${sellErrorText(l, locale, e, f, rules: rules)}',
+                        style: context.text.labelSmall?.copyWith(
+                          color: colors.error,
+                          height: 1.6,
+                        ),
+                      ),
+                  ],
+                ],
               ),
-              const SizedBox(height: AppSpacing.md),
-            ],
-            _Field(
-              label: l.sellFieldDesc,
-              controller: _desc,
-              hint: l.sellFieldDescHint,
-              lines: 3,
-              onChanged: (_) => _sync(),
             ),
-            ...[
-              _Field(
-                label: l.sellFieldPublisher,
-                controller: _publisher,
-                hint: '',
-                onChanged: (_) => _sync(),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: colors.surface,
+                boxShadow: colors.barShadow,
               ),
-              _Field(
-                label: l.sellFieldYear,
-                controller: _year,
-                hint: '',
-                numeric: true,
-                onChanged: (_) => _sync(),
-              ),
-              _Field(
-                label: l.sellFieldIsbn,
-                controller: _isbn,
-                hint: '978-0-671-02703-2',
-                onChanged: (_) => _sync(),
-              ),
-              _Field(
-                label: l.sellFieldDefects,
-                controller: _defects,
-                hint: '',
-                lines: 2,
-                onChanged: (_) => _sync(),
-              ),
-            ],
-            _PreviewCard(form: f, locale: locale, rules: rules),
-            if (_tried && errors.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.sm),
-              for (final e in errors)
-                Text(
-                  '• ${sellErrorText(l, locale, e, f, rules: rules)}',
-                  style: context.text.labelSmall?.copyWith(
-                    color: colors.error,
-                    height: 1.6,
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.md,
+                  AppSpacing.sm,
+                  AppSpacing.md,
+                  AppSpacing.md,
                 ),
-            ],
-            const SizedBox(height: AppSpacing.md),
-            if (_stageText != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.xs),
-                child: Text(
-                  _stageText!,
-                  textAlign: TextAlign.center,
-                  style: context.text.labelSmall?.copyWith(
-                    color: colors.textMuted,
-                  ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (_stageText != null)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+                        child: Text(
+                          _stageText!,
+                          textAlign: TextAlign.center,
+                          style: context.text.labelSmall?.copyWith(
+                            color: colors.textMuted,
+                          ),
+                        ),
+                      ),
+                    Row(
+                      children: [
+                        if (wizard && _wizardStep > 0) ...[
+                          Expanded(
+                            flex: 2,
+                            child: AppButton(
+                              label: l.sellBack,
+                              variant: AppButtonVariant.secondary,
+                              large: true,
+                              onPressed: _busy
+                                  ? null
+                                  : () => _goTo(_wizardStep - 1),
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.sm),
+                        ],
+                        Expanded(
+                          flex: 3,
+                          child: AppButton(
+                            label: !wizard || lastStep
+                                ? submitLabel
+                                : l.sellNext,
+                            large: true,
+                            loading: _busy,
+                            onPressed: !wizard || lastStep ? _submit : _next,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            AppButton(
-              label: f.isAuction
-                  ? l.sellSubmitAuction
-                  : _editing
-                  ? (existingStatus != null && existingStatus.canSubmit
-                        ? l.sellEditSaveSubmit
-                        : l.sellEditSave)
-                  : l.sellSubmitSale,
-              loading: _busy,
-              onPressed: _submit,
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SellDone {
+  const _SellDone({
+    required this.title,
+    required this.isAuction,
+    this.code,
+    this.auctionId,
+  });
+
+  final String title;
+  final bool isAuction;
+  final String? code;
+  final String? auctionId;
+}
+
+class _ModeCard extends StatelessWidget {
+  const _ModeCard({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final String description;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return Semantics(
+      button: true,
+      selected: selected,
+      child: Material(
+        color: selected ? colors.primaryContainer : colors.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: AppRadius.mdAll,
+          side: BorderSide(
+            color: selected ? colors.primary : colors.divider,
+            width: selected ? 2 : 1,
+          ),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: Row(
+              children: [
+                Icon(icon, color: colors.primary, size: 28),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title, style: context.text.titleMedium),
+                      Text(
+                        description,
+                        style: context.text.bodySmall?.copyWith(
+                          color: colors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  selected ? Icons.check_circle : Icons.circle_outlined,
+                  color: selected ? colors.primary : colors.border,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -894,64 +1305,6 @@ class _Field extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ModeToggle extends StatelessWidget {
-  const _ModeToggle({required this.mode, required this.onChanged});
-
-  final SellMode mode;
-  final ValueChanged<SellMode> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final colors = context.colors;
-    Widget seg(SellMode m, String label) {
-      final selected = mode == m;
-      return Expanded(
-        child: Semantics(
-          button: true,
-          selected: selected,
-          child: Material(
-            color: selected ? colors.surface : Colors.transparent,
-            elevation: selected ? 1 : 0,
-            borderRadius: BorderRadius.circular(9),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(9),
-              onTap: () => onChanged(m),
-              child: SizedBox(
-                height: 44,
-                child: Center(
-                  child: Text(
-                    label,
-                    style: context.text.labelMedium?.copyWith(
-                      fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors.surfaceMuted,
-        borderRadius: AppRadius.smAll,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: Row(
-          children: [
-            seg(SellMode.fixedPrice, l.sellModeFixed),
-            seg(SellMode.auction, l.sellModeAuction),
-          ],
-        ),
       ),
     );
   }
@@ -1082,6 +1435,7 @@ class _AddSlot extends StatelessWidget {
               label,
               style: TextStyle(
                 fontFamily: AppTypography.monoFamily,
+                fontVariations: AppTypography.monoSemiBold,
                 fontSize: 10,
                 color: colors.textMuted,
               ),
@@ -1142,6 +1496,7 @@ class _ConditionTile extends StatelessWidget {
                   code,
                   style: TextStyle(
                     fontFamily: AppTypography.monoFamily,
+                    fontVariations: AppTypography.monoSemiBold,
                     fontSize: 9.5,
                     color: fg.withValues(alpha: 0.7),
                   ),

@@ -17,11 +17,13 @@ abstract final class AppSpacing {
 
 /// Bo góc.
 abstract final class AppRadius {
-  static const double sm = 10; // chip nhỏ, nút nhỏ
-  static const double md = 14; // nút, ô nhập, biểu tượng thương hiệu
-  static const double lg = 18; // thẻ, sheet, dialog
+  static const double xs = 6; // bìa sách nhỏ (thẻ đấu giá, giỏ hàng)
+  static const double sm = 10; // bìa trong lưới, chip nhỏ
+  static const double md = 14; // nút, ô nhập, thẻ
+  static const double lg = 18; // sheet, dialog, bảng giá đấu giá
   static const double full = 999; // badge, avatar, nút tròn
 
+  static BorderRadius get xsAll => BorderRadius.circular(xs);
   static BorderRadius get smAll => BorderRadius.circular(sm);
   static BorderRadius get mdAll => BorderRadius.circular(md);
   static BorderRadius get lgAll => BorderRadius.circular(lg);
@@ -32,6 +34,12 @@ abstract final class AppSizes {
   /// Vùng chạm tối thiểu (WCAG, HIG, Material).
   static const double minTouchTarget = 48;
   static const double buttonHeight = 48;
+
+  /// Nút CTA chính ở thanh cố định (Đặt giá, Mua ngay, Thanh toán).
+  static const double ctaHeight = 52;
+
+  /// Thanh điều hướng dưới.
+  static const double navHeight = 64;
   static const double avatarSmall = 40;
   static const double avatarMedium = 72;
   static const double avatarLarge = 120;

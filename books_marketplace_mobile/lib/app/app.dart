@@ -16,6 +16,8 @@ class App extends ConsumerWidget {
       onGenerateTitle: (context) => AppLocalizations.of(context).appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      themeMode: ThemeMode.system,
       routerConfig: ref.watch(routerProvider),
       locale: ref.watch(localeControllerProvider),
       // Tiếng Việt đứng đầu: là ngôn ngữ dự phòng khi hệ thống dùng thứ tiếng khác.

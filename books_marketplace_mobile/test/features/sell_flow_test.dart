@@ -46,6 +46,14 @@ Future<void> _type(WidgetTester tester, String hint, String text) async {
   await tester.pump();
 }
 
+/// Bấm "Tiếp tục" của wizard đăng bán và đợi chuyển bước.
+Future<void> _next(WidgetTester tester) async {
+  final b = find.widgetWithText(AppButton, 'Tiếp tục');
+  await tester.ensureVisible(b);
+  await tester.tap(b);
+  await tester.pumpAndSettle();
+}
+
 void main() {
   group('luật form đăng bán', () {
     test('khoảng bước nhảy: 1% đến 10% giá khởi điểm, tối thiểu 5.000', () {
@@ -120,14 +128,12 @@ void main() {
   testWidgets('form trống: báo đủ lỗi, không tạo tin', (tester) async {
     final h = await _openSell(tester);
     expect(find.text('Đăng bán'), findsWidgets);
-    await _scrollTo(tester, find.text('Gửi duyệt'));
-    await tester.tap(find.text('Gửi duyệt'));
-    await tester.pumpAndSettle();
+    await _next(tester); // Hình thức → Sách
+    await _next(tester); // Sách còn thiếu: ở lại và báo lỗi
+    // Các dòng lỗi nằm cuối bước; cuộn tới để ListView dựng chúng.
+    await _scrollTo(tester, find.text('• Chọn thể loại.'));
     expect(find.text('• Cần ít nhất 4 ảnh (hiện có 0)'), findsOneWidget);
     expect(find.text('• Nhập tên sách'), findsOneWidget);
-    expect(find.text('• Giá bán tối thiểu 1.000 đ'), findsOneWidget);
-    // Các dòng lỗi đẩy nút xuống; cuộn lại để ListView dựng dòng cuối.
-    await _scrollTo(tester, find.text('Gửi duyệt'));
     expect(find.text('• Chọn thể loại.'), findsOneWidget);
     expect(find.text('Đã gửi duyệt'), findsNothing);
     expect(
@@ -141,6 +147,7 @@ void main() {
     'đăng bán thường: dự tính phí 5%, gửi duyệt, hiện trong Tin của tôi',
     (tester) async {
       final h = await _openSell(tester);
+      await _next(tester); // Hình thức (giá cố định) → Sách
       for (var i = 0; i < 4; i++) {
         await tester.tap(find.text('+ thêm'));
         await tester.pumpAndSettle();
@@ -152,19 +159,22 @@ void main() {
       await _scrollTo(tester, find.widgetWithText(ChoiceChip, 'Văn học'));
       await tester.tap(find.widgetWithText(ChoiceChip, 'Văn học'));
       await tester.pump();
-      await _type(tester, 'Tối thiểu 1.000', '100000');
-      await _scrollTo(tester, find.text('Dự tính'.toUpperCase()));
-      expect(find.text('−5.000 ₫'), findsOneWidget);
-      expect(find.text('95.000 ₫'), findsOneWidget);
-      expect(find.text('30.000 ₫'), findsOneWidget);
-
       await _type(
         tester,
         'Năm xuất bản, NXB, ghi chú, trang bị ố…',
         'Bìa mềm, không ghi chú.',
       );
-      await _scrollTo(tester, find.text('Gửi duyệt'));
-      await tester.tap(find.text('Gửi duyệt'));
+      await _next(tester); // Sách → Giá
+      await _type(tester, 'Tối thiểu 1.000', '100000');
+      await _scrollTo(tester, find.text('Dự tính'.toUpperCase()));
+      expect(find.text('−5.000 ₫'), findsOneWidget);
+      expect(find.text('95.000 ₫'), findsOneWidget);
+      expect(find.text('30.000 ₫'), findsOneWidget);
+      await _next(tester); // Giá → Xem lại
+
+      final submit = find.widgetWithText(AppButton, 'Gửi duyệt');
+      await tester.ensureVisible(submit);
+      await tester.tap(submit);
       await tester.pumpAndSettle();
       expect(find.text('Đã gửi duyệt'), findsOneWidget);
       expect(find.textContaining('"Mắt biếc"'), findsOneWidget);
@@ -204,6 +214,7 @@ void main() {
       await tester.tap(find.text('Đấu giá').first);
       await tester.pumpAndSettle();
       expect(find.textContaining('gửi về kho Oldbook'), findsOneWidget);
+      await _next(tester); // Hình thức → Sách
 
       for (var i = 0; i < 4; i++) {
         await tester.tap(find.text('+ thêm'));
@@ -214,17 +225,18 @@ void main() {
       await _scrollTo(tester, find.widgetWithText(ChoiceChip, 'Văn học'));
       await tester.tap(find.widgetWithText(ChoiceChip, 'Văn học'));
       await tester.pumpAndSettle();
-      await _type(tester, '≥ 10.000', '200000');
-      await _type(tester, '5.000 ₫ – 20.000 ₫', '10000');
-      await _scrollTo(tester, find.text('Dự tính'.toUpperCase()));
-      expect(find.text('−20.000 ₫'), findsOneWidget);
-      expect(find.text('180.000 ₫'), findsOneWidget);
-
       await _type(
         tester,
         'Năm xuất bản, NXB, ghi chú, trang bị ố…',
         'Bản 1938',
       );
+      await _next(tester); // Sách → Giá
+      await _type(tester, '≥ 10.000', '200000');
+      await _type(tester, '5.000 ₫ – 20.000 ₫', '10000');
+      await _scrollTo(tester, find.text('Dự tính'.toUpperCase()));
+      expect(find.text('−20.000 ₫'), findsWidgets);
+      expect(find.text('180.000 ₫'), findsWidgets);
+      await _next(tester); // Giá → Xem lại
       await _scrollTo(tester, find.text('Tạo phiên & nhận mã gửi kho'));
       // Form đấu giá dài, nút có thể nằm dưới thanh điều hướng: bấm trực tiếp.
       tester

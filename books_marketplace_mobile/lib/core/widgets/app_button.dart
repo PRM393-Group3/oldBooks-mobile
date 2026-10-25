@@ -18,6 +18,7 @@ class AppButton extends StatelessWidget {
     this.icon,
     this.loading = false,
     this.expanded = true,
+    this.large = false,
   });
 
   final String label;
@@ -28,6 +29,9 @@ class AppButton extends StatelessWidget {
 
   /// `true`: chiếm hết chiều ngang.
   final bool expanded;
+
+  /// `true`: nút CTA chính ở thanh cố định, cao 52.
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +72,7 @@ class AppButton extends StatelessWidget {
     final Widget button = switch (variant) {
       AppButtonVariant.primary => FilledButton(
         onPressed: handler,
+        style: large ? FilledButton.styleFrom(minimumSize: _ctaSize) : null,
         child: child,
       ),
       AppButtonVariant.danger => FilledButton(
@@ -80,6 +85,7 @@ class AppButton extends StatelessWidget {
       ),
       AppButtonVariant.secondary => OutlinedButton(
         onPressed: handler,
+        style: large ? OutlinedButton.styleFrom(minimumSize: _ctaSize) : null,
         child: child,
       ),
       AppButtonVariant.text => TextButton(onPressed: handler, child: child),
@@ -96,3 +102,5 @@ class AppButton extends StatelessWidget {
     );
   }
 }
+
+const _ctaSize = Size(64, AppSizes.ctaHeight);

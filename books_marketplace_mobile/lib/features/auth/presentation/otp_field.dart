@@ -42,6 +42,8 @@ class OtpField extends StatefulWidget {
   /// Cho màn hình tự xử lý một số lỗi gửi OTP (trả `true` nếu đã xử lý, khi đó
   /// không hiện snackbar mặc định).
   final bool Function(ApiError error)? handleError;
+
+  /// Thời gian chờ gửi lại khi server không trả `resendAfterSeconds`.
   final Duration cooldown;
 
   @override
@@ -106,7 +108,7 @@ class _OtpFieldState extends State<OtpField> {
         _sent = true;
         _sentTo = sent.sentTo;
         _sentTarget = target;
-        _left = widget.cooldown.inSeconds;
+        _left = sent.resendAfterSeconds ?? widget.cooldown.inSeconds;
         _expiresLeft = sent.expiresInSeconds;
       });
       _startTimer();
