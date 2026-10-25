@@ -4830,4 +4830,117 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get updateAndroidOnly => 'Cập nhật tự động chỉ hỗ trợ Android.';
+
+  @override
+  String get aiAssistButton => 'Phân tích ảnh bằng AI';
+
+  @override
+  String get aiSheetTitle => 'Trợ lý AI đánh giá sách';
+
+  @override
+  String get aiSheetIntro =>
+      'AI chạy ngay trên máy bạn, ảnh không rời khỏi điện thoại. Kết quả chỉ là gợi ý, bạn có thể sửa lại.';
+
+  @override
+  String get aiDownloadNote =>
+      'Lần đầu cần tải mô hình AI khoảng 360 MB. Nên dùng Wi-Fi.';
+
+  @override
+  String get aiDownloadButton => 'Tải và phân tích';
+
+  @override
+  String aiDownloading(int percent) {
+    return 'Đang tải mô hình… $percent%';
+  }
+
+  @override
+  String get aiAnalyzing => 'Đang phân tích ảnh, có thể mất vài chục giây…';
+
+  @override
+  String get aiResultCondition => 'Tình trạng gợi ý';
+
+  @override
+  String get aiResultDescription => 'Mô tả gợi ý';
+
+  @override
+  String get aiApply => 'Áp dụng vào form';
+
+  @override
+  String get aiRetry => 'Thử lại';
+
+  @override
+  String get aiNeedPhoto =>
+      'Hãy thêm ít nhất một ảnh mới chụp trước khi dùng AI.';
+
+  @override
+  String get aiErrUnsupported => 'Thiết bị này không hỗ trợ tính năng AI.';
+
+  @override
+  String get aiErrDownload =>
+      'Không tải được mô hình AI. Kiểm tra mạng và dung lượng trống rồi thử lại.';
+
+  @override
+  String get aiErrModel =>
+      'Không chạy được mô hình AI trên máy này (có thể thiếu RAM).';
+
+  @override
+  String get aiErrUnreadable =>
+      'AI không đưa ra được kết quả rõ ràng. Hãy thử ảnh khác.';
+
+  @override
+  String get aiIncompatibleIntro =>
+      'Thiết bị này chưa phù hợp để chạy AI trên máy:';
+
+  @override
+  String get aiIncompatibleManual =>
+      'Bạn hãy tự chọn tình trạng và nhập mô tả sách bên dưới.';
+
+  @override
+  String get aiIssueNotAndroid => 'Tính năng AI chỉ hỗ trợ Android.';
+
+  @override
+  String aiIssueAndroidOld(int sdk, int min) {
+    return 'Android $sdk quá cũ, cần Android 11 (API $min) trở lên.';
+  }
+
+  @override
+  String get aiIssueNoArm64 => 'Chip của máy không phải arm64 (64-bit).';
+
+  @override
+  String aiIssueLowRam(String total, String min) {
+    return 'RAM $total GB, cần tối thiểu $min GB.';
+  }
+
+  @override
+  String aiIssueLowFreeRam(int free) {
+    return 'RAM trống còn $free MB, hãy đóng bớt ứng dụng khác rồi thử lại.';
+  }
+
+  @override
+  String get photoSourceTitle => 'Thêm ảnh sách';
+
+  @override
+  String get photoSourceCamera => 'Chụp ảnh';
+
+  @override
+  String get photoSourceCameraHint => 'Mở máy ảnh để chụp trực tiếp';
+
+  @override
+  String get photoSourceGallery => 'Chọn từ thư viện';
+
+  @override
+  String get photoSourceGalleryHint => 'Chọn nhiều ảnh cùng lúc';
+
+  @override
+  String get photoSourceGalleryHintSingle => 'Chọn một ảnh có sẵn';
+
+  @override
+  String photosSkipped(int n) {
+    return 'Đã bỏ qua $n ảnh (sai định dạng, quá nặng hoặc vượt giới hạn).';
+  }
+
+  @override
+  String photosAdded(int n) {
+    return 'Đã thêm $n ảnh.';
+  }
 }

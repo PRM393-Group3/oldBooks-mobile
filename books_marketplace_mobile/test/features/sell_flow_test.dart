@@ -22,7 +22,8 @@ Future<Harness> _openSell(WidgetTester tester) async {
     tester,
     overrides: [
       photoPickerProvider.overrideWithValue(
-        () async => PickedImage(_png, 'png', 'image/png'),
+        (source, limit) async =>
+            PickedBatch([PickedImage(_png, 'png', 'image/png')]),
       ),
     ],
   );
@@ -171,6 +172,8 @@ void main() {
       for (var i = 0; i < 4; i++) {
         await tester.tap(find.text('+ thêm'));
         await tester.pumpAndSettle();
+        await tester.tap(find.text('Chọn từ thư viện'));
+        await tester.pumpAndSettle();
       }
       expect(find.text('4/10 · tối thiểu 4'), findsOneWidget);
 
@@ -238,6 +241,8 @@ void main() {
 
       for (var i = 0; i < 4; i++) {
         await tester.tap(find.text('+ thêm'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Chọn từ thư viện'));
         await tester.pumpAndSettle();
       }
       await _type(tester, 'VD: Số đỏ', 'Số đỏ');

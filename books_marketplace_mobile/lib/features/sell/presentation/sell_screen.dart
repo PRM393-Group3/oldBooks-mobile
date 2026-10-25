@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +20,7 @@ import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_dialog.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_step_progress.dart';
+import '../../../core/widgets/photo_source_sheet.dart';
 import '../../../core/widgets/app_tag.dart';
 import '../../categories/application/category_providers.dart';
 import '../../listings/application/listing_providers.dart';
@@ -27,6 +30,7 @@ import '../../listings/domain/listing_enums.dart';
 import '../../listings/domain/listing_query.dart';
 import '../../auctions/application/auction_providers.dart';
 import '../../auctions/domain/auction.dart';
+import '../ai/book_ai_sheet.dart';
 import '../application/listing_publisher.dart';
 import '../application/my_listings_provider.dart';
 import '../application/sell_rules_provider.dart';
@@ -234,37 +238,58 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     _sync();
   }
 
+  /// Hỏi nguồn (máy ảnh hoặc thư viện) rồi lấy tối đa [limit] ảnh. Ảnh lỗi bị
+  /// bỏ qua và báo một lần; danh sách rỗng nếu hủy hoặc không mở được.
+  Future<List<PickedImage>> _pickPhotos(
+    int limit, {
+    required String errorText,
+  }) async {
+    final source = await showPhotoSourceSheet(context, multiple: limit > 1);
+    if (source == null || !mounted) return const [];
+    try {
+      final batch = await ref.read(photoPickerProvider)(source, limit);
+      if (!mounted) return const [];
+      if (batch.skipped > 0) {
+        AppSnackbar.show(
+          context,
+          context.l10n.photosSkipped(batch.skipped),
+          type: AppSnackbarType.error,
+        );
+      }
+      return batch.images;
+    } on ImagePickException {
+      if (mounted) {
+        AppSnackbar.show(context, errorText, type: AppSnackbarType.error);
+      }
+      return const [];
+    }
+  }
+
   Future<void> _addVolumePhoto(int volume) async {
     if (_busy) return;
     final max = ref.read(sellRulesProvider).photosPerVolumeMax;
     final slot = _volumes[volume];
     if (slot.photos.length >= max) return;
-    try {
-      final image = await ref.read(photoPickerProvider)();
-      if (image != null && mounted) {
-        slot.photos.add(
-          PhotoSlot.fresh(
-            NewPhoto(
-              bytes: image.bytes,
-              fileName:
-                  'volume-${slot.volumeNo}-${slot.photos.length + 1}.${image.extension}',
-              contentType: image.contentType,
-            ),
+    final images = await _pickPhotos(
+      max - slot.photos.length,
+      errorText: context.l10n.sellErrVolumePhotos,
+    );
+    if (images.isEmpty || !mounted) return;
+    for (final image in images) {
+      slot.photos.add(
+        PhotoSlot.fresh(
+          NewPhoto(
+            bytes: image.bytes,
+            fileName:
+                'volume-${slot.volumeNo}-${slot.photos.length + 1}.${image.extension}',
+            contentType: image.contentType,
           ),
-        );
-        _photosChanged = true;
-        _progress.photosSaved = false;
-        _sync();
-      }
-    } on ImagePickException {
-      if (mounted) {
-        AppSnackbar.show(
-          context,
-          context.l10n.sellErrVolumePhotos,
-          type: AppSnackbarType.error,
-        );
-      }
+        ),
+      );
     }
+    _photosChanged = true;
+    _progress.photosSaved = false;
+    _sync();
   }
 
   void _removeVolumePhoto(int volume, int photo) {
@@ -284,31 +309,46 @@ class _SellScreenState extends ConsumerState<SellScreen> {
       );
       return;
     }
-    try {
-      final image = await ref.read(photoPickerProvider)();
-      if (image != null && mounted) {
-        _photos.add(
-          PhotoSlot.fresh(
-            NewPhoto(
-              bytes: image.bytes,
-              fileName: 'photo-${_photos.length + 1}.${image.extension}',
-              contentType: image.contentType,
-            ),
+    final images = await _pickPhotos(
+      maxSellPhotos - _photos.length,
+      errorText: context.l10n.sellErrPhotos(_photos.length),
+    );
+    if (images.isEmpty || !mounted) return;
+    for (final image in images) {
+      _photos.add(
+        PhotoSlot.fresh(
+          NewPhoto(
+            bytes: image.bytes,
+            fileName: 'photo-${_photos.length + 1}.${image.extension}',
+            contentType: image.contentType,
           ),
-        );
-        _photosChanged = true;
-        _progress.photosSaved = false;
-        _sync();
-      }
-    } on ImagePickException {
-      if (mounted) {
-        AppSnackbar.show(
-          context,
-          context.l10n.sellErrPhotos(_photos.length),
-          type: AppSnackbarType.error,
-        );
-      }
+        ),
+      );
     }
+    _photosChanged = true;
+    _progress.photosSaved = false;
+    _sync();
+  }
+
+  /// AI trên máy đánh giá ảnh bìa (ảnh mới chọn đầu tiên), gợi ý tình trạng và
+  /// mô tả. Người bán vẫn sửa được; mô tả đã có thì nối thêm, không ghi đè.
+  Future<void> _analyzeWithAi() async {
+    final bytes = _photos
+        .map((p) => p.photo?.bytes)
+        .whereType<Uint8List>()
+        .firstOrNull;
+    if (bytes == null) {
+      AppSnackbar.show(context, context.l10n.aiNeedPhoto);
+      return;
+    }
+    final result = await showBookAiSheet(context, bytes);
+    if (result == null || !mounted) return;
+    final current = _desc.text.trim();
+    _desc.text = current.isEmpty
+        ? result.description
+        : '$current\n${result.description}';
+    _update((x) => x.copyWith(condition: result.condition));
+    _sync();
   }
 
   /// Đã thêm/xóa/đổi thứ tự ảnh so với lúc mở (để biết có cần `PUT /photos`).
@@ -790,6 +830,15 @@ class _SellScreenState extends ConsumerState<SellScreen> {
             ),
         ],
       ),
+      if (Platform.isAndroid) ...[
+        const SizedBox(height: AppSpacing.xs),
+        AppButton(
+          label: l.aiAssistButton,
+          icon: Icons.auto_awesome,
+          variant: AppButtonVariant.secondary,
+          onPressed: _busy ? null : _analyzeWithAi,
+        ),
+      ],
       const SizedBox(height: AppSpacing.md),
       _Field(
         label: l.sellFieldDesc,

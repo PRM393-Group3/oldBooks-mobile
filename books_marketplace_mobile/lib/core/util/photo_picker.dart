@@ -5,8 +5,28 @@ import 'image_picking.dart';
 
 const _maxPhotoBytes = 10 * 1024 * 1024;
 
-/// Chọn một ảnh từ thư viện; `null` nếu hủy. Test ghi đè bằng ảnh có sẵn.
-final photoPickerProvider = Provider<Future<PickedImage?> Function()>((ref) {
+enum PhotoSource { camera, gallery }
+
+/// Lấy ảnh từ [PhotoSource]: máy ảnh chụp một ảnh, thư viện chọn được nhiều ảnh
+/// (tối đa [limit]). Danh sách rỗng nếu hủy. Test ghi đè bằng ảnh có sẵn.
+typedef PhotoPicker = Future<PickedBatch> Function(
+  PhotoSource source,
+  int limit,
+);
+
+final photoPickerProvider = Provider<PhotoPicker>((ref) {
   final picker = ImagePicker();
-  return () => pickImage(picker, ImageSource.gallery, maxBytes: _maxPhotoBytes);
+  return (source, limit) async {
+    switch (source) {
+      case PhotoSource.camera:
+        final one = await pickImage(
+          picker,
+          ImageSource.camera,
+          maxBytes: _maxPhotoBytes,
+        );
+        return one == null ? PickedBatch.empty : PickedBatch([one]);
+      case PhotoSource.gallery:
+        return pickImages(picker, limit: limit, maxBytes: _maxPhotoBytes);
+    }
+  };
 });
