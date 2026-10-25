@@ -4856,4 +4856,118 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get updateAndroidOnly =>
       'In-app updates are only supported on Android.';
+
+  @override
+  String get aiAssistButton => 'Analyze photo with AI';
+
+  @override
+  String get aiSheetTitle => 'AI book condition assistant';
+
+  @override
+  String get aiSheetIntro =>
+      'The AI runs on your device and the photo never leaves your phone. The result is only a suggestion; you can edit it.';
+
+  @override
+  String get aiDownloadNote =>
+      'The first run downloads an AI model of about 360 MB. Wi-Fi is recommended.';
+
+  @override
+  String get aiDownloadButton => 'Download and analyze';
+
+  @override
+  String aiDownloading(int percent) {
+    return 'Downloading model… $percent%';
+  }
+
+  @override
+  String get aiAnalyzing =>
+      'Analyzing the photo, this can take a few dozen seconds…';
+
+  @override
+  String get aiResultCondition => 'Suggested condition';
+
+  @override
+  String get aiResultDescription => 'Suggested description';
+
+  @override
+  String get aiApply => 'Apply to form';
+
+  @override
+  String get aiRetry => 'Try again';
+
+  @override
+  String get aiNeedPhoto =>
+      'Add at least one newly taken photo before using AI.';
+
+  @override
+  String get aiErrUnsupported => 'This device does not support the AI feature.';
+
+  @override
+  String get aiErrDownload =>
+      'Could not download the AI model. Check your connection and free space, then try again.';
+
+  @override
+  String get aiErrModel =>
+      'The AI model could not run on this device (it may be low on RAM).';
+
+  @override
+  String get aiErrUnreadable =>
+      'The AI did not give a clear result. Try another photo.';
+
+  @override
+  String get aiIncompatibleIntro =>
+      'This device is not suitable for running AI locally:';
+
+  @override
+  String get aiIncompatibleManual =>
+      'Please choose the condition and write the description yourself below.';
+
+  @override
+  String get aiIssueNotAndroid => 'The AI feature only supports Android.';
+
+  @override
+  String aiIssueAndroidOld(int sdk, int min) {
+    return 'Android $sdk is too old; Android 11 (API $min) or newer is required.';
+  }
+
+  @override
+  String get aiIssueNoArm64 => 'The device chip is not arm64 (64-bit).';
+
+  @override
+  String aiIssueLowRam(String total, String min) {
+    return '$total GB of RAM; at least $min GB is required.';
+  }
+
+  @override
+  String aiIssueLowFreeRam(int free) {
+    return 'Only $free MB of free RAM; close other apps and try again.';
+  }
+
+  @override
+  String get photoSourceTitle => 'Add book photos';
+
+  @override
+  String get photoSourceCamera => 'Take a photo';
+
+  @override
+  String get photoSourceCameraHint => 'Open the camera and shoot now';
+
+  @override
+  String get photoSourceGallery => 'Choose from gallery';
+
+  @override
+  String get photoSourceGalleryHint => 'Select several photos at once';
+
+  @override
+  String get photoSourceGalleryHintSingle => 'Pick an existing photo';
+
+  @override
+  String photosSkipped(int n) {
+    return 'Skipped $n photos (wrong format, too large or over the limit).';
+  }
+
+  @override
+  String photosAdded(int n) {
+    return 'Added $n photos.';
+  }
 }

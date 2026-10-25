@@ -49,6 +49,9 @@ dependencies:
   path_provider: ^2.1.6
   open_filex: ^5.0.0
   crypto: ^3.0.7
+  flutter_edge_ai: ^2.5.2
+  flutter_edge_ai_litertlm: ^1.17.0
+  device_info_plus: ^13.3.0
 
 dev_dependencies:
   flutter_test:
