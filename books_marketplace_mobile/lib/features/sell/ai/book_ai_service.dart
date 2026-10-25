@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_edge_ai/flutter_edge_ai.dart';
 import 'package:flutter_edge_ai_litertlm/flutter_edge_ai_litertlm.dart';
 
@@ -14,7 +14,7 @@ const _modelUrl = 'https://huggingface.co/$_modelRepo/resolve/main/$_modelFile';
 /// Model nhỏ có thể lặp từ; giới hạn thời gian để UI không chờ vô hạn.
 const _analyzeTimeout = Duration(seconds: 120);
 
-enum BookAiFailure { unsupported, download, model, unreadable }
+enum BookAiFailure { unsupported, download, model, empty, unreadable }
 
 class BookAiException implements Exception {
   const BookAiException(this.failure);
@@ -81,19 +81,26 @@ class BookAiService {
         ),
       );
       final buffer = StringBuffer();
+      final seen = <String, int>{};
       await for (final r in chat.generateChatResponseAsync().timeout(
         _analyzeTimeout,
       )) {
+        seen.update(r.runtimeType.toString(), (n) => n + 1, ifAbsent: () => 1);
         if (r is TextResponse) buffer.write(r.token);
       }
       raw = buffer.toString();
-    } catch (_) {
+      debugPrint('[BookAI] responses=$seen raw="$raw"');
+    } catch (e, st) {
+      debugPrint('[BookAI] model error: $e\n$st');
       throw const BookAiException(BookAiFailure.model);
     } finally {
       await chat?.close();
       await model?.close();
     }
 
+    // Rỗng nghĩa là model không sinh gì (thường do ảnh không tới được model);
+    // khác với có chữ nhưng không đọc ra tình trạng.
+    if (raw.trim().isEmpty) throw const BookAiException(BookAiFailure.empty);
     final result = parseBookAnalysis(raw);
     if (result == null) throw const BookAiException(BookAiFailure.unreadable);
     return result;

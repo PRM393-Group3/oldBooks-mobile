@@ -33,4 +33,38 @@ void main() {
     expect(parseBookAnalysis('I cannot see the book'), isNull);
     expect(parseBookAnalysis('   '), isNull);
   });
+
+  vietnameseTests();
+}
+
+void vietnameseTests() {
+  group('trả lời tiếng Việt không theo định dạng', () {
+    test('"còn tốt" là GOOD, dùng câu trả lời làm mô tả', () {
+      final r = parseBookAnalysis('Sách còn khá tốt, bìa sạch.')!;
+      expect(r.condition, SellCondition.good);
+      expect(r.description, 'Sách còn khá tốt, bìa sạch.');
+    });
+
+    test('dấu hiệu hư hại nặng hơn thắng', () {
+      expect(
+        parseBookAnalysis('Bìa bị rách, nhiều trang ố vàng.')!.condition,
+        SellCondition.worn,
+      );
+      expect(
+        parseBookAnalysis('Sách tốt nhưng các trang hơi ố.')!.condition,
+        SellCondition.fair,
+      );
+    });
+
+    test('"số" không bị nhận nhầm là "ố"', () {
+      expect(parseBookAnalysis('Đây là số 5 của bộ truyện.'), isNull);
+    });
+
+    test('"như mới" là NEW', () {
+      expect(
+        parseBookAnalysis('Sách như mới.')!.condition,
+        SellCondition.isNew,
+      );
+    });
+  });
 }

@@ -4943,4 +4943,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String photosAdded(int n) {
     return 'Đã thêm $n ảnh.';
   }
+
+  @override
+  String get aiErrEmpty =>
+      'AI không trả về nội dung nào. Hãy thử lại hoặc dùng ảnh khác; nếu vẫn lỗi, hãy tự nhập tình trạng và mô tả.';
 }

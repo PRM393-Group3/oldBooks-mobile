@@ -8725,6 +8725,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đã thêm {n} ảnh.'**
   String photosAdded(int n);
+
+  /// No description provided for @aiErrEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'AI không trả về nội dung nào. Hãy thử lại hoặc dùng ảnh khác; nếu vẫn lỗi, hãy tự nhập tình trạng và mô tả.'**
+  String get aiErrEmpty;
 }
 
 class _AppLocalizationsDelegate
