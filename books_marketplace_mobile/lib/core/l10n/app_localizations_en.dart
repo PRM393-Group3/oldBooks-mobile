@@ -2452,6 +2452,72 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get sellKind => 'Listing type';
+
+  @override
+  String get sellKindSingle => 'Single book';
+
+  @override
+  String get sellKindSet => 'Book set';
+
+  @override
+  String get sellSetHint =>
+      'The whole set is sold for one price. Add each volume with its own photos.';
+
+  @override
+  String get sellSetPhotos => 'Photos of the whole set';
+
+  @override
+  String get sellAddVolume => 'Add volume';
+
+  @override
+  String get sellVolumeNameHint => 'Volume title (optional)';
+
+  @override
+  String get sellVolumeRemove => 'Remove volume';
+
+  @override
+  String get sellErrSetPhotos => 'At least 1 photo of the whole set is needed';
+
+  @override
+  String get sellErrVolumePhotos => 'Every volume needs at least 1 photo';
+
+  @override
+  String sellSetPhotoCount(int n) {
+    return '$n/10 · at least 1';
+  }
+
+  @override
+  String sellVolumesTitle(int n) {
+    return 'Volumes ($n)';
+  }
+
+  @override
+  String sellVolumeLabel(int no) {
+    return 'Volume $no';
+  }
+
+  @override
+  String sellVolumePhotoCount(int n, int max) {
+    return '$n/$max photos';
+  }
+
+  @override
+  String sellErrVolumes(int min, int max) {
+    return 'A set needs $min to $max volumes';
+  }
+
+  @override
+  String setBadge(int n) {
+    return 'Set of $n';
+  }
+
+  @override
+  String detailVolumes(int n) {
+    return 'Volumes in this set ($n)';
+  }
+
+  @override
   String get sellErrTitle => 'Enter the title';
 
   @override

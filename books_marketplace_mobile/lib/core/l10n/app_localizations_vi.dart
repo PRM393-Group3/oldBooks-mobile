@@ -2441,6 +2441,72 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get sellKind => 'Loại tin';
+
+  @override
+  String get sellKindSingle => 'Sách lẻ';
+
+  @override
+  String get sellKindSet => 'Bộ sách';
+
+  @override
+  String get sellSetHint =>
+      'Bán cả bộ một giá. Thêm từng tập kèm ảnh riêng của tập.';
+
+  @override
+  String get sellSetPhotos => 'Ảnh chung của cả bộ';
+
+  @override
+  String get sellAddVolume => 'Thêm tập';
+
+  @override
+  String get sellVolumeNameHint => 'Tên tập (tùy chọn)';
+
+  @override
+  String get sellVolumeRemove => 'Xóa tập';
+
+  @override
+  String get sellErrSetPhotos => 'Cần ít nhất 1 ảnh chung của cả bộ';
+
+  @override
+  String get sellErrVolumePhotos => 'Mỗi tập cần ít nhất 1 ảnh';
+
+  @override
+  String sellSetPhotoCount(int n) {
+    return '$n/10 · tối thiểu 1';
+  }
+
+  @override
+  String sellVolumesTitle(int n) {
+    return 'Các tập ($n)';
+  }
+
+  @override
+  String sellVolumeLabel(int no) {
+    return 'Tập $no';
+  }
+
+  @override
+  String sellVolumePhotoCount(int n, int max) {
+    return '$n/$max ảnh';
+  }
+
+  @override
+  String sellErrVolumes(int min, int max) {
+    return 'Bộ sách cần từ $min đến $max tập';
+  }
+
+  @override
+  String setBadge(int n) {
+    return 'Bộ $n tập';
+  }
+
+  @override
+  String detailVolumes(int n) {
+    return 'Các tập trong bộ ($n)';
+  }
+
+  @override
   String get sellErrTitle => 'Nhập tên sách';
 
   @override

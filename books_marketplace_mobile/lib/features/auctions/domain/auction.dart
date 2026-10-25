@@ -1,4 +1,5 @@
 import '../../../core/util/json_read.dart';
+import '../../listings/domain/listing_enums.dart';
 
 /// Trạng thái phiên (`11-auctions` mục 1, `13-auctions-live-delivery` mục 1).
 /// Mã lạ rơi vào [unknown].
@@ -131,6 +132,8 @@ class AuctionSummary {
     this.currentPrice,
     this.endsAt,
     this.myRegistration,
+    this.kind = ListingKind.single,
+    this.volumeCount = 0,
   });
 
   factory AuctionSummary.fromJson(dynamic json) {
@@ -151,9 +154,13 @@ class AuctionSummary {
       myRegistration: RegistrationStatus.fromApi(
         readString(j, 'myRegistration'),
       ),
+      kind: ListingKind.fromApi(readString(j, 'kind')),
+      volumeCount: readInt(j, 'volumeCount') ?? 0,
     );
   }
 
+  final ListingKind kind;
+  final int volumeCount;
   final String id;
   final String title;
   final String author;
@@ -404,6 +411,31 @@ class AuctionLive {
 }
 
 /// `AuctionDto` của `GET /auctions/{id}`.
+/// Một tập của bộ sách trong phiên, kèm ảnh riêng của tập.
+class AuctionVolume {
+  const AuctionVolume({
+    required this.id,
+    required this.volumeNo,
+    this.title,
+    this.photos = const [],
+  });
+
+  factory AuctionVolume.fromJson(dynamic json) {
+    final j = json as Map<dynamic, dynamic>;
+    return AuctionVolume(
+      id: readString(j, 'id') ?? '',
+      volumeNo: readInt(j, 'volumeNo') ?? 0,
+      title: readString(j, 'title'),
+      photos: [for (final p in readList(j, 'photos')) AuctionPhoto.fromJson(p)],
+    );
+  }
+
+  final String id;
+  final int volumeNo;
+  final String? title;
+  final List<AuctionPhoto> photos;
+}
+
 class Auction {
   const Auction({
     required this.id,
@@ -430,6 +462,9 @@ class Auction {
     this.serverTime,
     this.owner,
     this.live,
+    this.kind = ListingKind.single,
+    this.volumeCount = 0,
+    this.volumes = const [],
   });
 
   factory Auction.fromJson(dynamic json) {
@@ -463,8 +498,21 @@ class Auction {
       serverTime: readDate(j, 'serverTime'),
       owner: owner == null ? null : AuctionOwnerInfo.fromJson(owner),
       live: live == null ? null : AuctionLive.fromJson(live),
+      kind: ListingKind.fromApi(readString(j, 'kind')),
+      volumeCount: readInt(j, 'volumeCount') ?? 0,
+      volumes: [
+        for (final v in readList(j, 'volumes')) AuctionVolume.fromJson(v),
+      ]..sort((a, b) => a.volumeNo.compareTo(b.volumeNo)),
     );
   }
+
+  final ListingKind kind;
+  final int volumeCount;
+
+  /// Các tập của bộ sách (rỗng với sách lẻ). `photos` là ảnh chung của cả bộ.
+  final List<AuctionVolume> volumes;
+
+  bool get isSet => kind == ListingKind.set;
 
   final String id;
   final String title;
@@ -562,6 +610,9 @@ class Auction {
     serverTime: serverTime,
     owner: owner,
     live: live ?? this.live,
+    kind: kind,
+    volumeCount: volumeCount,
+    volumes: volumes,
   );
 }
 
@@ -614,8 +665,14 @@ class CreateAuctionInput {
     this.publishYear,
     this.isbn,
     this.defectNotes,
+    this.kind = ListingKind.single,
+    this.volumes = const [],
   });
 
+  final ListingKind kind;
+
+  /// Các tập của bộ sách, mỗi tập kèm tên blob ảnh riêng (đã tải lên).
+  final List<AuctionVolumeInput> volumes;
   final String title;
   final String author;
   final String categoryId;
@@ -649,6 +706,29 @@ class CreateAuctionInput {
     'buyNowPrice': ?buyNowPrice,
     'durationMinutes': durationMinutes,
     'desiredStartAt': desiredStartAt.toUtc().toIso8601String(),
+    'photos': photos,
+    if (kind == ListingKind.set) ...{
+      'kind': kind.api,
+      'volumes': [for (final v in volumes) v.toJson()],
+    },
+  };
+}
+
+/// Một tập khi tạo phiên bộ sách.
+class AuctionVolumeInput {
+  const AuctionVolumeInput({
+    required this.volumeNo,
+    required this.photos,
+    this.title,
+  });
+
+  final int volumeNo;
+  final String? title;
+  final List<String> photos;
+
+  Map<String, dynamic> toJson() => {
+    'volumeNo': volumeNo,
+    if (title != null && title!.trim().isNotEmpty) 'title': title!.trim(),
     'photos': photos,
   };
 }

@@ -12,7 +12,7 @@ String sellErrorText(
   SellForm f, {
   SellRules rules = SellRules.defaults,
 }) => switch (e) {
-  SellError.photos => l.sellErrPhotos(f.photos),
+  SellError.photos => f.isSet ? l.sellErrSetPhotos : l.sellErrPhotos(f.photos),
   SellError.title => l.sellErrTitle,
   SellError.author => l.sellErrAuthor,
   SellError.price => l.sellErrPrice,
@@ -28,4 +28,9 @@ String sellErrorText(
   SellError.category => l.sellErrCategory,
   SellError.isbn => l.sellErrIsbn,
   SellError.year => l.sellErrIsbn,
+  SellError.volumes => l.sellErrVolumes(
+    rules.setMinVolumes,
+    rules.setMaxVolumes,
+  ),
+  SellError.volumePhotos => l.sellErrVolumePhotos,
 };

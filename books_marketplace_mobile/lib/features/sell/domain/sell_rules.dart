@@ -41,6 +41,9 @@ class SellRules {
     this.stepMinAmount = 5000,
     this.buyNowMultiplierPercent = 150,
     this.shippingSale = 25000,
+    this.setMinVolumes = 2,
+    this.setMaxVolumes = 30,
+    this.photosPerVolumeMax = 3,
   });
 
   /// Giá trị mặc định khi chưa tải được cấu hình.
@@ -77,6 +80,13 @@ class SellRules {
           : (c[PublicConfig.buyNowMinMultiplier]! * 100).round(),
       shippingSale:
           c.intOf(PublicConfig.shippingSaleFlat) ?? defaults.shippingSale,
+      setMinVolumes:
+          c.intOf(PublicConfig.setMinVolumes) ?? defaults.setMinVolumes,
+      setMaxVolumes:
+          c.intOf(PublicConfig.setMaxVolumes) ?? defaults.setMaxVolumes,
+      photosPerVolumeMax:
+          c.intOf(PublicConfig.setPhotosPerVolumeMax) ??
+          defaults.photosPerVolumeMax,
     );
   }
 
@@ -92,6 +102,11 @@ class SellRules {
   final int stepMinAmount;
   final int buyNowMultiplierPercent;
   final int shippingSale;
+
+  /// Bộ sách: số tập tối thiểu/tối đa và số ảnh tối đa mỗi tập (mỗi tập cần ít nhất 1 ảnh).
+  final int setMinVolumes;
+  final int setMaxVolumes;
+  final int photosPerVolumeMax;
 
   /// Phí bán thường (người bán trả), làm tròn xuống.
   int sellerFee(int price) => price * saleFeeBps ~/ 10000;
@@ -144,6 +159,8 @@ enum SellError {
   category,
   isbn,
   year,
+  volumes,
+  volumePhotos,
 }
 
 class SellForm {
@@ -164,7 +181,19 @@ class SellForm {
     this.publishYear = '',
     this.isbn = '',
     this.defectNotes = '',
+    this.kind = ListingKind.single,
+    this.volumeCount = 0,
+    this.volumesWithoutPhotos = 0,
   });
+
+  /// Bộ sách: `photos` là ảnh chung của cả bộ, mỗi tập có ảnh riêng.
+  final ListingKind kind;
+  final int volumeCount;
+
+  /// Số tập chưa có ảnh nào.
+  final int volumesWithoutPhotos;
+
+  bool get isSet => kind == ListingKind.set;
 
   final SellMode mode;
   final int photos;
@@ -206,7 +235,13 @@ class SellForm {
     String? publishYear,
     String? isbn,
     String? defectNotes,
+    ListingKind? kind,
+    int? volumeCount,
+    int? volumesWithoutPhotos,
   }) => SellForm(
+    kind: kind ?? this.kind,
+    volumeCount: volumeCount ?? this.volumeCount,
+    volumesWithoutPhotos: volumesWithoutPhotos ?? this.volumesWithoutPhotos,
     mode: mode ?? this.mode,
     photos: photos ?? this.photos,
     title: title ?? this.title,
@@ -232,7 +267,16 @@ List<SellError> validateSell(
   SellRules rules = SellRules.defaults,
 }) {
   final e = <SellError>[];
-  if (f.photos < rules.minPhotos) e.add(SellError.photos);
+  if (f.isSet) {
+    if (f.photos < 1) e.add(SellError.photos);
+    if (f.volumeCount < rules.setMinVolumes ||
+        f.volumeCount > rules.setMaxVolumes) {
+      e.add(SellError.volumes);
+    }
+    if (f.volumesWithoutPhotos > 0) e.add(SellError.volumePhotos);
+  } else if (f.photos < rules.minPhotos) {
+    e.add(SellError.photos);
+  }
   if (f.title.trim().isEmpty) e.add(SellError.title);
   if (f.author.trim().isEmpty) e.add(SellError.author);
   if (!f.isAuction) {

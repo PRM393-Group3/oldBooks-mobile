@@ -1,5 +1,17 @@
 import '../../../core/l10n/app_localizations.dart';
 
+/// Sách lẻ hoặc bộ sách (bán cả bộ một giá, mỗi tập có ảnh riêng).
+enum ListingKind {
+  single('SINGLE'),
+  set('SET');
+
+  const ListingKind(this.api);
+  final String api;
+
+  static ListingKind fromApi(String? v) =>
+      values.firstWhere((k) => k.api == v, orElse: () => single);
+}
+
 /// Trạng thái tin đăng (`08-listings`, mục 1). Mã lạ rơi vào [unknown].
 enum ListingStatus {
   draft('DRAFT'),

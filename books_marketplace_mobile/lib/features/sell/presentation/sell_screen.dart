@@ -32,6 +32,7 @@ import '../application/my_listings_provider.dart';
 import '../application/sell_rules_provider.dart';
 import '../domain/sell_rules.dart';
 import 'sell_text.dart';
+import 'volumes_editor.dart';
 
 /// Tab Đăng bán: một biểu mẫu cho bán giá cố định và đấu giá, kèm ô "Dự tính".
 ///
@@ -51,6 +52,10 @@ class SellScreen extends ConsumerStatefulWidget {
 class _SellScreenState extends ConsumerState<SellScreen> {
   SellForm _form = const SellForm();
   final List<PhotoSlot> _photos = [];
+
+  /// Bộ sách: loại tin và các tập (mỗi tập có ảnh riêng). Loại tin không đổi được khi sửa.
+  ListingKind _kind = ListingKind.single;
+  final List<VolumeSlot> _volumes = [];
   bool _tried = false;
 
   /// Bước đang xem của wizard (0 Hình thức, 1 Sách, 2 Giá, 3 Xem lại).
@@ -125,7 +130,27 @@ class _SellScreenState extends ConsumerState<SellScreen> {
         );
       }
     }
+    _kind = e.kind;
+    for (final v in e.volumes) {
+      _volumes.add(
+        VolumeSlot(
+          volumeNo: v.volumeNo,
+          title: v.title ?? '',
+          photos: [
+            for (final p in v.photos)
+              if (p.blobName != null)
+                PhotoSlot.existing(
+                  blobName: p.blobName!,
+                  previewUrl: p.thumbnailUrl ?? p.url,
+                ),
+          ],
+        ),
+      );
+    }
     _form = SellForm(
+      kind: _kind,
+      volumeCount: _volumes.length,
+      volumesWithoutPhotos: _volumes.where((v) => v.photos.isEmpty).length,
       photos: _photos.length,
       title: _title.text,
       author: _author.text,
@@ -172,8 +197,82 @@ class _SellScreenState extends ConsumerState<SellScreen> {
       publishYear: _year.text,
       isbn: _isbn.text,
       defectNotes: _defects.text,
+      kind: _kind,
+      volumeCount: _volumes.length,
+      volumesWithoutPhotos: _volumes.where((v) => v.photos.isEmpty).length,
     ),
   );
+
+  void _setKind(ListingKind kind) {
+    if (_busy || _editing || kind == _kind) return;
+    _kind = kind;
+    if (kind == ListingKind.set && _volumes.isEmpty) {
+      final min = ref.read(sellRulesProvider).setMinVolumes;
+      for (var i = 1; i <= min; i++) {
+        _volumes.add(VolumeSlot(volumeNo: i));
+      }
+    }
+    _photosChanged = true;
+    _progress.photosSaved = false;
+    _sync();
+  }
+
+  void _addVolume() {
+    final next = _volumes.isEmpty
+        ? 1
+        : _volumes.map((v) => v.volumeNo).reduce((a, b) => a > b ? a : b) + 1;
+    _volumes.add(VolumeSlot(volumeNo: next));
+    _photosChanged = true;
+    _progress.photosSaved = false;
+    _sync();
+  }
+
+  void _removeVolume(int i) {
+    _volumes.removeAt(i);
+    _photosChanged = true;
+    _progress.photosSaved = false;
+    _sync();
+  }
+
+  Future<void> _addVolumePhoto(int volume) async {
+    if (_busy) return;
+    final max = ref.read(sellRulesProvider).photosPerVolumeMax;
+    final slot = _volumes[volume];
+    if (slot.photos.length >= max) return;
+    try {
+      final image = await ref.read(photoPickerProvider)();
+      if (image != null && mounted) {
+        slot.photos.add(
+          PhotoSlot.fresh(
+            NewPhoto(
+              bytes: image.bytes,
+              fileName:
+                  'volume-${slot.volumeNo}-${slot.photos.length + 1}.${image.extension}',
+              contentType: image.contentType,
+            ),
+          ),
+        );
+        _photosChanged = true;
+        _progress.photosSaved = false;
+        _sync();
+      }
+    } on ImagePickException {
+      if (mounted) {
+        AppSnackbar.show(
+          context,
+          context.l10n.sellErrVolumePhotos,
+          type: AppSnackbarType.error,
+        );
+      }
+    }
+  }
+
+  void _removeVolumePhoto(int volume, int photo) {
+    _volumes[volume].photos.removeAt(photo);
+    _photosChanged = true;
+    _progress.photosSaved = false;
+    _sync();
+  }
 
   Future<void> _addPhoto() async {
     if (_busy) return;
@@ -275,6 +374,13 @@ class _SellScreenState extends ConsumerState<SellScreen> {
       publishYear: int.tryParse(f.publishYear.trim()),
       isbn: opt(f.isbn),
       defectNotes: opt(f.defectNotes),
+      kind: _editing ? null : _kind,
+      volumes: _kind == ListingKind.set
+          ? [
+              for (final v in _volumes)
+                VolumeDraft(volumeNo: v.volumeNo, title: v.title),
+            ]
+          : null,
     );
   }
 
@@ -285,7 +391,16 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     if (e == null || e.status != ListingStatus.published) return false;
     final b = e.bookInfo;
     String t(String? v) => (v ?? '').trim();
+    final volumesChanged =
+        e.isSet &&
+        (e.volumes.length != _volumes.length ||
+            [
+              for (var i = 0; i < _volumes.length; i++)
+                e.volumes[i].volumeNo != _volumes[i].volumeNo ||
+                    t(e.volumes[i].title) != _volumes[i].title.trim(),
+            ].contains(true));
     return _photosChanged ||
+        volumesChanged ||
         t(b.title) != f.title.trim() ||
         t(b.author) != f.author.trim() ||
         e.category?.id != f.categoryId ||
@@ -355,6 +470,10 @@ class _SellScreenState extends ConsumerState<SellScreen> {
       final pending = [
         for (final p in _photos)
           if (!p.isUploaded) p,
+        if (_kind == ListingKind.set)
+          for (final v in _volumes)
+            for (final p in v.photos)
+              if (!p.isUploaded) p,
       ];
       var done = 0;
       for (final slot in pending) {
@@ -377,6 +496,17 @@ class _SellScreenState extends ConsumerState<SellScreen> {
           durationMinutes: form.durationMinutes,
           desiredStartAt: _startFor(ServerClock.now()),
           photos: [for (final p in _photos) p.blobName!],
+          kind: _kind,
+          volumes: _kind == ListingKind.set
+              ? [
+                  for (final v in _volumes)
+                    AuctionVolumeInput(
+                      volumeNo: v.volumeNo,
+                      title: v.title,
+                      photos: [for (final p in v.photos) p.blobName!],
+                    ),
+                ]
+              : const [],
           publisher: opt(form.publisher),
           publishYear: int.tryParse(form.publishYear.trim()),
           isbn: opt(form.isbn),
@@ -449,6 +579,7 @@ class _SellScreenState extends ConsumerState<SellScreen> {
             progress: _progress,
             input: _input(form),
             photos: _photos,
+            volumes: _kind == ListingKind.set ? _volumes : null,
             submit: submit,
             photosChanged: photosChanged,
             onStage: (stage, done, total) {
@@ -498,6 +629,8 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     setState(() {
       _form = SellForm(mode: mode);
       _photos.clear();
+      _kind = ListingKind.single;
+      _volumes.clear();
       _photosChanged = false;
       _progress = PublishProgress();
       _tried = false;
@@ -529,6 +662,8 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     SellError.description,
     SellError.isbn,
     SellError.year,
+    SellError.volumes,
+    SellError.volumePhotos,
   };
 
   void _next() {
@@ -565,13 +700,52 @@ class _SellScreenState extends ConsumerState<SellScreen> {
   List<Widget> _bookSection(BuildContext context, SellForm f, SellRules rules) {
     final l = context.l10n;
     final categories = ref.watch(categoryTreeProvider).value ?? const [];
+    final isSet = _kind == ListingKind.set;
     return [
+      if (!_editing) ...[
+        _Label(l.sellKind),
+        SegmentedButton<ListingKind>(
+          segments: [
+            ButtonSegment(
+              value: ListingKind.single,
+              label: Text(l.sellKindSingle),
+              icon: const Icon(Icons.book_outlined),
+            ),
+            ButtonSegment(
+              value: ListingKind.set,
+              label: Text(l.sellKindSet),
+              icon: const Icon(Icons.collections_bookmark_outlined),
+            ),
+          ],
+          selected: {_kind},
+          onSelectionChanged: (s) => _setKind(s.first),
+        ),
+        if (isSet)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(l.sellSetHint, style: context.text.bodySmall),
+          ),
+        const SizedBox(height: AppSpacing.md),
+      ],
       _PhotoGrid(
         photos: _photos,
-        minPhotos: rules.minPhotos,
+        minPhotos: isSet ? 1 : rules.minPhotos,
+        title: isSet ? l.sellSetPhotos : null,
+        countText: isSet ? l.sellSetPhotoCount(_photos.length) : null,
         onAdd: _addPhoto,
         onTapPhoto: _photoActions,
       ),
+      if (isSet)
+        VolumesEditor(
+          volumes: _volumes,
+          rules: rules,
+          enabled: !_busy,
+          onAddVolume: _addVolume,
+          onRemoveVolume: _removeVolume,
+          onTitleChanged: (i, t) => _volumes[i].title = t,
+          onAddPhoto: _addVolumePhoto,
+          onRemovePhoto: _removeVolumePhoto,
+        ),
       _Field(
         label: l.sellFieldTitle,
         controller: _title,
@@ -1316,10 +1490,16 @@ class _PhotoGrid extends StatelessWidget {
     required this.minPhotos,
     required this.onAdd,
     required this.onTapPhoto,
+    this.title,
+    this.countText,
   });
 
   final List<PhotoSlot> photos;
   final int minPhotos;
+
+  /// Mặc định là "Ảnh sách"; bộ sách dùng nhãn ảnh chung của cả bộ.
+  final String? title;
+  final String? countText;
   final VoidCallback onAdd;
   final ValueChanged<int> onTapPhoto;
 
@@ -1337,9 +1517,9 @@ class _PhotoGrid extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(l.sellPhotos, style: context.text.labelMedium),
+              Text(title ?? l.sellPhotos, style: context.text.labelMedium),
               Text(
-                l.sellPhotoCount(photos.length),
+                countText ?? l.sellPhotoCount(photos.length),
                 style: context.text.labelSmall?.copyWith(
                   color: photos.length >= minPhotos
                       ? colors.success

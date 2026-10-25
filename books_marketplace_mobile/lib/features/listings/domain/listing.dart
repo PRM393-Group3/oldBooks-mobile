@@ -102,6 +102,33 @@ class ListingPhoto {
   }
 }
 
+/// Một tập của bộ sách kèm ảnh riêng của tập (`ListingVolumeDto`).
+class ListingVolume {
+  const ListingVolume({
+    required this.id,
+    required this.volumeNo,
+    this.title,
+    this.photos = const [],
+  });
+
+  factory ListingVolume.fromJson(Map<dynamic, dynamic> j) => ListingVolume(
+    id: readString(j, 'id') ?? '',
+    volumeNo: readInt(j, 'volumeNo') ?? 0,
+    title: readString(j, 'title'),
+    photos:
+        readList(j, 'photos')
+            .whereType<Map<dynamic, dynamic>>()
+            .map(ListingPhoto.fromJson)
+            .toList()
+          ..sort((a, b) => a.order.compareTo(b.order)),
+  );
+
+  final String id;
+  final int volumeNo;
+  final String? title;
+  final List<ListingPhoto> photos;
+}
+
 /// Quyết định duyệt gần nhất. Chỉ chủ tin và admin thấy, người khác nhận `null`.
 class ListingReview {
   const ListingReview({required this.decision, this.reason, this.createdAt});
@@ -135,6 +162,9 @@ class Listing {
     this.createdAt,
     this.updatedAt,
     this.lastReview,
+    this.kind = ListingKind.single,
+    this.volumeCount = 0,
+    this.volumes = const [],
   });
 
   factory Listing.fromJson(dynamic json) {
@@ -178,6 +208,14 @@ class Listing {
       createdAt: readDate(j, 'createdAt'),
       updatedAt: readDate(j, 'updatedAt'),
       lastReview: review == null ? null : ListingReview.fromJson(review),
+      kind: ListingKind.fromApi(readString(j, 'kind')),
+      volumeCount: readInt(j, 'volumeCount') ?? 0,
+      volumes:
+          readList(j, 'volumes')
+              .whereType<Map<dynamic, dynamic>>()
+              .map(ListingVolume.fromJson)
+              .toList()
+            ..sort((a, b) => a.volumeNo.compareTo(b.volumeNo)),
     );
   }
 
@@ -198,6 +236,13 @@ class Listing {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final ListingReview? lastReview;
+  final ListingKind kind;
+  final int volumeCount;
+
+  /// Các tập của bộ sách (rỗng với sách lẻ). `images` là ảnh chung của cả bộ.
+  final List<ListingVolume> volumes;
+
+  bool get isSet => kind == ListingKind.set;
 
   String get title => bookInfo.title ?? '';
 

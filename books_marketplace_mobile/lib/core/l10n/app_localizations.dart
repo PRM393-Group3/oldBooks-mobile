@@ -4346,6 +4346,108 @@ abstract class AppLocalizations {
   /// **'Cần ít nhất 4 ảnh (hiện có {n})'**
   String sellErrPhotos(int n);
 
+  /// No description provided for @sellKind.
+  ///
+  /// In vi, this message translates to:
+  /// **'Loại tin'**
+  String get sellKind;
+
+  /// No description provided for @sellKindSingle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sách lẻ'**
+  String get sellKindSingle;
+
+  /// No description provided for @sellKindSet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ sách'**
+  String get sellKindSet;
+
+  /// No description provided for @sellSetHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bán cả bộ một giá. Thêm từng tập kèm ảnh riêng của tập.'**
+  String get sellSetHint;
+
+  /// No description provided for @sellSetPhotos.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh chung của cả bộ'**
+  String get sellSetPhotos;
+
+  /// No description provided for @sellAddVolume.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm tập'**
+  String get sellAddVolume;
+
+  /// No description provided for @sellVolumeNameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên tập (tùy chọn)'**
+  String get sellVolumeNameHint;
+
+  /// No description provided for @sellVolumeRemove.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa tập'**
+  String get sellVolumeRemove;
+
+  /// No description provided for @sellErrSetPhotos.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần ít nhất 1 ảnh chung của cả bộ'**
+  String get sellErrSetPhotos;
+
+  /// No description provided for @sellErrVolumePhotos.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi tập cần ít nhất 1 ảnh'**
+  String get sellErrVolumePhotos;
+
+  /// No description provided for @sellSetPhotoCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n}/10 · tối thiểu 1'**
+  String sellSetPhotoCount(int n);
+
+  /// No description provided for @sellVolumesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Các tập ({n})'**
+  String sellVolumesTitle(int n);
+
+  /// No description provided for @sellVolumeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tập {no}'**
+  String sellVolumeLabel(int no);
+
+  /// No description provided for @sellVolumePhotoCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n}/{max} ảnh'**
+  String sellVolumePhotoCount(int n, int max);
+
+  /// No description provided for @sellErrVolumes.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ sách cần từ {min} đến {max} tập'**
+  String sellErrVolumes(int min, int max);
+
+  /// No description provided for @setBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ {n} tập'**
+  String setBadge(int n);
+
+  /// No description provided for @detailVolumes.
+  ///
+  /// In vi, this message translates to:
+  /// **'Các tập trong bộ ({n})'**
+  String detailVolumes(int n);
+
   /// No description provided for @sellErrTitle.
   ///
   /// In vi, this message translates to:
