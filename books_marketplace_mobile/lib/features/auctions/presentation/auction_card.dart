@@ -11,6 +11,8 @@ import '../../../core/widgets/countdown_text.dart';
 import '../../listings/presentation/widgets/book_tile.dart';
 import '../domain/auction.dart';
 import 'auction_text.dart';
+import '../../listings/presentation/widgets/volume_list.dart';
+import '../../listings/domain/listing_enums.dart';
 
 /// Thẻ phiên trong danh sách (tab Đấu giá, Phiên của tôi).
 class AuctionCard extends StatelessWidget {
@@ -72,6 +74,11 @@ class AuctionCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: AppSpacing.xxs),
+                    if (a.kind == ListingKind.set)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 2),
+                        child: SetBadge(volumeCount: a.volumeCount),
+                      ),
                     Text(
                       a.title,
                       maxLines: 2,

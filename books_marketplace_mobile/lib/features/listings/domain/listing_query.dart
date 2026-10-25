@@ -92,8 +92,15 @@ class ListingDraftInput {
     this.publishYear,
     this.isbn,
     this.defectNotes,
+    this.kind,
+    this.volumes,
   });
 
+  /// Chỉ gửi khi tạo; server không cho đổi loại sau khi tạo.
+  final ListingKind? kind;
+
+  /// Số tập và tên tập của bộ sách (thay toàn bộ danh sách); `null` là không gửi.
+  final List<VolumeDraft>? volumes;
   final String? title;
   final String? author;
   final String? categoryId;
@@ -116,5 +123,20 @@ class ListingDraftInput {
     'publishYear': ?publishYear,
     'isbn': ?isbn?.trim(),
     'defectNotes': ?defectNotes?.trim(),
+    if (kind != null) 'kind': kind!.api,
+    if (volumes != null) 'volumes': [for (final v in volumes!) v.toJson()],
+  };
+}
+
+/// Một tập khi tạo/sửa bộ sách.
+class VolumeDraft {
+  const VolumeDraft({required this.volumeNo, this.title});
+
+  final int volumeNo;
+  final String? title;
+
+  Map<String, dynamic> toJson() => {
+    'volumeNo': volumeNo,
+    if (title != null && title!.trim().isNotEmpty) 'title': title!.trim(),
   };
 }

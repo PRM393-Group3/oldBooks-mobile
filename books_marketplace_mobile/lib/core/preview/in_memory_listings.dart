@@ -392,8 +392,9 @@ class InMemoryListingRepository extends ListingRepository {
   @override
   Future<List<ListingPhoto>> setPhotos(
     String id,
-    List<String> blobNames,
-  ) async {
+    List<String> blobNames, {
+    Map<int, List<String>>? volumePhotos,
+  }) async {
     calls.add('photos:$id:${blobNames.length}');
     _maybeFail('photos');
     final l = _mineOrThrow(id);

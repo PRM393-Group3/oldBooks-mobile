@@ -6,6 +6,7 @@ import 'package:books_marketplace_mobile/core/util/image_picking.dart';
 import 'package:books_marketplace_mobile/core/util/photo_picker.dart';
 import 'package:books_marketplace_mobile/features/auth/domain/user_role.dart';
 import 'package:books_marketplace_mobile/features/sell/domain/sell_rules.dart';
+import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -85,6 +86,25 @@ void main() {
       expect(validateSell(ok.copyWith(isbn: '123')), [SellError.isbn]);
       expect(validateSell(ok.copyWith(publishYear: '1200')), [SellError.year]);
       expect(validateSell(ok.copyWith(publishYear: '2018')), isEmpty);
+    });
+
+    test('validateSell: bán bộ sách kiểm tra số tập và ảnh từng tập', () {
+      const ok = SellForm(
+        kind: ListingKind.set,
+        photos: 1,
+        volumeCount: 3,
+        title: 'A',
+        author: 'B',
+        price: 1000,
+        description: 'd',
+        categoryId: 'c0',
+      );
+      expect(validateSell(ok), isEmpty);
+      expect(validateSell(ok.copyWith(volumeCount: 1)), [SellError.volumes]);
+      expect(validateSell(ok.copyWith(volumeCount: 31)), [SellError.volumes]);
+      expect(validateSell(ok.copyWith(volumesWithoutPhotos: 1)), [
+        SellError.volumePhotos,
+      ]);
     });
 
     test(

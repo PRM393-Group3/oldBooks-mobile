@@ -35,6 +35,9 @@ class PublicConfig {
   static const stepMinAmount = 'auction.step.minAmount';
   static const buyNowMinMultiplier = 'auction.buyNow.minMultiplier';
   static const listingPhotosMin = 'listing.photos.min';
+  static const setMinVolumes = 'listing.set.minVolumes';
+  static const setMaxVolumes = 'listing.set.maxVolumes';
+  static const setPhotosPerVolumeMax = 'listing.set.photosPerVolumeMax';
   static const shippingSaleFlat = 'shipping.sale.flatFee';
   static const shippingAuctionFlat = 'shipping.auction.flatFee';
   static const topupMin = 'wallet.topup.minAmount';
