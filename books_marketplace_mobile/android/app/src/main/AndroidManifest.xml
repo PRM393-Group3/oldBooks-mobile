@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Cho phép mở trình cài đặt khi cập nhật APK từ GitHub Releases (màn Hồ sơ > Kiểm tra cập nhật). -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <application
         android:label="Oldbook"
         android:name="${applicationName}"

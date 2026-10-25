@@ -8467,6 +8467,78 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Bắt đầu'**
   String get sellReviewStartAt;
+
+  /// No description provided for @updateMenu.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiểm tra cập nhật'**
+  String get updateMenu;
+
+  /// No description provided for @updateTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cập nhật ứng dụng'**
+  String get updateTitle;
+
+  /// No description provided for @updateChecking.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang kiểm tra bản mới...'**
+  String get updateChecking;
+
+  /// No description provided for @updateUpToDate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang dùng bản mới nhất ({v}).'**
+  String updateUpToDate(String v);
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có bản mới {v} (đang dùng {current}).'**
+  String updateAvailable(String v, String current);
+
+  /// No description provided for @updateSize.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dung lượng khoảng {mb} MB'**
+  String updateSize(String mb);
+
+  /// No description provided for @updateInstall.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tải và cài đặt'**
+  String get updateInstall;
+
+  /// No description provided for @updateDownloading.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tải {p}%'**
+  String updateDownloading(int p);
+
+  /// No description provided for @updateErrNetwork.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không kết nối được tới GitHub. Kiểm tra mạng rồi thử lại.'**
+  String get updateErrNetwork;
+
+  /// No description provided for @updateErrChecksum.
+  ///
+  /// In vi, this message translates to:
+  /// **'File tải về không toàn vẹn, đã hủy. Hãy thử lại.'**
+  String get updateErrChecksum;
+
+  /// No description provided for @updateErrInstall.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không mở được trình cài đặt. Hãy cho phép cài ứng dụng từ nguồn này trong Cài đặt rồi thử lại.'**
+  String get updateErrInstall;
+
+  /// No description provided for @updateAndroidOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cập nhật tự động chỉ hỗ trợ Android.'**
+  String get updateAndroidOnly;
 }
 
 class _AppLocalizationsDelegate

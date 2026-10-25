@@ -2531,5 +2531,21 @@
   "sellDoneAnother": "Đăng thêm sách",
   "sellReviewPrice": "Giá",
   "sellReviewDuration": "Thời lượng",
-  "sellReviewStartAt": "Bắt đầu"
+  "sellReviewStartAt": "Bắt đầu",
+  "updateMenu": "Kiểm tra cập nhật",
+  "updateTitle": "Cập nhật ứng dụng",
+  "updateChecking": "Đang kiểm tra bản mới...",
+  "updateUpToDate": "Bạn đang dùng bản mới nhất ({v}).",
+  "@updateUpToDate": { "placeholders": {"v": {"type": "String"}} },
+  "updateAvailable": "Có bản mới {v} (đang dùng {current}).",
+  "@updateAvailable": { "placeholders": {"v": {"type": "String"},"current": {"type": "String"}} },
+  "updateSize": "Dung lượng khoảng {mb} MB",
+  "@updateSize": { "placeholders": {"mb": {"type": "String"}} },
+  "updateInstall": "Tải và cài đặt",
+  "updateDownloading": "Đang tải {p}%",
+  "@updateDownloading": { "placeholders": {"p": {"type": "int"}} },
+  "updateErrNetwork": "Không kết nối được tới GitHub. Kiểm tra mạng rồi thử lại.",
+  "updateErrChecksum": "File tải về không toàn vẹn, đã hủy. Hãy thử lại.",
+  "updateErrInstall": "Không mở được trình cài đặt. Hãy cho phép cài ứng dụng từ nguồn này trong Cài đặt rồi thử lại.",
+  "updateAndroidOnly": "Cập nhật tự động chỉ hỗ trợ Android."
 }

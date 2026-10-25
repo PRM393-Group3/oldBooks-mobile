@@ -4783,4 +4783,51 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get sellReviewStartAt => 'Bắt đầu';
+
+  @override
+  String get updateMenu => 'Kiểm tra cập nhật';
+
+  @override
+  String get updateTitle => 'Cập nhật ứng dụng';
+
+  @override
+  String get updateChecking => 'Đang kiểm tra bản mới...';
+
+  @override
+  String updateUpToDate(String v) {
+    return 'Bạn đang dùng bản mới nhất ($v).';
+  }
+
+  @override
+  String updateAvailable(String v, String current) {
+    return 'Có bản mới $v (đang dùng $current).';
+  }
+
+  @override
+  String updateSize(String mb) {
+    return 'Dung lượng khoảng $mb MB';
+  }
+
+  @override
+  String get updateInstall => 'Tải và cài đặt';
+
+  @override
+  String updateDownloading(int p) {
+    return 'Đang tải $p%';
+  }
+
+  @override
+  String get updateErrNetwork =>
+      'Không kết nối được tới GitHub. Kiểm tra mạng rồi thử lại.';
+
+  @override
+  String get updateErrChecksum =>
+      'File tải về không toàn vẹn, đã hủy. Hãy thử lại.';
+
+  @override
+  String get updateErrInstall =>
+      'Không mở được trình cài đặt. Hãy cho phép cài ứng dụng từ nguồn này trong Cài đặt rồi thử lại.';
+
+  @override
+  String get updateAndroidOnly => 'Cập nhật tự động chỉ hỗ trợ Android.';
 }
