@@ -2584,5 +2584,6 @@
   "photosSkipped": "Đã bỏ qua {n} ảnh (sai định dạng, quá nặng hoặc vượt giới hạn).",
   "@photosSkipped": {"placeholders": {"n": {"type": "int"}}},
   "photosAdded": "Đã thêm {n} ảnh.",
-  "@photosAdded": {"placeholders": {"n": {"type": "int"}}}
+  "@photosAdded": {"placeholders": {"n": {"type": "int"}}},
+  "aiErrEmpty": "AI không trả về nội dung nào. Hãy thử lại hoặc dùng ảnh khác; nếu vẫn lỗi, hãy tự nhập tình trạng và mô tả."
 }

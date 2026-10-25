@@ -206,6 +206,7 @@ class _BookAiSheetState extends ConsumerState<_BookAiSheet> {
           BookAiFailure.unsupported => l.aiErrUnsupported,
           BookAiFailure.download => l.aiErrDownload,
           BookAiFailure.model => l.aiErrModel,
+          BookAiFailure.empty => l.aiErrEmpty,
           BookAiFailure.unreadable => l.aiErrUnreadable,
         }, style: TextStyle(color: context.colors.error)),
         gap,

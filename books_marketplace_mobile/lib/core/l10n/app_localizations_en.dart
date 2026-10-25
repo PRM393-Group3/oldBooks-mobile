@@ -4970,4 +4970,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String photosAdded(int n) {
     return 'Added $n photos.';
   }
+
+  @override
+  String get aiErrEmpty =>
+      'The AI returned no output. Try again or use another photo; if it keeps failing, enter the condition and description yourself.';
 }

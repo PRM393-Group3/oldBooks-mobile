@@ -2551,5 +2551,6 @@
   "photosSkipped": "Skipped {n} photos (wrong format, too large or over the limit).",
   "@photosSkipped": {"placeholders": {"n": {"type": "int"}}},
   "photosAdded": "Added {n} photos.",
-  "@photosAdded": {"placeholders": {"n": {"type": "int"}}}
+  "@photosAdded": {"placeholders": {"n": {"type": "int"}}},
+  "aiErrEmpty": "The AI returned no output. Try again or use another photo; if it keeps failing, enter the condition and description yourself."
 }

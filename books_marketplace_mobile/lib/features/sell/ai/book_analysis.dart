@@ -42,26 +42,61 @@ final _descriptionLine = RegExp(
 );
 final _anyCode = RegExp(r'\b(new|good|fair|worn)\b', caseSensitive: false);
 
-/// Đọc câu trả lời của model. Trả `null` nếu không tìm được mã tình trạng nào;
-/// thiếu mô tả thì dùng câu mặc định theo tình trạng.
+/// Từ khóa tiếng Việt theo mức hư hại, xét từ nặng đến nhẹ. Model nhỏ hay bỏ
+/// qua định dạng và trả thẳng tiếng Việt. Dart không có `\b` cho chữ có dấu nên
+/// dùng lookaround với `\p{L}`.
+final _vietnameseCues = <(SellCondition, RegExp)>[
+  (
+    SellCondition.worn,
+    _cue(['rách', 'hư hỏng', 'hỏng', 'nát', 'mục', 'bong', 'cũ nát', 'rất cũ']),
+  ),
+  (
+    SellCondition.fair,
+    _cue(['ố', 'vàng', 'nhàu', 'cong', 'xước', 'trầy', 'cũ', 'đã qua sử dụng']),
+  ),
+  (SellCondition.isNew, _cue(['như mới', 'còn mới', 'mới'])),
+  (SellCondition.good, _cue(['tốt', 'đẹp', 'sạch', 'ổn'])),
+];
+
+RegExp _cue(List<String> words) => RegExp(
+  '(?<![\\p{L}])(?:${words.join('|')})(?![\\p{L}])',
+  unicode: true,
+  caseSensitive: false,
+);
+
+String _clean(String s) => s
+    .replaceAll(RegExp(r'\s+'), ' ')
+    .replaceAll(RegExp('^["\'“]+|["\'”]+\$'), '')
+    .trim();
+
+/// Đọc câu trả lời của model. Trả `null` nếu không tìm được tình trạng nào,
+/// kể cả từ khóa tiếng Việt; thiếu mô tả thì dùng câu mặc định theo tình trạng.
 BookAnalysis? parseBookAnalysis(String raw) {
   final text = raw.trim();
   if (text.isEmpty) return null;
 
   final code = (_conditionLine.firstMatch(text) ?? _anyCode.firstMatch(text))
       ?.group(1);
-  if (code == null) return null;
-  final condition = SellCondition.values.firstWhere(
-    (c) => c.code == code.toUpperCase(),
-  );
 
-  var description = _descriptionLine.firstMatch(text)?.group(1)?.trim() ?? '';
-  description = description
-      .replaceAll(RegExp(r'\s+'), ' ')
-      .replaceAll(RegExp('^["\'“]+|["\'”]+\$'), '')
-      .trim();
+  SellCondition? condition;
+  var description = _clean(_descriptionLine.firstMatch(text)?.group(1) ?? '');
+  if (code != null) {
+    condition = SellCondition.values.firstWhere(
+      (c) => c.code == code.toUpperCase(),
+    );
+  } else {
+    // Không có mã: đoán từ từ khóa tiếng Việt và dùng chính câu trả lời làm mô tả.
+    for (final (c, cue) in _vietnameseCues) {
+      if (cue.hasMatch(text)) {
+        condition = c;
+        break;
+      }
+    }
+    if (condition == null) return null;
+    if (description.isEmpty) description = _clean(text);
+  }
+
   if (description.length < 8) description = _fallbackDescriptions[condition]!;
   if (description.length > 300) description = description.substring(0, 300);
-
   return BookAnalysis(condition: condition, description: description);
 }
