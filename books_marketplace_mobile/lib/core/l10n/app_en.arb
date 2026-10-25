@@ -2498,5 +2498,21 @@
   "sellDoneAnother": "List another book",
   "sellReviewPrice": "Price",
   "sellReviewDuration": "Duration",
-  "sellReviewStartAt": "Starts"
+  "sellReviewStartAt": "Starts",
+  "updateMenu": "Check for updates",
+  "updateTitle": "App update",
+  "updateChecking": "Checking for a new version...",
+  "updateUpToDate": "You are on the latest version ({v}).",
+  "@updateUpToDate": { "placeholders": {"v": {"type": "String"}} },
+  "updateAvailable": "New version {v} available (you have {current}).",
+  "@updateAvailable": { "placeholders": {"v": {"type": "String"},"current": {"type": "String"}} },
+  "updateSize": "About {mb} MB",
+  "@updateSize": { "placeholders": {"mb": {"type": "String"}} },
+  "updateInstall": "Download and install",
+  "updateDownloading": "Downloading {p}%",
+  "@updateDownloading": { "placeholders": {"p": {"type": "int"}} },
+  "updateErrNetwork": "Could not reach GitHub. Check your connection and try again.",
+  "updateErrChecksum": "The downloaded file failed the integrity check and was discarded. Try again.",
+  "updateErrInstall": "Could not open the installer. Allow installing apps from this source in Settings, then try again.",
+  "updateAndroidOnly": "In-app updates are only supported on Android."
 }

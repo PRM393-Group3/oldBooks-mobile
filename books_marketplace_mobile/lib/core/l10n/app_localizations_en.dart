@@ -4808,4 +4808,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sellReviewStartAt => 'Starts';
+
+  @override
+  String get updateMenu => 'Check for updates';
+
+  @override
+  String get updateTitle => 'App update';
+
+  @override
+  String get updateChecking => 'Checking for a new version...';
+
+  @override
+  String updateUpToDate(String v) {
+    return 'You are on the latest version ($v).';
+  }
+
+  @override
+  String updateAvailable(String v, String current) {
+    return 'New version $v available (you have $current).';
+  }
+
+  @override
+  String updateSize(String mb) {
+    return 'About $mb MB';
+  }
+
+  @override
+  String get updateInstall => 'Download and install';
+
+  @override
+  String updateDownloading(int p) {
+    return 'Downloading $p%';
+  }
+
+  @override
+  String get updateErrNetwork =>
+      'Could not reach GitHub. Check your connection and try again.';
+
+  @override
+  String get updateErrChecksum =>
+      'The downloaded file failed the integrity check and was discarded. Try again.';
+
+  @override
+  String get updateErrInstall =>
+      'Could not open the installer. Allow installing apps from this source in Settings, then try again.';
+
+  @override
+  String get updateAndroidOnly =>
+      'In-app updates are only supported on Android.';
 }
