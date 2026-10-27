@@ -2559,5 +2559,141 @@
   "aiFieldAuthor": "Author",
   "aiFieldPublisher": "Publisher",
   "aiFieldYear": "Publication year",
-  "aiFieldDefects": "Defect notes"
+  "aiFieldDefects": "Defect notes",
+  "verifiedBadgeLabel": "Identity verified",
+  "kycTitle": "Account verification",
+  "kycPhaseNone": "Not verified",
+  "kycPhasePending": "Pending review",
+  "kycPhaseVerified": "Verified",
+  "kycPhaseRejected": "Rejected",
+  "kycPhaseRevoked": "Verification removed",
+  "kycSubNone": "Verify with your ID card to get the blue tick",
+  "kycSubPending": "An admin is reviewing your submission",
+  "kycSubVerified": "The blue tick shows on your profile and listings",
+  "kycSubRejected": "Tap to see the reason and resubmit",
+  "kycSubBlocked": "You cannot resubmit right now",
+  "kycSubRevoked": "Tap to see the reason and resubmit",
+  "kycStatusNoneBody": "Verify your identity with your ID card and a selfie to get the blue tick, which helps buyers trust you when buying, selling and bidding.",
+  "kycStatusPendingBody": "Your submission was sent. An admin will review it and let you know the result.",
+  "kycStatusVerifiedBody": "Your account is verified. The blue tick shows next to your name.",
+  "kycStatusRejectedBody": "Your submission was not accepted. You can prepare your documents again and send a new one.",
+  "kycStatusRevokedBody": "Your account verification was removed. You can send a new submission.",
+  "kycLatestTitle": "Latest submission",
+  "kycSubmittedAt": "Submitted",
+  "kycReviewedAt": "Reviewed",
+  "kycStart": "Start verification",
+  "kycRetry": "Resubmit",
+  "kycStepConsent": "Consent",
+  "kycStepDocuments": "Documents",
+  "kycStepSelfie": "Selfie",
+  "kycStepReview": "Submit",
+  "kycIntroTitle": "Identity verification",
+  "kycIntroBody": "You will photograph your ID card, take a selfie and complete a couple of short actions to prove it is you. An admin reviews and decides.",
+  "kycIntroStepDocuments": "Photograph the front and back of your ID card and check the name, ID number and date of birth.",
+  "kycIntroStepSelfie": "Take a selfie and follow two random prompts such as blinking or turning your head.",
+  "kycIntroStepReview": "Review and submit. The result arrives as an in-app notification.",
+  "kycIntroBenefit": "Once approved, a blue tick appears on your profile, listings and auctions.",
+  "kycIntroPrivacy": "ID card photos, your selfie and these details are sensitive personal data (Decree 13/2023/ND-CP). They are used only to verify your identity, stored privately and visible to admins only. Text and face recognition run on your phone and are not sent to third parties. You can ask us to delete your data at any time.",
+  "kycConsentLabel": "I agree that Oldbook may collect and process my ID card photos, selfie and personal details to verify my account.",
+  "kycDocumentsHint": "Place the ID card on a flat surface with good light, show all four corners and avoid glare. Make the front sharp so it can be read.",
+  "kycFront": "ID card front",
+  "kycBack": "ID card back",
+  "kycInfoTitle": "Details on the ID card",
+  "kycInfoHint": "Check and correct them to match your ID card. Wrong details will be rejected.",
+  "kycReadWithAi": "Read with AI",
+  "kycFieldName": "Full name",
+  "kycFieldId": "ID number",
+  "kycFieldDob": "Date of birth",
+  "kycDobHint": "dd/MM/yyyy",
+  "kycNeedBothImages": "Add photos of both the front and the back of your ID card.",
+  "kycErrName": "Enter your name exactly as on the ID card.",
+  "kycErrIdNumber": "The ID number has exactly 12 digits.",
+  "kycErrDob": "Enter the date of birth as dd/MM/yyyy.",
+  "kycOcrTitle": "Read ID card details",
+  "kycOcrIntro": "On-device AI will read the name, ID number and date of birth from the front photo. The photo does not leave your phone at this step.",
+  "kycOcrAnalyzing": "Reading the ID card, this can take a few dozen seconds.",
+  "kycOcrCheckNote": "AI can misread. Please check carefully and correct if needed.",
+  "kycOcrApply": "Use these details",
+  "kycOcrEnterManually": "Enter manually",
+  "kycOcrIncompatibleManual": "You can still type your name, ID number and date of birth yourself.",
+  "kycOcrErrUnreadable": "The AI could not read the ID card clearly. Try a brighter, sharper photo, or enter the details yourself.",
+  "kycSelfieTitle": "Selfie",
+  "kycSelfieBody": "Hold the phone at face level in good light, without sunglasses or a mask. The app will ask for two random actions to make sure you are a real person.",
+  "kycSelfieStart": "Start",
+  "kycSelfieRetake": "Retake",
+  "kycLivenessTitle": "Take a selfie",
+  "kycLivenessDone": "Selfie captured",
+  "kycLivenessFailed": "Could not finish the selfie step. Try again somewhere well lit.",
+  "kycLivenessUnsupported": "Selfie verification is currently supported on Android only.",
+  "kycLivenessPrivacy": "Images are used only to verify your identity.",
+  "kycCameraDenied": "The app needs camera permission. Grant it in Settings and try again.",
+  "kycHintNoFace": "Put your face in the frame",
+  "kycHintMultipleFaces": "Only one person in the frame",
+  "kycHintTooFar": "Move a little closer",
+  "kycHintTooClose": "Move a little farther away",
+  "kycHintNotCentered": "Center your face in the frame",
+  "kycHintTooDark": "More light needed",
+  "kycHintTooBright": "Too much glare",
+  "kycHintLookStraight": "Look straight at the camera",
+  "kycHintHold": "Hold still",
+  "kycChallengeBlink": "Blink your eyes",
+  "kycChallengeTurnLeft": "Turn your face to the left",
+  "kycChallengeTurnRight": "Turn your face to the right",
+  "kycReviewTitle": "Review and submit",
+  "kycReviewBody": "Check the photos and details before sending them to an admin.",
+  "kycReviewNote": "By submitting you confirm these details are yours. Fake submissions may lead to account suspension.",
+  "kycSubmit": "Submit",
+  "kycSubmitPreparing": "Preparing your submission…",
+  "kycSubmitSending": "Sending your submission…",
+  "kycSubmitted": "Submission sent. We will notify you of the result.",
+  "kycErrAlreadyVerified": "Your account is already verified.",
+  "kycErrPendingExists": "You already have a submission waiting for review.",
+  "kycErrIdDuplicate": "This ID number has already been used to verify another account.",
+  "kycErrUnderage": "You do not meet the minimum age to verify your account.",
+  "kycErrLimitReached": "You have reached today's submission limit. Please try again tomorrow.",
+  "kycErrConsentRequired": "You must consent to personal data processing to submit.",
+  "kycErrImageInvalid": "An image is not valid. Use a clear JPEG, PNG or WebP photo and retake it.",
+  "kycVerifiedAt": "Verified on {when}",
+  "@kycVerifiedAt": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "kycRejectReason": "Reason: {reason}",
+  "@kycRejectReason": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "kycRetryAfter": "You can resubmit after {when}.",
+  "@kycRetryAfter": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "kycErrUnderageLocal": "You must be at least {minAge} years old to verify.",
+  "@kycErrUnderageLocal": {
+    "placeholders": {
+      "minAge": {
+        "type": "int"
+      }
+    }
+  },
+  "kycSubmitUploading": "Uploading photos ({done}/{total})…",
+  "@kycSubmitUploading": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

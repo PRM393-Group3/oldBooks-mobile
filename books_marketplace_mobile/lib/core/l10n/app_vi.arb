@@ -2592,5 +2592,141 @@
   "aiFieldAuthor": "Tác giả",
   "aiFieldPublisher": "Nhà xuất bản",
   "aiFieldYear": "Năm xuất bản",
-  "aiFieldDefects": "Ghi chú lỗi"
+  "aiFieldDefects": "Ghi chú lỗi",
+  "verifiedBadgeLabel": "Đã xác minh danh tính",
+  "kycTitle": "Xác minh tài khoản",
+  "kycPhaseNone": "Chưa xác minh",
+  "kycPhasePending": "Đang chờ duyệt",
+  "kycPhaseVerified": "Đã xác minh",
+  "kycPhaseRejected": "Bị từ chối",
+  "kycPhaseRevoked": "Đã bị gỡ xác minh",
+  "kycSubNone": "Xác minh bằng CCCD để nhận dấu tích xanh",
+  "kycSubPending": "Quản trị viên đang xem xét hồ sơ",
+  "kycSubVerified": "Dấu tích xanh hiển thị trên hồ sơ và tin của bạn",
+  "kycSubRejected": "Bấm để xem lý do và gửi lại",
+  "kycSubBlocked": "Chưa thể gửi lại lúc này",
+  "kycSubRevoked": "Bấm để xem lý do và gửi lại",
+  "kycStatusNoneBody": "Xác minh danh tính bằng CCCD và ảnh chân dung để nhận dấu tích xanh, giúp người mua tin tưởng hơn khi mua bán và đấu giá.",
+  "kycStatusPendingBody": "Hồ sơ của bạn đã được gửi. Quản trị viên sẽ xem xét và thông báo kết quả cho bạn.",
+  "kycStatusVerifiedBody": "Tài khoản của bạn đã được xác minh. Dấu tích xanh hiển thị cạnh tên bạn.",
+  "kycStatusRejectedBody": "Hồ sơ chưa được chấp nhận. Bạn có thể chuẩn bị lại giấy tờ và gửi hồ sơ mới.",
+  "kycStatusRevokedBody": "Xác minh của tài khoản đã bị gỡ. Bạn có thể gửi hồ sơ mới.",
+  "kycLatestTitle": "Hồ sơ gần nhất",
+  "kycSubmittedAt": "Gửi lúc",
+  "kycReviewedAt": "Duyệt lúc",
+  "kycStart": "Bắt đầu xác minh",
+  "kycRetry": "Gửi lại hồ sơ",
+  "kycStepConsent": "Đồng ý",
+  "kycStepDocuments": "Giấy tờ",
+  "kycStepSelfie": "Chân dung",
+  "kycStepReview": "Gửi",
+  "kycIntroTitle": "Xác minh danh tính",
+  "kycIntroBody": "Bạn sẽ chụp CCCD, ảnh chân dung và hoàn thành vài thao tác ngắn để chứng minh đây là bạn. Quản trị viên sẽ xem xét và quyết định.",
+  "kycIntroStepDocuments": "Chụp mặt trước và mặt sau CCCD, kiểm tra lại họ tên, số CCCD, ngày sinh.",
+  "kycIntroStepSelfie": "Chụp ảnh chân dung và làm theo hai yêu cầu ngẫu nhiên như chớp mắt hoặc quay đầu.",
+  "kycIntroStepReview": "Xem lại và gửi. Kết quả báo qua thông báo trong ứng dụng.",
+  "kycIntroBenefit": "Được duyệt sẽ có dấu tích xanh trên hồ sơ, tin đăng và phiên đấu giá của bạn.",
+  "kycIntroPrivacy": "Ảnh CCCD, ảnh chân dung và các thông tin này là dữ liệu cá nhân nhạy cảm (Nghị định 13/2023/NĐ-CP). Chúng chỉ dùng để xác minh danh tính, được lưu riêng tư và chỉ quản trị viên được xem. Việc nhận diện chữ và khuôn mặt chạy ngay trên điện thoại, không gửi cho bên thứ ba. Bạn có thể yêu cầu xóa dữ liệu bất cứ lúc nào.",
+  "kycConsentLabel": "Tôi đồng ý cho Oldbook thu thập và xử lý ảnh CCCD, ảnh chân dung và thông tin cá nhân của tôi để xác minh tài khoản.",
+  "kycDocumentsHint": "Đặt CCCD trên mặt phẳng, đủ sáng, chụp rõ cả bốn góc và không bị chói. Ảnh mặt trước nên rõ nét để đọc chữ.",
+  "kycFront": "Mặt trước CCCD",
+  "kycBack": "Mặt sau CCCD",
+  "kycInfoTitle": "Thông tin trên CCCD",
+  "kycInfoHint": "Kiểm tra và sửa cho khớp với CCCD. Thông tin sai sẽ bị từ chối.",
+  "kycReadWithAi": "Đọc bằng AI",
+  "kycFieldName": "Họ và tên",
+  "kycFieldId": "Số CCCD",
+  "kycFieldDob": "Ngày sinh",
+  "kycDobHint": "dd/MM/yyyy",
+  "kycNeedBothImages": "Hãy thêm ảnh mặt trước và mặt sau CCCD.",
+  "kycErrName": "Nhập họ tên đúng như trên CCCD.",
+  "kycErrIdNumber": "Số CCCD gồm đúng 12 chữ số.",
+  "kycErrDob": "Nhập ngày sinh dạng dd/MM/yyyy.",
+  "kycOcrTitle": "Đọc thông tin CCCD",
+  "kycOcrIntro": "AI trên máy sẽ đọc họ tên, số CCCD và ngày sinh từ ảnh mặt trước. Ảnh không rời khỏi điện thoại ở bước này.",
+  "kycOcrAnalyzing": "Đang đọc CCCD, có thể mất vài chục giây.",
+  "kycOcrCheckNote": "AI có thể đọc sai. Hãy kiểm tra kỹ rồi sửa nếu cần.",
+  "kycOcrApply": "Dùng thông tin này",
+  "kycOcrEnterManually": "Tự nhập thông tin",
+  "kycOcrIncompatibleManual": "Bạn vẫn có thể tự nhập họ tên, số CCCD và ngày sinh.",
+  "kycOcrErrUnreadable": "AI chưa đọc rõ được CCCD. Hãy thử lại với ảnh sáng và rõ hơn, hoặc tự nhập thông tin.",
+  "kycSelfieTitle": "Ảnh chân dung",
+  "kycSelfieBody": "Giữ điện thoại ngang tầm mặt, ở nơi đủ sáng, không đeo kính râm hay khẩu trang. Ứng dụng sẽ yêu cầu hai thao tác ngẫu nhiên để chắc chắn bạn là người thật.",
+  "kycSelfieStart": "Bắt đầu chụp",
+  "kycSelfieRetake": "Chụp lại",
+  "kycLivenessTitle": "Chụp chân dung",
+  "kycLivenessDone": "Đã chụp xong chân dung",
+  "kycLivenessFailed": "Chưa hoàn thành được bước chụp. Hãy thử lại ở nơi đủ sáng.",
+  "kycLivenessUnsupported": "Chụp chân dung xác minh hiện chỉ hỗ trợ trên Android.",
+  "kycLivenessPrivacy": "Hình ảnh chỉ dùng để xác minh danh tính của bạn.",
+  "kycCameraDenied": "Ứng dụng cần quyền dùng máy ảnh. Hãy cấp quyền trong Cài đặt rồi thử lại.",
+  "kycHintNoFace": "Đưa khuôn mặt vào khung hình",
+  "kycHintMultipleFaces": "Chỉ một người trong khung hình",
+  "kycHintTooFar": "Lại gần hơn một chút",
+  "kycHintTooClose": "Lùi ra xa một chút",
+  "kycHintNotCentered": "Đưa khuôn mặt vào giữa khung hình",
+  "kycHintTooDark": "Cần thêm ánh sáng",
+  "kycHintTooBright": "Ánh sáng quá chói",
+  "kycHintLookStraight": "Nhìn thẳng vào camera",
+  "kycHintHold": "Giữ yên",
+  "kycChallengeBlink": "Hãy chớp mắt",
+  "kycChallengeTurnLeft": "Hãy quay mặt sang trái",
+  "kycChallengeTurnRight": "Hãy quay mặt sang phải",
+  "kycReviewTitle": "Xem lại và gửi",
+  "kycReviewBody": "Kiểm tra ảnh và thông tin trước khi gửi cho quản trị viên.",
+  "kycReviewNote": "Gửi hồ sơ nghĩa là bạn xác nhận thông tin là của chính bạn. Hồ sơ giả mạo có thể bị khóa tài khoản.",
+  "kycSubmit": "Gửi hồ sơ",
+  "kycSubmitPreparing": "Đang chuẩn bị hồ sơ…",
+  "kycSubmitSending": "Đang gửi hồ sơ…",
+  "kycSubmitted": "Đã gửi hồ sơ. Chúng tôi sẽ thông báo khi có kết quả.",
+  "kycErrAlreadyVerified": "Tài khoản của bạn đã được xác minh.",
+  "kycErrPendingExists": "Bạn đã có một hồ sơ đang chờ duyệt.",
+  "kycErrIdDuplicate": "Số CCCD này đã được dùng để xác minh cho một tài khoản khác.",
+  "kycErrUnderage": "Bạn chưa đủ tuổi tối thiểu để xác minh tài khoản.",
+  "kycErrLimitReached": "Bạn đã gửi quá số lần cho phép trong ngày. Hãy thử lại vào ngày mai.",
+  "kycErrConsentRequired": "Bạn cần đồng ý cho phép xử lý dữ liệu cá nhân để gửi hồ sơ.",
+  "kycErrImageInvalid": "Ảnh chưa hợp lệ. Hãy dùng ảnh JPEG, PNG hoặc WebP rõ nét rồi chụp lại.",
+  "kycVerifiedAt": "Xác minh lúc {when}",
+  "@kycVerifiedAt": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "kycRejectReason": "Lý do: {reason}",
+  "@kycRejectReason": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "kycRetryAfter": "Bạn có thể gửi lại sau {when}.",
+  "@kycRetryAfter": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "kycErrUnderageLocal": "Bạn cần đủ {minAge} tuổi để xác minh.",
+  "@kycErrUnderageLocal": {
+    "placeholders": {
+      "minAge": {
+        "type": "int"
+      }
+    }
+  },
+  "kycSubmitUploading": "Đang tải ảnh lên ({done}/{total})…",
+  "@kycSubmitUploading": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

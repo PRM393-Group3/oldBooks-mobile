@@ -63,6 +63,9 @@ enum NotificationType {
   auctionLiquidationNeedsAdmin('AUCTION_LIQUIDATION_NEEDS_ADMIN'),
   auctionLiquidated('AUCTION_LIQUIDATED'),
   auctionReleasedToBuyer('AUCTION_RELEASED_TO_BUYER'),
+  // eKYC: admin duyệt hoặc từ chối hồ sơ xác minh.
+  kycApproved('KYC_APPROVED'),
+  kycRejected('KYC_REJECTED'),
   unknown('');
 
   const NotificationType(this.api);
@@ -110,6 +113,9 @@ enum NotificationType {
   /// Mở chi tiết phiên rồi tới đơn (người thắng, người bán).
   bool get opensAuctionThenOrder => this == auctionWon || this == auctionSold;
   bool get isComplaint => api.startsWith('COMPLAINT_');
+
+  /// Thông báo xác minh tài khoản: mở màn hình trạng thái eKYC.
+  bool get isKyc => this == kycApproved || this == kycRejected;
 
   /// Thông báo về ví: bấm vào mở tab Ví.
   bool get isWallet => switch (this) {

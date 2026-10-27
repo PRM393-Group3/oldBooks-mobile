@@ -96,6 +96,13 @@ extension ApiErrorL10n on ApiError {
       ApiErrorCode.complaintWindowClosed => l.errComplaintWindowClosed,
       ApiErrorCode.withdrawBelowMinimum => l.errWithdrawBelowMin,
       ApiErrorCode.rateLimited => l.errRateLimited,
+      ApiErrorCode.kycAlreadyVerified => l.kycErrAlreadyVerified,
+      ApiErrorCode.kycPendingExists => l.kycErrPendingExists,
+      ApiErrorCode.kycIdDuplicate => l.kycErrIdDuplicate,
+      ApiErrorCode.kycUnderage => l.kycErrUnderage,
+      ApiErrorCode.kycLimitReached => l.kycErrLimitReached,
+      ApiErrorCode.kycConsentRequired => l.kycErrConsentRequired,
+      ApiErrorCode.kycImageInvalid => l.kycErrImageInvalid,
       ApiErrorCode.upstreamError ||
       ApiErrorCode.serviceUnavailable => l.errUpstream,
       ApiErrorCode.network => l.errorNetwork,
