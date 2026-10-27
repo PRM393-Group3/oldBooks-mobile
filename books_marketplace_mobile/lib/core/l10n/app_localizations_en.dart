@@ -4974,4 +4974,25 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get aiErrEmpty =>
       'The AI returned no output. Try again or use another photo; if it keeps failing, enter the condition and description yourself.';
+
+  @override
+  String get aiReading => 'Reading the photo…';
+
+  @override
+  String get aiWriting => 'Writing the result…';
+
+  @override
+  String get aiFieldTitle => 'Title';
+
+  @override
+  String get aiFieldAuthor => 'Author';
+
+  @override
+  String get aiFieldPublisher => 'Publisher';
+
+  @override
+  String get aiFieldYear => 'Publication year';
+
+  @override
+  String get aiFieldDefects => 'Defect notes';
 }

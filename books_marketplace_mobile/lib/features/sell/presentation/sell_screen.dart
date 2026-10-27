@@ -330,8 +330,9 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     _sync();
   }
 
-  /// AI trên máy đánh giá ảnh bìa (ảnh mới chọn đầu tiên), gợi ý tình trạng và
-  /// mô tả. Người bán vẫn sửa được; mô tả đã có thì nối thêm, không ghi đè.
+  /// AI trên máy đọc ảnh bìa (ảnh mới chọn đầu tiên), gợi ý thông tin sách, tình
+  /// trạng và mô tả. Người bán vẫn sửa được; mô tả đã có thì nối thêm, các ô
+  /// khác đã có nội dung thì giữ nguyên.
   Future<void> _analyzeWithAi() async {
     final bytes = _photos
         .map((p) => p.photo?.bytes)
@@ -347,6 +348,16 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     _desc.text = current.isEmpty
         ? result.description
         : '$current\n${result.description}';
+    // Thông tin trên bìa chỉ điền vào ô còn trống, không ghi đè nội dung đã nhập.
+    void fillIfEmpty(TextEditingController c, String? v) {
+      if (v != null && c.text.trim().isEmpty) c.text = v;
+    }
+
+    fillIfEmpty(_title, result.title);
+    fillIfEmpty(_author, result.author);
+    fillIfEmpty(_publisher, result.publisher);
+    fillIfEmpty(_year, result.year?.toString());
+    fillIfEmpty(_defects, result.defects);
     _update((x) => x.copyWith(condition: result.condition));
     _sync();
   }

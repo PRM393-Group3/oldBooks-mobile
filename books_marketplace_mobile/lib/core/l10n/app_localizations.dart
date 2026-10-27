@@ -8731,6 +8731,48 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'AI không trả về nội dung nào. Hãy thử lại hoặc dùng ảnh khác; nếu vẫn lỗi, hãy tự nhập tình trạng và mô tả.'**
   String get aiErrEmpty;
+
+  /// No description provided for @aiReading.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang đọc ảnh…'**
+  String get aiReading;
+
+  /// No description provided for @aiWriting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang ghi kết quả…'**
+  String get aiWriting;
+
+  /// No description provided for @aiFieldTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiêu đề'**
+  String get aiFieldTitle;
+
+  /// No description provided for @aiFieldAuthor.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tác giả'**
+  String get aiFieldAuthor;
+
+  /// No description provided for @aiFieldPublisher.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhà xuất bản'**
+  String get aiFieldPublisher;
+
+  /// No description provided for @aiFieldYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Năm xuất bản'**
+  String get aiFieldYear;
+
+  /// No description provided for @aiFieldDefects.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi chú lỗi'**
+  String get aiFieldDefects;
 }
 
 class _AppLocalizationsDelegate

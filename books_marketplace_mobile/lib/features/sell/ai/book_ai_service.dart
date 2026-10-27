@@ -57,15 +57,16 @@ class BookAiService {
     }
   }
 
-  /// Phân tích một ảnh. Giải phóng model ngay sau đó để trả RAM.
-  Future<BookAnalysis> analyze(Uint8List image) async {
+  /// Phân tích một ảnh, phát ra toàn bộ câu trả lời đã sinh được sau mỗi token
+  /// để giao diện hiện dần. Giải phóng model khi xong hoặc khi bị hủy nghe để
+  /// trả RAM. Lỗi phát ra dưới dạng [BookAiException].
+  Stream<String> analyzeStream(Uint8List image) async* {
     if (!await isModelReady()) {
       await downloadModel((_) {});
     }
 
     InferenceModel? model;
     InferenceChat? chat;
-    final String raw;
     try {
       model = await FlutterEdgeAi.getActiveModel(
         maxTokens: 2048,
@@ -81,15 +82,14 @@ class BookAiService {
         ),
       );
       final buffer = StringBuffer();
-      final seen = <String, int>{};
       await for (final r in chat.generateChatResponseAsync().timeout(
         _analyzeTimeout,
       )) {
-        seen.update(r.runtimeType.toString(), (n) => n + 1, ifAbsent: () => 1);
-        if (r is TextResponse) buffer.write(r.token);
+        if (r is! TextResponse) continue;
+        buffer.write(r.token);
+        yield buffer.toString();
       }
-      raw = buffer.toString();
-      debugPrint('[BookAI] responses=$seen raw="$raw"');
+      debugPrint('[BookAI] raw="$buffer"');
     } catch (e, st) {
       debugPrint('[BookAI] model error: $e\n$st');
       throw const BookAiException(BookAiFailure.model);
@@ -97,9 +97,12 @@ class BookAiService {
       await chat?.close();
       await model?.close();
     }
+  }
 
-    // Rỗng nghĩa là model không sinh gì (thường do ảnh không tới được model);
-    // khác với có chữ nhưng không đọc ra tình trạng.
+  /// Đọc câu trả lời đầy đủ của [analyzeStream]. Rỗng nghĩa là model không sinh
+  /// gì (thường do ảnh không tới được model); khác với có chữ nhưng không đọc
+  /// ra tình trạng.
+  BookAnalysis parseResult(String raw) {
     if (raw.trim().isEmpty) throw const BookAiException(BookAiFailure.empty);
     final result = parseBookAnalysis(raw);
     if (result == null) throw const BookAiException(BookAiFailure.unreadable);
