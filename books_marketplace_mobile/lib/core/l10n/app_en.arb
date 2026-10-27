@@ -2518,7 +2518,7 @@
   "aiAssistButton": "Analyze photo with AI",
   "aiSheetTitle": "AI book condition assistant",
   "aiSheetIntro": "The AI runs on your device and the photo never leaves your phone. The result is only a suggestion; you can edit it.",
-  "aiDownloadNote": "The first run downloads an AI model of about 360 MB. Wi-Fi is recommended.",
+  "aiDownloadNote": "The first run downloads an AI model of about 2.6 GB. Wi-Fi is recommended.",
   "aiDownloadButton": "Download and analyze",
   "aiDownloading": "Downloading model… {percent}%",
   "@aiDownloading": {"placeholders": {"percent": {"type": "int"}}},

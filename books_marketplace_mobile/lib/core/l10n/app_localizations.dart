@@ -8561,7 +8561,7 @@ abstract class AppLocalizations {
   /// No description provided for @aiDownloadNote.
   ///
   /// In vi, this message translates to:
-  /// **'Lần đầu cần tải mô hình AI khoảng 360 MB. Nên dùng Wi-Fi.'**
+  /// **'Lần đầu cần tải mô hình AI khoảng 2,6 GB. Nên dùng Wi-Fi.'**
   String get aiDownloadNote;
 
   /// No description provided for @aiDownloadButton.

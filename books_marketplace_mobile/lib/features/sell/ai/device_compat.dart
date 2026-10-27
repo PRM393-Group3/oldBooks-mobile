@@ -27,11 +27,11 @@ class DeviceSpecs {
 /// LiteRT-LM chỉ có Android 11+ (API 30) và arm64.
 const minAiSdk = 30;
 
-/// Máy "4GB" báo khoảng 3,6–3,9GB tổng nên đặt ngưỡng 3,5GB.
-const minAiTotalRamMb = 3500;
+/// Gemma 4 E2B cần máy từ 6GB; máy "6GB" báo khoảng 5,5–5,9GB tổng nên đặt ngưỡng 5,5GB.
+const minAiTotalRamMb = 5500;
 
 /// RAM trống tối thiểu để nạp model; thấp hơn thì nên đóng bớt ứng dụng.
-const minAiFreeRamMb = 700;
+const minAiFreeRamMb = 1500;
 
 class DeviceCheck {
   const DeviceCheck(this.issues, this.specs);
