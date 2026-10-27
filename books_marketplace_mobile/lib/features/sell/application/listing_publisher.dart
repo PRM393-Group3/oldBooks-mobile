@@ -16,6 +16,16 @@ class PhotoSlot {
   bool get isUploaded => blobName != null;
 }
 
+/// Một tập trong form bộ sách: số tập, tên (tùy chọn) và các ảnh riêng của tập.
+class VolumeSlot {
+  VolumeSlot({required this.volumeNo, this.title = '', List<PhotoSlot>? photos})
+    : photos = photos ?? [];
+
+  int volumeNo;
+  String title;
+  final List<PhotoSlot> photos;
+}
+
 /// Tiến trình đăng bán, để hiển thị và để chạy lại từ bước dở khi lỗi.
 enum PublishStage { creating, uploading, submitting }
 
@@ -45,6 +55,7 @@ class ListingPublisher {
     required ListingDraftInput input,
     required List<PhotoSlot> photos,
     required bool submit,
+    List<VolumeSlot>? volumes,
     bool photosChanged = true,
     void Function(PublishStage stage, int done, int total)? onStage,
   }) async {
@@ -65,6 +76,9 @@ class ListingPublisher {
       final pending = [
         for (final p in photos)
           if (!p.isUploaded) p,
+        for (final v in volumes ?? const <VolumeSlot>[])
+          for (final p in v.photos)
+            if (!p.isUploaded) p,
       ];
       var done = 0;
       onStage?.call(PublishStage.uploading, done, pending.length);
@@ -74,7 +88,16 @@ class ListingPublisher {
         slot.blobName = names.single;
         onStage?.call(PublishStage.uploading, ++done, pending.length);
       }
-      await _repo.setPhotos(id, [for (final p in photos) p.blobName!]);
+      await _repo.setPhotos(
+        id,
+        [for (final p in photos) p.blobName!],
+        volumePhotos: volumes == null
+            ? null
+            : {
+                for (final v in volumes)
+                  v.volumeNo: [for (final p in v.photos) p.blobName!],
+              },
+      );
       progress.photosSaved = true;
     }
 

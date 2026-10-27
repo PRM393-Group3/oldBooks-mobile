@@ -18,6 +18,7 @@ import '../../domain/listing.dart';
 import '../../domain/listing_enums.dart';
 import '../widgets/book_tile.dart';
 import '../widgets/listing_format.dart';
+import '../widgets/volume_list.dart';
 
 /// Chi tiết sách cho người mua: ảnh, giá, người bán, thông số, nút giỏ/mua.
 ///
@@ -197,6 +198,26 @@ class _Detail extends ConsumerWidget {
                     ),
                   ),
                 ),
+              if (listing.isSet) ...[
+                const SizedBox(height: AppSpacing.xs),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: SetBadge(volumeCount: listing.volumeCount),
+                ),
+                VolumeList(
+                  volumes: [
+                    for (final v in listing.volumes)
+                      VolumeView(
+                        volumeNo: v.volumeNo,
+                        title: v.title,
+                        thumbnailUrls: [
+                          for (final p in v.photos) p.thumbnailUrl ?? p.url,
+                        ],
+                        urls: [for (final p in v.photos) p.url],
+                      ),
+                  ],
+                ),
+              ],
               if (price != null)
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpacing.sm),

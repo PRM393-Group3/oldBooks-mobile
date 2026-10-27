@@ -4346,6 +4346,108 @@ abstract class AppLocalizations {
   /// **'Cần ít nhất 4 ảnh (hiện có {n})'**
   String sellErrPhotos(int n);
 
+  /// No description provided for @sellKind.
+  ///
+  /// In vi, this message translates to:
+  /// **'Loại tin'**
+  String get sellKind;
+
+  /// No description provided for @sellKindSingle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sách lẻ'**
+  String get sellKindSingle;
+
+  /// No description provided for @sellKindSet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ sách'**
+  String get sellKindSet;
+
+  /// No description provided for @sellSetHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bán cả bộ một giá. Thêm từng tập kèm ảnh riêng của tập.'**
+  String get sellSetHint;
+
+  /// No description provided for @sellSetPhotos.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh chung của cả bộ'**
+  String get sellSetPhotos;
+
+  /// No description provided for @sellAddVolume.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm tập'**
+  String get sellAddVolume;
+
+  /// No description provided for @sellVolumeNameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên tập (tùy chọn)'**
+  String get sellVolumeNameHint;
+
+  /// No description provided for @sellVolumeRemove.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa tập'**
+  String get sellVolumeRemove;
+
+  /// No description provided for @sellErrSetPhotos.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần ít nhất 1 ảnh chung của cả bộ'**
+  String get sellErrSetPhotos;
+
+  /// No description provided for @sellErrVolumePhotos.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi tập cần ít nhất 1 ảnh'**
+  String get sellErrVolumePhotos;
+
+  /// No description provided for @sellSetPhotoCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n}/10 · tối thiểu 1'**
+  String sellSetPhotoCount(int n);
+
+  /// No description provided for @sellVolumesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Các tập ({n})'**
+  String sellVolumesTitle(int n);
+
+  /// No description provided for @sellVolumeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tập {no}'**
+  String sellVolumeLabel(int no);
+
+  /// No description provided for @sellVolumePhotoCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n}/{max} ảnh'**
+  String sellVolumePhotoCount(int n, int max);
+
+  /// No description provided for @sellErrVolumes.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ sách cần từ {min} đến {max} tập'**
+  String sellErrVolumes(int min, int max);
+
+  /// No description provided for @setBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ {n} tập'**
+  String setBadge(int n);
+
+  /// No description provided for @detailVolumes.
+  ///
+  /// In vi, this message translates to:
+  /// **'Các tập trong bộ ({n})'**
+  String detailVolumes(int n);
+
   /// No description provided for @sellErrTitle.
   ///
   /// In vi, this message translates to:
@@ -8365,6 +8467,312 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Bắt đầu'**
   String get sellReviewStartAt;
+
+  /// No description provided for @updateMenu.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiểm tra cập nhật'**
+  String get updateMenu;
+
+  /// No description provided for @updateTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cập nhật ứng dụng'**
+  String get updateTitle;
+
+  /// No description provided for @updateChecking.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang kiểm tra bản mới...'**
+  String get updateChecking;
+
+  /// No description provided for @updateUpToDate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang dùng bản mới nhất ({v}).'**
+  String updateUpToDate(String v);
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có bản mới {v} (đang dùng {current}).'**
+  String updateAvailable(String v, String current);
+
+  /// No description provided for @updateSize.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dung lượng khoảng {mb} MB'**
+  String updateSize(String mb);
+
+  /// No description provided for @updateInstall.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tải và cài đặt'**
+  String get updateInstall;
+
+  /// No description provided for @updateDownloading.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tải {p}%'**
+  String updateDownloading(int p);
+
+  /// No description provided for @updateErrNetwork.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không kết nối được tới GitHub. Kiểm tra mạng rồi thử lại.'**
+  String get updateErrNetwork;
+
+  /// No description provided for @updateErrChecksum.
+  ///
+  /// In vi, this message translates to:
+  /// **'File tải về không toàn vẹn, đã hủy. Hãy thử lại.'**
+  String get updateErrChecksum;
+
+  /// No description provided for @updateErrInstall.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không mở được trình cài đặt. Hãy cho phép cài ứng dụng từ nguồn này trong Cài đặt rồi thử lại.'**
+  String get updateErrInstall;
+
+  /// No description provided for @updateAndroidOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cập nhật tự động chỉ hỗ trợ Android.'**
+  String get updateAndroidOnly;
+
+  /// No description provided for @aiAssistButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phân tích ảnh bằng AI'**
+  String get aiAssistButton;
+
+  /// No description provided for @aiSheetTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI đánh giá sách'**
+  String get aiSheetTitle;
+
+  /// No description provided for @aiSheetIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'AI chạy ngay trên máy bạn, ảnh không rời khỏi điện thoại. Kết quả chỉ là gợi ý, bạn có thể sửa lại.'**
+  String get aiSheetIntro;
+
+  /// No description provided for @aiDownloadNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lần đầu cần tải mô hình AI khoảng 2,6 GB. Nên dùng Wi-Fi.'**
+  String get aiDownloadNote;
+
+  /// No description provided for @aiDownloadButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tải và phân tích'**
+  String get aiDownloadButton;
+
+  /// No description provided for @aiDownloading.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tải mô hình… {percent}%'**
+  String aiDownloading(int percent);
+
+  /// No description provided for @aiAnalyzing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang phân tích ảnh, có thể mất vài chục giây…'**
+  String get aiAnalyzing;
+
+  /// No description provided for @aiResultCondition.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tình trạng gợi ý'**
+  String get aiResultCondition;
+
+  /// No description provided for @aiResultDescription.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô tả gợi ý'**
+  String get aiResultDescription;
+
+  /// No description provided for @aiApply.
+  ///
+  /// In vi, this message translates to:
+  /// **'Áp dụng vào form'**
+  String get aiApply;
+
+  /// No description provided for @aiRetry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get aiRetry;
+
+  /// No description provided for @aiNeedPhoto.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy thêm ít nhất một ảnh mới chụp trước khi dùng AI.'**
+  String get aiNeedPhoto;
+
+  /// No description provided for @aiErrUnsupported.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiết bị này không hỗ trợ tính năng AI.'**
+  String get aiErrUnsupported;
+
+  /// No description provided for @aiErrDownload.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tải được mô hình AI. Kiểm tra mạng và dung lượng trống rồi thử lại.'**
+  String get aiErrDownload;
+
+  /// No description provided for @aiErrModel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không chạy được mô hình AI trên máy này (có thể thiếu RAM).'**
+  String get aiErrModel;
+
+  /// No description provided for @aiErrUnreadable.
+  ///
+  /// In vi, this message translates to:
+  /// **'AI không đưa ra được kết quả rõ ràng. Hãy thử ảnh khác.'**
+  String get aiErrUnreadable;
+
+  /// No description provided for @aiIncompatibleIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiết bị này chưa phù hợp để chạy AI trên máy:'**
+  String get aiIncompatibleIntro;
+
+  /// No description provided for @aiIncompatibleManual.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn hãy tự chọn tình trạng và nhập mô tả sách bên dưới.'**
+  String get aiIncompatibleManual;
+
+  /// No description provided for @aiIssueNotAndroid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tính năng AI chỉ hỗ trợ Android.'**
+  String get aiIssueNotAndroid;
+
+  /// No description provided for @aiIssueAndroidOld.
+  ///
+  /// In vi, this message translates to:
+  /// **'Android {sdk} quá cũ, cần Android 11 (API {min}) trở lên.'**
+  String aiIssueAndroidOld(int sdk, int min);
+
+  /// No description provided for @aiIssueNoArm64.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chip của máy không phải arm64 (64-bit).'**
+  String get aiIssueNoArm64;
+
+  /// No description provided for @aiIssueLowRam.
+  ///
+  /// In vi, this message translates to:
+  /// **'RAM {total} GB, cần tối thiểu {min} GB.'**
+  String aiIssueLowRam(String total, String min);
+
+  /// No description provided for @aiIssueLowFreeRam.
+  ///
+  /// In vi, this message translates to:
+  /// **'RAM trống còn {free} MB, hãy đóng bớt ứng dụng khác rồi thử lại.'**
+  String aiIssueLowFreeRam(int free);
+
+  /// No description provided for @photoSourceTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm ảnh sách'**
+  String get photoSourceTitle;
+
+  /// No description provided for @photoSourceCamera.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp ảnh'**
+  String get photoSourceCamera;
+
+  /// No description provided for @photoSourceCameraHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở máy ảnh để chụp trực tiếp'**
+  String get photoSourceCameraHint;
+
+  /// No description provided for @photoSourceGallery.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn từ thư viện'**
+  String get photoSourceGallery;
+
+  /// No description provided for @photoSourceGalleryHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn nhiều ảnh cùng lúc'**
+  String get photoSourceGalleryHint;
+
+  /// No description provided for @photoSourceGalleryHintSingle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn một ảnh có sẵn'**
+  String get photoSourceGalleryHintSingle;
+
+  /// No description provided for @photosSkipped.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã bỏ qua {n} ảnh (sai định dạng, quá nặng hoặc vượt giới hạn).'**
+  String photosSkipped(int n);
+
+  /// No description provided for @photosAdded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thêm {n} ảnh.'**
+  String photosAdded(int n);
+
+  /// No description provided for @aiErrEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'AI không trả về nội dung nào. Hãy thử lại hoặc dùng ảnh khác; nếu vẫn lỗi, hãy tự nhập tình trạng và mô tả.'**
+  String get aiErrEmpty;
+
+  /// No description provided for @aiReading.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang đọc ảnh…'**
+  String get aiReading;
+
+  /// No description provided for @aiWriting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang ghi kết quả…'**
+  String get aiWriting;
+
+  /// No description provided for @aiFieldTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiêu đề'**
+  String get aiFieldTitle;
+
+  /// No description provided for @aiFieldAuthor.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tác giả'**
+  String get aiFieldAuthor;
+
+  /// No description provided for @aiFieldPublisher.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhà xuất bản'**
+  String get aiFieldPublisher;
+
+  /// No description provided for @aiFieldYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Năm xuất bản'**
+  String get aiFieldYear;
+
+  /// No description provided for @aiFieldDefects.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi chú lỗi'**
+  String get aiFieldDefects;
 }
 
 class _AppLocalizationsDelegate

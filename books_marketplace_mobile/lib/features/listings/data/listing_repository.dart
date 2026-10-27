@@ -74,15 +74,27 @@ class ListingRepository {
 
   /// Đặt lại TOÀN BỘ danh sách ảnh theo thứ tự (ảnh đầu là ảnh bìa). Muốn giữ
   /// ảnh đã có thì gửi lại đúng `blobName` của chúng; bỏ ảnh nào là xóa ảnh đó.
-  Future<List<ListingPhoto>> setPhotos(String id, List<String> blobNames) =>
-      _api.put(
-        '/listings/$id/photos',
-        body: {'blobNames': blobNames},
-        parse: (data) => [
-          for (final j in data as List)
-            ListingPhoto.fromJson(j as Map<dynamic, dynamic>),
+  ///
+  /// [volumePhotos] (bộ sách): số tập -> tên blob các ảnh của tập đó.
+  Future<List<ListingPhoto>> setPhotos(
+    String id,
+    List<String> blobNames, {
+    Map<int, List<String>>? volumePhotos,
+  }) => _api.put(
+    '/listings/$id/photos',
+    body: {
+      'blobNames': blobNames,
+      if (volumePhotos != null)
+        'volumePhotos': [
+          for (final e in volumePhotos.entries)
+            {'volumeNo': e.key, 'blobNames': e.value},
         ],
-      );
+    },
+    parse: (data) => [
+      for (final j in data as List)
+        ListingPhoto.fromJson(j as Map<dynamic, dynamic>),
+    ],
+  );
 
   Future<Listing> submit(String id) =>
       _api.post('/listings/$id/submit', parse: Listing.fromJson);

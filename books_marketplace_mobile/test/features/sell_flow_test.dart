@@ -6,6 +6,7 @@ import 'package:books_marketplace_mobile/core/util/image_picking.dart';
 import 'package:books_marketplace_mobile/core/util/photo_picker.dart';
 import 'package:books_marketplace_mobile/features/auth/domain/user_role.dart';
 import 'package:books_marketplace_mobile/features/sell/domain/sell_rules.dart';
+import 'package:books_marketplace_mobile/features/listings/domain/listing_enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -21,7 +22,8 @@ Future<Harness> _openSell(WidgetTester tester) async {
     tester,
     overrides: [
       photoPickerProvider.overrideWithValue(
-        () async => PickedImage(_png, 'png', 'image/png'),
+        (source, limit) async =>
+            PickedBatch([PickedImage(_png, 'png', 'image/png')]),
       ),
     ],
   );
@@ -87,6 +89,25 @@ void main() {
       expect(validateSell(ok.copyWith(publishYear: '2018')), isEmpty);
     });
 
+    test('validateSell: bán bộ sách kiểm tra số tập và ảnh từng tập', () {
+      const ok = SellForm(
+        kind: ListingKind.set,
+        photos: 1,
+        volumeCount: 3,
+        title: 'A',
+        author: 'B',
+        price: 1000,
+        description: 'd',
+        categoryId: 'c0',
+      );
+      expect(validateSell(ok), isEmpty);
+      expect(validateSell(ok.copyWith(volumeCount: 1)), [SellError.volumes]);
+      expect(validateSell(ok.copyWith(volumeCount: 31)), [SellError.volumes]);
+      expect(validateSell(ok.copyWith(volumesWithoutPhotos: 1)), [
+        SellError.volumePhotos,
+      ]);
+    });
+
     test(
       'validateSell: đấu giá kiểm tra giá khởi điểm, bước nhảy, mua ngay',
       () {
@@ -150,6 +171,8 @@ void main() {
       await _next(tester); // Hình thức (giá cố định) → Sách
       for (var i = 0; i < 4; i++) {
         await tester.tap(find.text('+ thêm'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Chọn từ thư viện'));
         await tester.pumpAndSettle();
       }
       expect(find.text('4/10 · tối thiểu 4'), findsOneWidget);
@@ -218,6 +241,8 @@ void main() {
 
       for (var i = 0; i < 4; i++) {
         await tester.tap(find.text('+ thêm'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Chọn từ thư viện'));
         await tester.pumpAndSettle();
       }
       await _type(tester, 'VD: Số đỏ', 'Số đỏ');

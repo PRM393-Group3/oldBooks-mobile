@@ -2452,6 +2452,72 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get sellKind => 'Listing type';
+
+  @override
+  String get sellKindSingle => 'Single book';
+
+  @override
+  String get sellKindSet => 'Book set';
+
+  @override
+  String get sellSetHint =>
+      'The whole set is sold for one price. Add each volume with its own photos.';
+
+  @override
+  String get sellSetPhotos => 'Photos of the whole set';
+
+  @override
+  String get sellAddVolume => 'Add volume';
+
+  @override
+  String get sellVolumeNameHint => 'Volume title (optional)';
+
+  @override
+  String get sellVolumeRemove => 'Remove volume';
+
+  @override
+  String get sellErrSetPhotos => 'At least 1 photo of the whole set is needed';
+
+  @override
+  String get sellErrVolumePhotos => 'Every volume needs at least 1 photo';
+
+  @override
+  String sellSetPhotoCount(int n) {
+    return '$n/10 · at least 1';
+  }
+
+  @override
+  String sellVolumesTitle(int n) {
+    return 'Volumes ($n)';
+  }
+
+  @override
+  String sellVolumeLabel(int no) {
+    return 'Volume $no';
+  }
+
+  @override
+  String sellVolumePhotoCount(int n, int max) {
+    return '$n/$max photos';
+  }
+
+  @override
+  String sellErrVolumes(int min, int max) {
+    return 'A set needs $min to $max volumes';
+  }
+
+  @override
+  String setBadge(int n) {
+    return 'Set of $n';
+  }
+
+  @override
+  String detailVolumes(int n) {
+    return 'Volumes in this set ($n)';
+  }
+
+  @override
   String get sellErrTitle => 'Enter the title';
 
   @override
@@ -4742,4 +4808,191 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sellReviewStartAt => 'Starts';
+
+  @override
+  String get updateMenu => 'Check for updates';
+
+  @override
+  String get updateTitle => 'App update';
+
+  @override
+  String get updateChecking => 'Checking for a new version...';
+
+  @override
+  String updateUpToDate(String v) {
+    return 'You are on the latest version ($v).';
+  }
+
+  @override
+  String updateAvailable(String v, String current) {
+    return 'New version $v available (you have $current).';
+  }
+
+  @override
+  String updateSize(String mb) {
+    return 'About $mb MB';
+  }
+
+  @override
+  String get updateInstall => 'Download and install';
+
+  @override
+  String updateDownloading(int p) {
+    return 'Downloading $p%';
+  }
+
+  @override
+  String get updateErrNetwork =>
+      'Could not reach GitHub. Check your connection and try again.';
+
+  @override
+  String get updateErrChecksum =>
+      'The downloaded file failed the integrity check and was discarded. Try again.';
+
+  @override
+  String get updateErrInstall =>
+      'Could not open the installer. Allow installing apps from this source in Settings, then try again.';
+
+  @override
+  String get updateAndroidOnly =>
+      'In-app updates are only supported on Android.';
+
+  @override
+  String get aiAssistButton => 'Analyze photo with AI';
+
+  @override
+  String get aiSheetTitle => 'AI book condition assistant';
+
+  @override
+  String get aiSheetIntro =>
+      'The AI runs on your device and the photo never leaves your phone. The result is only a suggestion; you can edit it.';
+
+  @override
+  String get aiDownloadNote =>
+      'The first run downloads an AI model of about 2.6 GB. Wi-Fi is recommended.';
+
+  @override
+  String get aiDownloadButton => 'Download and analyze';
+
+  @override
+  String aiDownloading(int percent) {
+    return 'Downloading model… $percent%';
+  }
+
+  @override
+  String get aiAnalyzing =>
+      'Analyzing the photo, this can take a few dozen seconds…';
+
+  @override
+  String get aiResultCondition => 'Suggested condition';
+
+  @override
+  String get aiResultDescription => 'Suggested description';
+
+  @override
+  String get aiApply => 'Apply to form';
+
+  @override
+  String get aiRetry => 'Try again';
+
+  @override
+  String get aiNeedPhoto =>
+      'Add at least one newly taken photo before using AI.';
+
+  @override
+  String get aiErrUnsupported => 'This device does not support the AI feature.';
+
+  @override
+  String get aiErrDownload =>
+      'Could not download the AI model. Check your connection and free space, then try again.';
+
+  @override
+  String get aiErrModel =>
+      'The AI model could not run on this device (it may be low on RAM).';
+
+  @override
+  String get aiErrUnreadable =>
+      'The AI did not give a clear result. Try another photo.';
+
+  @override
+  String get aiIncompatibleIntro =>
+      'This device is not suitable for running AI locally:';
+
+  @override
+  String get aiIncompatibleManual =>
+      'Please choose the condition and write the description yourself below.';
+
+  @override
+  String get aiIssueNotAndroid => 'The AI feature only supports Android.';
+
+  @override
+  String aiIssueAndroidOld(int sdk, int min) {
+    return 'Android $sdk is too old; Android 11 (API $min) or newer is required.';
+  }
+
+  @override
+  String get aiIssueNoArm64 => 'The device chip is not arm64 (64-bit).';
+
+  @override
+  String aiIssueLowRam(String total, String min) {
+    return '$total GB of RAM; at least $min GB is required.';
+  }
+
+  @override
+  String aiIssueLowFreeRam(int free) {
+    return 'Only $free MB of free RAM; close other apps and try again.';
+  }
+
+  @override
+  String get photoSourceTitle => 'Add book photos';
+
+  @override
+  String get photoSourceCamera => 'Take a photo';
+
+  @override
+  String get photoSourceCameraHint => 'Open the camera and shoot now';
+
+  @override
+  String get photoSourceGallery => 'Choose from gallery';
+
+  @override
+  String get photoSourceGalleryHint => 'Select several photos at once';
+
+  @override
+  String get photoSourceGalleryHintSingle => 'Pick an existing photo';
+
+  @override
+  String photosSkipped(int n) {
+    return 'Skipped $n photos (wrong format, too large or over the limit).';
+  }
+
+  @override
+  String photosAdded(int n) {
+    return 'Added $n photos.';
+  }
+
+  @override
+  String get aiErrEmpty =>
+      'The AI returned no output. Try again or use another photo; if it keeps failing, enter the condition and description yourself.';
+
+  @override
+  String get aiReading => 'Reading the photo…';
+
+  @override
+  String get aiWriting => 'Writing the result…';
+
+  @override
+  String get aiFieldTitle => 'Title';
+
+  @override
+  String get aiFieldAuthor => 'Author';
+
+  @override
+  String get aiFieldPublisher => 'Publisher';
+
+  @override
+  String get aiFieldYear => 'Publication year';
+
+  @override
+  String get aiFieldDefects => 'Defect notes';
 }

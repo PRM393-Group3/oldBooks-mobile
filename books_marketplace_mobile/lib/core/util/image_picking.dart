@@ -63,3 +63,62 @@ Future<PickedImage?> pickImage(
   }
   return image;
 }
+
+/// Kết quả chọn nhiều ảnh: ảnh dùng được và số ảnh bị bỏ qua (sai định dạng
+/// hoặc quá nặng), để báo người dùng một lần thay vì chặn cả lô.
+class PickedBatch {
+  const PickedBatch(this.images, {this.skipped = 0});
+
+  final List<PickedImage> images;
+  final int skipped;
+
+  static const empty = PickedBatch([]);
+}
+
+/// Chọn tối đa [limit] ảnh một lần từ thư viện. Ảnh lỗi bị bỏ qua và đếm vào
+/// [PickedBatch.skipped]; ném [ImagePickException] chỉ khi không mở được thư viện.
+Future<PickedBatch> pickImages(
+  ImagePicker picker, {
+  required int limit,
+  required int maxBytes,
+}) async {
+  if (limit <= 0) return PickedBatch.empty;
+  // `pickMultiImage` đòi limit >= 2; còn 1 chỗ thì chọn một ảnh như thường.
+  if (limit == 1) {
+    final one = await pickImage(
+      picker,
+      ImageSource.gallery,
+      maxBytes: maxBytes,
+    );
+    return one == null ? PickedBatch.empty : PickedBatch([one]);
+  }
+  final List<XFile> files;
+  try {
+    files = await picker.pickMultiImage(
+      maxWidth: 1024,
+      maxHeight: 1024,
+      imageQuality: 85,
+      limit: limit,
+    );
+  } catch (_) {
+    throw const ImagePickException(ImagePickFailure.unavailable);
+  }
+
+  final images = <PickedImage>[];
+  var skipped = 0;
+  for (final file in files) {
+    // Một số máy bỏ qua `limit`, nên cắt lại ở đây.
+    if (images.length >= limit) {
+      skipped++;
+      continue;
+    }
+    final bytes = await file.readAsBytes();
+    final image = PickedImage.tryCreate(bytes, file.name);
+    if (image == null || bytes.length > maxBytes) {
+      skipped++;
+    } else {
+      images.add(image);
+    }
+  }
+  return PickedBatch(images, skipped: skipped);
+}

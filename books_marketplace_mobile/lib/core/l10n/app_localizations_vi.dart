@@ -2441,6 +2441,72 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get sellKind => 'Loại tin';
+
+  @override
+  String get sellKindSingle => 'Sách lẻ';
+
+  @override
+  String get sellKindSet => 'Bộ sách';
+
+  @override
+  String get sellSetHint =>
+      'Bán cả bộ một giá. Thêm từng tập kèm ảnh riêng của tập.';
+
+  @override
+  String get sellSetPhotos => 'Ảnh chung của cả bộ';
+
+  @override
+  String get sellAddVolume => 'Thêm tập';
+
+  @override
+  String get sellVolumeNameHint => 'Tên tập (tùy chọn)';
+
+  @override
+  String get sellVolumeRemove => 'Xóa tập';
+
+  @override
+  String get sellErrSetPhotos => 'Cần ít nhất 1 ảnh chung của cả bộ';
+
+  @override
+  String get sellErrVolumePhotos => 'Mỗi tập cần ít nhất 1 ảnh';
+
+  @override
+  String sellSetPhotoCount(int n) {
+    return '$n/10 · tối thiểu 1';
+  }
+
+  @override
+  String sellVolumesTitle(int n) {
+    return 'Các tập ($n)';
+  }
+
+  @override
+  String sellVolumeLabel(int no) {
+    return 'Tập $no';
+  }
+
+  @override
+  String sellVolumePhotoCount(int n, int max) {
+    return '$n/$max ảnh';
+  }
+
+  @override
+  String sellErrVolumes(int min, int max) {
+    return 'Bộ sách cần từ $min đến $max tập';
+  }
+
+  @override
+  String setBadge(int n) {
+    return 'Bộ $n tập';
+  }
+
+  @override
+  String detailVolumes(int n) {
+    return 'Các tập trong bộ ($n)';
+  }
+
+  @override
   String get sellErrTitle => 'Nhập tên sách';
 
   @override
@@ -4717,4 +4783,189 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get sellReviewStartAt => 'Bắt đầu';
+
+  @override
+  String get updateMenu => 'Kiểm tra cập nhật';
+
+  @override
+  String get updateTitle => 'Cập nhật ứng dụng';
+
+  @override
+  String get updateChecking => 'Đang kiểm tra bản mới...';
+
+  @override
+  String updateUpToDate(String v) {
+    return 'Bạn đang dùng bản mới nhất ($v).';
+  }
+
+  @override
+  String updateAvailable(String v, String current) {
+    return 'Có bản mới $v (đang dùng $current).';
+  }
+
+  @override
+  String updateSize(String mb) {
+    return 'Dung lượng khoảng $mb MB';
+  }
+
+  @override
+  String get updateInstall => 'Tải và cài đặt';
+
+  @override
+  String updateDownloading(int p) {
+    return 'Đang tải $p%';
+  }
+
+  @override
+  String get updateErrNetwork =>
+      'Không kết nối được tới GitHub. Kiểm tra mạng rồi thử lại.';
+
+  @override
+  String get updateErrChecksum =>
+      'File tải về không toàn vẹn, đã hủy. Hãy thử lại.';
+
+  @override
+  String get updateErrInstall =>
+      'Không mở được trình cài đặt. Hãy cho phép cài ứng dụng từ nguồn này trong Cài đặt rồi thử lại.';
+
+  @override
+  String get updateAndroidOnly => 'Cập nhật tự động chỉ hỗ trợ Android.';
+
+  @override
+  String get aiAssistButton => 'Phân tích ảnh bằng AI';
+
+  @override
+  String get aiSheetTitle => 'Trợ lý AI đánh giá sách';
+
+  @override
+  String get aiSheetIntro =>
+      'AI chạy ngay trên máy bạn, ảnh không rời khỏi điện thoại. Kết quả chỉ là gợi ý, bạn có thể sửa lại.';
+
+  @override
+  String get aiDownloadNote =>
+      'Lần đầu cần tải mô hình AI khoảng 2,6 GB. Nên dùng Wi-Fi.';
+
+  @override
+  String get aiDownloadButton => 'Tải và phân tích';
+
+  @override
+  String aiDownloading(int percent) {
+    return 'Đang tải mô hình… $percent%';
+  }
+
+  @override
+  String get aiAnalyzing => 'Đang phân tích ảnh, có thể mất vài chục giây…';
+
+  @override
+  String get aiResultCondition => 'Tình trạng gợi ý';
+
+  @override
+  String get aiResultDescription => 'Mô tả gợi ý';
+
+  @override
+  String get aiApply => 'Áp dụng vào form';
+
+  @override
+  String get aiRetry => 'Thử lại';
+
+  @override
+  String get aiNeedPhoto =>
+      'Hãy thêm ít nhất một ảnh mới chụp trước khi dùng AI.';
+
+  @override
+  String get aiErrUnsupported => 'Thiết bị này không hỗ trợ tính năng AI.';
+
+  @override
+  String get aiErrDownload =>
+      'Không tải được mô hình AI. Kiểm tra mạng và dung lượng trống rồi thử lại.';
+
+  @override
+  String get aiErrModel =>
+      'Không chạy được mô hình AI trên máy này (có thể thiếu RAM).';
+
+  @override
+  String get aiErrUnreadable =>
+      'AI không đưa ra được kết quả rõ ràng. Hãy thử ảnh khác.';
+
+  @override
+  String get aiIncompatibleIntro =>
+      'Thiết bị này chưa phù hợp để chạy AI trên máy:';
+
+  @override
+  String get aiIncompatibleManual =>
+      'Bạn hãy tự chọn tình trạng và nhập mô tả sách bên dưới.';
+
+  @override
+  String get aiIssueNotAndroid => 'Tính năng AI chỉ hỗ trợ Android.';
+
+  @override
+  String aiIssueAndroidOld(int sdk, int min) {
+    return 'Android $sdk quá cũ, cần Android 11 (API $min) trở lên.';
+  }
+
+  @override
+  String get aiIssueNoArm64 => 'Chip của máy không phải arm64 (64-bit).';
+
+  @override
+  String aiIssueLowRam(String total, String min) {
+    return 'RAM $total GB, cần tối thiểu $min GB.';
+  }
+
+  @override
+  String aiIssueLowFreeRam(int free) {
+    return 'RAM trống còn $free MB, hãy đóng bớt ứng dụng khác rồi thử lại.';
+  }
+
+  @override
+  String get photoSourceTitle => 'Thêm ảnh sách';
+
+  @override
+  String get photoSourceCamera => 'Chụp ảnh';
+
+  @override
+  String get photoSourceCameraHint => 'Mở máy ảnh để chụp trực tiếp';
+
+  @override
+  String get photoSourceGallery => 'Chọn từ thư viện';
+
+  @override
+  String get photoSourceGalleryHint => 'Chọn nhiều ảnh cùng lúc';
+
+  @override
+  String get photoSourceGalleryHintSingle => 'Chọn một ảnh có sẵn';
+
+  @override
+  String photosSkipped(int n) {
+    return 'Đã bỏ qua $n ảnh (sai định dạng, quá nặng hoặc vượt giới hạn).';
+  }
+
+  @override
+  String photosAdded(int n) {
+    return 'Đã thêm $n ảnh.';
+  }
+
+  @override
+  String get aiErrEmpty =>
+      'AI không trả về nội dung nào. Hãy thử lại hoặc dùng ảnh khác; nếu vẫn lỗi, hãy tự nhập tình trạng và mô tả.';
+
+  @override
+  String get aiReading => 'Đang đọc ảnh…';
+
+  @override
+  String get aiWriting => 'Đang ghi kết quả…';
+
+  @override
+  String get aiFieldTitle => 'Tiêu đề';
+
+  @override
+  String get aiFieldAuthor => 'Tác giả';
+
+  @override
+  String get aiFieldPublisher => 'Nhà xuất bản';
+
+  @override
+  String get aiFieldYear => 'Năm xuất bản';
+
+  @override
+  String get aiFieldDefects => 'Ghi chú lỗi';
 }

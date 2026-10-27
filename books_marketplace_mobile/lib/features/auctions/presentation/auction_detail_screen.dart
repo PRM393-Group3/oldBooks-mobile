@@ -29,6 +29,7 @@ import 'auction_errors.dart';
 import 'auction_sheets.dart';
 import 'auction_text.dart';
 import 'seller_panels.dart';
+import '../../listings/presentation/widgets/volume_list.dart';
 
 /// Chi tiết phiên: giá, đồng hồ theo giờ server, lịch sử trả giá cập nhật
 /// realtime và thao tác theo trạng thái (đăng ký, trả giá, mua ngay, người bán).
@@ -337,6 +338,26 @@ class _AuctionDetailScreenState extends ConsumerState<AuctionDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _Header(auction: a),
+          if (a.isSet) ...[
+            const SizedBox(height: AppSpacing.xs),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SetBadge(volumeCount: a.volumeCount),
+            ),
+            VolumeList(
+              volumes: [
+                for (final v in a.volumes)
+                  VolumeView(
+                    volumeNo: v.volumeNo,
+                    title: v.title,
+                    thumbnailUrls: [
+                      for (final p in v.photos) p.thumbnailUrl ?? p.url,
+                    ],
+                    urls: [for (final p in v.photos) p.url],
+                  ),
+              ],
+            ),
+          ],
           const SizedBox(height: AppSpacing.md),
           _PriceBoard(auction: a, onExpired: _controller.refresh),
           if (a.status.isRunning) const _RealtimeChip(),

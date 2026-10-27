@@ -20,6 +20,7 @@ import '../../notifications/application/notification_providers.dart';
 import '../../auctions/application/auction_providers.dart';
 import '../application/profile_controller.dart';
 import '../domain/profile.dart';
+import '../../app_update/presentation/update_sheet.dart';
 import 'language_sheet.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -242,6 +243,11 @@ class _ProfileBody extends ConsumerWidget {
               icon: Icons.language,
               title: l.language,
               onTap: () => showLanguageSheet(context),
+            ),
+            AppMenuTile(
+              icon: Icons.system_update_outlined,
+              title: l.updateMenu,
+              onTap: () => showUpdateSheet(context),
             ),
           ],
         ),
