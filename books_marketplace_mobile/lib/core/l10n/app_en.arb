@@ -2552,5 +2552,12 @@
   "@photosSkipped": {"placeholders": {"n": {"type": "int"}}},
   "photosAdded": "Added {n} photos.",
   "@photosAdded": {"placeholders": {"n": {"type": "int"}}},
-  "aiErrEmpty": "The AI returned no output. Try again or use another photo; if it keeps failing, enter the condition and description yourself."
+  "aiErrEmpty": "The AI returned no output. Try again or use another photo; if it keeps failing, enter the condition and description yourself.",
+  "aiReading": "Reading the photo…",
+  "aiWriting": "Writing the result…",
+  "aiFieldTitle": "Title",
+  "aiFieldAuthor": "Author",
+  "aiFieldPublisher": "Publisher",
+  "aiFieldYear": "Publication year",
+  "aiFieldDefects": "Defect notes"
 }

@@ -4947,4 +4947,25 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get aiErrEmpty =>
       'AI không trả về nội dung nào. Hãy thử lại hoặc dùng ảnh khác; nếu vẫn lỗi, hãy tự nhập tình trạng và mô tả.';
+
+  @override
+  String get aiReading => 'Đang đọc ảnh…';
+
+  @override
+  String get aiWriting => 'Đang ghi kết quả…';
+
+  @override
+  String get aiFieldTitle => 'Tiêu đề';
+
+  @override
+  String get aiFieldAuthor => 'Tác giả';
+
+  @override
+  String get aiFieldPublisher => 'Nhà xuất bản';
+
+  @override
+  String get aiFieldYear => 'Năm xuất bản';
+
+  @override
+  String get aiFieldDefects => 'Ghi chú lỗi';
 }

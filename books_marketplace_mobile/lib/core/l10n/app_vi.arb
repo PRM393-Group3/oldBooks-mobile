@@ -2585,5 +2585,12 @@
   "@photosSkipped": {"placeholders": {"n": {"type": "int"}}},
   "photosAdded": "Đã thêm {n} ảnh.",
   "@photosAdded": {"placeholders": {"n": {"type": "int"}}},
-  "aiErrEmpty": "AI không trả về nội dung nào. Hãy thử lại hoặc dùng ảnh khác; nếu vẫn lỗi, hãy tự nhập tình trạng và mô tả."
+  "aiErrEmpty": "AI không trả về nội dung nào. Hãy thử lại hoặc dùng ảnh khác; nếu vẫn lỗi, hãy tự nhập tình trạng và mô tả.",
+  "aiReading": "Đang đọc ảnh…",
+  "aiWriting": "Đang ghi kết quả…",
+  "aiFieldTitle": "Tiêu đề",
+  "aiFieldAuthor": "Tác giả",
+  "aiFieldPublisher": "Nhà xuất bản",
+  "aiFieldYear": "Năm xuất bản",
+  "aiFieldDefects": "Ghi chú lỗi"
 }

@@ -34,6 +34,59 @@ void main() {
     expect(parseBookAnalysis('   '), isNull);
   });
 
+  group('đủ thông tin sách', () {
+    const full =
+        'TITLE: Dế Mèn phiêu lưu ký\nAUTHOR: Tô Hoài\nPUBLISHER: Kim Đồng\n'
+        'YEAR: 2019\nCONDITION: GOOD\nDEFECTS: Góc bìa hơi cong\n'
+        'DESCRIPTION: Bìa còn đẹp, gáy chắc.';
+
+    test('đọc đủ các trường', () {
+      final r = parseBookAnalysis(full)!;
+      expect(r.title, 'Dế Mèn phiêu lưu ký');
+      expect(r.author, 'Tô Hoài');
+      expect(r.publisher, 'Kim Đồng');
+      expect(r.year, 2019);
+      expect(r.condition, SellCondition.good);
+      expect(r.defects, 'Góc bìa hơi cong');
+      expect(r.description, 'Bìa còn đẹp, gáy chắc.');
+    });
+
+    test('UNKNOWN và NONE thành null', () {
+      final r = parseBookAnalysis(
+        'TITLE: UNKNOWN\nAUTHOR: unknown\nPUBLISHER: N/A\nYEAR: UNKNOWN\n'
+        'CONDITION: NEW\nDEFECTS: NONE\nDESCRIPTION: Sách như mới, sạch sẽ.',
+      )!;
+      expect(r.title, isNull);
+      expect(r.author, isNull);
+      expect(r.publisher, isNull);
+      expect(r.year, isNull);
+      expect(r.defects, isNull);
+    });
+
+    test('năm vô lý bị bỏ', () {
+      expect(parseBookAnalysis('YEAR: 3050\nCONDITION: GOOD')!.year, isNull);
+    });
+
+    test('tên sách chứa "New" không bị nhận là tình trạng khi thiếu mã', () {
+      final r = parseBookAnalysis('TITLE: The New Earth\nSách tốt, bìa sạch.')!;
+      expect(r.condition, SellCondition.good);
+      expect(r.title, 'The New Earth');
+    });
+
+    test('xem trước chỉ hiện dòng đã viết xong', () {
+      final p = previewBookAnalysis('TITLE: Dế Mèn\nAUTHOR: Tô Ho');
+      expect(p.title, 'Dế Mèn');
+      expect(p.author, isNull);
+      expect(previewBookAnalysis('TITLE: ').isEmpty, isTrue);
+    });
+
+    test('xem trước hiện dần mô tả khi đang sinh', () {
+      final p = previewBookAnalysis('CONDITION: FAIR\nDESCRIPTION: Bìa cô');
+      expect(p.condition, SellCondition.fair);
+      expect(p.description, 'Bìa cô');
+    });
+  });
+
   vietnameseTests();
 }
 
