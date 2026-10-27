@@ -6,13 +6,13 @@ import 'package:flutter_edge_ai_litertlm/flutter_edge_ai_litertlm.dart';
 
 import 'book_analysis.dart';
 
-/// Model nhìn-ngôn ngữ nhỏ (~360MB, Apache-2.0, không cần token) chạy trên máy.
-const _modelRepo = 'litert-community/SmolVLM2-500M';
-const _modelFile = 'SmolVLM2-500M.litertlm';
+/// Gemma 4 E2B (~2,6GB, Apache-2.0, không cần token) chạy trên máy, nhận ảnh.
+const _modelRepo = 'litert-community/gemma-4-E2B-it-litert-lm';
+const _modelFile = 'gemma-4-E2B-it.litertlm';
 const _modelUrl = 'https://huggingface.co/$_modelRepo/resolve/main/$_modelFile';
 
 /// Model nhỏ có thể lặp từ; giới hạn thời gian để UI không chờ vô hạn.
-const _analyzeTimeout = Duration(seconds: 120);
+const _analyzeTimeout = Duration(seconds: 180);
 
 enum BookAiFailure { unsupported, download, model, empty, unreadable }
 
@@ -57,7 +57,7 @@ class BookAiService {
     }
   }
 
-  /// Phân tích một ảnh. Giải phóng model ngay sau đó để trả RAM (máy 4GB).
+  /// Phân tích một ảnh. Giải phóng model ngay sau đó để trả RAM.
   Future<BookAnalysis> analyze(Uint8List image) async {
     if (!await isModelReady()) {
       await downloadModel((_) {});

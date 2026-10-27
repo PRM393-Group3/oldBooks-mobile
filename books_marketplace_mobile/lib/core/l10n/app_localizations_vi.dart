@@ -4843,7 +4843,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get aiDownloadNote =>
-      'Lần đầu cần tải mô hình AI khoảng 360 MB. Nên dùng Wi-Fi.';
+      'Lần đầu cần tải mô hình AI khoảng 2,6 GB. Nên dùng Wi-Fi.';
 
   @override
   String get aiDownloadButton => 'Tải và phân tích';

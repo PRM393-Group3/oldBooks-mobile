@@ -5,8 +5,8 @@ DeviceSpecs specs({
   bool isAndroid = true,
   int sdk = 34,
   List<String> abis = const ['arm64-v8a', 'armeabi-v7a'],
-  int total = 3800,
-  int free = 1500,
+  int total = 5800,
+  int free = 2500,
   bool lowRam = false,
 }) => DeviceSpecs(
   isAndroid: isAndroid,
@@ -18,7 +18,7 @@ DeviceSpecs specs({
 );
 
 void main() {
-  test('máy 4GB Android 14 arm64 tương thích', () {
+  test('máy 6GB Android 14 arm64 tương thích', () {
     expect(evaluateDevice(specs()).compatible, isTrue);
   });
 
@@ -32,14 +32,14 @@ void main() {
     ]);
   });
 
-  test('RAM 3GB hoặc cờ low-ram bị loại', () {
-    expect(evaluateDevice(specs(total: 3000)).issues, [DeviceIssue.lowRam]);
+  test('RAM 4GB hoặc cờ low-ram bị loại', () {
+    expect(evaluateDevice(specs(total: 4000)).issues, [DeviceIssue.lowRam]);
     expect(evaluateDevice(specs(lowRam: true)).issues, [DeviceIssue.lowRam]);
   });
 
   test('RAM trống thấp chỉ báo lowFreeRam khi tổng RAM đủ', () {
-    expect(evaluateDevice(specs(free: 300)).issues, [DeviceIssue.lowFreeRam]);
-    expect(evaluateDevice(specs(total: 3000, free: 300)).issues, [
+    expect(evaluateDevice(specs(free: 800)).issues, [DeviceIssue.lowFreeRam]);
+    expect(evaluateDevice(specs(total: 4000, free: 300)).issues, [
       DeviceIssue.lowRam,
     ]);
   });

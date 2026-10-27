@@ -2551,7 +2551,7 @@
   "aiAssistButton": "Phân tích ảnh bằng AI",
   "aiSheetTitle": "Trợ lý AI đánh giá sách",
   "aiSheetIntro": "AI chạy ngay trên máy bạn, ảnh không rời khỏi điện thoại. Kết quả chỉ là gợi ý, bạn có thể sửa lại.",
-  "aiDownloadNote": "Lần đầu cần tải mô hình AI khoảng 360 MB. Nên dùng Wi-Fi.",
+  "aiDownloadNote": "Lần đầu cần tải mô hình AI khoảng 2,6 GB. Nên dùng Wi-Fi.",
   "aiDownloadButton": "Tải và phân tích",
   "aiDownloading": "Đang tải mô hình… {percent}%",
   "@aiDownloading": {"placeholders": {"percent": {"type": "int"}}},

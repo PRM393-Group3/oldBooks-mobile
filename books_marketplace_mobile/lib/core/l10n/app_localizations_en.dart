@@ -4869,7 +4869,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiDownloadNote =>
-      'The first run downloads an AI model of about 360 MB. Wi-Fi is recommended.';
+      'The first run downloads an AI model of about 2.6 GB. Wi-Fi is recommended.';
 
   @override
   String get aiDownloadButton => 'Download and analyze';
