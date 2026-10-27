@@ -12,12 +12,15 @@ import '../../../core/widgets/app_page.dart';
 import '../../../core/widgets/app_section.dart';
 import '../../../core/widgets/app_state_views.dart';
 import '../../../core/widgets/app_tag.dart';
+import '../../../core/widgets/verified_badge.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../sell/application/my_listings_provider.dart';
 import '../../orders/application/order_providers.dart';
 import '../application/address_providers.dart';
+import '../../kyc/presentation/kyc_profile_tile.dart';
 import '../../notifications/application/notification_providers.dart';
 import '../../auctions/application/auction_providers.dart';
+import '../../kyc/application/kyc_providers.dart';
 import '../application/profile_controller.dart';
 import '../domain/profile.dart';
 import '../../app_update/presentation/update_sheet.dart';
@@ -46,7 +49,10 @@ class ProfileScreen extends ConsumerWidget {
       ),
       data: (profile) => AppPage(
         title: l.profileTitle,
-        onRefresh: controller.reload,
+        onRefresh: () async {
+          ref.invalidate(kycStateProvider);
+          await controller.reload();
+        },
         child: _ProfileBody(profile: profile),
       ),
     );
@@ -92,10 +98,13 @@ class _ProfileBody extends ConsumerWidget {
                 onTap: () => context.push('/me/avatar'),
               ),
               const SizedBox(height: AppSpacing.md),
-              Text(
+              NameWithBadge(
                 profile.fullName,
+                verified: profile.isVerified,
                 style: context.text.titleLarge,
                 textAlign: TextAlign.center,
+                badgeSize: 22,
+                mainAxisAlignment: MainAxisAlignment.center,
               ),
               const SizedBox(height: AppSpacing.xxs),
               Text(
@@ -162,6 +171,8 @@ class _ProfileBody extends ConsumerWidget {
             ),
           ],
         ),
+        const SizedBox(height: AppSpacing.md),
+        const KycProfileTile(),
         const SizedBox(height: AppSpacing.md),
         AppSection(
           children: [

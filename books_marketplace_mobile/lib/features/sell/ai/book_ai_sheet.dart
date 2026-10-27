@@ -25,6 +25,19 @@ Future<BookAnalysis?> showBookAiSheet(BuildContext context, Uint8List photo) {
   );
 }
 
+/// Lý do máy không chạy được AI trên máy, bằng chữ cho người dùng.
+String deviceIssueText(AppLocalizations l, DeviceIssue issue, DeviceSpecs s) =>
+    switch (issue) {
+      DeviceIssue.notAndroid => l.aiIssueNotAndroid,
+      DeviceIssue.androidTooOld => l.aiIssueAndroidOld(s.sdkInt, minAiSdk),
+      DeviceIssue.noArm64 => l.aiIssueNoArm64,
+      DeviceIssue.lowRam => l.aiIssueLowRam(
+        (s.totalRamMb / 1024).toStringAsFixed(1),
+        (minAiTotalRamMb / 1024).toStringAsFixed(1),
+      ),
+      DeviceIssue.lowFreeRam => l.aiIssueLowFreeRam(s.freeRamMb),
+    };
+
 enum _Phase {
   checking,
   incompatible,
@@ -125,18 +138,6 @@ class _BookAiSheetState extends ConsumerState<_BookAiSheet> {
     }
   }
 
-  String _issueText(AppLocalizations l, DeviceIssue issue, DeviceSpecs s) =>
-      switch (issue) {
-        DeviceIssue.notAndroid => l.aiIssueNotAndroid,
-        DeviceIssue.androidTooOld => l.aiIssueAndroidOld(s.sdkInt, minAiSdk),
-        DeviceIssue.noArm64 => l.aiIssueNoArm64,
-        DeviceIssue.lowRam => l.aiIssueLowRam(
-          (s.totalRamMb / 1024).toStringAsFixed(1),
-          (minAiTotalRamMb / 1024).toStringAsFixed(1),
-        ),
-        DeviceIssue.lowFreeRam => l.aiIssueLowFreeRam(s.freeRamMb),
-      };
-
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -149,7 +150,7 @@ class _BookAiSheetState extends ConsumerState<_BookAiSheet> {
     final body = switch (_phase) {
       _Phase.checking => [const Center(child: CircularProgressIndicator())],
       _Phase.analyzing => [
-        const Center(child: _PulsingIcon()),
+        const Center(child: PulsingAiIcon()),
         gap,
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
@@ -178,7 +179,7 @@ class _BookAiSheetState extends ConsumerState<_BookAiSheet> {
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.xxs),
             child: Text(
-              '• ${_issueText(l, issue, _device!.specs)}',
+              '• ${deviceIssueText(l, issue, _device!.specs)}',
               style: TextStyle(color: context.colors.error),
             ),
           ),
@@ -271,14 +272,14 @@ class _BookAiSheetState extends ConsumerState<_BookAiSheet> {
 }
 
 /// Biểu tượng nhấp nháy để người dùng thấy máy đang làm việc khi chờ token đầu.
-class _PulsingIcon extends StatefulWidget {
-  const _PulsingIcon();
+class PulsingAiIcon extends StatefulWidget {
+  const PulsingAiIcon({super.key});
 
   @override
-  State<_PulsingIcon> createState() => _PulsingIconState();
+  State<PulsingAiIcon> createState() => _PulsingAiIconState();
 }
 
-class _PulsingIconState extends State<_PulsingIcon>
+class _PulsingAiIconState extends State<PulsingAiIcon>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,

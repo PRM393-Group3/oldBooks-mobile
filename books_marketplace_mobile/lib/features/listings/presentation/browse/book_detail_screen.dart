@@ -11,6 +11,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_image_viewer.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/app_state_views.dart';
+import '../../../../core/widgets/verified_badge.dart';
 import '../../../cart/application/cart_providers.dart';
 import '../../../sell/application/sell_rules_provider.dart';
 import '../../application/listing_providers.dart';
@@ -437,7 +438,12 @@ class _SellerCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name, style: context.text.labelLarge),
+                  NameWithBadge(
+                    name,
+                    verified: seller.isVerified,
+                    style: context.text.labelLarge,
+                    badgeSize: 16,
+                  ),
                   if (stats.isNotEmpty)
                     Text(
                       stats,

@@ -69,6 +69,8 @@ NotificationTarget? notificationTarget(AppNotification n) {
     return dest == null ? null : NotificationTarget([dest]);
   }
 
+  if (type.isKyc) return const NotificationTarget(['/me/kyc']);
+
   if (type.isWallet) {
     return const NotificationTarget(['/wallet'], switchTab: true);
   }

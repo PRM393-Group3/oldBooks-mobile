@@ -120,6 +120,7 @@ class _NotificationTile extends StatelessWidget {
 
     final (IconData icon, Color bg, Color fg) = switch (n.type) {
       NotificationType.accountLocked ||
+      NotificationType.kycRejected ||
       NotificationType.withdrawalRejected ||
       NotificationType.withdrawalFailed ||
       NotificationType.listingRejected ||
@@ -127,6 +128,7 @@ class _NotificationTile extends StatelessWidget {
       NotificationType.listingUnpublished => (
         switch (n.type) {
           NotificationType.accountLocked => Icons.lock_outline,
+          NotificationType.kycRejected => Icons.gpp_bad_outlined,
           NotificationType.listingChangesRequested => Icons.edit_note,
           NotificationType.listingRejected ||
           NotificationType.listingUnpublished => Icons.block,
@@ -136,12 +138,14 @@ class _NotificationTile extends StatelessWidget {
         colors.onErrorContainer,
       ),
       NotificationType.accountUnlocked ||
+      NotificationType.kycApproved ||
       NotificationType.listingApproved ||
       NotificationType.topupSucceeded ||
       NotificationType.withdrawalApproved ||
       NotificationType.withdrawalPaid => (
         switch (n.type) {
           NotificationType.accountUnlocked => Icons.lock_open,
+          NotificationType.kycApproved => Icons.verified_outlined,
           NotificationType.listingApproved => Icons.check_circle_outline,
           _ => Icons.account_balance_wallet_outlined,
         },

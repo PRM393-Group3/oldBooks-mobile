@@ -20,6 +20,8 @@ import '../features/auth/presentation/register_screen.dart';
 import '../features/complaints/presentation/complaint_detail_screen.dart';
 import '../features/complaints/presentation/complaints_screen.dart';
 import '../features/complaints/presentation/open_complaint_screen.dart';
+import '../features/kyc/presentation/kyc_flow_screen.dart';
+import '../features/kyc/presentation/kyc_status_screen.dart';
 import '../features/listings/presentation/browse/book_detail_screen.dart';
 import '../features/listings/presentation/browse/browse_screen.dart';
 import '../features/notifications/presentation/notification_settings_screen.dart';
@@ -201,6 +203,18 @@ final routerProvider = Provider<GoRouter>((ref) {
                         builder: (_, state) => EditListingScreen(
                           listingId: state.pathParameters['id']!,
                         ),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'kyc',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const KycStatusScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'verify',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, _) => const KycFlowScreen(),
                       ),
                     ],
                   ),

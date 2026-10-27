@@ -79,6 +79,6 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Ứng dụng cần truy cập thư viện ảnh để bạn chọn ảnh đại diện. / Photo access is needed to choose your profile photo.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Ứng dụng cần dùng máy ảnh để bạn chụp ảnh đại diện. / Camera access is needed to take your profile photo.</string>
+	<string>Ứng dụng cần dùng máy ảnh để bạn chụp ảnh đại diện và xác minh tài khoản. / Camera access is needed to take your profile photo and verify your account.</string>
 </dict>
 </plist>

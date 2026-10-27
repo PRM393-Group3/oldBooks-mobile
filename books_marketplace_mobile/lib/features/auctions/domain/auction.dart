@@ -455,6 +455,7 @@ class Auction {
     this.registeredCount = 0,
     this.photos = const [],
     this.sellerName = '',
+    this.sellerVerified = false,
     this.myRegistration,
     this.canRegister = false,
     this.buyNowAvailable = false,
@@ -491,6 +492,7 @@ class Auction {
       registeredCount: readInt(j, 'registeredCount') ?? 0,
       photos: [for (final p in readList(j, 'photos')) AuctionPhoto.fromJson(p)],
       sellerName: seller == null ? '' : readString(seller, 'fullName') ?? '',
+      sellerVerified: seller == null ? false : readBool(seller, 'isVerified') ?? false,
       myRegistration: reg == null ? null : MyRegistration.fromJson(reg),
       canRegister: readBool(j, 'canRegister') ?? false,
       buyNowAvailable: readBool(j, 'buyNowAvailable') ?? false,
@@ -531,6 +533,9 @@ class Auction {
   final int registeredCount;
   final List<AuctionPhoto> photos;
   final String sellerName;
+
+  /// Người bán đã được admin duyệt eKYC.
+  final bool sellerVerified;
   final MyRegistration? myRegistration;
   final bool canRegister;
   final bool buyNowAvailable;
@@ -603,6 +608,7 @@ class Auction {
     registeredCount: registeredCount,
     photos: photos,
     sellerName: sellerName,
+    sellerVerified: sellerVerified,
     myRegistration: myRegistration,
     canRegister: canRegister,
     buyNowAvailable: buyNowAvailable ?? this.buyNowAvailable,
