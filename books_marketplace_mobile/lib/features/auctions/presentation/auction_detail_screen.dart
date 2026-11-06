@@ -19,6 +19,7 @@ import '../../../core/widgets/app_page.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_state_views.dart';
 import '../../../core/widgets/app_tag.dart';
+import '../../../core/widgets/verified_badge.dart';
 import '../../listings/presentation/widgets/book_tile.dart';
 import '../../wallet/application/wallet_providers.dart';
 import '../application/auction_live_controller.dart';
@@ -442,14 +443,24 @@ class _Header extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 5),
-              Text(
-                l.aucSellerLine(
-                  auction.sellerName,
-                  l.aucParticipants(auction.registeredCount),
-                ),
-                style: context.text.labelSmall?.copyWith(
-                  color: colors.textMuted,
-                ),
+              Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      l.aucSellerLine(
+                        auction.sellerName,
+                        l.aucParticipants(auction.registeredCount),
+                      ),
+                      style: context.text.labelSmall?.copyWith(
+                        color: colors.textMuted,
+                      ),
+                    ),
+                  ),
+                  if (auction.sellerVerified) ...[
+                    const SizedBox(width: 4),
+                    const VerifiedBadge(size: 14),
+                  ],
+                ],
               ),
             ],
           ),

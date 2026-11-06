@@ -1,7 +1,10 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Cho phép mở trình cài đặt khi cập nhật APK từ GitHub Releases (màn Hồ sơ > Kiểm tra cập nhật). -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <!-- Plugin camera (chụp selfie eKYC) tự khai báo quyền ghi âm; app không ghi âm nên gỡ. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove"/>
     <application
         android:label="Oldbook"
         android:name="${applicationName}"

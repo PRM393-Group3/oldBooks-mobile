@@ -4995,4 +4995,523 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiFieldDefects => 'Defect notes';
+
+  @override
+  String get verifiedBadgeLabel => 'Identity verified';
+
+  @override
+  String get kycTitle => 'Account verification';
+
+  @override
+  String get kycPhaseNone => 'Not verified';
+
+  @override
+  String get kycPhasePending => 'Pending review';
+
+  @override
+  String get kycPhaseVerified => 'Verified';
+
+  @override
+  String get kycPhaseRejected => 'Rejected';
+
+  @override
+  String get kycPhaseRevoked => 'Verification removed';
+
+  @override
+  String get kycSubNone => 'Verify with your ID card to get the blue tick';
+
+  @override
+  String get kycSubPending => 'An admin is reviewing your submission';
+
+  @override
+  String get kycSubVerified =>
+      'The blue tick shows on your profile and listings';
+
+  @override
+  String get kycSubRejected => 'Tap to see the reason and resubmit';
+
+  @override
+  String get kycSubBlocked => 'You cannot resubmit right now';
+
+  @override
+  String get kycSubRevoked => 'Tap to see the reason and resubmit';
+
+  @override
+  String get kycStatusNoneBody =>
+      'Verify your identity with your ID card and a selfie to get the blue tick, which helps buyers trust you when buying, selling and bidding.';
+
+  @override
+  String get kycStatusPendingBody =>
+      'Your submission was sent. An admin will review it and let you know the result.';
+
+  @override
+  String get kycStatusVerifiedBody =>
+      'Your account is verified. The blue tick shows next to your name.';
+
+  @override
+  String get kycStatusRejectedBody =>
+      'Your submission was not accepted. You can prepare your documents again and send a new one.';
+
+  @override
+  String get kycStatusRevokedBody =>
+      'Your account verification was removed. You can send a new submission.';
+
+  @override
+  String get kycLatestTitle => 'Latest submission';
+
+  @override
+  String get kycSubmittedAt => 'Submitted';
+
+  @override
+  String get kycReviewedAt => 'Reviewed';
+
+  @override
+  String get kycStart => 'Start verification';
+
+  @override
+  String get kycRetry => 'Resubmit';
+
+  @override
+  String get kycStepConsent => 'Consent';
+
+  @override
+  String get kycStepDocuments => 'Documents';
+
+  @override
+  String get kycStepSelfie => 'Selfie';
+
+  @override
+  String get kycStepReview => 'Submit';
+
+  @override
+  String get kycIntroTitle => 'Identity verification';
+
+  @override
+  String get kycIntroBody =>
+      'You will photograph your ID card, take a selfie and complete a couple of short actions to prove it is you. An admin reviews and decides.';
+
+  @override
+  String get kycIntroStepDocuments =>
+      'Photograph the front and back of your ID card and check the name, ID number and date of birth.';
+
+  @override
+  String get kycIntroStepSelfie =>
+      'Take a selfie and follow two random prompts such as blinking or turning your head.';
+
+  @override
+  String get kycIntroStepReview =>
+      'Review and submit. The result arrives as an in-app notification.';
+
+  @override
+  String get kycIntroBenefit =>
+      'Once approved, a blue tick appears on your profile, listings and auctions.';
+
+  @override
+  String get kycIntroPrivacy =>
+      'ID card photos, your selfie and these details are sensitive personal data (Decree 13/2023/ND-CP). They are used only to verify your identity, stored privately and visible to admins only. Text and face recognition run on your phone and are not sent to third parties. You can ask us to delete your data at any time.';
+
+  @override
+  String get kycConsentLabel =>
+      'I agree that Oldbook may collect and process my ID card photos, selfie and personal details to verify my account.';
+
+  @override
+  String get kycDocumentsHint =>
+      'Place the ID card on a flat surface with good light, show all four corners and avoid glare. Make the front sharp so it can be read.';
+
+  @override
+  String get kycFront => 'ID card front';
+
+  @override
+  String get kycBack => 'ID card back';
+
+  @override
+  String get kycInfoTitle => 'Details on the ID card';
+
+  @override
+  String get kycInfoHint =>
+      'Check and correct them to match your ID card. Wrong details will be rejected.';
+
+  @override
+  String get kycReadWithAi => 'Read with AI';
+
+  @override
+  String get kycFieldName => 'Full name';
+
+  @override
+  String get kycFieldId => 'ID number';
+
+  @override
+  String get kycFieldDob => 'Date of birth';
+
+  @override
+  String get kycDobHint => 'dd/MM/yyyy';
+
+  @override
+  String get kycNeedBothImages =>
+      'Add photos of both the front and the back of your ID card.';
+
+  @override
+  String get kycErrName => 'Enter your name exactly as on the ID card.';
+
+  @override
+  String get kycErrIdNumber => 'The ID number has exactly 12 digits.';
+
+  @override
+  String get kycErrDob => 'Enter the date of birth as dd/MM/yyyy.';
+
+  @override
+  String get kycOcrTitle => 'Read ID card details';
+
+  @override
+  String get kycOcrIntro =>
+      'On-device AI will read the name, ID number and date of birth from the front photo. The photo does not leave your phone at this step.';
+
+  @override
+  String get kycOcrAnalyzing =>
+      'Reading the ID card, this can take a few dozen seconds.';
+
+  @override
+  String get kycOcrCheckNote =>
+      'AI can misread. Please check carefully and correct if needed.';
+
+  @override
+  String get kycOcrApply => 'Use these details';
+
+  @override
+  String get kycOcrEnterManually => 'Enter manually';
+
+  @override
+  String get kycOcrIncompatibleManual =>
+      'You can still type your name, ID number and date of birth yourself.';
+
+  @override
+  String get kycOcrErrUnreadable =>
+      'The AI could not read the ID card clearly. Try a brighter, sharper photo, or enter the details yourself.';
+
+  @override
+  String get kycSelfieTitle => 'Selfie';
+
+  @override
+  String get kycSelfieBody =>
+      'Hold the phone at face level in good light, without sunglasses or a mask. The app will ask for two random actions to make sure you are a real person.';
+
+  @override
+  String get kycSelfieStart => 'Start';
+
+  @override
+  String get kycSelfieRetake => 'Retake';
+
+  @override
+  String get kycLivenessTitle => 'Take a selfie';
+
+  @override
+  String get kycLivenessDone => 'Selfie captured';
+
+  @override
+  String get kycLivenessFailed =>
+      'Could not finish the selfie step. Try again somewhere well lit.';
+
+  @override
+  String get kycLivenessUnsupported =>
+      'Selfie verification is currently supported on Android only.';
+
+  @override
+  String get kycLivenessPrivacy =>
+      'Images are used only to verify your identity.';
+
+  @override
+  String get kycCameraDenied =>
+      'The app needs camera permission. Grant it in Settings and try again.';
+
+  @override
+  String get kycHintNoFace => 'Put your face in the frame';
+
+  @override
+  String get kycHintMultipleFaces => 'Only one person in the frame';
+
+  @override
+  String get kycHintTooFar => 'Move a little closer';
+
+  @override
+  String get kycHintTooClose => 'Move a little farther away';
+
+  @override
+  String get kycHintNotCentered => 'Center your face in the frame';
+
+  @override
+  String get kycHintTooDark => 'More light needed';
+
+  @override
+  String get kycHintTooBright => 'Too much glare';
+
+  @override
+  String get kycHintLookStraight => 'Look straight at the camera';
+
+  @override
+  String get kycHintHold => 'Hold still';
+
+  @override
+  String get kycChallengeBlink => 'Blink your eyes';
+
+  @override
+  String get kycChallengeTurnLeft => 'Turn your face to the left';
+
+  @override
+  String get kycChallengeTurnRight => 'Turn your face to the right';
+
+  @override
+  String get kycReviewTitle => 'Review and submit';
+
+  @override
+  String get kycReviewBody =>
+      'Check the photos and details before sending them to an admin.';
+
+  @override
+  String get kycReviewNote =>
+      'By submitting you confirm these details are yours. Fake submissions may lead to account suspension.';
+
+  @override
+  String get kycSubmit => 'Submit';
+
+  @override
+  String get kycSubmitPreparing => 'Preparing your submission…';
+
+  @override
+  String get kycSubmitSending => 'Sending your submission…';
+
+  @override
+  String get kycSubmitted =>
+      'Submission sent. We will notify you of the result.';
+
+  @override
+  String get kycErrAlreadyVerified => 'Your account is already verified.';
+
+  @override
+  String get kycErrPendingExists =>
+      'You already have a submission waiting for review.';
+
+  @override
+  String get kycErrIdDuplicate =>
+      'This ID number has already been used to verify another account.';
+
+  @override
+  String get kycErrUnderage =>
+      'You do not meet the minimum age to verify your account.';
+
+  @override
+  String get kycErrLimitReached =>
+      'You have reached today\'s submission limit. Please try again tomorrow.';
+
+  @override
+  String get kycErrConsentRequired =>
+      'You must consent to personal data processing to submit.';
+
+  @override
+  String get kycErrImageInvalid =>
+      'An image is not valid. Use a clear JPEG, PNG or WebP photo and retake it.';
+
+  @override
+  String kycVerifiedAt(String when) {
+    return 'Verified on $when';
+  }
+
+  @override
+  String kycRejectReason(String reason) {
+    return 'Reason: $reason';
+  }
+
+  @override
+  String kycRetryAfter(String when) {
+    return 'You can resubmit after $when.';
+  }
+
+  @override
+  String kycErrUnderageLocal(int minAge) {
+    return 'You must be at least $minAge years old to verify.';
+  }
+
+  @override
+  String kycSubmitUploading(int done, int total) {
+    return 'Uploading photos ($done/$total)…';
+  }
+
+  @override
+  String get aiAssistButtonCloud => 'Analyze photos with AI Assistant';
+
+  @override
+  String get aiCloudFallback =>
+      'AI Assistant is busy, switching to on-device AI.';
+
+  @override
+  String get aiCloudFailed =>
+      'AI Assistant is busy. Try again later or fill in the details yourself.';
+
+  @override
+  String get aiSellBanner =>
+      'Let the AI Assistant fill in book details from your photos and post for you. See the AI Assistant plan.';
+
+  @override
+  String get aiErrUnavailable => 'The AI Assistant is temporarily unavailable.';
+
+  @override
+  String get aiErrSubscriptionRequired =>
+      'You need the AI Assistant plan to use this feature.';
+
+  @override
+  String get aiErrQuota =>
+      'You have used all of today\'s AI Assistant requests.';
+
+  @override
+  String get aiErrUpstream =>
+      'The AI Assistant is busy, please try again later.';
+
+  @override
+  String get aiMenuTitle => 'AI Assistant';
+
+  @override
+  String get aiMenuSubtitle => 'AI Assistant plan and listing chatbot';
+
+  @override
+  String get aiPlanTitle => 'AI Assistant';
+
+  @override
+  String get aiPlanHeadline => 'Post faster with the AI Assistant';
+
+  @override
+  String get aiPlanBenefits =>
+      'Claude reads cover photos to pre-fill book details, and the listing chatbot drafts your listings and submits them for review.';
+
+  @override
+  String aiPlanPrice(String price, int days) {
+    return '$price / $days days';
+  }
+
+  @override
+  String get aiPlanStatusActive => 'Active';
+
+  @override
+  String get aiPlanStatusNone => 'Not subscribed';
+
+  @override
+  String get aiPlanStatusExpired => 'Expired';
+
+  @override
+  String aiPlanExpires(String date, int days) {
+    return 'Expires $date ($days days left)';
+  }
+
+  @override
+  String aiPlanBalance(String amount) {
+    return 'Wallet balance: $amount';
+  }
+
+  @override
+  String aiPlanBuy(String price) {
+    return 'Subscribe $price';
+  }
+
+  @override
+  String aiPlanRenew(String price) {
+    return 'Renew $price';
+  }
+
+  @override
+  String get aiPlanBought => 'AI Assistant plan activated.';
+
+  @override
+  String aiPlanInsufficient(String required, String available) {
+    return 'Insufficient wallet balance: need $required, you have $available.';
+  }
+
+  @override
+  String get aiPlanTopup => 'Top up wallet';
+
+  @override
+  String get aiPlanUnavailable =>
+      'The AI Assistant is temporarily unavailable. Please come back later.';
+
+  @override
+  String aiPlanQuota(int used, int quota) {
+    return '$used/$quota requests used today';
+  }
+
+  @override
+  String aiPlanUsedToday(int used) {
+    return '$used requests used today';
+  }
+
+  @override
+  String get aiPlanOpenChat => 'Open listing chatbot';
+
+  @override
+  String get aiChatTitle => 'Listing chatbot';
+
+  @override
+  String get aiChatNew => 'New conversation';
+
+  @override
+  String get aiChatUntitled => 'Conversation';
+
+  @override
+  String get aiChatEmpty => 'No conversations yet';
+
+  @override
+  String get aiChatEmptyHint =>
+      'Send book photos and ask the assistant to draft and post listings for you.';
+
+  @override
+  String get aiChatIntro =>
+      'Hi! Send book photos and a short note, and I will draft the listing and submit it for review.';
+
+  @override
+  String get aiChatDelete => 'Delete conversation';
+
+  @override
+  String get aiChatDeleteConfirm =>
+      'Delete this conversation? Listings already submitted are not affected.';
+
+  @override
+  String get aiChatInputHint => 'Message the assistant…';
+
+  @override
+  String get aiChatAttach => 'Attach photos';
+
+  @override
+  String aiChatAttachedCount(int count) {
+    return '$count photos';
+  }
+
+  @override
+  String aiChatPhotoLimit(int max) {
+    return 'At most $max photos per message.';
+  }
+
+  @override
+  String get aiChatThinking => 'Assistant is working…';
+
+  @override
+  String get aiChatSendFailed => 'Could not send the message. Try again.';
+
+  @override
+  String get aiChatSubmittedTitle => 'Listing submitted for review';
+
+  @override
+  String get aiChatViewListing => 'View listing';
+
+  @override
+  String get aiChatMyListings => 'My listings';
+
+  @override
+  String get aiChatUpsellTitle => 'AI Assistant plan required';
+
+  @override
+  String get aiChatUpsellBody =>
+      'Subscribe to the AI Assistant plan to chat with the listing chatbot.';
+
+  @override
+  String get aiChatUpsellButton => 'See AI Assistant plan';
+
+  @override
+  String get aiChatUnavailable =>
+      'The listing chatbot is temporarily unavailable.';
 }

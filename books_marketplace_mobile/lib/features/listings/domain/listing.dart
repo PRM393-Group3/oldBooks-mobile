@@ -16,6 +16,7 @@ class SellerInfo {
     this.avatarUrl,
     this.averageRating,
     this.completedOrders = 0,
+    this.isVerified = false,
   });
 
   factory SellerInfo.fromJson(Map<dynamic, dynamic> j) => SellerInfo(
@@ -24,6 +25,7 @@ class SellerInfo {
     avatarUrl: readString(j, 'avatarUrl'),
     averageRating: readDouble(j, 'averageRating'),
     completedOrders: readInt(j, 'completedOrders') ?? 0,
+    isVerified: readBool(j, 'isVerified') ?? false,
   );
 
   final String id;
@@ -31,6 +33,9 @@ class SellerInfo {
   final String? avatarUrl;
   final double? averageRating;
   final int completedOrders;
+
+  /// Đã được admin duyệt eKYC.
+  final bool isVerified;
 }
 
 class BookInfo {

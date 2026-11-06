@@ -4968,4 +4968,516 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get aiFieldDefects => 'Ghi chú lỗi';
+
+  @override
+  String get verifiedBadgeLabel => 'Đã xác minh danh tính';
+
+  @override
+  String get kycTitle => 'Xác minh tài khoản';
+
+  @override
+  String get kycPhaseNone => 'Chưa xác minh';
+
+  @override
+  String get kycPhasePending => 'Đang chờ duyệt';
+
+  @override
+  String get kycPhaseVerified => 'Đã xác minh';
+
+  @override
+  String get kycPhaseRejected => 'Bị từ chối';
+
+  @override
+  String get kycPhaseRevoked => 'Đã bị gỡ xác minh';
+
+  @override
+  String get kycSubNone => 'Xác minh bằng CCCD để nhận dấu tích xanh';
+
+  @override
+  String get kycSubPending => 'Quản trị viên đang xem xét hồ sơ';
+
+  @override
+  String get kycSubVerified =>
+      'Dấu tích xanh hiển thị trên hồ sơ và tin của bạn';
+
+  @override
+  String get kycSubRejected => 'Bấm để xem lý do và gửi lại';
+
+  @override
+  String get kycSubBlocked => 'Chưa thể gửi lại lúc này';
+
+  @override
+  String get kycSubRevoked => 'Bấm để xem lý do và gửi lại';
+
+  @override
+  String get kycStatusNoneBody =>
+      'Xác minh danh tính bằng CCCD và ảnh chân dung để nhận dấu tích xanh, giúp người mua tin tưởng hơn khi mua bán và đấu giá.';
+
+  @override
+  String get kycStatusPendingBody =>
+      'Hồ sơ của bạn đã được gửi. Quản trị viên sẽ xem xét và thông báo kết quả cho bạn.';
+
+  @override
+  String get kycStatusVerifiedBody =>
+      'Tài khoản của bạn đã được xác minh. Dấu tích xanh hiển thị cạnh tên bạn.';
+
+  @override
+  String get kycStatusRejectedBody =>
+      'Hồ sơ chưa được chấp nhận. Bạn có thể chuẩn bị lại giấy tờ và gửi hồ sơ mới.';
+
+  @override
+  String get kycStatusRevokedBody =>
+      'Xác minh của tài khoản đã bị gỡ. Bạn có thể gửi hồ sơ mới.';
+
+  @override
+  String get kycLatestTitle => 'Hồ sơ gần nhất';
+
+  @override
+  String get kycSubmittedAt => 'Gửi lúc';
+
+  @override
+  String get kycReviewedAt => 'Duyệt lúc';
+
+  @override
+  String get kycStart => 'Bắt đầu xác minh';
+
+  @override
+  String get kycRetry => 'Gửi lại hồ sơ';
+
+  @override
+  String get kycStepConsent => 'Đồng ý';
+
+  @override
+  String get kycStepDocuments => 'Giấy tờ';
+
+  @override
+  String get kycStepSelfie => 'Chân dung';
+
+  @override
+  String get kycStepReview => 'Gửi';
+
+  @override
+  String get kycIntroTitle => 'Xác minh danh tính';
+
+  @override
+  String get kycIntroBody =>
+      'Bạn sẽ chụp CCCD, ảnh chân dung và hoàn thành vài thao tác ngắn để chứng minh đây là bạn. Quản trị viên sẽ xem xét và quyết định.';
+
+  @override
+  String get kycIntroStepDocuments =>
+      'Chụp mặt trước và mặt sau CCCD, kiểm tra lại họ tên, số CCCD, ngày sinh.';
+
+  @override
+  String get kycIntroStepSelfie =>
+      'Chụp ảnh chân dung và làm theo hai yêu cầu ngẫu nhiên như chớp mắt hoặc quay đầu.';
+
+  @override
+  String get kycIntroStepReview =>
+      'Xem lại và gửi. Kết quả báo qua thông báo trong ứng dụng.';
+
+  @override
+  String get kycIntroBenefit =>
+      'Được duyệt sẽ có dấu tích xanh trên hồ sơ, tin đăng và phiên đấu giá của bạn.';
+
+  @override
+  String get kycIntroPrivacy =>
+      'Ảnh CCCD, ảnh chân dung và các thông tin này là dữ liệu cá nhân nhạy cảm (Nghị định 13/2023/NĐ-CP). Chúng chỉ dùng để xác minh danh tính, được lưu riêng tư và chỉ quản trị viên được xem. Việc nhận diện chữ và khuôn mặt chạy ngay trên điện thoại, không gửi cho bên thứ ba. Bạn có thể yêu cầu xóa dữ liệu bất cứ lúc nào.';
+
+  @override
+  String get kycConsentLabel =>
+      'Tôi đồng ý cho Oldbook thu thập và xử lý ảnh CCCD, ảnh chân dung và thông tin cá nhân của tôi để xác minh tài khoản.';
+
+  @override
+  String get kycDocumentsHint =>
+      'Đặt CCCD trên mặt phẳng, đủ sáng, chụp rõ cả bốn góc và không bị chói. Ảnh mặt trước nên rõ nét để đọc chữ.';
+
+  @override
+  String get kycFront => 'Mặt trước CCCD';
+
+  @override
+  String get kycBack => 'Mặt sau CCCD';
+
+  @override
+  String get kycInfoTitle => 'Thông tin trên CCCD';
+
+  @override
+  String get kycInfoHint =>
+      'Kiểm tra và sửa cho khớp với CCCD. Thông tin sai sẽ bị từ chối.';
+
+  @override
+  String get kycReadWithAi => 'Đọc bằng AI';
+
+  @override
+  String get kycFieldName => 'Họ và tên';
+
+  @override
+  String get kycFieldId => 'Số CCCD';
+
+  @override
+  String get kycFieldDob => 'Ngày sinh';
+
+  @override
+  String get kycDobHint => 'dd/MM/yyyy';
+
+  @override
+  String get kycNeedBothImages => 'Hãy thêm ảnh mặt trước và mặt sau CCCD.';
+
+  @override
+  String get kycErrName => 'Nhập họ tên đúng như trên CCCD.';
+
+  @override
+  String get kycErrIdNumber => 'Số CCCD gồm đúng 12 chữ số.';
+
+  @override
+  String get kycErrDob => 'Nhập ngày sinh dạng dd/MM/yyyy.';
+
+  @override
+  String get kycOcrTitle => 'Đọc thông tin CCCD';
+
+  @override
+  String get kycOcrIntro =>
+      'AI trên máy sẽ đọc họ tên, số CCCD và ngày sinh từ ảnh mặt trước. Ảnh không rời khỏi điện thoại ở bước này.';
+
+  @override
+  String get kycOcrAnalyzing => 'Đang đọc CCCD, có thể mất vài chục giây.';
+
+  @override
+  String get kycOcrCheckNote =>
+      'AI có thể đọc sai. Hãy kiểm tra kỹ rồi sửa nếu cần.';
+
+  @override
+  String get kycOcrApply => 'Dùng thông tin này';
+
+  @override
+  String get kycOcrEnterManually => 'Tự nhập thông tin';
+
+  @override
+  String get kycOcrIncompatibleManual =>
+      'Bạn vẫn có thể tự nhập họ tên, số CCCD và ngày sinh.';
+
+  @override
+  String get kycOcrErrUnreadable =>
+      'AI chưa đọc rõ được CCCD. Hãy thử lại với ảnh sáng và rõ hơn, hoặc tự nhập thông tin.';
+
+  @override
+  String get kycSelfieTitle => 'Ảnh chân dung';
+
+  @override
+  String get kycSelfieBody =>
+      'Giữ điện thoại ngang tầm mặt, ở nơi đủ sáng, không đeo kính râm hay khẩu trang. Ứng dụng sẽ yêu cầu hai thao tác ngẫu nhiên để chắc chắn bạn là người thật.';
+
+  @override
+  String get kycSelfieStart => 'Bắt đầu chụp';
+
+  @override
+  String get kycSelfieRetake => 'Chụp lại';
+
+  @override
+  String get kycLivenessTitle => 'Chụp chân dung';
+
+  @override
+  String get kycLivenessDone => 'Đã chụp xong chân dung';
+
+  @override
+  String get kycLivenessFailed =>
+      'Chưa hoàn thành được bước chụp. Hãy thử lại ở nơi đủ sáng.';
+
+  @override
+  String get kycLivenessUnsupported =>
+      'Chụp chân dung xác minh hiện chỉ hỗ trợ trên Android.';
+
+  @override
+  String get kycLivenessPrivacy =>
+      'Hình ảnh chỉ dùng để xác minh danh tính của bạn.';
+
+  @override
+  String get kycCameraDenied =>
+      'Ứng dụng cần quyền dùng máy ảnh. Hãy cấp quyền trong Cài đặt rồi thử lại.';
+
+  @override
+  String get kycHintNoFace => 'Đưa khuôn mặt vào khung hình';
+
+  @override
+  String get kycHintMultipleFaces => 'Chỉ một người trong khung hình';
+
+  @override
+  String get kycHintTooFar => 'Lại gần hơn một chút';
+
+  @override
+  String get kycHintTooClose => 'Lùi ra xa một chút';
+
+  @override
+  String get kycHintNotCentered => 'Đưa khuôn mặt vào giữa khung hình';
+
+  @override
+  String get kycHintTooDark => 'Cần thêm ánh sáng';
+
+  @override
+  String get kycHintTooBright => 'Ánh sáng quá chói';
+
+  @override
+  String get kycHintLookStraight => 'Nhìn thẳng vào camera';
+
+  @override
+  String get kycHintHold => 'Giữ yên';
+
+  @override
+  String get kycChallengeBlink => 'Hãy chớp mắt';
+
+  @override
+  String get kycChallengeTurnLeft => 'Hãy quay mặt sang trái';
+
+  @override
+  String get kycChallengeTurnRight => 'Hãy quay mặt sang phải';
+
+  @override
+  String get kycReviewTitle => 'Xem lại và gửi';
+
+  @override
+  String get kycReviewBody =>
+      'Kiểm tra ảnh và thông tin trước khi gửi cho quản trị viên.';
+
+  @override
+  String get kycReviewNote =>
+      'Gửi hồ sơ nghĩa là bạn xác nhận thông tin là của chính bạn. Hồ sơ giả mạo có thể bị khóa tài khoản.';
+
+  @override
+  String get kycSubmit => 'Gửi hồ sơ';
+
+  @override
+  String get kycSubmitPreparing => 'Đang chuẩn bị hồ sơ…';
+
+  @override
+  String get kycSubmitSending => 'Đang gửi hồ sơ…';
+
+  @override
+  String get kycSubmitted =>
+      'Đã gửi hồ sơ. Chúng tôi sẽ thông báo khi có kết quả.';
+
+  @override
+  String get kycErrAlreadyVerified => 'Tài khoản của bạn đã được xác minh.';
+
+  @override
+  String get kycErrPendingExists => 'Bạn đã có một hồ sơ đang chờ duyệt.';
+
+  @override
+  String get kycErrIdDuplicate =>
+      'Số CCCD này đã được dùng để xác minh cho một tài khoản khác.';
+
+  @override
+  String get kycErrUnderage =>
+      'Bạn chưa đủ tuổi tối thiểu để xác minh tài khoản.';
+
+  @override
+  String get kycErrLimitReached =>
+      'Bạn đã gửi quá số lần cho phép trong ngày. Hãy thử lại vào ngày mai.';
+
+  @override
+  String get kycErrConsentRequired =>
+      'Bạn cần đồng ý cho phép xử lý dữ liệu cá nhân để gửi hồ sơ.';
+
+  @override
+  String get kycErrImageInvalid =>
+      'Ảnh chưa hợp lệ. Hãy dùng ảnh JPEG, PNG hoặc WebP rõ nét rồi chụp lại.';
+
+  @override
+  String kycVerifiedAt(String when) {
+    return 'Xác minh lúc $when';
+  }
+
+  @override
+  String kycRejectReason(String reason) {
+    return 'Lý do: $reason';
+  }
+
+  @override
+  String kycRetryAfter(String when) {
+    return 'Bạn có thể gửi lại sau $when.';
+  }
+
+  @override
+  String kycErrUnderageLocal(int minAge) {
+    return 'Bạn cần đủ $minAge tuổi để xác minh.';
+  }
+
+  @override
+  String kycSubmitUploading(int done, int total) {
+    return 'Đang tải ảnh lên ($done/$total)…';
+  }
+
+  @override
+  String get aiAssistButtonCloud => 'Phân tích ảnh bằng Trợ lý AI';
+
+  @override
+  String get aiCloudFallback => 'Trợ lý AI đang bận, chuyển sang AI trên máy.';
+
+  @override
+  String get aiCloudFailed =>
+      'Trợ lý AI đang bận, hãy thử lại sau hoặc tự nhập thông tin.';
+
+  @override
+  String get aiSellBanner =>
+      'Để Trợ lý AI điền sẵn thông tin sách từ ảnh và đăng bài giúp bạn. Xem gói Trợ lý AI.';
+
+  @override
+  String get aiErrUnavailable => 'Dịch vụ Trợ lý AI tạm chưa khả dụng.';
+
+  @override
+  String get aiErrSubscriptionRequired =>
+      'Bạn cần đăng ký gói Trợ lý AI để dùng tính năng này.';
+
+  @override
+  String get aiErrQuota => 'Hôm nay bạn đã dùng hết lượt Trợ lý AI.';
+
+  @override
+  String get aiErrUpstream => 'Trợ lý AI đang bận, hãy thử lại sau.';
+
+  @override
+  String get aiMenuTitle => 'Trợ lý AI';
+
+  @override
+  String get aiMenuSubtitle => 'Gói Trợ lý AI và trợ lý đăng bài';
+
+  @override
+  String get aiPlanTitle => 'Trợ lý AI';
+
+  @override
+  String get aiPlanHeadline => 'Đăng bài nhanh hơn với Trợ lý AI';
+
+  @override
+  String get aiPlanBenefits =>
+      'Claude đọc ảnh bìa để điền sẵn thông tin sách, và trợ lý đăng bài trò chuyện để soạn rồi gửi duyệt tin giúp bạn.';
+
+  @override
+  String aiPlanPrice(String price, int days) {
+    return '$price / $days ngày';
+  }
+
+  @override
+  String get aiPlanStatusActive => 'Đang sử dụng';
+
+  @override
+  String get aiPlanStatusNone => 'Chưa đăng ký';
+
+  @override
+  String get aiPlanStatusExpired => 'Đã hết hạn';
+
+  @override
+  String aiPlanExpires(String date, int days) {
+    return 'Hết hạn $date (còn $days ngày)';
+  }
+
+  @override
+  String aiPlanBalance(String amount) {
+    return 'Số dư ví: $amount';
+  }
+
+  @override
+  String aiPlanBuy(String price) {
+    return 'Đăng ký $price';
+  }
+
+  @override
+  String aiPlanRenew(String price) {
+    return 'Gia hạn $price';
+  }
+
+  @override
+  String get aiPlanBought => 'Đã kích hoạt gói Trợ lý AI.';
+
+  @override
+  String aiPlanInsufficient(String required, String available) {
+    return 'Số dư ví không đủ: cần $required, hiện có $available.';
+  }
+
+  @override
+  String get aiPlanTopup => 'Nạp tiền vào ví';
+
+  @override
+  String get aiPlanUnavailable =>
+      'Dịch vụ Trợ lý AI tạm chưa khả dụng, vui lòng quay lại sau.';
+
+  @override
+  String aiPlanQuota(int used, int quota) {
+    return 'Hôm nay đã dùng $used/$quota lượt';
+  }
+
+  @override
+  String aiPlanUsedToday(int used) {
+    return 'Hôm nay đã dùng $used lượt';
+  }
+
+  @override
+  String get aiPlanOpenChat => 'Mở Trợ lý đăng bài';
+
+  @override
+  String get aiChatTitle => 'Trợ lý đăng bài';
+
+  @override
+  String get aiChatNew => 'Cuộc trò chuyện mới';
+
+  @override
+  String get aiChatUntitled => 'Cuộc trò chuyện';
+
+  @override
+  String get aiChatEmpty => 'Chưa có cuộc trò chuyện nào';
+
+  @override
+  String get aiChatEmptyHint =>
+      'Gửi ảnh sách và nhờ trợ lý soạn, đăng tin giúp bạn.';
+
+  @override
+  String get aiChatIntro =>
+      'Chào bạn! Gửi ảnh sách và mô tả ngắn, mình sẽ soạn tin và gửi duyệt giúp bạn.';
+
+  @override
+  String get aiChatDelete => 'Xóa cuộc trò chuyện';
+
+  @override
+  String get aiChatDeleteConfirm =>
+      'Xóa cuộc trò chuyện này? Các tin đã gửi duyệt không bị ảnh hưởng.';
+
+  @override
+  String get aiChatInputHint => 'Nhắn cho trợ lý…';
+
+  @override
+  String get aiChatAttach => 'Đính kèm ảnh';
+
+  @override
+  String aiChatAttachedCount(int count) {
+    return '$count ảnh';
+  }
+
+  @override
+  String aiChatPhotoLimit(int max) {
+    return 'Tối đa $max ảnh mỗi tin nhắn.';
+  }
+
+  @override
+  String get aiChatThinking => 'Trợ lý đang xử lý…';
+
+  @override
+  String get aiChatSendFailed => 'Không gửi được tin nhắn. Hãy thử lại.';
+
+  @override
+  String get aiChatSubmittedTitle => 'Tin đã gửi duyệt';
+
+  @override
+  String get aiChatViewListing => 'Xem tin';
+
+  @override
+  String get aiChatMyListings => 'Tin của tôi';
+
+  @override
+  String get aiChatUpsellTitle => 'Cần gói Trợ lý AI';
+
+  @override
+  String get aiChatUpsellBody =>
+      'Đăng ký gói Trợ lý AI để trò chuyện với trợ lý đăng bài.';
+
+  @override
+  String get aiChatUpsellButton => 'Xem gói Trợ lý AI';
+
+  @override
+  String get aiChatUnavailable => 'Trợ lý đăng bài tạm chưa khả dụng.';
 }

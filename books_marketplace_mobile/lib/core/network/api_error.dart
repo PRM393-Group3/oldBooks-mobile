@@ -85,6 +85,18 @@ abstract final class ApiErrorCode {
   static const complaintWindowClosed = 'COMPLAINT_WINDOW_CLOSED';
   static const withdrawBelowMinimum = 'WITHDRAW_BELOW_MINIMUM';
   static const rateLimited = 'RATE_LIMITED';
+  static const kycAlreadyVerified = 'KYC_ALREADY_VERIFIED';
+  static const kycPendingExists = 'KYC_PENDING_EXISTS';
+  static const kycIdDuplicate = 'KYC_ID_DUPLICATE';
+  static const kycUnderage = 'KYC_UNDERAGE';
+  static const kycLimitReached = 'KYC_LIMIT_REACHED';
+  static const kycConsentRequired = 'KYC_CONSENT_REQUIRED';
+  static const kycImageInvalid = 'KYC_IMAGE_INVALID';
+  static const aiUnavailable = 'AI_UNAVAILABLE';
+  static const aiSubscriptionRequired = 'AI_SUBSCRIPTION_REQUIRED';
+  static const aiQuotaExceeded = 'AI_QUOTA_EXCEEDED';
+  static const aiUpstreamError = 'AI_UPSTREAM_ERROR';
+  static const aiConversationNotFound = 'AI_CONVERSATION_NOT_FOUND';
   static const upstreamError = 'UPSTREAM_ERROR';
   static const serviceUnavailable = 'SERVICE_UNAVAILABLE';
 

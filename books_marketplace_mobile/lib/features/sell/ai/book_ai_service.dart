@@ -60,7 +60,15 @@ class BookAiService {
   /// Phân tích một ảnh, phát ra toàn bộ câu trả lời đã sinh được sau mỗi token
   /// để giao diện hiện dần. Giải phóng model khi xong hoặc khi bị hủy nghe để
   /// trả RAM. Lỗi phát ra dưới dạng [BookAiException].
-  Stream<String> analyzeStream(Uint8List image) async* {
+  ///
+  /// [prompt] mặc định là lời nhắc đánh giá sách; eKYC dùng lời nhắc đọc CCCD
+  /// với [sensitive] bật để không ghi nội dung model trả (có họ tên, số CCCD)
+  /// vào log.
+  Stream<String> analyzeStream(
+    Uint8List image, {
+    String prompt = bookAnalysisPrompt,
+    bool sensitive = false,
+  }) async* {
     if (!await isModelReady()) {
       await downloadModel((_) {});
     }
@@ -76,7 +84,7 @@ class BookAiService {
       chat = await model.createChat(supportImage: true);
       await chat.addQueryChunk(
         Message.withImages(
-          text: bookAnalysisPrompt,
+          text: prompt,
           imageBytes: [image],
           isUser: true,
         ),
@@ -89,9 +97,9 @@ class BookAiService {
         buffer.write(r.token);
         yield buffer.toString();
       }
-      debugPrint('[BookAI] raw="$buffer"');
+      if (!sensitive) debugPrint('[BookAI] raw="$buffer"');
     } catch (e, st) {
-      debugPrint('[BookAI] model error: $e\n$st');
+      debugPrint('[BookAI] model error: ${sensitive ? e.runtimeType : e}\n$st');
       throw const BookAiException(BookAiFailure.model);
     } finally {
       await chat?.close();

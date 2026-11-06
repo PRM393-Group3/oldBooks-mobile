@@ -8773,6 +8773,888 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Ghi chú lỗi'**
   String get aiFieldDefects;
+
+  /// No description provided for @verifiedBadgeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã xác minh danh tính'**
+  String get verifiedBadgeLabel;
+
+  /// No description provided for @kycTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác minh tài khoản'**
+  String get kycTitle;
+
+  /// No description provided for @kycPhaseNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa xác minh'**
+  String get kycPhaseNone;
+
+  /// No description provided for @kycPhasePending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang chờ duyệt'**
+  String get kycPhasePending;
+
+  /// No description provided for @kycPhaseVerified.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã xác minh'**
+  String get kycPhaseVerified;
+
+  /// No description provided for @kycPhaseRejected.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bị từ chối'**
+  String get kycPhaseRejected;
+
+  /// No description provided for @kycPhaseRevoked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã bị gỡ xác minh'**
+  String get kycPhaseRevoked;
+
+  /// No description provided for @kycSubNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác minh bằng CCCD để nhận dấu tích xanh'**
+  String get kycSubNone;
+
+  /// No description provided for @kycSubPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quản trị viên đang xem xét hồ sơ'**
+  String get kycSubPending;
+
+  /// No description provided for @kycSubVerified.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dấu tích xanh hiển thị trên hồ sơ và tin của bạn'**
+  String get kycSubVerified;
+
+  /// No description provided for @kycSubRejected.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bấm để xem lý do và gửi lại'**
+  String get kycSubRejected;
+
+  /// No description provided for @kycSubBlocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa thể gửi lại lúc này'**
+  String get kycSubBlocked;
+
+  /// No description provided for @kycSubRevoked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bấm để xem lý do và gửi lại'**
+  String get kycSubRevoked;
+
+  /// No description provided for @kycStatusNoneBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác minh danh tính bằng CCCD và ảnh chân dung để nhận dấu tích xanh, giúp người mua tin tưởng hơn khi mua bán và đấu giá.'**
+  String get kycStatusNoneBody;
+
+  /// No description provided for @kycStatusPendingBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồ sơ của bạn đã được gửi. Quản trị viên sẽ xem xét và thông báo kết quả cho bạn.'**
+  String get kycStatusPendingBody;
+
+  /// No description provided for @kycStatusVerifiedBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản của bạn đã được xác minh. Dấu tích xanh hiển thị cạnh tên bạn.'**
+  String get kycStatusVerifiedBody;
+
+  /// No description provided for @kycStatusRejectedBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồ sơ chưa được chấp nhận. Bạn có thể chuẩn bị lại giấy tờ và gửi hồ sơ mới.'**
+  String get kycStatusRejectedBody;
+
+  /// No description provided for @kycStatusRevokedBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác minh của tài khoản đã bị gỡ. Bạn có thể gửi hồ sơ mới.'**
+  String get kycStatusRevokedBody;
+
+  /// No description provided for @kycLatestTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồ sơ gần nhất'**
+  String get kycLatestTitle;
+
+  /// No description provided for @kycSubmittedAt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi lúc'**
+  String get kycSubmittedAt;
+
+  /// No description provided for @kycReviewedAt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Duyệt lúc'**
+  String get kycReviewedAt;
+
+  /// No description provided for @kycStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu xác minh'**
+  String get kycStart;
+
+  /// No description provided for @kycRetry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi lại hồ sơ'**
+  String get kycRetry;
+
+  /// No description provided for @kycStepConsent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng ý'**
+  String get kycStepConsent;
+
+  /// No description provided for @kycStepDocuments.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giấy tờ'**
+  String get kycStepDocuments;
+
+  /// No description provided for @kycStepSelfie.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chân dung'**
+  String get kycStepSelfie;
+
+  /// No description provided for @kycStepReview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi'**
+  String get kycStepReview;
+
+  /// No description provided for @kycIntroTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác minh danh tính'**
+  String get kycIntroTitle;
+
+  /// No description provided for @kycIntroBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn sẽ chụp CCCD, ảnh chân dung và hoàn thành vài thao tác ngắn để chứng minh đây là bạn. Quản trị viên sẽ xem xét và quyết định.'**
+  String get kycIntroBody;
+
+  /// No description provided for @kycIntroStepDocuments.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp mặt trước và mặt sau CCCD, kiểm tra lại họ tên, số CCCD, ngày sinh.'**
+  String get kycIntroStepDocuments;
+
+  /// No description provided for @kycIntroStepSelfie.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp ảnh chân dung và làm theo hai yêu cầu ngẫu nhiên như chớp mắt hoặc quay đầu.'**
+  String get kycIntroStepSelfie;
+
+  /// No description provided for @kycIntroStepReview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem lại và gửi. Kết quả báo qua thông báo trong ứng dụng.'**
+  String get kycIntroStepReview;
+
+  /// No description provided for @kycIntroBenefit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Được duyệt sẽ có dấu tích xanh trên hồ sơ, tin đăng và phiên đấu giá của bạn.'**
+  String get kycIntroBenefit;
+
+  /// No description provided for @kycIntroPrivacy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh CCCD, ảnh chân dung và các thông tin này là dữ liệu cá nhân nhạy cảm (Nghị định 13/2023/NĐ-CP). Chúng chỉ dùng để xác minh danh tính, được lưu riêng tư và chỉ quản trị viên được xem. Việc nhận diện chữ và khuôn mặt chạy ngay trên điện thoại, không gửi cho bên thứ ba. Bạn có thể yêu cầu xóa dữ liệu bất cứ lúc nào.'**
+  String get kycIntroPrivacy;
+
+  /// No description provided for @kycConsentLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tôi đồng ý cho Oldbook thu thập và xử lý ảnh CCCD, ảnh chân dung và thông tin cá nhân của tôi để xác minh tài khoản.'**
+  String get kycConsentLabel;
+
+  /// No description provided for @kycDocumentsHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt CCCD trên mặt phẳng, đủ sáng, chụp rõ cả bốn góc và không bị chói. Ảnh mặt trước nên rõ nét để đọc chữ.'**
+  String get kycDocumentsHint;
+
+  /// No description provided for @kycFront.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mặt trước CCCD'**
+  String get kycFront;
+
+  /// No description provided for @kycBack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mặt sau CCCD'**
+  String get kycBack;
+
+  /// No description provided for @kycInfoTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông tin trên CCCD'**
+  String get kycInfoTitle;
+
+  /// No description provided for @kycInfoHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiểm tra và sửa cho khớp với CCCD. Thông tin sai sẽ bị từ chối.'**
+  String get kycInfoHint;
+
+  /// No description provided for @kycReadWithAi.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đọc bằng AI'**
+  String get kycReadWithAi;
+
+  /// No description provided for @kycFieldName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Họ và tên'**
+  String get kycFieldName;
+
+  /// No description provided for @kycFieldId.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số CCCD'**
+  String get kycFieldId;
+
+  /// No description provided for @kycFieldDob.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày sinh'**
+  String get kycFieldDob;
+
+  /// No description provided for @kycDobHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'dd/MM/yyyy'**
+  String get kycDobHint;
+
+  /// No description provided for @kycNeedBothImages.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy thêm ảnh mặt trước và mặt sau CCCD.'**
+  String get kycNeedBothImages;
+
+  /// No description provided for @kycErrName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập họ tên đúng như trên CCCD.'**
+  String get kycErrName;
+
+  /// No description provided for @kycErrIdNumber.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số CCCD gồm đúng 12 chữ số.'**
+  String get kycErrIdNumber;
+
+  /// No description provided for @kycErrDob.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập ngày sinh dạng dd/MM/yyyy.'**
+  String get kycErrDob;
+
+  /// No description provided for @kycOcrTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đọc thông tin CCCD'**
+  String get kycOcrTitle;
+
+  /// No description provided for @kycOcrIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'AI trên máy sẽ đọc họ tên, số CCCD và ngày sinh từ ảnh mặt trước. Ảnh không rời khỏi điện thoại ở bước này.'**
+  String get kycOcrIntro;
+
+  /// No description provided for @kycOcrAnalyzing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang đọc CCCD, có thể mất vài chục giây.'**
+  String get kycOcrAnalyzing;
+
+  /// No description provided for @kycOcrCheckNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'AI có thể đọc sai. Hãy kiểm tra kỹ rồi sửa nếu cần.'**
+  String get kycOcrCheckNote;
+
+  /// No description provided for @kycOcrApply.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dùng thông tin này'**
+  String get kycOcrApply;
+
+  /// No description provided for @kycOcrEnterManually.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự nhập thông tin'**
+  String get kycOcrEnterManually;
+
+  /// No description provided for @kycOcrIncompatibleManual.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn vẫn có thể tự nhập họ tên, số CCCD và ngày sinh.'**
+  String get kycOcrIncompatibleManual;
+
+  /// No description provided for @kycOcrErrUnreadable.
+  ///
+  /// In vi, this message translates to:
+  /// **'AI chưa đọc rõ được CCCD. Hãy thử lại với ảnh sáng và rõ hơn, hoặc tự nhập thông tin.'**
+  String get kycOcrErrUnreadable;
+
+  /// No description provided for @kycSelfieTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh chân dung'**
+  String get kycSelfieTitle;
+
+  /// No description provided for @kycSelfieBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giữ điện thoại ngang tầm mặt, ở nơi đủ sáng, không đeo kính râm hay khẩu trang. Ứng dụng sẽ yêu cầu hai thao tác ngẫu nhiên để chắc chắn bạn là người thật.'**
+  String get kycSelfieBody;
+
+  /// No description provided for @kycSelfieStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu chụp'**
+  String get kycSelfieStart;
+
+  /// No description provided for @kycSelfieRetake.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp lại'**
+  String get kycSelfieRetake;
+
+  /// No description provided for @kycLivenessTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp chân dung'**
+  String get kycLivenessTitle;
+
+  /// No description provided for @kycLivenessDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã chụp xong chân dung'**
+  String get kycLivenessDone;
+
+  /// No description provided for @kycLivenessFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa hoàn thành được bước chụp. Hãy thử lại ở nơi đủ sáng.'**
+  String get kycLivenessFailed;
+
+  /// No description provided for @kycLivenessUnsupported.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp chân dung xác minh hiện chỉ hỗ trợ trên Android.'**
+  String get kycLivenessUnsupported;
+
+  /// No description provided for @kycLivenessPrivacy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hình ảnh chỉ dùng để xác minh danh tính của bạn.'**
+  String get kycLivenessPrivacy;
+
+  /// No description provided for @kycCameraDenied.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ứng dụng cần quyền dùng máy ảnh. Hãy cấp quyền trong Cài đặt rồi thử lại.'**
+  String get kycCameraDenied;
+
+  /// No description provided for @kycHintNoFace.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đưa khuôn mặt vào khung hình'**
+  String get kycHintNoFace;
+
+  /// No description provided for @kycHintMultipleFaces.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ một người trong khung hình'**
+  String get kycHintMultipleFaces;
+
+  /// No description provided for @kycHintTooFar.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lại gần hơn một chút'**
+  String get kycHintTooFar;
+
+  /// No description provided for @kycHintTooClose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lùi ra xa một chút'**
+  String get kycHintTooClose;
+
+  /// No description provided for @kycHintNotCentered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đưa khuôn mặt vào giữa khung hình'**
+  String get kycHintNotCentered;
+
+  /// No description provided for @kycHintTooDark.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần thêm ánh sáng'**
+  String get kycHintTooDark;
+
+  /// No description provided for @kycHintTooBright.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ánh sáng quá chói'**
+  String get kycHintTooBright;
+
+  /// No description provided for @kycHintLookStraight.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhìn thẳng vào camera'**
+  String get kycHintLookStraight;
+
+  /// No description provided for @kycHintHold.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giữ yên'**
+  String get kycHintHold;
+
+  /// No description provided for @kycChallengeBlink.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy chớp mắt'**
+  String get kycChallengeBlink;
+
+  /// No description provided for @kycChallengeTurnLeft.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy quay mặt sang trái'**
+  String get kycChallengeTurnLeft;
+
+  /// No description provided for @kycChallengeTurnRight.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy quay mặt sang phải'**
+  String get kycChallengeTurnRight;
+
+  /// No description provided for @kycReviewTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem lại và gửi'**
+  String get kycReviewTitle;
+
+  /// No description provided for @kycReviewBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiểm tra ảnh và thông tin trước khi gửi cho quản trị viên.'**
+  String get kycReviewBody;
+
+  /// No description provided for @kycReviewNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi hồ sơ nghĩa là bạn xác nhận thông tin là của chính bạn. Hồ sơ giả mạo có thể bị khóa tài khoản.'**
+  String get kycReviewNote;
+
+  /// No description provided for @kycSubmit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi hồ sơ'**
+  String get kycSubmit;
+
+  /// No description provided for @kycSubmitPreparing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang chuẩn bị hồ sơ…'**
+  String get kycSubmitPreparing;
+
+  /// No description provided for @kycSubmitSending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang gửi hồ sơ…'**
+  String get kycSubmitSending;
+
+  /// No description provided for @kycSubmitted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi hồ sơ. Chúng tôi sẽ thông báo khi có kết quả.'**
+  String get kycSubmitted;
+
+  /// No description provided for @kycErrAlreadyVerified.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản của bạn đã được xác minh.'**
+  String get kycErrAlreadyVerified;
+
+  /// No description provided for @kycErrPendingExists.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã có một hồ sơ đang chờ duyệt.'**
+  String get kycErrPendingExists;
+
+  /// No description provided for @kycErrIdDuplicate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số CCCD này đã được dùng để xác minh cho một tài khoản khác.'**
+  String get kycErrIdDuplicate;
+
+  /// No description provided for @kycErrUnderage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa đủ tuổi tối thiểu để xác minh tài khoản.'**
+  String get kycErrUnderage;
+
+  /// No description provided for @kycErrLimitReached.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã gửi quá số lần cho phép trong ngày. Hãy thử lại vào ngày mai.'**
+  String get kycErrLimitReached;
+
+  /// No description provided for @kycErrConsentRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn cần đồng ý cho phép xử lý dữ liệu cá nhân để gửi hồ sơ.'**
+  String get kycErrConsentRequired;
+
+  /// No description provided for @kycErrImageInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh chưa hợp lệ. Hãy dùng ảnh JPEG, PNG hoặc WebP rõ nét rồi chụp lại.'**
+  String get kycErrImageInvalid;
+
+  /// No description provided for @kycVerifiedAt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác minh lúc {when}'**
+  String kycVerifiedAt(String when);
+
+  /// No description provided for @kycRejectReason.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lý do: {reason}'**
+  String kycRejectReason(String reason);
+
+  /// No description provided for @kycRetryAfter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn có thể gửi lại sau {when}.'**
+  String kycRetryAfter(String when);
+
+  /// No description provided for @kycErrUnderageLocal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn cần đủ {minAge} tuổi để xác minh.'**
+  String kycErrUnderageLocal(int minAge);
+
+  /// No description provided for @kycSubmitUploading.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tải ảnh lên ({done}/{total})…'**
+  String kycSubmitUploading(int done, int total);
+
+  /// No description provided for @aiAssistButtonCloud.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phân tích ảnh bằng Trợ lý AI'**
+  String get aiAssistButtonCloud;
+
+  /// No description provided for @aiCloudFallback.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI đang bận, chuyển sang AI trên máy.'**
+  String get aiCloudFallback;
+
+  /// No description provided for @aiCloudFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI đang bận, hãy thử lại sau hoặc tự nhập thông tin.'**
+  String get aiCloudFailed;
+
+  /// No description provided for @aiSellBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Để Trợ lý AI điền sẵn thông tin sách từ ảnh và đăng bài giúp bạn. Xem gói Trợ lý AI.'**
+  String get aiSellBanner;
+
+  /// No description provided for @aiErrUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dịch vụ Trợ lý AI tạm chưa khả dụng.'**
+  String get aiErrUnavailable;
+
+  /// No description provided for @aiErrSubscriptionRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn cần đăng ký gói Trợ lý AI để dùng tính năng này.'**
+  String get aiErrSubscriptionRequired;
+
+  /// No description provided for @aiErrQuota.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay bạn đã dùng hết lượt Trợ lý AI.'**
+  String get aiErrQuota;
+
+  /// No description provided for @aiErrUpstream.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI đang bận, hãy thử lại sau.'**
+  String get aiErrUpstream;
+
+  /// No description provided for @aiMenuTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI'**
+  String get aiMenuTitle;
+
+  /// No description provided for @aiMenuSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gói Trợ lý AI và trợ lý đăng bài'**
+  String get aiMenuSubtitle;
+
+  /// No description provided for @aiPlanTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI'**
+  String get aiPlanTitle;
+
+  /// No description provided for @aiPlanHeadline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng bài nhanh hơn với Trợ lý AI'**
+  String get aiPlanHeadline;
+
+  /// No description provided for @aiPlanBenefits.
+  ///
+  /// In vi, this message translates to:
+  /// **'Claude đọc ảnh bìa để điền sẵn thông tin sách, và trợ lý đăng bài trò chuyện để soạn rồi gửi duyệt tin giúp bạn.'**
+  String get aiPlanBenefits;
+
+  /// No description provided for @aiPlanPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'{price} / {days} ngày'**
+  String aiPlanPrice(String price, int days);
+
+  /// No description provided for @aiPlanStatusActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang sử dụng'**
+  String get aiPlanStatusActive;
+
+  /// No description provided for @aiPlanStatusNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đăng ký'**
+  String get aiPlanStatusNone;
+
+  /// No description provided for @aiPlanStatusExpired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hết hạn'**
+  String get aiPlanStatusExpired;
+
+  /// No description provided for @aiPlanExpires.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hết hạn {date} (còn {days} ngày)'**
+  String aiPlanExpires(String date, int days);
+
+  /// No description provided for @aiPlanBalance.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư ví: {amount}'**
+  String aiPlanBalance(String amount);
+
+  /// No description provided for @aiPlanBuy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký {price}'**
+  String aiPlanBuy(String price);
+
+  /// No description provided for @aiPlanRenew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gia hạn {price}'**
+  String aiPlanRenew(String price);
+
+  /// No description provided for @aiPlanBought.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã kích hoạt gói Trợ lý AI.'**
+  String get aiPlanBought;
+
+  /// No description provided for @aiPlanInsufficient.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư ví không đủ: cần {required}, hiện có {available}.'**
+  String aiPlanInsufficient(String required, String available);
+
+  /// No description provided for @aiPlanTopup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp tiền vào ví'**
+  String get aiPlanTopup;
+
+  /// No description provided for @aiPlanUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dịch vụ Trợ lý AI tạm chưa khả dụng, vui lòng quay lại sau.'**
+  String get aiPlanUnavailable;
+
+  /// No description provided for @aiPlanQuota.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay đã dùng {used}/{quota} lượt'**
+  String aiPlanQuota(int used, int quota);
+
+  /// No description provided for @aiPlanUsedToday.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay đã dùng {used} lượt'**
+  String aiPlanUsedToday(int used);
+
+  /// No description provided for @aiPlanOpenChat.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở Trợ lý đăng bài'**
+  String get aiPlanOpenChat;
+
+  /// No description provided for @aiChatTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý đăng bài'**
+  String get aiChatTitle;
+
+  /// No description provided for @aiChatNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cuộc trò chuyện mới'**
+  String get aiChatNew;
+
+  /// No description provided for @aiChatUntitled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cuộc trò chuyện'**
+  String get aiChatUntitled;
+
+  /// No description provided for @aiChatEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có cuộc trò chuyện nào'**
+  String get aiChatEmpty;
+
+  /// No description provided for @aiChatEmptyHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi ảnh sách và nhờ trợ lý soạn, đăng tin giúp bạn.'**
+  String get aiChatEmptyHint;
+
+  /// No description provided for @aiChatIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chào bạn! Gửi ảnh sách và mô tả ngắn, mình sẽ soạn tin và gửi duyệt giúp bạn.'**
+  String get aiChatIntro;
+
+  /// No description provided for @aiChatDelete.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa cuộc trò chuyện'**
+  String get aiChatDelete;
+
+  /// No description provided for @aiChatDeleteConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa cuộc trò chuyện này? Các tin đã gửi duyệt không bị ảnh hưởng.'**
+  String get aiChatDeleteConfirm;
+
+  /// No description provided for @aiChatInputHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắn cho trợ lý…'**
+  String get aiChatInputHint;
+
+  /// No description provided for @aiChatAttach.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đính kèm ảnh'**
+  String get aiChatAttach;
+
+  /// No description provided for @aiChatAttachedCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} ảnh'**
+  String aiChatAttachedCount(int count);
+
+  /// No description provided for @aiChatPhotoLimit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối đa {max} ảnh mỗi tin nhắn.'**
+  String aiChatPhotoLimit(int max);
+
+  /// No description provided for @aiChatThinking.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý đang xử lý…'**
+  String get aiChatThinking;
+
+  /// No description provided for @aiChatSendFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không gửi được tin nhắn. Hãy thử lại.'**
+  String get aiChatSendFailed;
+
+  /// No description provided for @aiChatSubmittedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tin đã gửi duyệt'**
+  String get aiChatSubmittedTitle;
+
+  /// No description provided for @aiChatViewListing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem tin'**
+  String get aiChatViewListing;
+
+  /// No description provided for @aiChatMyListings.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tin của tôi'**
+  String get aiChatMyListings;
+
+  /// No description provided for @aiChatUpsellTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần gói Trợ lý AI'**
+  String get aiChatUpsellTitle;
+
+  /// No description provided for @aiChatUpsellBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký gói Trợ lý AI để trò chuyện với trợ lý đăng bài.'**
+  String get aiChatUpsellBody;
+
+  /// No description provided for @aiChatUpsellButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem gói Trợ lý AI'**
+  String get aiChatUpsellButton;
+
+  /// No description provided for @aiChatUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý đăng bài tạm chưa khả dụng.'**
+  String get aiChatUnavailable;
 }
 
 class _AppLocalizationsDelegate

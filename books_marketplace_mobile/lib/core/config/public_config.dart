@@ -43,4 +43,5 @@ class PublicConfig {
   static const topupMin = 'wallet.topup.minAmount';
   static const topupMax = 'wallet.topup.maxAmount';
   static const withdrawMin = 'wallet.withdraw.minAmount';
+  static const kycMinAge = 'kyc.minAge';
 }

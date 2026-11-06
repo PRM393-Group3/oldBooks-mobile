@@ -1,0 +1,12 @@
+mobilefacenet.tflite - face embedding model used only as a hint for admin review.
+
+Source : https://github.com/sirius-ai/MobileFaceNet_TF
+         arch/pretrained_model/MobileFaceNet_9925_9680.pb (frozen graph, 5,956,310 bytes)
+License: Apache License 2.0 (repository LICENSE)
+Convert: tf.compat.v1.lite.TFLiteConverter.from_frozen_graph(pb, ['img_inputs'], ['embeddings'],
+         input_shapes={'img_inputs': [1,112,112,3]})  (TensorFlow 2.22, float32, no quantization)
+Input  : 1x112x112x3 float32, RGB, (pixel - 127.5) / 128
+Output : 1x128 float32, already L2-normalised
+SHA-256: 0e110b77bd6e3812d83664ac7ba354496e432bc982df1cc87ec034b0d6be8c59
+Note   : upstream weights were trained on MS1M-refine-v2 (an insightface dataset); the code/weights
+         license is Apache-2.0 but the training-data terms are not covered by it.

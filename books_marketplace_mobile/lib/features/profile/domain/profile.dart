@@ -11,6 +11,7 @@ class Profile {
     this.email,
     this.avatarUrl,
     this.status = 'ACTIVE',
+    this.isVerified = false,
   });
 
   factory Profile.fromJson(dynamic json) {
@@ -23,6 +24,7 @@ class Profile {
       avatarUrl: j['avatarUrl'] as String?,
       role: UserRole.fromApi(j['role'] as String?),
       status: (j['status'] as String?) ?? 'ACTIVE',
+      isVerified: (j['isVerified'] as bool?) ?? false,
       createdAt: DateTime.parse(j['createdAt'] as String),
     );
   }
@@ -39,6 +41,9 @@ class Profile {
   final UserRole role;
   final String status;
 
+  /// Đã được admin duyệt eKYC (hiện dấu tích xanh).
+  final bool isVerified;
+
   /// Đã ở UTC, dùng `.toLocal()` khi hiển thị.
   final DateTime createdAt;
 
@@ -53,6 +58,7 @@ class Profile {
     avatarUrl: null,
     role: role,
     status: status,
+    isVerified: isVerified,
     createdAt: createdAt,
   );
 }
