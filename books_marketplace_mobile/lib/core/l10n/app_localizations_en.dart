@@ -5334,4 +5334,184 @@ class AppLocalizationsEn extends AppLocalizations {
   String kycSubmitUploading(int done, int total) {
     return 'Uploading photos ($done/$total)…';
   }
+
+  @override
+  String get aiAssistButtonCloud => 'Analyze photos with AI Assistant';
+
+  @override
+  String get aiCloudFallback =>
+      'AI Assistant is busy, switching to on-device AI.';
+
+  @override
+  String get aiCloudFailed =>
+      'AI Assistant is busy. Try again later or fill in the details yourself.';
+
+  @override
+  String get aiSellBanner =>
+      'Let the AI Assistant fill in book details from your photos and post for you. See the AI Assistant plan.';
+
+  @override
+  String get aiErrUnavailable => 'The AI Assistant is temporarily unavailable.';
+
+  @override
+  String get aiErrSubscriptionRequired =>
+      'You need the AI Assistant plan to use this feature.';
+
+  @override
+  String get aiErrQuota =>
+      'You have used all of today\'s AI Assistant requests.';
+
+  @override
+  String get aiErrUpstream =>
+      'The AI Assistant is busy, please try again later.';
+
+  @override
+  String get aiMenuTitle => 'AI Assistant';
+
+  @override
+  String get aiMenuSubtitle => 'AI Assistant plan and listing chatbot';
+
+  @override
+  String get aiPlanTitle => 'AI Assistant';
+
+  @override
+  String get aiPlanHeadline => 'Post faster with the AI Assistant';
+
+  @override
+  String get aiPlanBenefits =>
+      'Claude reads cover photos to pre-fill book details, and the listing chatbot drafts your listings and submits them for review.';
+
+  @override
+  String aiPlanPrice(String price, int days) {
+    return '$price / $days days';
+  }
+
+  @override
+  String get aiPlanStatusActive => 'Active';
+
+  @override
+  String get aiPlanStatusNone => 'Not subscribed';
+
+  @override
+  String get aiPlanStatusExpired => 'Expired';
+
+  @override
+  String aiPlanExpires(String date, int days) {
+    return 'Expires $date ($days days left)';
+  }
+
+  @override
+  String aiPlanBalance(String amount) {
+    return 'Wallet balance: $amount';
+  }
+
+  @override
+  String aiPlanBuy(String price) {
+    return 'Subscribe $price';
+  }
+
+  @override
+  String aiPlanRenew(String price) {
+    return 'Renew $price';
+  }
+
+  @override
+  String get aiPlanBought => 'AI Assistant plan activated.';
+
+  @override
+  String aiPlanInsufficient(String required, String available) {
+    return 'Insufficient wallet balance: need $required, you have $available.';
+  }
+
+  @override
+  String get aiPlanTopup => 'Top up wallet';
+
+  @override
+  String get aiPlanUnavailable =>
+      'The AI Assistant is temporarily unavailable. Please come back later.';
+
+  @override
+  String aiPlanQuota(int used, int quota) {
+    return '$used/$quota requests used today';
+  }
+
+  @override
+  String aiPlanUsedToday(int used) {
+    return '$used requests used today';
+  }
+
+  @override
+  String get aiPlanOpenChat => 'Open listing chatbot';
+
+  @override
+  String get aiChatTitle => 'Listing chatbot';
+
+  @override
+  String get aiChatNew => 'New conversation';
+
+  @override
+  String get aiChatUntitled => 'Conversation';
+
+  @override
+  String get aiChatEmpty => 'No conversations yet';
+
+  @override
+  String get aiChatEmptyHint =>
+      'Send book photos and ask the assistant to draft and post listings for you.';
+
+  @override
+  String get aiChatIntro =>
+      'Hi! Send book photos and a short note, and I will draft the listing and submit it for review.';
+
+  @override
+  String get aiChatDelete => 'Delete conversation';
+
+  @override
+  String get aiChatDeleteConfirm =>
+      'Delete this conversation? Listings already submitted are not affected.';
+
+  @override
+  String get aiChatInputHint => 'Message the assistant…';
+
+  @override
+  String get aiChatAttach => 'Attach photos';
+
+  @override
+  String aiChatAttachedCount(int count) {
+    return '$count photos';
+  }
+
+  @override
+  String aiChatPhotoLimit(int max) {
+    return 'At most $max photos per message.';
+  }
+
+  @override
+  String get aiChatThinking => 'Assistant is working…';
+
+  @override
+  String get aiChatSendFailed => 'Could not send the message. Try again.';
+
+  @override
+  String get aiChatSubmittedTitle => 'Listing submitted for review';
+
+  @override
+  String get aiChatViewListing => 'View listing';
+
+  @override
+  String get aiChatMyListings => 'My listings';
+
+  @override
+  String get aiChatUpsellTitle => 'AI Assistant plan required';
+
+  @override
+  String get aiChatUpsellBody =>
+      'Subscribe to the AI Assistant plan to chat with the listing chatbot.';
+
+  @override
+  String get aiChatUpsellButton => 'See AI Assistant plan';
+
+  @override
+  String get aiChatUnavailable =>
+      'The listing chatbot is temporarily unavailable.';
 }

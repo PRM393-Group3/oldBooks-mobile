@@ -9361,6 +9361,300 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đang tải ảnh lên ({done}/{total})…'**
   String kycSubmitUploading(int done, int total);
+
+  /// No description provided for @aiAssistButtonCloud.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phân tích ảnh bằng Trợ lý AI'**
+  String get aiAssistButtonCloud;
+
+  /// No description provided for @aiCloudFallback.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI đang bận, chuyển sang AI trên máy.'**
+  String get aiCloudFallback;
+
+  /// No description provided for @aiCloudFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI đang bận, hãy thử lại sau hoặc tự nhập thông tin.'**
+  String get aiCloudFailed;
+
+  /// No description provided for @aiSellBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Để Trợ lý AI điền sẵn thông tin sách từ ảnh và đăng bài giúp bạn. Xem gói Trợ lý AI.'**
+  String get aiSellBanner;
+
+  /// No description provided for @aiErrUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dịch vụ Trợ lý AI tạm chưa khả dụng.'**
+  String get aiErrUnavailable;
+
+  /// No description provided for @aiErrSubscriptionRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn cần đăng ký gói Trợ lý AI để dùng tính năng này.'**
+  String get aiErrSubscriptionRequired;
+
+  /// No description provided for @aiErrQuota.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay bạn đã dùng hết lượt Trợ lý AI.'**
+  String get aiErrQuota;
+
+  /// No description provided for @aiErrUpstream.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI đang bận, hãy thử lại sau.'**
+  String get aiErrUpstream;
+
+  /// No description provided for @aiMenuTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI'**
+  String get aiMenuTitle;
+
+  /// No description provided for @aiMenuSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gói Trợ lý AI và trợ lý đăng bài'**
+  String get aiMenuSubtitle;
+
+  /// No description provided for @aiPlanTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI'**
+  String get aiPlanTitle;
+
+  /// No description provided for @aiPlanHeadline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng bài nhanh hơn với Trợ lý AI'**
+  String get aiPlanHeadline;
+
+  /// No description provided for @aiPlanBenefits.
+  ///
+  /// In vi, this message translates to:
+  /// **'Claude đọc ảnh bìa để điền sẵn thông tin sách, và trợ lý đăng bài trò chuyện để soạn rồi gửi duyệt tin giúp bạn.'**
+  String get aiPlanBenefits;
+
+  /// No description provided for @aiPlanPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'{price} / {days} ngày'**
+  String aiPlanPrice(String price, int days);
+
+  /// No description provided for @aiPlanStatusActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang sử dụng'**
+  String get aiPlanStatusActive;
+
+  /// No description provided for @aiPlanStatusNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đăng ký'**
+  String get aiPlanStatusNone;
+
+  /// No description provided for @aiPlanStatusExpired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hết hạn'**
+  String get aiPlanStatusExpired;
+
+  /// No description provided for @aiPlanExpires.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hết hạn {date} (còn {days} ngày)'**
+  String aiPlanExpires(String date, int days);
+
+  /// No description provided for @aiPlanBalance.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư ví: {amount}'**
+  String aiPlanBalance(String amount);
+
+  /// No description provided for @aiPlanBuy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký {price}'**
+  String aiPlanBuy(String price);
+
+  /// No description provided for @aiPlanRenew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gia hạn {price}'**
+  String aiPlanRenew(String price);
+
+  /// No description provided for @aiPlanBought.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã kích hoạt gói Trợ lý AI.'**
+  String get aiPlanBought;
+
+  /// No description provided for @aiPlanInsufficient.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư ví không đủ: cần {required}, hiện có {available}.'**
+  String aiPlanInsufficient(String required, String available);
+
+  /// No description provided for @aiPlanTopup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp tiền vào ví'**
+  String get aiPlanTopup;
+
+  /// No description provided for @aiPlanUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dịch vụ Trợ lý AI tạm chưa khả dụng, vui lòng quay lại sau.'**
+  String get aiPlanUnavailable;
+
+  /// No description provided for @aiPlanQuota.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay đã dùng {used}/{quota} lượt'**
+  String aiPlanQuota(int used, int quota);
+
+  /// No description provided for @aiPlanUsedToday.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay đã dùng {used} lượt'**
+  String aiPlanUsedToday(int used);
+
+  /// No description provided for @aiPlanOpenChat.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở Trợ lý đăng bài'**
+  String get aiPlanOpenChat;
+
+  /// No description provided for @aiChatTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý đăng bài'**
+  String get aiChatTitle;
+
+  /// No description provided for @aiChatNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cuộc trò chuyện mới'**
+  String get aiChatNew;
+
+  /// No description provided for @aiChatUntitled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cuộc trò chuyện'**
+  String get aiChatUntitled;
+
+  /// No description provided for @aiChatEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có cuộc trò chuyện nào'**
+  String get aiChatEmpty;
+
+  /// No description provided for @aiChatEmptyHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi ảnh sách và nhờ trợ lý soạn, đăng tin giúp bạn.'**
+  String get aiChatEmptyHint;
+
+  /// No description provided for @aiChatIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chào bạn! Gửi ảnh sách và mô tả ngắn, mình sẽ soạn tin và gửi duyệt giúp bạn.'**
+  String get aiChatIntro;
+
+  /// No description provided for @aiChatDelete.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa cuộc trò chuyện'**
+  String get aiChatDelete;
+
+  /// No description provided for @aiChatDeleteConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa cuộc trò chuyện này? Các tin đã gửi duyệt không bị ảnh hưởng.'**
+  String get aiChatDeleteConfirm;
+
+  /// No description provided for @aiChatInputHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắn cho trợ lý…'**
+  String get aiChatInputHint;
+
+  /// No description provided for @aiChatAttach.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đính kèm ảnh'**
+  String get aiChatAttach;
+
+  /// No description provided for @aiChatAttachedCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} ảnh'**
+  String aiChatAttachedCount(int count);
+
+  /// No description provided for @aiChatPhotoLimit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối đa {max} ảnh mỗi tin nhắn.'**
+  String aiChatPhotoLimit(int max);
+
+  /// No description provided for @aiChatThinking.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý đang xử lý…'**
+  String get aiChatThinking;
+
+  /// No description provided for @aiChatSendFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không gửi được tin nhắn. Hãy thử lại.'**
+  String get aiChatSendFailed;
+
+  /// No description provided for @aiChatSubmittedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tin đã gửi duyệt'**
+  String get aiChatSubmittedTitle;
+
+  /// No description provided for @aiChatViewListing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem tin'**
+  String get aiChatViewListing;
+
+  /// No description provided for @aiChatMyListings.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tin của tôi'**
+  String get aiChatMyListings;
+
+  /// No description provided for @aiChatUpsellTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần gói Trợ lý AI'**
+  String get aiChatUpsellTitle;
+
+  /// No description provided for @aiChatUpsellBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký gói Trợ lý AI để trò chuyện với trợ lý đăng bài.'**
+  String get aiChatUpsellBody;
+
+  /// No description provided for @aiChatUpsellButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem gói Trợ lý AI'**
+  String get aiChatUpsellButton;
+
+  /// No description provided for @aiChatUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý đăng bài tạm chưa khả dụng.'**
+  String get aiChatUnavailable;
 }
 
 class _AppLocalizationsDelegate

@@ -17,6 +17,7 @@ import '../../auth/application/auth_controller.dart';
 import '../../sell/application/my_listings_provider.dart';
 import '../../orders/application/order_providers.dart';
 import '../application/address_providers.dart';
+import '../../ai_assistant/presentation/ai_profile_tile.dart';
 import '../../kyc/presentation/kyc_profile_tile.dart';
 import '../../notifications/application/notification_providers.dart';
 import '../../auctions/application/auction_providers.dart';
@@ -173,6 +174,7 @@ class _ProfileBody extends ConsumerWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         const KycProfileTile(),
+        const AiProfileTile(),
         const SizedBox(height: AppSpacing.md),
         AppSection(
           children: [

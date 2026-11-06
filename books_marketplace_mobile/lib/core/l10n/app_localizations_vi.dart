@@ -5304,4 +5304,180 @@ class AppLocalizationsVi extends AppLocalizations {
   String kycSubmitUploading(int done, int total) {
     return 'Đang tải ảnh lên ($done/$total)…';
   }
+
+  @override
+  String get aiAssistButtonCloud => 'Phân tích ảnh bằng Trợ lý AI';
+
+  @override
+  String get aiCloudFallback => 'Trợ lý AI đang bận, chuyển sang AI trên máy.';
+
+  @override
+  String get aiCloudFailed =>
+      'Trợ lý AI đang bận, hãy thử lại sau hoặc tự nhập thông tin.';
+
+  @override
+  String get aiSellBanner =>
+      'Để Trợ lý AI điền sẵn thông tin sách từ ảnh và đăng bài giúp bạn. Xem gói Trợ lý AI.';
+
+  @override
+  String get aiErrUnavailable => 'Dịch vụ Trợ lý AI tạm chưa khả dụng.';
+
+  @override
+  String get aiErrSubscriptionRequired =>
+      'Bạn cần đăng ký gói Trợ lý AI để dùng tính năng này.';
+
+  @override
+  String get aiErrQuota => 'Hôm nay bạn đã dùng hết lượt Trợ lý AI.';
+
+  @override
+  String get aiErrUpstream => 'Trợ lý AI đang bận, hãy thử lại sau.';
+
+  @override
+  String get aiMenuTitle => 'Trợ lý AI';
+
+  @override
+  String get aiMenuSubtitle => 'Gói Trợ lý AI và trợ lý đăng bài';
+
+  @override
+  String get aiPlanTitle => 'Trợ lý AI';
+
+  @override
+  String get aiPlanHeadline => 'Đăng bài nhanh hơn với Trợ lý AI';
+
+  @override
+  String get aiPlanBenefits =>
+      'Claude đọc ảnh bìa để điền sẵn thông tin sách, và trợ lý đăng bài trò chuyện để soạn rồi gửi duyệt tin giúp bạn.';
+
+  @override
+  String aiPlanPrice(String price, int days) {
+    return '$price / $days ngày';
+  }
+
+  @override
+  String get aiPlanStatusActive => 'Đang sử dụng';
+
+  @override
+  String get aiPlanStatusNone => 'Chưa đăng ký';
+
+  @override
+  String get aiPlanStatusExpired => 'Đã hết hạn';
+
+  @override
+  String aiPlanExpires(String date, int days) {
+    return 'Hết hạn $date (còn $days ngày)';
+  }
+
+  @override
+  String aiPlanBalance(String amount) {
+    return 'Số dư ví: $amount';
+  }
+
+  @override
+  String aiPlanBuy(String price) {
+    return 'Đăng ký $price';
+  }
+
+  @override
+  String aiPlanRenew(String price) {
+    return 'Gia hạn $price';
+  }
+
+  @override
+  String get aiPlanBought => 'Đã kích hoạt gói Trợ lý AI.';
+
+  @override
+  String aiPlanInsufficient(String required, String available) {
+    return 'Số dư ví không đủ: cần $required, hiện có $available.';
+  }
+
+  @override
+  String get aiPlanTopup => 'Nạp tiền vào ví';
+
+  @override
+  String get aiPlanUnavailable =>
+      'Dịch vụ Trợ lý AI tạm chưa khả dụng, vui lòng quay lại sau.';
+
+  @override
+  String aiPlanQuota(int used, int quota) {
+    return 'Hôm nay đã dùng $used/$quota lượt';
+  }
+
+  @override
+  String aiPlanUsedToday(int used) {
+    return 'Hôm nay đã dùng $used lượt';
+  }
+
+  @override
+  String get aiPlanOpenChat => 'Mở Trợ lý đăng bài';
+
+  @override
+  String get aiChatTitle => 'Trợ lý đăng bài';
+
+  @override
+  String get aiChatNew => 'Cuộc trò chuyện mới';
+
+  @override
+  String get aiChatUntitled => 'Cuộc trò chuyện';
+
+  @override
+  String get aiChatEmpty => 'Chưa có cuộc trò chuyện nào';
+
+  @override
+  String get aiChatEmptyHint =>
+      'Gửi ảnh sách và nhờ trợ lý soạn, đăng tin giúp bạn.';
+
+  @override
+  String get aiChatIntro =>
+      'Chào bạn! Gửi ảnh sách và mô tả ngắn, mình sẽ soạn tin và gửi duyệt giúp bạn.';
+
+  @override
+  String get aiChatDelete => 'Xóa cuộc trò chuyện';
+
+  @override
+  String get aiChatDeleteConfirm =>
+      'Xóa cuộc trò chuyện này? Các tin đã gửi duyệt không bị ảnh hưởng.';
+
+  @override
+  String get aiChatInputHint => 'Nhắn cho trợ lý…';
+
+  @override
+  String get aiChatAttach => 'Đính kèm ảnh';
+
+  @override
+  String aiChatAttachedCount(int count) {
+    return '$count ảnh';
+  }
+
+  @override
+  String aiChatPhotoLimit(int max) {
+    return 'Tối đa $max ảnh mỗi tin nhắn.';
+  }
+
+  @override
+  String get aiChatThinking => 'Trợ lý đang xử lý…';
+
+  @override
+  String get aiChatSendFailed => 'Không gửi được tin nhắn. Hãy thử lại.';
+
+  @override
+  String get aiChatSubmittedTitle => 'Tin đã gửi duyệt';
+
+  @override
+  String get aiChatViewListing => 'Xem tin';
+
+  @override
+  String get aiChatMyListings => 'Tin của tôi';
+
+  @override
+  String get aiChatUpsellTitle => 'Cần gói Trợ lý AI';
+
+  @override
+  String get aiChatUpsellBody =>
+      'Đăng ký gói Trợ lý AI để trò chuyện với trợ lý đăng bài.';
+
+  @override
+  String get aiChatUpsellButton => 'Xem gói Trợ lý AI';
+
+  @override
+  String get aiChatUnavailable => 'Trợ lý đăng bài tạm chưa khả dụng.';
 }
