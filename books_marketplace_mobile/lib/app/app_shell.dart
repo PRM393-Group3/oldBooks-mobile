@@ -7,6 +7,7 @@ import '../core/widgets/app_bottom_nav.dart';
 import '../core/config/config_providers.dart';
 import '../features/ai_assistant/application/ai_providers.dart';
 import '../features/notifications/application/notification_providers.dart';
+import '../features/ai_assistant/presentation/ai_floating_button.dart';
 import 'nav_config.dart';
 
 /// Khung có thanh điều hướng dưới 5 tab; mỗi tab giữ stack riêng nhờ
@@ -51,7 +52,24 @@ class _AppShellState extends ConsumerState<AppShell>
     final shell = widget.navigationShell;
 
     return Scaffold(
-      body: shell,
+      body: Stack(
+        children: [
+          shell,
+          // Nút nổi Trợ lý AI; tự ẩn theo màn hình, bàn phím, trạng thái AI.
+          Positioned.fill(
+            child: ListenableBuilder(
+              listenable: GoRouter.of(context).routerDelegate,
+              builder: (context, _) => AiFloatingButton(
+                path: GoRouter.of(context)
+                    .routerDelegate
+                    .currentConfiguration
+                    .uri
+                    .path,
+              ),
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: AppBottomNav(
         currentIndex: shell.currentIndex,
         // Chạm lại tab đang mở thì về gốc stack của tab đó.

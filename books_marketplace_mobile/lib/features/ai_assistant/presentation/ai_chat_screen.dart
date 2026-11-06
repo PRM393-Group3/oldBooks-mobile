@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/l10n/api_error_l10n.dart';
+import '../../../core/l10n/app_localizations.dart';
 import '../../../core/network/api_error.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
@@ -19,6 +20,8 @@ import '../application/ai_providers.dart';
 import '../data/ai_repository.dart';
 import '../domain/ai_models.dart';
 import 'ai_chat_list_screen.dart';
+import 'ai_markdown.dart';
+import 'ai_question_card.dart';
 
 /// Khung chat với Trợ lý đăng bài. [conversationId] null: cuộc trò chuyện mới,
 /// chỉ tạo trên server khi gửi tin đầu tiên.
@@ -42,6 +45,12 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
   Object? _loadError;
   bool _sending = false;
 
+  /// Thẻ câu hỏi đang mở (từ lượt trả lời cuối hoặc khi mở lại hội thoại).
+  AiPendingQuestion? _question;
+
+  /// Người dùng chọn "Để mình tự gõ": ẩn thẻ cho tới khi có thẻ mới.
+  bool _questionDismissed = false;
+
   @override
   void initState() {
     super.initState();
@@ -62,12 +71,14 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
       _loadError = null;
     });
     try {
-      final m = await ref.read(aiRepositoryProvider).messages(_id!);
+      final detail = await ref.read(aiRepositoryProvider).conversation(_id!);
       if (!mounted) return;
       setState(() {
         _messages
           ..clear()
-          ..addAll(m);
+          ..addAll(detail.messages);
+        _question = detail.pendingQuestion;
+        _questionDismissed = false;
       });
       _toBottom();
     } catch (e) {
@@ -109,10 +120,25 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     }
   }
 
-  Future<void> _submit() async {
-    final text = _input.text.trim();
-    if (_sending || (text.isEmpty && _pending.isEmpty)) return;
-    final images = List<PickedImage>.of(_pending);
+  Future<void> _submit() => _deliver(text: _input.text.trim());
+
+  void _answerQuestion(List<AiAnswer> answers, String summary) =>
+      _deliver(text: '', answers: answers, shownText: summary);
+
+  /// Gửi một lượt. [shownText] là chữ hiện ở bong bóng người dùng khi trả lời
+  /// bằng thẻ (mặc định là [text]).
+  Future<void> _deliver({
+    required String text,
+    List<AiAnswer> answers = const [],
+    String? shownText,
+  }) async {
+    final withImages = answers.isEmpty;
+    if (_sending || (text.isEmpty && answers.isEmpty && (_pending.isEmpty))) {
+      return;
+    }
+    final images = withImages
+        ? List<PickedImage>.of(_pending)
+        : <PickedImage>[];
     setState(() => _sending = true);
     try {
       final repo = ref.read(aiRepositoryProvider);
@@ -129,6 +155,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         _id!,
         text: text,
         blobNames: blobs,
+        answers: answers,
         idempotencyKey: _send.key,
       );
       _send.settle();
@@ -139,7 +166,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             AiMessage(
               id: 'u${_messages.length}',
               isUser: true,
-              text: text,
+              text: shownText ?? text,
               imageCount: images.length,
             ),
           )
@@ -152,8 +179,10 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
               listingIds: reply.listingIds,
             ),
           );
-        _input.clear();
-        _pending.clear();
+        _question = reply.pendingQuestion;
+        _questionDismissed = false;
+        if (answers.isEmpty) _input.clear();
+        if (withImages) _pending.clear();
       });
       _toBottom();
     } catch (e) {
@@ -165,15 +194,91 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
           e is ApiError ? e.localized(l) : l.aiChatSendFailed,
           type: AppSnackbarType.error,
         );
-        if (e is ApiError &&
-            (e.code == ApiErrorCode.aiSubscriptionRequired ||
-                e.code == ApiErrorCode.aiUnavailable)) {
-          ref.read(aiStatusProvider.notifier).refresh();
+        if (e is ApiError) {
+          if (e.code == ApiErrorCode.aiSubscriptionRequired ||
+              e.code == ApiErrorCode.aiUnavailable) {
+            ref.read(aiStatusProvider.notifier).refresh();
+          } else if (e.code == ApiErrorCode.aiNoPendingQuestion) {
+            // Thẻ không còn hiệu lực: tải lại hội thoại và bỏ thẻ.
+            setState(() => _question = null);
+            if (_id != null) _refreshAfterStale();
+          }
         }
+        // Lỗi dữ liệu (400): giữ nguyên thẻ để người dùng sửa đáp án.
       }
     } finally {
       if (mounted) setState(() => _sending = false);
     }
+  }
+
+  Future<void> _refreshAfterStale() async {
+    try {
+      final detail = await ref.read(aiRepositoryProvider).conversation(_id!);
+      if (!mounted) return;
+      setState(() {
+        _messages
+          ..clear()
+          ..addAll(detail.messages);
+        _question = detail.pendingQuestion;
+        _questionDismissed = false;
+      });
+      _toBottom();
+    } catch (_) {
+      // Giữ nguyên danh sách hiện có.
+    }
+  }
+
+  Widget _buildList(AppLocalizations l) {
+    final showCard = _question != null && !_questionDismissed;
+    final lastIsAssistant = _messages.isEmpty || !_messages.last.isUser;
+    final card = showCard && lastIsAssistant;
+    final head = _messages.isEmpty ? 1 : 0;
+    final count = head + _messages.length + (card ? 1 : 0) + (_sending ? 1 : 0);
+    return ListView.builder(
+      controller: _scroll,
+      padding: AppSpacing.screenPadding,
+      itemCount: count,
+      itemBuilder: (context, i) {
+        if (i < head) {
+          return _Bubble(isUser: false, child: Text(l.aiChatIntro));
+        }
+        i -= head;
+        if (i < _messages.length) {
+          return _MessageView(
+            key: ValueKey(_messages[i].id),
+            message: _messages[i],
+          );
+        }
+        i -= _messages.length;
+        if (card && i == 0) {
+          return Align(
+            alignment: Alignment.centerLeft,
+            child: AiQuestionCard(
+              key: ObjectKey(_question),
+              pending: _question!,
+              enabled: !_sending,
+              onSubmit: _answerQuestion,
+              onDismiss: () => setState(() => _questionDismissed = true),
+            ),
+          );
+        }
+        return _Bubble(
+          isUser: false,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+              const SizedBox(width: AppSpacing.xs),
+              Text(l.aiChatThinking),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -195,35 +300,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             ? AppErrorView(error: _loadError!, onRetry: _load)
             : Column(
                 children: [
-                  Expanded(
-                    child: ListView(
-                      controller: _scroll,
-                      padding: AppSpacing.screenPadding,
-                      children: [
-                        if (_messages.isEmpty)
-                          _Bubble(isUser: false, child: Text(l.aiChatIntro)),
-                        for (final m in _messages) _MessageView(message: m),
-                        if (_sending)
-                          _Bubble(
-                            isUser: false,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                ),
-                                const SizedBox(width: AppSpacing.xs),
-                                Text(l.aiChatThinking),
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
+                  Expanded(child: _buildList(l)),
                   _Composer(
                     controller: _input,
                     pending: _pending,
@@ -363,7 +440,7 @@ class _Bubble extends StatelessWidget {
 }
 
 class _MessageView extends StatelessWidget {
-  const _MessageView({required this.message});
+  const _MessageView({super.key, required this.message});
 
   final AiMessage message;
 
@@ -390,7 +467,10 @@ class _MessageView extends StatelessWidget {
                     Text(l.aiChatAttachedCount(message.imageCount)),
                   ],
                 ),
-              if (message.text.isNotEmpty) SelectableText(message.text),
+              if (message.text.isNotEmpty)
+                message.isUser
+                    ? SelectableText(message.text)
+                    : AiMarkdown(message.text),
             ],
           ),
         ),

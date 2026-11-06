@@ -9655,6 +9655,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Trợ lý đăng bài tạm chưa khả dụng.'**
   String get aiChatUnavailable;
+
+  /// No description provided for @aiQuestionOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get aiQuestionOther;
+
+  /// No description provided for @aiQuestionOtherHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập câu trả lời của bạn'**
+  String get aiQuestionOtherHint;
+
+  /// No description provided for @aiQuestionSend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi'**
+  String get aiQuestionSend;
+
+  /// No description provided for @aiQuestionTypeMyself.
+  ///
+  /// In vi, this message translates to:
+  /// **'Để mình tự gõ'**
+  String get aiQuestionTypeMyself;
+
+  /// No description provided for @aiQuestionExpired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Câu hỏi này không còn hiệu lực. Hãy gõ tin nhắn mới.'**
+  String get aiQuestionExpired;
+
+  /// No description provided for @aiFabLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI đăng bài'**
+  String get aiFabLabel;
 }
 
 class _AppLocalizationsDelegate

@@ -92,8 +92,14 @@ class AiRepository {
 
   /// Tin nhắn của hội thoại. Chấp nhận `data` là mảng tin nhắn hoặc object có
   /// `messages`.
-  Future<List<AiMessage>> messages(String id) =>
-      _api.get('/me/ai/conversations/$id', parse: parseAiMessages);
+  Future<List<AiMessage>> messages(String id) async =>
+      (await conversation(id)).messages;
+
+  /// Tin nhắn kèm thẻ câu hỏi còn mở (nếu có).
+  Future<AiConversationDetail> conversation(String id) => _api.get(
+    '/me/ai/conversations/$id',
+    parse: AiConversationDetail.fromJson,
+  );
 
   Future<void> deleteConversation(String id) =>
       _api.deleteNoContent('/me/ai/conversations/$id');
@@ -102,21 +108,16 @@ class AiRepository {
     String conversationId, {
     required String text,
     List<String> blobNames = const [],
+    List<AiAnswer> answers = const [],
     required String idempotencyKey,
   }) => _api.post(
     '/me/ai/conversations/$conversationId/messages',
-    body: {'text': text, 'blobNames': blobNames},
+    body: {
+      'text': text,
+      'blobNames': blobNames,
+      if (answers.isNotEmpty) 'answers': [for (final a in answers) a.toJson()],
+    },
     headers: {'Idempotency-Key': idempotencyKey},
     parse: AiAgentReply.fromJson,
   );
-}
-
-List<AiMessage> parseAiMessages(dynamic data) {
-  final raw = data is List
-      ? data
-      : (data is Map ? (data['messages'] as List? ?? const []) : const []);
-  return [
-    for (final m in raw)
-      if (m is Map) AiMessage.fromJson(m),
-  ];
 }

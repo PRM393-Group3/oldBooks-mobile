@@ -5480,4 +5480,23 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get aiChatUnavailable => 'Trợ lý đăng bài tạm chưa khả dụng.';
+
+  @override
+  String get aiQuestionOther => 'Khác';
+
+  @override
+  String get aiQuestionOtherHint => 'Nhập câu trả lời của bạn';
+
+  @override
+  String get aiQuestionSend => 'Gửi';
+
+  @override
+  String get aiQuestionTypeMyself => 'Để mình tự gõ';
+
+  @override
+  String get aiQuestionExpired =>
+      'Câu hỏi này không còn hiệu lực. Hãy gõ tin nhắn mới.';
+
+  @override
+  String get aiFabLabel => 'Trợ lý AI đăng bài';
 }
