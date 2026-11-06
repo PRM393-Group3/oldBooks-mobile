@@ -30,6 +30,9 @@ import '../../listings/domain/listing_enums.dart';
 import '../../listings/domain/listing_query.dart';
 import '../../auctions/application/auction_providers.dart';
 import '../../auctions/domain/auction.dart';
+import '../../ai_assistant/application/ai_providers.dart';
+import '../../ai_assistant/data/ai_repository.dart';
+import '../../ai_assistant/domain/ai_models.dart';
 import '../ai/book_ai_sheet.dart';
 import '../application/listing_publisher.dart';
 import '../application/my_listings_provider.dart';
@@ -330,35 +333,111 @@ class _SellScreenState extends ConsumerState<SellScreen> {
     _sync();
   }
 
-  /// AI trên máy đọc ảnh bìa (ảnh mới chọn đầu tiên), gợi ý thông tin sách, tình
-  /// trạng và mô tả. Người bán vẫn sửa được; mô tả đã có thì nối thêm, các ô
-  /// khác đã có nội dung thì giữ nguyên.
+  bool _aiBusy = false;
+
+  /// AI đọc ảnh bìa (ảnh mới chọn), gợi ý thông tin sách, tình trạng và mô tả.
+  /// Có gói Trợ lý AI thì Claude ở backend xử lý (tự rơi về model trên máy nếu
+  /// lỗi); không thì dùng model trên máy. Người bán vẫn sửa được; mô tả đã có
+  /// thì nối thêm, các ô khác đã có nội dung thì giữ nguyên.
   Future<void> _analyzeWithAi() async {
-    final bytes = _photos
-        .map((p) => p.photo?.bytes)
-        .whereType<Uint8List>()
-        .firstOrNull;
-    if (bytes == null) {
+    final photos = _photos.map((p) => p.photo).whereType<NewPhoto>().toList();
+    if (photos.isEmpty) {
       AppSnackbar.show(context, context.l10n.aiNeedPhoto);
       return;
     }
-    final result = await showBookAiSheet(context, bytes);
+    if (ref.read(aiRouteProvider) == AiRoute.claude) {
+      if (await _analyzeWithClaude(photos) || !mounted) return;
+      if (!Platform.isAndroid) return;
+    }
+    final result = await showBookAiSheet(context, photos.first.bytes);
     if (result == null || !mounted) return;
-    final current = _desc.text.trim();
-    _desc.text = current.isEmpty
-        ? result.description
-        : '$current\n${result.description}';
+    _applyAi(
+      description: result.description,
+      title: result.title,
+      author: result.author,
+      publisher: result.publisher,
+      year: result.year,
+      defects: result.defects,
+      condition: result.condition,
+    );
+  }
+
+  /// `true` nếu Claude đã điền xong. `false`: lỗi, đã báo người dùng và để
+  /// phần gọi rơi về model trên máy.
+  Future<bool> _analyzeWithClaude(List<NewPhoto> photos) async {
+    final l = context.l10n;
+    setState(() => _aiBusy = true);
+    try {
+      final result = await ref.read(aiRepositoryProvider).extractFromImages([
+        for (final p in photos.take(aiMaxImages))
+          AiImage(
+            bytes: p.bytes,
+            fileName: p.fileName,
+            contentType: p.contentType,
+          ),
+      ]);
+      if (!mounted) return true;
+      _applyAi(
+        description: result.descriptionDraft,
+        title: result.title,
+        author: result.author,
+        publisher: result.publisher,
+        year: result.publishYear,
+        isbn: result.isbn,
+        condition: SellCondition.values
+            .where((c) => c.code == result.conditionHint?.toUpperCase())
+            .firstOrNull,
+      );
+      return true;
+    } catch (e) {
+      if (e is ApiError &&
+          e.code == ApiErrorCode.aiSubscriptionRequired &&
+          mounted) {
+        ref.read(aiStatusProvider.notifier).refresh();
+      }
+      final silent =
+          e is ApiError &&
+          (e.code == ApiErrorCode.aiSubscriptionRequired ||
+              e.code == ApiErrorCode.aiUnavailable);
+      if (mounted && !silent) {
+        AppSnackbar.show(
+          context,
+          Platform.isAndroid ? l.aiCloudFallback : l.aiCloudFailed,
+          type: AppSnackbarType.error,
+        );
+      }
+      return false;
+    } finally {
+      if (mounted) setState(() => _aiBusy = false);
+    }
+  }
+
+  void _applyAi({
+    String? description,
+    String? title,
+    String? author,
+    String? publisher,
+    int? year,
+    String? isbn,
+    String? defects,
+    SellCondition? condition,
+  }) {
+    if (description != null && description.isNotEmpty) {
+      final current = _desc.text.trim();
+      _desc.text = current.isEmpty ? description : '$current\n$description';
+    }
     // Thông tin trên bìa chỉ điền vào ô còn trống, không ghi đè nội dung đã nhập.
     void fillIfEmpty(TextEditingController c, String? v) {
       if (v != null && c.text.trim().isEmpty) c.text = v;
     }
 
-    fillIfEmpty(_title, result.title);
-    fillIfEmpty(_author, result.author);
-    fillIfEmpty(_publisher, result.publisher);
-    fillIfEmpty(_year, result.year?.toString());
-    fillIfEmpty(_defects, result.defects);
-    _update((x) => x.copyWith(condition: result.condition));
+    fillIfEmpty(_title, title);
+    fillIfEmpty(_author, author);
+    fillIfEmpty(_publisher, publisher);
+    fillIfEmpty(_year, year?.toString());
+    fillIfEmpty(_isbn, isbn);
+    fillIfEmpty(_defects, defects);
+    if (condition != null) _update((x) => x.copyWith(condition: condition));
     _sync();
   }
 
@@ -750,6 +829,10 @@ class _SellScreenState extends ConsumerState<SellScreen> {
 
   List<Widget> _bookSection(BuildContext context, SellForm f, SellRules rules) {
     final l = context.l10n;
+    final aiRoute = ref.watch(aiRouteProvider);
+    final aiStatus = ref.watch(aiStatusProvider).value;
+    final aiOffer =
+        aiStatus != null && aiStatus.claudeAvailable && !aiStatus.subscribed;
     final categories = ref.watch(categoryTreeProvider).value ?? const [];
     final isSet = _kind == ListingKind.set;
     return [
@@ -841,13 +924,32 @@ class _SellScreenState extends ConsumerState<SellScreen> {
             ),
         ],
       ),
-      if (Platform.isAndroid) ...[
+      if (Platform.isAndroid || aiRoute == AiRoute.claude) ...[
         const SizedBox(height: AppSpacing.xs),
         AppButton(
-          label: l.aiAssistButton,
+          label: aiRoute == AiRoute.claude
+              ? l.aiAssistButtonCloud
+              : l.aiAssistButton,
           icon: Icons.auto_awesome,
           variant: AppButtonVariant.secondary,
+          loading: _aiBusy,
           onPressed: _busy ? null : _analyzeWithAi,
+        ),
+      ],
+      if (aiOffer) ...[
+        const SizedBox(height: AppSpacing.xs),
+        AppCard(
+          onTap: () => context.push('/me/ai'),
+          child: Row(
+            children: [
+              Icon(Icons.auto_awesome, color: context.colors.primary),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(l.aiSellBanner, style: context.text.bodySmall),
+              ),
+              const Icon(Icons.chevron_right),
+            ],
+          ),
         ),
       ],
       const SizedBox(height: AppSpacing.md),

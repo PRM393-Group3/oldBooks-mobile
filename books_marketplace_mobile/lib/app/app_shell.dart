@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../core/theme/theme_context.dart';
 import '../core/widgets/app_bottom_nav.dart';
 import '../core/config/config_providers.dart';
+import '../features/ai_assistant/application/ai_providers.dart';
 import '../features/notifications/application/notification_providers.dart';
 import 'nav_config.dart';
 
@@ -38,6 +39,7 @@ class _AppShellState extends ConsumerState<AppShell>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       ref.invalidate(unreadCountProvider);
+      ref.read(aiStatusProvider.notifier).refresh();
       // Tự bỏ qua nếu mới tải dưới 60 giây trước.
       ref.read(publicConfigProvider.notifier).refresh();
     }

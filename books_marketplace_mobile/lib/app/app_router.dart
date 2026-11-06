@@ -20,6 +20,9 @@ import '../features/auth/presentation/register_screen.dart';
 import '../features/complaints/presentation/complaint_detail_screen.dart';
 import '../features/complaints/presentation/complaints_screen.dart';
 import '../features/complaints/presentation/open_complaint_screen.dart';
+import '../features/ai_assistant/presentation/ai_chat_list_screen.dart';
+import '../features/ai_assistant/presentation/ai_chat_screen.dart';
+import '../features/ai_assistant/presentation/ai_subscription_screen.dart';
 import '../features/kyc/presentation/kyc_flow_screen.dart';
 import '../features/kyc/presentation/kyc_status_screen.dart';
 import '../features/listings/presentation/browse/book_detail_screen.dart';
@@ -203,6 +206,32 @@ final routerProvider = Provider<GoRouter>((ref) {
                         builder: (_, state) => EditListingScreen(
                           listingId: state.pathParameters['id']!,
                         ),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'ai',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const AiSubscriptionScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'chat',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, _) => const AiChatListScreen(),
+                        routes: [
+                          GoRoute(
+                            path: 'new',
+                            parentNavigatorKey: rootKey,
+                            builder: (_, _) => const AiChatScreen(),
+                          ),
+                          GoRoute(
+                            path: ':id',
+                            parentNavigatorKey: rootKey,
+                            builder: (_, state) => AiChatScreen(
+                              conversationId: state.pathParameters['id'],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

@@ -103,6 +103,11 @@ extension ApiErrorL10n on ApiError {
       ApiErrorCode.kycLimitReached => l.kycErrLimitReached,
       ApiErrorCode.kycConsentRequired => l.kycErrConsentRequired,
       ApiErrorCode.kycImageInvalid => l.kycErrImageInvalid,
+      ApiErrorCode.aiUnavailable => l.aiErrUnavailable,
+      ApiErrorCode.aiSubscriptionRequired => l.aiErrSubscriptionRequired,
+      ApiErrorCode.aiQuotaExceeded => l.aiErrQuota,
+      ApiErrorCode.aiUpstreamError => l.aiErrUpstream,
+      ApiErrorCode.aiConversationNotFound => l.errNotFound,
       ApiErrorCode.upstreamError ||
       ApiErrorCode.serviceUnavailable => l.errUpstream,
       ApiErrorCode.network => l.errorNetwork,
