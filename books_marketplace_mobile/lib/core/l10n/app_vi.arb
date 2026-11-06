@@ -2787,5 +2787,11 @@
   "aiChatUpsellTitle": "Cần gói Trợ lý AI",
   "aiChatUpsellBody": "Đăng ký gói Trợ lý AI để trò chuyện với trợ lý đăng bài.",
   "aiChatUpsellButton": "Xem gói Trợ lý AI",
-  "aiChatUnavailable": "Trợ lý đăng bài tạm chưa khả dụng."
+  "aiChatUnavailable": "Trợ lý đăng bài tạm chưa khả dụng.",
+  "aiQuestionOther": "Khác",
+  "aiQuestionOtherHint": "Nhập câu trả lời của bạn",
+  "aiQuestionSend": "Gửi",
+  "aiQuestionTypeMyself": "Để mình tự gõ",
+  "aiQuestionExpired": "Câu hỏi này không còn hiệu lực. Hãy gõ tin nhắn mới.",
+  "aiFabLabel": "Trợ lý AI đăng bài"
 }

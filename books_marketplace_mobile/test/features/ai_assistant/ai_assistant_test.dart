@@ -19,7 +19,69 @@ const _status = {
   'provider': 'CLAUDE',
 };
 
+const _pending = {
+  'questions': [
+    {
+      'id': 'q1',
+      'kind': 'SINGLE_CHOICE',
+      'prompt': 'Tình trạng sách?',
+      'options': [
+        {'value': 'NEW', 'label': 'Mới'},
+        {'value': 'GOOD', 'label': 'Tốt'},
+      ],
+      'allowOther': true,
+    },
+    {
+      'id': 'q2',
+      'kind': 'NUMBER',
+      'prompt': 'Giá?',
+      'options': null,
+      'unit': 'đ',
+      'placeholder': '50.000',
+    },
+  ],
+};
+
 void main() {
+  group('pendingQuestion parsing', () {
+    test('AiAgentReply có pendingQuestion', () {
+      final r = AiAgentReply.fromJson({
+        'reply': 'x',
+        'pendingQuestion': _pending,
+      });
+      final qs = r.pendingQuestion!.questions;
+      expect(qs, hasLength(2));
+      expect(qs[0].kind, AiQuestionKind.singleChoice);
+      expect(qs[0].options.map((o) => o.label), ['Mới', 'Tốt']);
+      expect(qs[0].allowOther, isTrue);
+      expect(qs[1].kind, AiQuestionKind.number);
+      expect(qs[1].options, isEmpty);
+      expect(qs[1].unit, 'đ');
+      expect(qs[1].placeholder, '50.000');
+    });
+
+    test('null hoặc rỗng thì không có thẻ', () {
+      expect(AiAgentReply.fromJson({'reply': 'x'}).pendingQuestion, isNull);
+      expect(
+        AiAgentReply.fromJson({'reply': 'x', 'pendingQuestion': null})
+            .pendingQuestion,
+        isNull,
+      );
+      expect(AiPendingQuestion.tryParse({'questions': <dynamic>[]}), isNull);
+    });
+
+    test('AiAnswer.toJson bỏ trường null', () {
+      expect(const AiAnswer(questionId: 'a', value: 'v').toJson(), {
+        'questionId': 'a',
+        'value': 'v',
+      });
+      expect(const AiAnswer(questionId: 'a', values: ['x']).toJson(), {
+        'questionId': 'a',
+        'values': ['x'],
+      });
+    });
+  });
+
   group('chooseAiRoute', () {
     AiStatus s({required bool available, required bool subscribed}) =>
         AiStatus(claudeAvailable: available, subscribed: subscribed);
@@ -163,6 +225,50 @@ void main() {
       expect(seen.single.headers['Idempotency-Key'], 'k2');
       expect((seen.single.data as Map)['blobNames'], ['u/1.jpg']);
       expect(r.reply, 'ok');
+    });
+
+    test('sendMessage gửi answers đúng hình dạng hợp đồng', () async {
+      setup((_) => jsonResponse(200, okBody({'reply': 'ok'})));
+      await repo.sendMessage(
+        'c1',
+        text: '',
+        answers: const [
+          AiAnswer(questionId: 'q1', value: 'GOOD'),
+          AiAnswer(questionId: 'q2', values: ['a', 'b']),
+        ],
+        idempotencyKey: 'k3',
+      );
+      expect((seen.single.data as Map)['answers'], [
+        {'questionId': 'q1', 'value': 'GOOD'},
+        {
+          'questionId': 'q2',
+          'values': ['a', 'b'],
+        },
+      ]);
+    });
+
+    test('không có answers thì không gửi trường answers', () async {
+      setup((_) => jsonResponse(200, okBody({'reply': 'ok'})));
+      await repo.sendMessage('c1', text: 'hi', idempotencyKey: 'k4');
+      expect((seen.single.data as Map).containsKey('answers'), isFalse);
+    });
+
+    test('GET conversation đọc pendingQuestion', () async {
+      setup(
+        (_) => jsonResponse(
+          200,
+          okBody({
+            'id': 'c1',
+            'messages': [
+              {'id': 'm1', 'role': 'assistant', 'text': 'Tình trạng?'},
+            ],
+            'pendingQuestion': _pending,
+          }),
+        ),
+      );
+      final d = await repo.conversation('c1');
+      expect(d.messages.single.text, 'Tình trạng?');
+      expect(d.pendingQuestion!.questions.first.id, 'q1');
     });
 
     test('AI_UPSTREAM_ERROR là ApiError 502', () async {

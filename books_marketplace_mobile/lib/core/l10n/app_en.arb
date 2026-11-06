@@ -2754,5 +2754,11 @@
   "@aiPlanQuota": {"placeholders": {"used": {"type": "int"}, "quota": {"type": "int"}}},
   "@aiPlanUsedToday": {"placeholders": {"used": {"type": "int"}}},
   "@aiChatAttachedCount": {"placeholders": {"count": {"type": "int"}}},
-  "@aiChatPhotoLimit": {"placeholders": {"max": {"type": "int"}}}
+  "@aiChatPhotoLimit": {"placeholders": {"max": {"type": "int"}}},
+  "aiQuestionOther": "Other",
+  "aiQuestionOtherHint": "Type your answer",
+  "aiQuestionSend": "Send",
+  "aiQuestionTypeMyself": "I will type it myself",
+  "aiQuestionExpired": "This question is no longer active. Send a new message.",
+  "aiFabLabel": "AI listing assistant"
 }

@@ -191,6 +191,130 @@ class AiMessage {
   final DateTime? createdAt;
 }
 
+enum AiQuestionKind {
+  singleChoice,
+  multiChoice,
+  text,
+  number;
+
+  static AiQuestionKind parse(String? v) => switch (v?.toUpperCase()) {
+    'MULTI_CHOICE' => multiChoice,
+    'TEXT' => text,
+    'NUMBER' => number,
+    _ => singleChoice,
+  };
+}
+
+class AiQuestionOption {
+  const AiQuestionOption({required this.value, required this.label});
+
+  factory AiQuestionOption.fromJson(dynamic json) {
+    final j = json as Map<dynamic, dynamic>;
+    final value = readString(j, 'value') ?? '';
+    return AiQuestionOption(
+      value: value,
+      label: readString(j, 'label') ?? value,
+    );
+  }
+
+  final String value;
+  final String label;
+}
+
+/// Một câu hỏi của agent (`ask_user`).
+class AiQuestion {
+  const AiQuestion({
+    required this.id,
+    required this.kind,
+    required this.prompt,
+    this.options = const [],
+    this.allowOther = false,
+    this.placeholder,
+    this.unit,
+  });
+
+  factory AiQuestion.fromJson(dynamic json) {
+    final j = json as Map<dynamic, dynamic>;
+    return AiQuestion(
+      id: j['id'].toString(),
+      kind: AiQuestionKind.parse(readString(j, 'kind')),
+      prompt: readString(j, 'prompt') ?? '',
+      options: [
+        for (final o in readList(j, 'options'))
+          if (o is Map) AiQuestionOption.fromJson(o),
+      ],
+      allowOther: readBool(j, 'allowOther') ?? false,
+      placeholder: readString(j, 'placeholder'),
+      unit: readString(j, 'unit'),
+    );
+  }
+
+  final String id;
+  final AiQuestionKind kind;
+  final String prompt;
+  final List<AiQuestionOption> options;
+  final bool allowOther;
+  final String? placeholder;
+  final String? unit;
+}
+
+/// Thẻ câu hỏi đang chờ người dùng trả lời.
+class AiPendingQuestion {
+  const AiPendingQuestion({required this.questions});
+
+  /// null khi không có thẻ mở (hoặc không có câu hỏi hợp lệ).
+  static AiPendingQuestion? tryParse(dynamic json) {
+    if (json is! Map) return null;
+    final qs = [
+      for (final q in readList(json, 'questions'))
+        if (q is Map && q['id'] != null) AiQuestion.fromJson(q),
+    ];
+    return qs.isEmpty ? null : AiPendingQuestion(questions: qs);
+  }
+
+  final List<AiQuestion> questions;
+}
+
+/// Một đáp án gửi kèm tin nhắn: [value] cho một giá trị, [values] cho nhiều.
+class AiAnswer {
+  const AiAnswer({required this.questionId, this.value, this.values});
+
+  final String questionId;
+  final String? value;
+  final List<String>? values;
+
+  Map<String, dynamic> toJson() => {
+    'questionId': questionId,
+    'value': ?value,
+    'values': ?values,
+  };
+}
+
+/// `GET /me/ai/conversations/{id}`.
+class AiConversationDetail {
+  const AiConversationDetail({required this.messages, this.pendingQuestion});
+
+  factory AiConversationDetail.fromJson(dynamic data) => AiConversationDetail(
+    messages: parseAiMessages(data),
+    pendingQuestion: data is Map
+        ? AiPendingQuestion.tryParse(data['pendingQuestion'])
+        : null,
+  );
+
+  final List<AiMessage> messages;
+  final AiPendingQuestion? pendingQuestion;
+}
+
+List<AiMessage> parseAiMessages(dynamic data) {
+  final raw = data is List
+      ? data
+      : (data is Map ? (data['messages'] as List? ?? const []) : const []);
+  return [
+    for (final m in raw)
+      if (m is Map) AiMessage.fromJson(m),
+  ];
+}
+
 /// `POST /me/ai/conversations/{id}/messages`.
 class AiAgentReply {
   const AiAgentReply({
@@ -199,6 +323,7 @@ class AiAgentReply {
     this.listingIds = const [],
     this.submitted = false,
     this.messageId,
+    this.pendingQuestion,
   });
 
   factory AiAgentReply.fromJson(dynamic json) {
@@ -215,6 +340,7 @@ class AiAgentReply {
       ],
       submitted: readBool(j, 'submitted') ?? false,
       messageId: readString(j, 'messageId'),
+      pendingQuestion: AiPendingQuestion.tryParse(j['pendingQuestion']),
     );
   }
 
@@ -223,4 +349,5 @@ class AiAgentReply {
   final List<String> listingIds;
   final bool submitted;
   final String? messageId;
+  final AiPendingQuestion? pendingQuestion;
 }

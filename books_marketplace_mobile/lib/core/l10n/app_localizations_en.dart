@@ -5514,4 +5514,23 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get aiChatUnavailable =>
       'The listing chatbot is temporarily unavailable.';
+
+  @override
+  String get aiQuestionOther => 'Other';
+
+  @override
+  String get aiQuestionOtherHint => 'Type your answer';
+
+  @override
+  String get aiQuestionSend => 'Send';
+
+  @override
+  String get aiQuestionTypeMyself => 'I will type it myself';
+
+  @override
+  String get aiQuestionExpired =>
+      'This question is no longer active. Send a new message.';
+
+  @override
+  String get aiFabLabel => 'AI listing assistant';
 }

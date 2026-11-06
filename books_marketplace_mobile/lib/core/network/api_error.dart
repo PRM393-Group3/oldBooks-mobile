@@ -97,6 +97,7 @@ abstract final class ApiErrorCode {
   static const aiQuotaExceeded = 'AI_QUOTA_EXCEEDED';
   static const aiUpstreamError = 'AI_UPSTREAM_ERROR';
   static const aiConversationNotFound = 'AI_CONVERSATION_NOT_FOUND';
+  static const aiNoPendingQuestion = 'AI_NO_PENDING_QUESTION';
   static const upstreamError = 'UPSTREAM_ERROR';
   static const serviceUnavailable = 'SERVICE_UNAVAILABLE';
 
