@@ -147,10 +147,25 @@ class _Body extends StatelessWidget {
           const SizedBox(height: AppSpacing.lg),
           Text(l.kycLatestTitle, style: context.text.titleSmall),
           const SizedBox(height: AppSpacing.xs),
-          _InfoRow(l.kycFieldName, latest.fullName),
-          _InfoRow(l.kycFieldId, latest.idNumberMasked),
-          if (latest.dateOfBirth != null)
+          if ((latest.fullName ?? '').isNotEmpty)
+            _InfoRow(l.kycFieldName, latest.fullName!),
+          if ((latest.idNumberMasked ?? '').isNotEmpty)
+            _InfoRow(l.kycFieldId, latest.idNumberMasked!),
+          if ((latest.dateOfBirth ?? '').isNotEmpty)
             _InfoRow(l.kycFieldDob, _dob(latest.dateOfBirth!)),
+          if (latest.status != KycStatus.pendingReview &&
+              latest.fullName == null &&
+              latest.idNumberMasked == null &&
+              latest.dateOfBirth == null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.xxs),
+              child: Text(
+                l.kycDataPurged,
+                style: context.text.bodySmall?.copyWith(
+                  color: colors.textSecondary,
+                ),
+              ),
+            ),
           if (latest.submittedAt != null)
             _InfoRow(
               l.kycSubmittedAt,

@@ -181,6 +181,33 @@ void main() {
     });
   });
 
+  group('hồ sơ đã quyết định (dữ liệu đã bị xóa)', () {
+    test('fullName, idNumberMasked, dateOfBirth null vẫn parse được', () {
+      final sub = KycSubmission.fromJson({
+        'id': 's1',
+        'status': 'APPROVED',
+        'fullName': null,
+        'idNumberMasked': null,
+        'dateOfBirth': null,
+        'submittedAt': '2026-01-02T03:04:05Z',
+        'reviewedAt': '2026-01-03T03:04:05Z',
+      });
+      expect(sub.status, KycStatus.approved);
+      expect(sub.fullName, isNull);
+      expect(sub.idNumberMasked, isNull);
+      expect(sub.dateOfBirth, isNull);
+    });
+    test('thiếu hẳn các khóa cũng không lỗi', () {
+      final s = KycState.fromJson({
+        'status': 'REJECTED',
+        'canSubmit': true,
+        'latest': {'id': 's1', 'status': 'REJECTED', 'rejectReason': 'x'},
+      });
+      expect(s.latest!.fullName, isNull);
+      expect(s.latest!.idNumberMasked, isNull);
+    });
+  });
+
   group('upload và gửi hồ sơ', () {
     test('tải ảnh lên kho riêng tư rồi POST kèm Idempotency-Key', () async {
       var n = 0;
@@ -223,10 +250,9 @@ void main() {
         });
       }
 
-      // Thử lại không tải lại ảnh đã có blobName.
-      final before = seen.length;
-      await repo.uploadImages(images);
-      expect(seen.length, before);
+      // Blob cũ đã bị server xóa: tải lại thì phải tải lên mới, tên mới.
+      final again = await repo.uploadImages(images);
+      expect(again, ['u1/blob2.jpg', 'u1/blob3.jpg']);
 
       final result = await repo.submit(
         const KycSubmitRequest(

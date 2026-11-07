@@ -11,21 +11,55 @@ import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
+import '../../../core/util/image_picking.dart';
 import '../../../core/widgets/app_button.dart';
+import '../../../core/widgets/app_snackbar.dart';
+import '../application/kyc_providers.dart';
 import '../domain/kyc_models.dart';
 import '../face/face_image.dart';
 import '../face/liveness_logic.dart';
 
-/// Chạy bước chụp selfie liveness. Trả `null` nếu người dùng thoát. Mặc định
-/// mở camera trên Android; test ghi đè bằng kết quả giả.
+/// Chạy bước chụp selfie. Trả `null` nếu người dùng thoát. Trên Android mở
+/// màn liveness (camera + ML Kit); nền tảng khác đi thẳng tới đường chụp ảnh
+/// thường bằng camera hệ thống, không cần ML Kit. Test ghi đè bằng kết quả giả.
 typedef LivenessRunner = Future<LivenessResult?> Function(BuildContext context);
 
-final livenessRunnerProvider = Provider<LivenessRunner>(
-  (ref) =>
-      (context) => Navigator.of(context).push<LivenessResult>(
-        MaterialPageRoute(builder: (_) => const LivenessCaptureScreen()),
-      ),
-);
+/// Kết quả "chụp ảnh thường": không có khung liveness, không có thử thách; admin
+/// sẽ xem kỹ hơn.
+LivenessResult plainSelfieResult(Uint8List selfie) =>
+    LivenessResult(selfie: selfie, frames: const [], challenges: const []);
+
+/// Chụp ảnh thường bằng camera hệ thống. `null` nếu hủy hoặc lỗi (đã báo).
+Future<LivenessResult?> captureSystemSelfie(
+  BuildContext context,
+  KycSelfieCamera camera,
+) async {
+  try {
+    final bytes = await camera();
+    return bytes == null ? null : plainSelfieResult(bytes);
+  } on ImagePickException catch (e) {
+    if (context.mounted) {
+      final l = context.l10n;
+      AppSnackbar.show(context, switch (e.failure) {
+        ImagePickFailure.unsupported => l.cpEvidenceUnsupported,
+        ImagePickFailure.tooLarge => l.cpEvidenceTooLarge,
+        ImagePickFailure.unavailable => l.errorPickImage,
+      }, type: AppSnackbarType.error);
+    }
+    return null;
+  }
+}
+
+final livenessRunnerProvider = Provider<LivenessRunner>((ref) {
+  return (context) {
+    if (kIsWeb || !Platform.isAndroid) {
+      return captureSystemSelfie(context, ref.read(kycSelfieCameraProvider));
+    }
+    return Navigator.of(context).push<LivenessResult>(
+      MaterialPageRoute(builder: (_) => const LivenessCaptureScreen()),
+    );
+  };
+});
 
 /// Thời gian tối đa cho cả phiên chụp.
 const _sessionTimeout = Duration(seconds: 40);
@@ -39,26 +73,21 @@ const _jpegQuality = 88;
 /// Màn hình chụp selfie có thử thách liveness chủ động. Dùng camera trước, ML
 /// Kit nhận diện mặt trên từng khung hình; mọi quyết định nằm ở
 /// [LivenessSession] (logic thuần, có test). Chỉ Android.
-class LivenessCaptureScreen extends StatefulWidget {
+class LivenessCaptureScreen extends ConsumerStatefulWidget {
   const LivenessCaptureScreen({super.key});
 
   @override
-  State<LivenessCaptureScreen> createState() => _LivenessCaptureScreenState();
+  ConsumerState<LivenessCaptureScreen> createState() =>
+      _LivenessCaptureScreenState();
 }
 
 enum _Stage { starting, running, capturing, failed, denied, unsupported }
 
-class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
+class _LivenessCaptureScreenState extends ConsumerState<LivenessCaptureScreen>
     with WidgetsBindingObserver {
   CameraController? _camera;
   CameraDescription? _description;
-  late final FaceDetector _detector = FaceDetector(
-    options: FaceDetectorOptions(
-      enableClassification: true,
-      performanceMode: FaceDetectorMode.fast,
-      minFaceSize: 0.2,
-    ),
-  );
+  FaceDetector? _detector;
   late LivenessSession _session;
   Timer? _timeout;
 
@@ -90,7 +119,8 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
     WidgetsBinding.instance.removeObserver(this);
     _timeout?.cancel();
     _stopCamera();
-    _detector.close();
+    final detector = _detector;
+    if (detector != null) unawaited(detector.close().catchError((_) {}));
     super.dispose();
   }
 
@@ -105,7 +135,7 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
   }
 
   Future<void> _start() async {
-    if (!Platform.isAndroid) {
+    if (kIsWeb || !Platform.isAndroid) {
       setState(() => _stage = _Stage.unsupported);
       return;
     }
@@ -117,6 +147,13 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
     });
     _session = LivenessSession(pickChallenges(Random.secure()));
     try {
+      _detector ??= FaceDetector(
+        options: FaceDetectorOptions(
+          enableClassification: true,
+          performanceMode: FaceDetectorMode.fast,
+          minFaceSize: 0.2,
+        ),
+      );
       final cameras = await availableCameras();
       final front = cameras
           .where((c) => c.lensDirection == CameraLensDirection.front)
@@ -178,7 +215,9 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
     try {
       final input = _toInputImage(image);
       if (input == null) return;
-      final faces = await _detector.processImage(input);
+      final detector = _detector;
+      if (detector == null) return;
+      final faces = await detector.processImage(input);
       if (!mounted || _stage != _Stage.running) return;
 
       final rotated =
@@ -236,10 +275,14 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
     setState(() => _stage = _Stage.capturing);
     try {
       final file = await camera.takePicture();
-      final raw = await file.readAsBytes();
+      final Uint8List raw;
       try {
-        await File(file.path).delete();
-      } catch (_) {}
+        raw = await file.readAsBytes();
+      } finally {
+        try {
+          await File(file.path).delete();
+        } catch (_) {}
+      }
       final job = compute(normalizeJpeg, (
         bytes: raw,
         maxSide: _jpegSide,
@@ -264,6 +307,19 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
     await _capture(selfie: true);
     if (!mounted || _selfieJob == null) return;
     await _finish(manual: true);
+  }
+
+  /// Đường dự phòng không cần ML Kit: camera hệ thống chụp một ảnh thường.
+  Future<void> _systemCameraFallback() async {
+    _timeout?.cancel();
+    await _stopCamera();
+    if (!mounted) return;
+    final result = await captureSystemSelfie(
+      context,
+      ref.read(kycSelfieCameraProvider),
+    );
+    if (result == null || !mounted) return;
+    Navigator.of(context).pop(result);
   }
 
   /// Chờ các ảnh còn đang mã hóa nền rồi trả kết quả. Dừng nhận khung hình trong lúc chờ.
@@ -361,7 +417,11 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
                             ),
                           ),
                         )
-                      : _Status(stage: _stage, onRetry: _start),
+                      : _Status(
+                          stage: _stage,
+                          onRetry: _start,
+                          onFallback: _systemCameraFallback,
+                        ),
                 ),
               ),
               if (live) ...[
@@ -402,27 +462,60 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
 }
 
 class _Status extends StatelessWidget {
-  const _Status({required this.stage, required this.onRetry});
+  const _Status({
+    required this.stage,
+    required this.onRetry,
+    required this.onFallback,
+  });
 
   final _Stage stage;
   final VoidCallback onRetry;
+  final VoidCallback onFallback;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final style = context.text.bodyMedium?.copyWith(color: Colors.white);
+    Widget fallback() => Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: AppSpacing.md),
+        AppButton(
+          label: l.kycSelfieFallbackButton,
+          icon: Icons.camera_alt_outlined,
+          variant: AppButtonVariant.secondary,
+          onPressed: onFallback,
+          expanded: false,
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          l.kycSelfieFallbackNote,
+          textAlign: TextAlign.center,
+          style: context.text.labelSmall?.copyWith(
+            color: context.colors.inverseMuted,
+          ),
+        ),
+      ],
+    );
     return switch (stage) {
       _Stage.starting => const CircularProgressIndicator(),
       _Stage.denied => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(l.kycCameraDenied, textAlign: TextAlign.center, style: style),
+          fallback(),
         ],
       ),
-      _Stage.unsupported => Text(
-        l.kycLivenessUnsupported,
-        textAlign: TextAlign.center,
-        style: style,
+      _Stage.unsupported => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            l.kycLivenessUnsupported,
+            textAlign: TextAlign.center,
+            style: style,
+          ),
+          fallback(),
+        ],
       ),
       _Stage.failed => Column(
         mainAxisSize: MainAxisSize.min,
@@ -430,6 +523,7 @@ class _Status extends StatelessWidget {
           Text(l.kycLivenessFailed, textAlign: TextAlign.center, style: style),
           const SizedBox(height: AppSpacing.md),
           AppButton(label: l.aiRetry, onPressed: onRetry, expanded: false),
+          fallback(),
         ],
       ),
       _ => const SizedBox.shrink(),

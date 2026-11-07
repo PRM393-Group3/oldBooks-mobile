@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../core/network/network_providers.dart';
 import '../../../core/util/image_picking.dart';
@@ -45,6 +48,63 @@ const kycDocumentMaxSide = 1600;
 const kycDocumentQuality = 88;
 const _kycMaxPickBytes = 15 * 1024 * 1024;
 
+/// Đọc byte của tệp tạm do image_picker/camera tạo rồi xóa tệp ngay. Chỉ xóa
+/// khi tệp nằm trong thư mục tạm của ứng dụng, để không bao giờ xóa nhầm ảnh
+/// gốc của người dùng.
+Future<Uint8List> readAndDeleteTemp(XFile file) async {
+  try {
+    return await file.readAsBytes();
+  } finally {
+    if (!kIsWeb) {
+      try {
+        final tmp = (await getTemporaryDirectory()).path;
+        if (file.path.startsWith(tmp)) await File(file.path).delete();
+      } catch (_) {}
+    }
+  }
+}
+
+const kycSelfieMaxSide = 1280;
+const kycSelfieQuality = 88;
+
+/// Đường chụp selfie KHÔNG cần ML Kit: mở camera hệ thống (ưu tiên camera
+/// trước), trả JPEG đã xoay thẳng, xóa EXIF. `null` nếu hủy; ném
+/// [ImagePickException] nếu máy ảnh không mở được hoặc ảnh không dùng được.
+/// Test ghi đè bằng ảnh có sẵn.
+typedef KycSelfieCamera = Future<Uint8List?> Function();
+
+final kycSelfieCameraProvider = Provider<KycSelfieCamera>((ref) {
+  final picker = ImagePicker();
+  return () async {
+    final XFile? file;
+    try {
+      file = await picker.pickImage(
+        source: ImageSource.camera,
+        preferredCameraDevice: CameraDevice.front,
+        maxWidth: 2400,
+        maxHeight: 2400,
+        imageQuality: 92,
+      );
+    } catch (_) {
+      throw const ImagePickException(ImagePickFailure.unavailable);
+    }
+    if (file == null) return null;
+    final raw = await readAndDeleteTemp(file);
+    if (raw.length > _kycMaxPickBytes) {
+      throw const ImagePickException(ImagePickFailure.tooLarge);
+    }
+    final jpeg = await compute(normalizeJpeg, (
+      bytes: raw,
+      maxSide: kycSelfieMaxSide,
+      quality: kycSelfieQuality,
+    ));
+    if (jpeg == null) {
+      throw const ImagePickException(ImagePickFailure.unsupported);
+    }
+    return jpeg;
+  };
+});
+
 final kycPhotoPickerProvider = Provider<KycPhotoPicker>((ref) {
   final picker = ImagePicker();
   return (source) async {
@@ -62,7 +122,7 @@ final kycPhotoPickerProvider = Provider<KycPhotoPicker>((ref) {
       throw const ImagePickException(ImagePickFailure.unavailable);
     }
     if (file == null) return null;
-    final raw = await file.readAsBytes();
+    final raw = await readAndDeleteTemp(file);
     if (raw.length > _kycMaxPickBytes) {
       throw const ImagePickException(ImagePickFailure.tooLarge);
     }

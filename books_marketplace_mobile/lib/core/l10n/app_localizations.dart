@@ -8894,6 +8894,12 @@ abstract class AppLocalizations {
   /// **'Hồ sơ gần nhất'**
   String get kycLatestTitle;
 
+  /// No description provided for @kycDataPurged.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông tin giấy tờ đã được xóa sau khi xét duyệt.'**
+  String get kycDataPurged;
+
   /// No description provided for @kycSubmittedAt.
   ///
   /// In vi, this message translates to:
@@ -8963,7 +8969,7 @@ abstract class AppLocalizations {
   /// No description provided for @kycIntroStepSelfie.
   ///
   /// In vi, this message translates to:
-  /// **'Chụp ảnh chân dung và làm theo hai yêu cầu ngẫu nhiên như chớp mắt hoặc quay đầu.'**
+  /// **'Chụp ảnh chân dung. Nếu thiết bị hỗ trợ, ứng dụng sẽ yêu cầu chớp mắt hoặc quay đầu; nếu không, bạn chỉ cần chụp một ảnh bình thường.'**
   String get kycIntroStepSelfie;
 
   /// No description provided for @kycIntroStepReview.
@@ -9155,7 +9161,7 @@ abstract class AppLocalizations {
   /// No description provided for @kycSelfieBody.
   ///
   /// In vi, this message translates to:
-  /// **'Giữ điện thoại ngang tầm mặt, ở nơi đủ sáng, không đeo kính râm hay khẩu trang. Ứng dụng sẽ yêu cầu hai thao tác ngẫu nhiên để chắc chắn bạn là người thật.'**
+  /// **'Giữ điện thoại ngang tầm mặt, ở nơi đủ sáng, không đeo kính râm hay khẩu trang. Nếu thiết bị hỗ trợ, ứng dụng sẽ yêu cầu hai thao tác ngẫu nhiên; nếu không, bạn chỉ cần chụp một ảnh bình thường.'**
   String get kycSelfieBody;
 
   /// No description provided for @kycSelfieStart.
@@ -9182,6 +9188,18 @@ abstract class AppLocalizations {
   /// **'Không làm theo được hướng dẫn? Bạn có thể tự chụp, hồ sơ sẽ được admin xem kỹ hơn.'**
   String get kycSelfieManualHint;
 
+  /// No description provided for @kycSelfieFallbackButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp ảnh chân dung bình thường'**
+  String get kycSelfieFallbackButton;
+
+  /// No description provided for @kycSelfieFallbackNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh chụp bình thường (không có thử thách chớp mắt, quay đầu) sẽ được quản trị viên xem kỹ hơn.'**
+  String get kycSelfieFallbackNote;
+
   /// No description provided for @kycLivenessTitle.
   ///
   /// In vi, this message translates to:
@@ -9203,7 +9221,7 @@ abstract class AppLocalizations {
   /// No description provided for @kycLivenessUnsupported.
   ///
   /// In vi, this message translates to:
-  /// **'Chụp chân dung xác minh hiện chỉ hỗ trợ trên Android.'**
+  /// **'Thiết bị này không hỗ trợ chụp chân dung có thử thách. Bạn vẫn có thể chụp một ảnh chân dung bình thường.'**
   String get kycLivenessUnsupported;
 
   /// No description provided for @kycLivenessPrivacy.

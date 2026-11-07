@@ -17,19 +17,23 @@ abstract class FaceFinder {
 class MlKitFaceFinder implements FaceFinder {
   @override
   Future<PixelBox?> largestFace(Uint8List jpeg) async {
-    final dir = await getTemporaryDirectory();
-    final file = File(
-      '${dir.path}/kyc_${DateTime.now().microsecondsSinceEpoch}.jpg',
-    );
-    await file.writeAsBytes(jpeg, flush: true);
-    final detector = FaceDetector(
-      options: FaceDetectorOptions(
-        performanceMode: FaceDetectorMode.accurate,
-        // Mặt trên CCCD nhỏ (khoảng 15-20% bề ngang ảnh).
-        minFaceSize: 0.05,
-      ),
-    );
+    // Thiếu ML Kit (nền tảng không hỗ trợ, plugin lỗi, không có Google Play
+    // services...) thì coi như không thấy mặt: điểm khớp mặt sẽ là null.
+    File? file;
+    FaceDetector? detector;
     try {
+      final dir = await getTemporaryDirectory();
+      file = File(
+        '${dir.path}/kyc_${DateTime.now().microsecondsSinceEpoch}.jpg',
+      );
+      await file.writeAsBytes(jpeg, flush: true);
+      detector = FaceDetector(
+        options: FaceDetectorOptions(
+          performanceMode: FaceDetectorMode.accurate,
+          // Mặt trên CCCD nhỏ (khoảng 15-20% bề ngang ảnh).
+          minFaceSize: 0.05,
+        ),
+      );
       final faces = await detector.processImage(
         InputImage.fromFilePath(file.path),
       );
@@ -41,10 +45,15 @@ class MlKitFaceFinder implements FaceFinder {
       );
       final r = faces.first.boundingBox;
       return PixelBox(r.left, r.top, r.width, r.height);
+    } catch (e) {
+      debugPrint('[KYC] không nhận diện được mặt: ${e.runtimeType}');
+      return null;
     } finally {
-      await detector.close();
       try {
-        await file.delete();
+        await detector?.close();
+      } catch (_) {}
+      try {
+        await file?.delete();
       } catch (_) {}
     }
   }

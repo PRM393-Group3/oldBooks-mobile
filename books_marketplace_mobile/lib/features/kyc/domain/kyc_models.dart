@@ -18,13 +18,15 @@ enum KycStatus {
       values.firstWhere((s) => s.api == v, orElse: () => none);
 }
 
-/// Một hồ sơ đã gửi. Số CCCD chỉ có dạng che (`********1234`).
+/// Một hồ sơ đã gửi. Số CCCD chỉ có dạng che (`********1234`). Sau khi hồ sơ
+/// được quyết định, server xóa họ tên, số CCCD, ngày sinh nên các trường này
+/// là `null`.
 class KycSubmission {
   const KycSubmission({
     required this.id,
     required this.status,
-    required this.fullName,
-    required this.idNumberMasked,
+    this.fullName,
+    this.idNumberMasked,
     this.submittedAt,
     this.reviewedAt,
     this.rejectReason,
@@ -39,8 +41,8 @@ class KycSubmission {
       submittedAt: readDate(j, 'submittedAt'),
       reviewedAt: readDate(j, 'reviewedAt'),
       rejectReason: readString(j, 'rejectReason'),
-      fullName: readString(j, 'fullName') ?? '',
-      idNumberMasked: readString(j, 'idNumberMasked') ?? '',
+      fullName: readString(j, 'fullName'),
+      idNumberMasked: readString(j, 'idNumberMasked'),
       dateOfBirth: readString(j, 'dateOfBirth'),
     );
   }
@@ -50,8 +52,8 @@ class KycSubmission {
   final DateTime? submittedAt;
   final DateTime? reviewedAt;
   final String? rejectReason;
-  final String fullName;
-  final String idNumberMasked;
+  final String? fullName;
+  final String? idNumberMasked;
 
   /// `yyyy-MM-dd`.
   final String? dateOfBirth;
