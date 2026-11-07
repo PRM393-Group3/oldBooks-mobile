@@ -256,6 +256,17 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
     }
   }
 
+  /// Chụp tay khi thử thách tự động không chạy được (ML Kit không thấy mặt, máy yếu...). Không có thử thách liveness nên admin được gắn cờ.
+  Future<void> _manualCapture() async {
+    if (_stage != _Stage.running || _camera == null) return;
+    _timeout?.cancel();
+    await _capture(selfie: true);
+    if (!mounted || _selfie == null) return;
+    Navigator.of(context).pop(
+      LivenessResult(selfie: _selfie!, frames: const [], challenges: const []),
+    );
+  }
+
   void _finish() {
     _timeout?.cancel();
     final selfie = _selfie;
@@ -345,6 +356,21 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
                 _Instruction(session: _session, hint: _hint),
                 const SizedBox(height: AppSpacing.sm),
                 _Dots(session: _session),
+                const SizedBox(height: AppSpacing.md),
+                Text(
+                  l.kycSelfieManualHint,
+                  textAlign: TextAlign.center,
+                  style: context.text.labelSmall?.copyWith(
+                    color: colors.inverseMuted,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                AppButton(
+                  label: l.kycSelfieManualCapture,
+                  icon: Icons.camera_alt_outlined,
+                  variant: AppButtonVariant.secondary,
+                  onPressed: _stage == _Stage.running ? _manualCapture : null,
+                ),
               ],
               if (_stage == _Stage.failed || _stage == _Stage.denied)
                 const SizedBox(height: AppSpacing.sm),
