@@ -8,6 +8,7 @@ import 'package:books_marketplace_mobile/core/l10n/api_error_l10n.dart';
 import 'package:books_marketplace_mobile/core/l10n/app_localizations_vi.dart';
 import 'package:books_marketplace_mobile/features/auctions/domain/auction.dart';
 import 'package:books_marketplace_mobile/features/kyc/data/kyc_repository.dart';
+import 'package:books_marketplace_mobile/features/kyc/domain/cccd_analysis.dart';
 import 'package:books_marketplace_mobile/features/kyc/domain/kyc_models.dart';
 import 'package:books_marketplace_mobile/features/listings/domain/listing.dart';
 import 'package:books_marketplace_mobile/features/notifications/domain/app_notification.dart';
@@ -277,6 +278,73 @@ void main() {
         }
       }
       expect(seenTexts.length, cases.length, reason: 'mỗi mã một câu riêng');
+    });
+  });
+
+  group('AI qua backend', () {
+    test('extract gửi frontBlobName và parse data', () async {
+      setup(
+        (_) => jsonResponse(
+          200,
+          okBody({
+            'fullName': 'NGUYEN VAN AN',
+            'idNumber': '079203001234',
+            'dateOfBirth': '1999-03-05',
+          }),
+        ),
+      );
+      final f = await repo.extractCccd('u1/front.jpg');
+      expect(seen.single.path, '/me/kyc/extract');
+      expect(seen.single.method, 'POST');
+      expect(seen.single.data, {'frontBlobName': 'u1/front.jpg'});
+      expect(f.idNumber, '079203001234');
+      expect(f.dateOfBirth, DateTime(1999, 3, 5));
+    });
+
+    test('check-selfie gửi selfieBlobName và parse issues', () async {
+      setup(
+        (_) => jsonResponse(
+          200,
+          okBody({
+            'usable': false,
+            'issues': ['NO_FACE'],
+          }),
+        ),
+      );
+      final c = await repo.checkSelfie('u1/selfie.jpg');
+      expect(seen.single.path, '/me/kyc/check-selfie');
+      expect(seen.single.data, {'selfieBlobName': 'u1/selfie.jpg'});
+      expect(c.usable, isFalse);
+      expect(c.issues, [SelfieIssue.noFace]);
+    });
+
+    test('AI_UNAVAILABLE (503) -> fallback nhập tay', () async {
+      setup(
+        (_) => jsonResponse(503, {
+          'success': false,
+          'error': {'code': 'AI_UNAVAILABLE', 'message': 'off'},
+          'traceId': 't',
+        }),
+      );
+      final r = await extractWithFallback(() => repo.extractCccd('b'));
+      expect(r.hasFields, isFalse);
+      expect(r.notice, KycAiNotice.none);
+      expect(
+        await checkSelfieWithFallback(() => repo.checkSelfie('b')),
+        isNull,
+      );
+    });
+
+    test('RATE_LIMITED (429) -> thông báo và nhập tay', () async {
+      setup(
+        (_) => jsonResponse(429, {
+          'success': false,
+          'error': {'code': 'RATE_LIMITED', 'message': 'slow'},
+          'traceId': 't',
+        }),
+      );
+      final r = await extractWithFallback(() => repo.extractCccd('b'));
+      expect(r.notice, KycAiNotice.rateLimited);
     });
   });
 

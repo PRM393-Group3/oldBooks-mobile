@@ -103,6 +103,9 @@ enum LivenessChallenge {
 
 enum OcrSource {
   ai('AI'),
+
+  /// Họ tên, số CCCD, ngày sinh đọc bằng Claude qua backend (`/me/kyc/extract`).
+  claude('CLAUDE'),
   manual('MANUAL');
 
   const OcrSource(this.api);

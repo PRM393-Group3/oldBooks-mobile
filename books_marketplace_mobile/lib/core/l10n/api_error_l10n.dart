@@ -108,6 +108,7 @@ extension ApiErrorL10n on ApiError {
       ApiErrorCode.aiQuotaExceeded => l.aiErrQuota,
       ApiErrorCode.aiUpstreamError => l.aiErrUpstream,
       ApiErrorCode.aiConversationNotFound => l.errNotFound,
+      ApiErrorCode.aiNoPendingQuestion => l.aiQuestionExpired,
       ApiErrorCode.upstreamError ||
       ApiErrorCode.serviceUnavailable => l.errUpstream,
       ApiErrorCode.network => l.errorNetwork,

@@ -136,18 +136,27 @@ class ListingVolume {
 
 /// Quyết định duyệt gần nhất. Chỉ chủ tin và admin thấy, người khác nhận `null`.
 class ListingReview {
-  const ListingReview({required this.decision, this.reason, this.createdAt});
+  const ListingReview({
+    required this.decision,
+    this.reason,
+    this.createdAt,
+    this.byAi = false,
+  });
 
   factory ListingReview.fromJson(Map<dynamic, dynamic> j) => ListingReview(
     decision: readString(j, 'decision') ?? '',
     reason: readString(j, 'reason'),
     createdAt: readDate(j, 'createdAt'),
+    byAi: readBool(j, 'byAi') ?? false,
   );
 
   /// `APPROVE`, `REQUEST_CHANGES` hoặc `REJECT`.
   final String decision;
   final String? reason;
   final DateTime? createdAt;
+
+  /// `true` khi AI tự duyệt (chỉ có với `APPROVE`); thiếu thì coi là admin duyệt.
+  final bool byAi;
 }
 
 /// Tin đăng. Dùng cho cả `ListingDto` đầy đủ và `ListingSummaryDto` rút gọn:
@@ -263,6 +272,12 @@ class Listing {
   String? get coverImageUrl => images.isNotEmpty
       ? (images.first.thumbnailUrl ?? images.first.url)
       : coverUrl;
+
+  /// Tin được AI tự duyệt (chỉ chủ tin thấy `lastReview`).
+  bool get approvedByAi =>
+      lastReview != null &&
+      lastReview!.decision == 'APPROVE' &&
+      lastReview!.byAi;
 
   /// Lý do cần hiển thị cho chủ tin khi `NEEDS_CHANGES` hoặc `REJECTED`.
   String? get reviewReason =>

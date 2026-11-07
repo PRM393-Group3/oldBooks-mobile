@@ -3397,6 +3397,9 @@ class AppLocalizationsVi extends AppLocalizations {
       'Đang chờ duyệt, thường trong 24 giờ. Chưa sửa được.';
 
   @override
+  String get mlApprovedByAi => 'Đã duyệt tự động bởi AI';
+
+  @override
   String get mlSubmitted => 'Đã gửi duyệt.';
 
   @override
@@ -5081,11 +5084,11 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get kycIntroPrivacy =>
-      'Ảnh CCCD, ảnh chân dung và các thông tin này là dữ liệu cá nhân nhạy cảm (Nghị định 13/2023/NĐ-CP). Chúng chỉ dùng để xác minh danh tính, được lưu riêng tư và chỉ quản trị viên được xem. Việc nhận diện chữ và khuôn mặt chạy ngay trên điện thoại, không gửi cho bên thứ ba. Bạn có thể yêu cầu xóa dữ liệu bất cứ lúc nào.';
+      'Ảnh CCCD, ảnh chân dung và các thông tin này là dữ liệu cá nhân nhạy cảm (Nghị định 13/2023/NĐ-CP). Chúng chỉ dùng để xác minh danh tính, được lưu riêng tư và chỉ quản trị viên được xem. Để đọc chữ trên CCCD và kiểm tra chất lượng ảnh chân dung, ảnh mặt trước CCCD và ảnh chân dung sẽ được gửi tới nhà cung cấp AI là Anthropic (Claude) để xử lý. Việc nhận diện khuôn mặt và liveness vẫn chạy trên điện thoại. Bạn có thể bỏ qua đọc bằng AI và tự nhập thông tin, và có thể yêu cầu xóa dữ liệu bất cứ lúc nào.';
 
   @override
   String get kycConsentLabel =>
-      'Tôi đồng ý cho Oldbook thu thập và xử lý ảnh CCCD, ảnh chân dung và thông tin cá nhân của tôi để xác minh tài khoản.';
+      'Tôi đồng ý cho Oldbook thu thập và xử lý ảnh CCCD, ảnh chân dung và thông tin cá nhân của tôi để xác minh tài khoản, bao gồm việc gửi ảnh CCCD mặt trước và ảnh chân dung tới nhà cung cấp AI (Anthropic) để đọc chữ và kiểm tra chất lượng ảnh.';
 
   @override
   String get kycDocumentsHint =>
@@ -5132,32 +5135,46 @@ class AppLocalizationsVi extends AppLocalizations {
   String get kycErrDob => 'Nhập ngày sinh dạng dd/MM/yyyy.';
 
   @override
-  String get kycOcrTitle => 'Đọc thông tin CCCD';
+  String get kycOcrReading => 'Đang đọc CCCD bằng AI, vui lòng chờ vài giây…';
 
   @override
-  String get kycOcrIntro =>
-      'AI trên máy sẽ đọc họ tên, số CCCD và ngày sinh từ ảnh mặt trước. Ảnh không rời khỏi điện thoại ở bước này.';
+  String get kycOcrFilled =>
+      'Đã điền thông tin từ ảnh CCCD. AI có thể đọc sai, hãy kiểm tra kỹ rồi sửa nếu cần.';
 
   @override
-  String get kycOcrAnalyzing => 'Đang đọc CCCD, có thể mất vài chục giây.';
+  String get kycOcrNothing =>
+      'AI chưa đọc rõ được CCCD. Hãy nhập thông tin thủ công hoặc chụp lại ảnh sáng và rõ hơn.';
 
   @override
-  String get kycOcrCheckNote =>
-      'AI có thể đọc sai. Hãy kiểm tra kỹ rồi sửa nếu cần.';
+  String get kycOcrRateLimited =>
+      'Bạn thao tác hơi nhanh, hãy nhập thông tin thủ công hoặc thử đọc bằng AI lại sau ít phút.';
 
   @override
-  String get kycOcrApply => 'Dùng thông tin này';
+  String get kycSelfieChecking => 'Đang kiểm tra chất lượng ảnh chân dung…';
 
   @override
-  String get kycOcrEnterManually => 'Tự nhập thông tin';
+  String get kycSelfieRetakeNeeded => 'Ảnh chân dung chưa đạt, hãy chụp lại:';
 
   @override
-  String get kycOcrIncompatibleManual =>
-      'Bạn vẫn có thể tự nhập họ tên, số CCCD và ngày sinh.';
+  String get kycSelfieIssueNoFace => 'Không thấy khuôn mặt trong ảnh.';
 
   @override
-  String get kycOcrErrUnreadable =>
-      'AI chưa đọc rõ được CCCD. Hãy thử lại với ảnh sáng và rõ hơn, hoặc tự nhập thông tin.';
+  String get kycSelfieIssueMultipleFaces =>
+      'Có nhiều hơn một khuôn mặt trong ảnh.';
+
+  @override
+  String get kycSelfieIssueFaceCovered =>
+      'Khuôn mặt bị che (khẩu trang, kính râm, tay...).';
+
+  @override
+  String get kycSelfieIssueBlurryOrDark => 'Ảnh bị mờ hoặc quá tối.';
+
+  @override
+  String get kycSelfieIssueScreenOrPrint =>
+      'Ảnh có vẻ chụp lại từ màn hình hoặc ảnh in.';
+
+  @override
+  String get kycSelfieIssueGeneric => 'Ảnh chân dung không dùng được.';
 
   @override
   String get kycSelfieTitle => 'Ảnh chân dung';
@@ -5480,4 +5497,23 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get aiChatUnavailable => 'Trợ lý đăng bài tạm chưa khả dụng.';
+
+  @override
+  String get aiQuestionOther => 'Khác';
+
+  @override
+  String get aiQuestionOtherHint => 'Nhập câu trả lời của bạn';
+
+  @override
+  String get aiQuestionSend => 'Gửi';
+
+  @override
+  String get aiQuestionTypeMyself => 'Để mình tự gõ';
+
+  @override
+  String get aiQuestionExpired =>
+      'Câu hỏi này không còn hiệu lực. Hãy gõ tin nhắn mới.';
+
+  @override
+  String get aiFabLabel => 'Trợ lý AI đăng bài';
 }

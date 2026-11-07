@@ -6014,6 +6014,12 @@ abstract class AppLocalizations {
   /// **'Đang chờ duyệt, thường trong 24 giờ. Chưa sửa được.'**
   String get mlPendingNote;
 
+  /// No description provided for @mlApprovedByAi.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã duyệt tự động bởi AI'**
+  String get mlApprovedByAi;
+
   /// No description provided for @mlSubmitted.
   ///
   /// In vi, this message translates to:
@@ -8975,13 +8981,13 @@ abstract class AppLocalizations {
   /// No description provided for @kycIntroPrivacy.
   ///
   /// In vi, this message translates to:
-  /// **'Ảnh CCCD, ảnh chân dung và các thông tin này là dữ liệu cá nhân nhạy cảm (Nghị định 13/2023/NĐ-CP). Chúng chỉ dùng để xác minh danh tính, được lưu riêng tư và chỉ quản trị viên được xem. Việc nhận diện chữ và khuôn mặt chạy ngay trên điện thoại, không gửi cho bên thứ ba. Bạn có thể yêu cầu xóa dữ liệu bất cứ lúc nào.'**
+  /// **'Ảnh CCCD, ảnh chân dung và các thông tin này là dữ liệu cá nhân nhạy cảm (Nghị định 13/2023/NĐ-CP). Chúng chỉ dùng để xác minh danh tính, được lưu riêng tư và chỉ quản trị viên được xem. Để đọc chữ trên CCCD và kiểm tra chất lượng ảnh chân dung, ảnh mặt trước CCCD và ảnh chân dung sẽ được gửi tới nhà cung cấp AI là Anthropic (Claude) để xử lý. Việc nhận diện khuôn mặt và liveness vẫn chạy trên điện thoại. Bạn có thể bỏ qua đọc bằng AI và tự nhập thông tin, và có thể yêu cầu xóa dữ liệu bất cứ lúc nào.'**
   String get kycIntroPrivacy;
 
   /// No description provided for @kycConsentLabel.
   ///
   /// In vi, this message translates to:
-  /// **'Tôi đồng ý cho Oldbook thu thập và xử lý ảnh CCCD, ảnh chân dung và thông tin cá nhân của tôi để xác minh tài khoản.'**
+  /// **'Tôi đồng ý cho Oldbook thu thập và xử lý ảnh CCCD, ảnh chân dung và thông tin cá nhân của tôi để xác minh tài khoản, bao gồm việc gửi ảnh CCCD mặt trước và ảnh chân dung tới nhà cung cấp AI (Anthropic) để đọc chữ và kiểm tra chất lượng ảnh.'**
   String get kycConsentLabel;
 
   /// No description provided for @kycDocumentsHint.
@@ -9068,53 +9074,77 @@ abstract class AppLocalizations {
   /// **'Nhập ngày sinh dạng dd/MM/yyyy.'**
   String get kycErrDob;
 
-  /// No description provided for @kycOcrTitle.
+  /// No description provided for @kycOcrReading.
   ///
   /// In vi, this message translates to:
-  /// **'Đọc thông tin CCCD'**
-  String get kycOcrTitle;
+  /// **'Đang đọc CCCD bằng AI, vui lòng chờ vài giây…'**
+  String get kycOcrReading;
 
-  /// No description provided for @kycOcrIntro.
+  /// No description provided for @kycOcrFilled.
   ///
   /// In vi, this message translates to:
-  /// **'AI trên máy sẽ đọc họ tên, số CCCD và ngày sinh từ ảnh mặt trước. Ảnh không rời khỏi điện thoại ở bước này.'**
-  String get kycOcrIntro;
+  /// **'Đã điền thông tin từ ảnh CCCD. AI có thể đọc sai, hãy kiểm tra kỹ rồi sửa nếu cần.'**
+  String get kycOcrFilled;
 
-  /// No description provided for @kycOcrAnalyzing.
+  /// No description provided for @kycOcrNothing.
   ///
   /// In vi, this message translates to:
-  /// **'Đang đọc CCCD, có thể mất vài chục giây.'**
-  String get kycOcrAnalyzing;
+  /// **'AI chưa đọc rõ được CCCD. Hãy nhập thông tin thủ công hoặc chụp lại ảnh sáng và rõ hơn.'**
+  String get kycOcrNothing;
 
-  /// No description provided for @kycOcrCheckNote.
+  /// No description provided for @kycOcrRateLimited.
   ///
   /// In vi, this message translates to:
-  /// **'AI có thể đọc sai. Hãy kiểm tra kỹ rồi sửa nếu cần.'**
-  String get kycOcrCheckNote;
+  /// **'Bạn thao tác hơi nhanh, hãy nhập thông tin thủ công hoặc thử đọc bằng AI lại sau ít phút.'**
+  String get kycOcrRateLimited;
 
-  /// No description provided for @kycOcrApply.
+  /// No description provided for @kycSelfieChecking.
   ///
   /// In vi, this message translates to:
-  /// **'Dùng thông tin này'**
-  String get kycOcrApply;
+  /// **'Đang kiểm tra chất lượng ảnh chân dung…'**
+  String get kycSelfieChecking;
 
-  /// No description provided for @kycOcrEnterManually.
+  /// No description provided for @kycSelfieRetakeNeeded.
   ///
   /// In vi, this message translates to:
-  /// **'Tự nhập thông tin'**
-  String get kycOcrEnterManually;
+  /// **'Ảnh chân dung chưa đạt, hãy chụp lại:'**
+  String get kycSelfieRetakeNeeded;
 
-  /// No description provided for @kycOcrIncompatibleManual.
+  /// No description provided for @kycSelfieIssueNoFace.
   ///
   /// In vi, this message translates to:
-  /// **'Bạn vẫn có thể tự nhập họ tên, số CCCD và ngày sinh.'**
-  String get kycOcrIncompatibleManual;
+  /// **'Không thấy khuôn mặt trong ảnh.'**
+  String get kycSelfieIssueNoFace;
 
-  /// No description provided for @kycOcrErrUnreadable.
+  /// No description provided for @kycSelfieIssueMultipleFaces.
   ///
   /// In vi, this message translates to:
-  /// **'AI chưa đọc rõ được CCCD. Hãy thử lại với ảnh sáng và rõ hơn, hoặc tự nhập thông tin.'**
-  String get kycOcrErrUnreadable;
+  /// **'Có nhiều hơn một khuôn mặt trong ảnh.'**
+  String get kycSelfieIssueMultipleFaces;
+
+  /// No description provided for @kycSelfieIssueFaceCovered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khuôn mặt bị che (khẩu trang, kính râm, tay...).'**
+  String get kycSelfieIssueFaceCovered;
+
+  /// No description provided for @kycSelfieIssueBlurryOrDark.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh bị mờ hoặc quá tối.'**
+  String get kycSelfieIssueBlurryOrDark;
+
+  /// No description provided for @kycSelfieIssueScreenOrPrint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh có vẻ chụp lại từ màn hình hoặc ảnh in.'**
+  String get kycSelfieIssueScreenOrPrint;
+
+  /// No description provided for @kycSelfieIssueGeneric.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh chân dung không dùng được.'**
+  String get kycSelfieIssueGeneric;
 
   /// No description provided for @kycSelfieTitle.
   ///
@@ -9655,6 +9685,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Trợ lý đăng bài tạm chưa khả dụng.'**
   String get aiChatUnavailable;
+
+  /// No description provided for @aiQuestionOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get aiQuestionOther;
+
+  /// No description provided for @aiQuestionOtherHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập câu trả lời của bạn'**
+  String get aiQuestionOtherHint;
+
+  /// No description provided for @aiQuestionSend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi'**
+  String get aiQuestionSend;
+
+  /// No description provided for @aiQuestionTypeMyself.
+  ///
+  /// In vi, this message translates to:
+  /// **'Để mình tự gõ'**
+  String get aiQuestionTypeMyself;
+
+  /// No description provided for @aiQuestionExpired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Câu hỏi này không còn hiệu lực. Hãy gõ tin nhắn mới.'**
+  String get aiQuestionExpired;
+
+  /// No description provided for @aiFabLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trợ lý AI đăng bài'**
+  String get aiFabLabel;
 }
 
 class _AppLocalizationsDelegate
