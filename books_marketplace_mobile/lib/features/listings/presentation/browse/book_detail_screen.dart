@@ -153,7 +153,8 @@ class _Detail extends ConsumerWidget {
             children: [
               _Gallery(listing: listing),
               const SizedBox(height: AppSpacing.md),
-              if (listing.status != ListingStatus.published)
+              if (listing.status != ListingStatus.published ||
+                  listing.approvedByAi)
                 _StatusBanner(listing: listing),
               if (info.condition != null || listing.category != null)
                 Align(
@@ -477,6 +478,7 @@ class _StatusBanner extends StatelessWidget {
     final message = switch (status) {
       ListingStatus.reserved => l.detailReserved,
       ListingStatus.sold => l.detailSold,
+      ListingStatus.published => l.mlApprovedByAi,
       _ => l.detailOwnerStatus(status.label(l)),
     };
     final isProblem =

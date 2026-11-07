@@ -192,6 +192,7 @@ class _ListingCardState extends ConsumerState<_ListingCard> {
     final reason = m.reviewReason;
     final note = switch (status) {
       ListingStatus.pendingReview => l.mlPendingNote,
+      ListingStatus.published when m.approvedByAi => l.mlApprovedByAi,
       ListingStatus.reserved => l.mlReservedNote,
       ListingStatus.rejected when reason == null => l.mlRejectedFinal,
       _ => null,

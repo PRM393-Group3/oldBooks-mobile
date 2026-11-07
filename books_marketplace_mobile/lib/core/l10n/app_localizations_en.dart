@@ -3412,6 +3412,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'In review, usually within 24 hours. It cannot be edited yet.';
 
   @override
+  String get mlApprovedByAi => 'Automatically approved by AI';
+
+  @override
   String get mlSubmitted => 'Submitted for review.';
 
   @override

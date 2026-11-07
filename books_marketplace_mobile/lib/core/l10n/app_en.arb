@@ -2059,6 +2059,7 @@
   "mlReason": "Reason: {reason}",
   "@mlReason": {"placeholders": {"reason": {"type": "String"}}},
   "mlPendingNote": "In review, usually within 24 hours. It cannot be edited yet.",
+  "mlApprovedByAi": "Automatically approved by AI",
   "mlSubmitted": "Submitted for review.",
   "mlUnpublished": "Listing unpublished.",
   "mlSimHeader": "Auctions (simulated)",

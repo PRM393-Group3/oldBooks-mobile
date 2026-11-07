@@ -94,6 +94,18 @@ void main() {
       expect(with_('PUBLISHED').reviewReason, isNull);
     });
 
+    test('lastReview.byAi: mặc định false, AI tự duyệt thì approvedByAi', () {
+      Listing with_(Map<String, Object?> review) => Listing.fromJson({
+        'id': 'x',
+        'status': 'PUBLISHED',
+        'lastReview': review,
+      });
+      expect(with_({'decision': 'APPROVE'}).lastReview!.byAi, isFalse);
+      expect(with_({'decision': 'APPROVE'}).approvedByAi, isFalse);
+      expect(with_({'decision': 'APPROVE', 'byAi': true}).approvedByAi, isTrue);
+      expect(with_({'decision': 'REJECT', 'byAi': true}).approvedByAi, isFalse);
+    });
+
     test('ListingSummaryDto rút gọn: thumbnail làm bìa, categoryId', () {
       final l = Listing.fromJson({
         'id': 'L2',
