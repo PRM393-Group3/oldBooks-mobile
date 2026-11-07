@@ -9170,6 +9170,18 @@ abstract class AppLocalizations {
   /// **'Chụp lại'**
   String get kycSelfieRetake;
 
+  /// No description provided for @kycSelfieManualCapture.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp ngay'**
+  String get kycSelfieManualCapture;
+
+  /// No description provided for @kycSelfieManualHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không làm theo được hướng dẫn? Bạn có thể tự chụp, hồ sơ sẽ được admin xem kỹ hơn.'**
+  String get kycSelfieManualHint;
+
   /// No description provided for @kycLivenessTitle.
   ///
   /// In vi, this message translates to:

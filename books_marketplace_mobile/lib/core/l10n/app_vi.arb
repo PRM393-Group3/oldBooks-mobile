@@ -2659,6 +2659,8 @@
   "kycSelfieBody": "Giữ điện thoại ngang tầm mặt, ở nơi đủ sáng, không đeo kính râm hay khẩu trang. Ứng dụng sẽ yêu cầu hai thao tác ngẫu nhiên để chắc chắn bạn là người thật.",
   "kycSelfieStart": "Bắt đầu chụp",
   "kycSelfieRetake": "Chụp lại",
+  "kycSelfieManualCapture": "Chụp ngay",
+  "kycSelfieManualHint": "Không làm theo được hướng dẫn? Bạn có thể tự chụp, hồ sơ sẽ được admin xem kỹ hơn.",
   "kycLivenessTitle": "Chụp chân dung",
   "kycLivenessDone": "Đã chụp xong chân dung",
   "kycLivenessFailed": "Chưa hoàn thành được bước chụp. Hãy thử lại ở nơi đủ sáng.",

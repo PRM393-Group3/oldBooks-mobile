@@ -5190,6 +5190,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get kycSelfieRetake => 'Chụp lại';
 
   @override
+  String get kycSelfieManualCapture => 'Chụp ngay';
+
+  @override
+  String get kycSelfieManualHint =>
+      'Không làm theo được hướng dẫn? Bạn có thể tự chụp, hồ sơ sẽ được admin xem kỹ hơn.';
+
+  @override
   String get kycLivenessTitle => 'Chụp chân dung';
 
   @override
