@@ -2626,6 +2626,8 @@
   "kycSelfieBody": "Hold the phone at face level in good light, without sunglasses or a mask. The app will ask for two random actions to make sure you are a real person.",
   "kycSelfieStart": "Start",
   "kycSelfieRetake": "Retake",
+  "kycSelfieManualCapture": "Take photo now",
+  "kycSelfieManualHint": "Can't follow the prompts? You can take the photo yourself; an admin will review the application more closely.",
   "kycLivenessTitle": "Take a selfie",
   "kycLivenessDone": "Selfie captured",
   "kycLivenessFailed": "Could not finish the selfie step. Try again somewhere well lit.",

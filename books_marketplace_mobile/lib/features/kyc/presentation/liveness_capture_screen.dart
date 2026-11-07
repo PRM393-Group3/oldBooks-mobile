@@ -31,7 +31,7 @@ final livenessRunnerProvider = Provider<LivenessRunner>(
 const _sessionTimeout = Duration(seconds: 40);
 
 /// Khoảng cách tối thiểu giữa hai khung hình được nhận diện.
-const _frameGap = Duration(milliseconds: 120);
+const _frameGap = Duration(milliseconds: 60);
 
 const _jpegSide = 1280;
 const _jpegQuality = 88;
@@ -67,8 +67,9 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
   bool _busy = false;
   DateTime _lastFrame = DateTime.fromMillisecondsSinceEpoch(0);
 
-  Uint8List? _selfie;
-  final List<Uint8List> _frames = [];
+  // Mã hóa JPEG chạy nền: không chờ trong lúc phát hiện, để thử thách kế tiếp không bị khựng.
+  Future<Uint8List?>? _selfieJob;
+  final List<Future<Uint8List?>> _frameJobs = [];
 
   static const _orientations = {
     DeviceOrientation.portraitUp: 0,
@@ -111,8 +112,8 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
     setState(() {
       _stage = _Stage.starting;
       _hint = FaceHint.noFace;
-      _selfie = null;
-      _frames.clear();
+      _selfieJob = null;
+      _frameJobs.clear();
     });
     _session = LivenessSession(pickChallenges(Random.secure()));
     try {
@@ -199,7 +200,8 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
         luma: image.planes.isEmpty
             ? null
             : meanLuma(
-                image.planes.first.bytes.sublist(
+                Uint8List.sublistView(
+                  image.planes.first.bytes,
                   0,
                   min(
                     image.planes.first.bytes.length,
@@ -219,7 +221,7 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
         case LivenessEvent.challengePassed:
         case LivenessEvent.completed:
           await _capture(selfie: false);
-          if (update.event == LivenessEvent.completed) _finish();
+          if (update.event == LivenessEvent.completed) await _finish();
       }
     } catch (e) {
       debugPrint('[KYC] khung hình lỗi: ${e.runtimeType}');
@@ -238,16 +240,15 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
       try {
         await File(file.path).delete();
       } catch (_) {}
-      final jpeg = await compute(normalizeJpeg, (
+      final job = compute(normalizeJpeg, (
         bytes: raw,
         maxSide: _jpegSide,
         quality: _jpegQuality,
       ));
-      if (jpeg == null) throw StateError('decode');
       if (selfie) {
-        _selfie = jpeg;
+        _selfieJob = job;
       } else {
-        _frames.add(jpeg);
+        _frameJobs.add(job);
       }
       if (mounted) setState(() => _stage = _Stage.running);
     } catch (e) {
@@ -256,17 +257,39 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
     }
   }
 
-  void _finish() {
+  /// Chụp tay khi thử thách tự động không chạy được (ML Kit không thấy mặt, máy yếu...). Không có thử thách liveness nên admin được gắn cờ.
+  Future<void> _manualCapture() async {
+    if (_stage != _Stage.running || _camera == null) return;
     _timeout?.cancel();
-    final selfie = _selfie;
-    if (selfie == null || !mounted) return;
-    Navigator.of(context).pop(
-      LivenessResult(
-        selfie: selfie,
-        frames: List.of(_frames),
-        challenges: List.of(_session.challenges),
-      ),
-    );
+    await _capture(selfie: true);
+    if (!mounted || _selfieJob == null) return;
+    await _finish(manual: true);
+  }
+
+  /// Chờ các ảnh còn đang mã hóa nền rồi trả kết quả. Dừng nhận khung hình trong lúc chờ.
+  Future<void> _finish({bool manual = false}) async {
+    _timeout?.cancel();
+    final selfieJob = _selfieJob;
+    if (selfieJob == null || !mounted) return;
+    setState(() => _stage = _Stage.capturing);
+    try {
+      final selfie = await selfieJob;
+      final frames = manual ? <Uint8List?>[] : await Future.wait(_frameJobs);
+      if (selfie == null || frames.any((f) => f == null)) {
+        throw StateError('encode');
+      }
+      if (!mounted) return;
+      Navigator.of(context).pop(
+        LivenessResult(
+          selfie: selfie,
+          frames: manual ? const [] : [for (final f in frames) f!],
+          challenges: manual ? const [] : List.of(_session.challenges),
+        ),
+      );
+    } catch (e) {
+      debugPrint('[KYC] mã hóa ảnh lỗi: ${e.runtimeType}');
+      if (mounted) _fail();
+    }
   }
 
   /// Dựng [InputImage] từ khung NV21 theo công thức xoay của ví dụ ML Kit.
@@ -345,6 +368,21 @@ class _LivenessCaptureScreenState extends State<LivenessCaptureScreen>
                 _Instruction(session: _session, hint: _hint),
                 const SizedBox(height: AppSpacing.sm),
                 _Dots(session: _session),
+                const SizedBox(height: AppSpacing.md),
+                Text(
+                  l.kycSelfieManualHint,
+                  textAlign: TextAlign.center,
+                  style: context.text.labelSmall?.copyWith(
+                    color: colors.inverseMuted,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                AppButton(
+                  label: l.kycSelfieManualCapture,
+                  icon: Icons.camera_alt_outlined,
+                  variant: AppButtonVariant.secondary,
+                  onPressed: _stage == _Stage.running ? _manualCapture : null,
+                ),
               ],
               if (_stage == _Stage.failed || _stage == _Stage.denied)
                 const SizedBox(height: AppSpacing.sm),

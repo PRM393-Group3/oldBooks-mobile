@@ -5220,6 +5220,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get kycSelfieRetake => 'Retake';
 
   @override
+  String get kycSelfieManualCapture => 'Take photo now';
+
+  @override
+  String get kycSelfieManualHint =>
+      'Can\'t follow the prompts? You can take the photo yourself; an admin will review the application more closely.';
+
+  @override
   String get kycLivenessTitle => 'Take a selfie';
 
   @override
