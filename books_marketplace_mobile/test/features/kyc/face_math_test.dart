@@ -15,6 +15,12 @@ class _FakeFinder implements FaceFinder {
   Future<PixelBox?> largestFace(Uint8List jpeg) async => box;
 }
 
+class _ThrowingFinder implements FaceFinder {
+  @override
+  Future<PixelBox?> largestFace(Uint8List jpeg) =>
+      throw StateError('ML Kit không có');
+}
+
 class _FakeEmbedder implements FaceEmbedder {
   _FakeEmbedder(this.vectors);
   final List<List<double>?> vectors;
@@ -145,6 +151,15 @@ void main() {
       final s = FaceMatchService(_FakeFinder(null), _FakeEmbedder([]));
       expect((await s.match(cccdFront: jpeg, selfie: jpeg)).score, isNull);
     });
+    test(
+      'bộ nhận diện mặt (ML Kit) không dùng được thì điểm null, không ném',
+      () async {
+        final s = FaceMatchService(_ThrowingFinder(), _FakeEmbedder([]));
+        final r = await s.match(cccdFront: jpeg, selfie: jpeg);
+        expect(r.score, isNull);
+        expect(r.modelVersion, 'fake-v1');
+      },
+    );
     test('model không chạy được thì điểm null', () async {
       final s = FaceMatchService(_FakeFinder(box), _FakeEmbedder([null, null]));
       expect((await s.match(cccdFront: jpeg, selfie: jpeg)).score, isNull);

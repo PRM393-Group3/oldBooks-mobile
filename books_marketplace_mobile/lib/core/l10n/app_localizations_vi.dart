@@ -5036,6 +5036,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get kycLatestTitle => 'Hồ sơ gần nhất';
 
   @override
+  String get kycDataPurged =>
+      'Thông tin giấy tờ đã được xóa sau khi xét duyệt.';
+
+  @override
   String get kycSubmittedAt => 'Gửi lúc';
 
   @override
@@ -5072,7 +5076,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get kycIntroStepSelfie =>
-      'Chụp ảnh chân dung và làm theo hai yêu cầu ngẫu nhiên như chớp mắt hoặc quay đầu.';
+      'Chụp ảnh chân dung. Nếu thiết bị hỗ trợ, ứng dụng sẽ yêu cầu chớp mắt hoặc quay đầu; nếu không, bạn chỉ cần chụp một ảnh bình thường.';
 
   @override
   String get kycIntroStepReview =>
@@ -5181,7 +5185,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get kycSelfieBody =>
-      'Giữ điện thoại ngang tầm mặt, ở nơi đủ sáng, không đeo kính râm hay khẩu trang. Ứng dụng sẽ yêu cầu hai thao tác ngẫu nhiên để chắc chắn bạn là người thật.';
+      'Giữ điện thoại ngang tầm mặt, ở nơi đủ sáng, không đeo kính râm hay khẩu trang. Nếu thiết bị hỗ trợ, ứng dụng sẽ yêu cầu hai thao tác ngẫu nhiên; nếu không, bạn chỉ cần chụp một ảnh bình thường.';
 
   @override
   String get kycSelfieStart => 'Bắt đầu chụp';
@@ -5197,6 +5201,13 @@ class AppLocalizationsVi extends AppLocalizations {
       'Không làm theo được hướng dẫn? Bạn có thể tự chụp, hồ sơ sẽ được admin xem kỹ hơn.';
 
   @override
+  String get kycSelfieFallbackButton => 'Chụp ảnh chân dung bình thường';
+
+  @override
+  String get kycSelfieFallbackNote =>
+      'Ảnh chụp bình thường (không có thử thách chớp mắt, quay đầu) sẽ được quản trị viên xem kỹ hơn.';
+
+  @override
   String get kycLivenessTitle => 'Chụp chân dung';
 
   @override
@@ -5208,7 +5219,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get kycLivenessUnsupported =>
-      'Chụp chân dung xác minh hiện chỉ hỗ trợ trên Android.';
+      'Thiết bị này không hỗ trợ chụp chân dung có thử thách. Bạn vẫn có thể chụp một ảnh chân dung bình thường.';
 
   @override
   String get kycLivenessPrivacy =>

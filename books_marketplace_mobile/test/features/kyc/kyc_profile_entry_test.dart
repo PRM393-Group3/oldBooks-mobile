@@ -119,6 +119,37 @@ void main() {
     expect(find.text('Gửi lại hồ sơ'), findsOneWidget);
   });
 
+  testWidgets('hồ sơ đã quyết định, dữ liệu bị xóa: không hiện dòng trống', (
+    tester,
+  ) async {
+    final h = Harness(UserRole.buyer);
+    await _openProfile(
+      tester,
+      h,
+      KycState(
+        status: KycStatus.approved,
+        isVerified: true,
+        canSubmit: false,
+        latest: KycSubmission(
+          id: 's1',
+          status: KycStatus.approved,
+          reviewedAt: DateTime.utc(2026, 1, 3),
+        ),
+      ),
+    );
+
+    await tester.ensureVisible(find.text('Xác minh tài khoản'));
+    await tester.tap(find.text('Xác minh tài khoản'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Thông tin giấy tờ đã được xóa sau khi xét duyệt.'),
+      findsOneWidget,
+    );
+    expect(find.text('Số CCCD'), findsNothing);
+    expect(find.text('Họ và tên'), findsNothing);
+  });
+
   testWidgets('đang bị giới hạn gửi: không có nút gửi lại, có giờ thử lại', (
     tester,
   ) async {

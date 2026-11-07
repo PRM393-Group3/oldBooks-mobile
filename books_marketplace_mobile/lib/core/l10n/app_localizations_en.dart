@@ -5063,6 +5063,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get kycLatestTitle => 'Latest submission';
 
   @override
+  String get kycDataPurged => 'Document details were deleted after review.';
+
+  @override
   String get kycSubmittedAt => 'Submitted';
 
   @override
@@ -5099,7 +5102,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kycIntroStepSelfie =>
-      'Take a selfie and follow two random prompts such as blinking or turning your head.';
+      'Take a selfie. If your device supports it, the app asks you to blink or turn your head; otherwise you simply take a normal photo.';
 
   @override
   String get kycIntroStepReview =>
@@ -5211,7 +5214,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kycSelfieBody =>
-      'Hold the phone at face level in good light, without sunglasses or a mask. The app will ask for two random actions to make sure you are a real person.';
+      'Hold the phone at face level in good light, without sunglasses or a mask. If your device supports it, the app asks for two random actions; otherwise you simply take a normal photo.';
 
   @override
   String get kycSelfieStart => 'Start';
@@ -5227,6 +5230,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Can\'t follow the prompts? You can take the photo yourself; an admin will review the application more closely.';
 
   @override
+  String get kycSelfieFallbackButton => 'Take a normal selfie';
+
+  @override
+  String get kycSelfieFallbackNote =>
+      'A normal photo (without blink or head-turn prompts) will be reviewed more closely by an admin.';
+
+  @override
   String get kycLivenessTitle => 'Take a selfie';
 
   @override
@@ -5238,7 +5248,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kycLivenessUnsupported =>
-      'Selfie verification is currently supported on Android only.';
+      'This device does not support the guided selfie. You can still take a normal selfie.';
 
   @override
   String get kycLivenessPrivacy =>

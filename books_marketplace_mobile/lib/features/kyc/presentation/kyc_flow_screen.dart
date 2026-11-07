@@ -46,10 +46,6 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
   Uint8List? _front;
   Uint8List? _back;
 
-  /// Ảnh mặt trước đã/đang tải lên: dùng lại `blobName` cho `extract` và cho
-  /// hồ sơ, không tải hai lần.
-  KycImage? _frontImage;
-  KycImage? _selfieImage;
   String? _selfieIssues;
   final _name = TextEditingController();
   final _idNumber = TextEditingController();
@@ -66,14 +62,23 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
   String _progress = '';
   String? _error;
   final _idem = IdempotentAction();
-  List<KycImage>? _uploads;
 
   @override
   void dispose() {
+    _clearImages();
     _name.dispose();
     _idNumber.dispose();
     _dob.dispose();
     super.dispose();
+  }
+
+  /// Bỏ mọi ảnh nhạy cảm khỏi bộ nhớ của màn hình (khi xong, hủy, làm lại).
+  void _clearImages() {
+    _front = null;
+    _back = null;
+    _liveness = null;
+    _match = null;
+    _matching = null;
   }
 
   int get _minAge =>
@@ -112,11 +117,9 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
     if (bytes == null || !mounted) return;
     setState(() {
       _front = bytes;
-      _frontImage = KycImage(bytes, fileName: 'cccd-front.jpg');
       _usedClaude = false;
       _match = null;
       _matching = null;
-      _uploads = null;
     });
     // Ảnh mặt trước vừa có: tự đọc bằng AI.
     await _runOcr();
@@ -127,24 +130,25 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
     if (bytes == null || !mounted) return;
     setState(() {
       _back = bytes;
-      _uploads = null;
     });
   }
 
   Future<void> _runOcr() async {
-    final image = _frontImage;
-    if (image == null) return;
+    final front = _front;
+    if (front == null) return;
     final l = context.l10n;
     final repo = ref.read(kycRepositoryProvider);
     final result = await _withBusyDialog(
       l.kycOcrReading,
       () => extractWithFallback(() async {
-        // Tải ảnh lên trước (chỉ một lần), rồi mới nhờ backend đọc.
-        final names = await repo.uploadImages([image]);
+        // Server xóa blob ngay sau khi đọc, nên mỗi lần đọc tải lên mới.
+        final names = await repo.uploadImages([
+          KycImage(front, fileName: 'cccd-front.jpg'),
+        ]);
         return repo.extractCccd(names.first);
       }),
     );
-    if (result == null || !mounted || _frontImage != image) return;
+    if (result == null || !mounted || !identical(_front, front)) return;
     final fields = result.fields;
     if (fields == null) {
       setState(() => _usedClaude = false);
@@ -205,11 +209,9 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
     final selfie = KycImage(result.selfie, fileName: 'selfie.jpg');
     setState(() {
       _liveness = null;
-      _selfieImage = null;
       _selfieIssues = null;
       _match = null;
       _matching = null;
-      _uploads = null;
     });
 
     // Claude kiểm tra chất lượng; lỗi/AI tắt thì bỏ qua, không chặn.
@@ -217,6 +219,7 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
     final check = await _withBusyDialog(
       l.kycSelfieChecking,
       () => checkSelfieWithFallback(() async {
+        // Blob này bị server xóa ngay sau khi kiểm tra; lúc gửi hồ sơ tải lại.
         final names = await repo.uploadImages([selfie]);
         return repo.checkSelfie(names.first);
       }),
@@ -228,7 +231,6 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
     }
     setState(() {
       _liveness = result;
-      _selfieImage = selfie;
     });
     _startMatching();
     AppSnackbar.show(context, l.kycLivenessDone, type: AppSnackbarType.success);
@@ -311,16 +313,18 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
       // Mặt chưa so khớp xong (hoặc ảnh đã đổi) thì chờ; lỗi cũng không chặn gửi.
       final match = _match ?? await (_matching ?? _startMatching());
 
-      _uploads ??= [
-        _frontImage ?? KycImage(front, fileName: 'cccd-front.jpg'),
+      // Mọi ảnh được tải lên mới ở bước gửi (tên blob của extract/check-selfie
+      // đã bị server xóa); thử lại sau lỗi cũng tải lại.
+      final uploads = [
+        KycImage(front, fileName: 'cccd-front.jpg'),
         KycImage(back, fileName: 'cccd-back.jpg'),
-        _selfieImage ?? KycImage(live.selfie, fileName: 'selfie.jpg'),
+        KycImage(live.selfie, fileName: 'selfie.jpg'),
         for (var i = 0; i < live.frames.length; i++)
           KycImage(live.frames[i], fileName: 'liveness-$i.jpg'),
       ];
       final repo = ref.read(kycRepositoryProvider);
       final names = await repo.uploadImages(
-        _uploads!,
+        uploads,
         onProgress: (done, total) {
           if (mounted) {
             setState(() => _progress = l.kycSubmitUploading(done, total));
@@ -350,6 +354,7 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
       _idem.settle();
       ref.invalidate(kycStateProvider);
       if (!mounted) return;
+      setState(_clearImages);
       AppSnackbar.show(context, l.kycSubmitted, type: AppSnackbarType.success);
       context.pop();
     } on ApiError catch (e) {
@@ -673,6 +678,14 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
               icon: Icons.check,
             ),
           ),
+          if (live.challenges.isEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            AppBanner(
+              tone: AppTagTone.info,
+              icon: Icons.info_outline,
+              message: l.kycSelfieFallbackNote,
+            ),
+          ],
           const SizedBox(height: AppSpacing.md),
         ],
         AppButton(
