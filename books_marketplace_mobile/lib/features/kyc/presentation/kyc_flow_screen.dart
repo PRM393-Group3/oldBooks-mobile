@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/config/config_providers.dart';
 import '../../../core/config/public_config.dart';
 import '../../../core/l10n/api_error_l10n.dart';
+import '../../../core/l10n/app_localizations.dart';
 import '../../../core/network/api_error.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/theme_context.dart';
@@ -22,14 +23,15 @@ import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/photo_source_sheet.dart';
 import '../application/kyc_providers.dart';
 import '../data/kyc_repository.dart';
+import '../domain/cccd_analysis.dart';
 import '../domain/kyc_models.dart';
 import '../domain/kyc_rules.dart';
 import '../face/face_match_service.dart';
-import 'cccd_ai_sheet.dart';
 import 'liveness_capture_screen.dart';
 
 /// Luồng gửi hồ sơ eKYC: đồng ý -> giấy tờ -> selfie liveness -> xem lại và gửi.
-/// Mọi AI chạy trên máy; admin là người quyết định.
+/// Đọc CCCD và kiểm tra selfie nhờ Claude qua backend (lỗi thì nhập tay / bỏ
+/// qua); khuôn mặt và liveness chạy trên máy; admin là người quyết định.
 class KycFlowScreen extends ConsumerStatefulWidget {
   const KycFlowScreen({super.key});
 
@@ -43,10 +45,16 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
 
   Uint8List? _front;
   Uint8List? _back;
+
+  /// Ảnh mặt trước đã/đang tải lên: dùng lại `blobName` cho `extract` và cho
+  /// hồ sơ, không tải hai lần.
+  KycImage? _frontImage;
+  KycImage? _selfieImage;
+  String? _selfieIssues;
   final _name = TextEditingController();
   final _idNumber = TextEditingController();
   final _dob = TextEditingController();
-  bool _usedAi = false;
+  bool _usedClaude = false;
   bool _showFieldErrors = false;
   Map<String, String> _serverFieldErrors = const {};
 
@@ -104,11 +112,13 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
     if (bytes == null || !mounted) return;
     setState(() {
       _front = bytes;
+      _frontImage = KycImage(bytes, fileName: 'cccd-front.jpg');
+      _usedClaude = false;
       _match = null;
       _matching = null;
       _uploads = null;
     });
-    // Ảnh mặt trước vừa có: mời đọc tự động bằng AI.
+    // Ảnh mặt trước vừa có: tự đọc bằng AI.
     await _runOcr();
   }
 
@@ -122,12 +132,34 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
   }
 
   Future<void> _runOcr() async {
-    final front = _front;
-    if (front == null) return;
-    final fields = await showCccdAiSheet(context, front);
-    if (fields == null || !mounted) return;
+    final image = _frontImage;
+    if (image == null) return;
+    final l = context.l10n;
+    final repo = ref.read(kycRepositoryProvider);
+    final result = await _withBusyDialog(
+      l.kycOcrReading,
+      () => extractWithFallback(() async {
+        // Tải ảnh lên trước (chỉ một lần), rồi mới nhờ backend đọc.
+        final names = await repo.uploadImages([image]);
+        return repo.extractCccd(names.first);
+      }),
+    );
+    if (result == null || !mounted || _frontImage != image) return;
+    final fields = result.fields;
+    if (fields == null) {
+      setState(() => _usedClaude = false);
+      final msg = switch (result.notice) {
+        KycAiNotice.rateLimited => l.kycOcrRateLimited,
+        KycAiNotice.nothingRead => l.kycOcrNothing,
+        KycAiNotice.none => null,
+      };
+      if (msg != null) {
+        AppSnackbar.show(context, msg, type: AppSnackbarType.error);
+      }
+      return;
+    }
     setState(() {
-      _usedAi = true;
+      _usedClaude = true;
       if (fields.fullName != null) _name.text = fields.fullName!;
       if (fields.idNumber != null) _idNumber.text = fields.idNumber!;
       if (fields.dateOfBirth != null) {
@@ -135,21 +167,87 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
       }
       _serverFieldErrors = const {};
     });
+    AppSnackbar.show(context, l.kycOcrFilled, type: AppSnackbarType.success);
+  }
+
+  /// Hộp thoại chờ không đóng được trong lúc chạy [task].
+  Future<T?> _withBusyDialog<T>(String message, Future<T> Function() task) {
+    final nav = Navigator.of(context, rootNavigator: true);
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          content: Row(
+            children: [
+              const SizedBox(
+                width: 28,
+                height: 28,
+                child: CircularProgressIndicator(strokeWidth: 3),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(child: Text(message)),
+            ],
+          ),
+        ),
+      ),
+    );
+    return task().whenComplete(() {
+      if (nav.mounted) nav.pop();
+    });
   }
 
   Future<void> _runLiveness() async {
     final l = context.l10n;
     final result = await ref.read(livenessRunnerProvider)(context);
     if (result == null || !mounted) return;
+    final selfie = KycImage(result.selfie, fileName: 'selfie.jpg');
     setState(() {
-      _liveness = result;
+      _liveness = null;
+      _selfieImage = null;
+      _selfieIssues = null;
       _match = null;
       _matching = null;
       _uploads = null;
     });
-    _startMatching();
+
+    // Claude kiểm tra chất lượng; lỗi/AI tắt thì bỏ qua, không chặn.
+    final repo = ref.read(kycRepositoryProvider);
+    final check = await _withBusyDialog(
+      l.kycSelfieChecking,
+      () => checkSelfieWithFallback(() async {
+        final names = await repo.uploadImages([selfie]);
+        return repo.checkSelfie(names.first);
+      }),
+    );
     if (!mounted) return;
+    if (check != null && !check.usable) {
+      setState(() => _selfieIssues = _selfieIssueText(l, check));
+      return;
+    }
+    setState(() {
+      _liveness = result;
+      _selfieImage = selfie;
+    });
+    _startMatching();
     AppSnackbar.show(context, l.kycLivenessDone, type: AppSnackbarType.success);
+  }
+
+  String _selfieIssueText(AppLocalizations l, SelfieCheck check) {
+    final lines = check.issues.isEmpty
+        ? [l.kycSelfieIssueGeneric]
+        : [
+            for (final i in check.issues)
+              switch (i) {
+                SelfieIssue.noFace => l.kycSelfieIssueNoFace,
+                SelfieIssue.multipleFaces => l.kycSelfieIssueMultipleFaces,
+                SelfieIssue.faceCovered => l.kycSelfieIssueFaceCovered,
+                SelfieIssue.blurryOrDark => l.kycSelfieIssueBlurryOrDark,
+                SelfieIssue.screenOrPrint => l.kycSelfieIssueScreenOrPrint,
+              },
+          ];
+    return '${l.kycSelfieRetakeNeeded}\n${lines.map((e) => '• $e').join('\n')}';
   }
 
   /// So khớp mặt chạy nền ngay sau khi có selfie để lúc gửi không phải chờ.
@@ -214,9 +312,9 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
       final match = _match ?? await (_matching ?? _startMatching());
 
       _uploads ??= [
-        KycImage(front, fileName: 'cccd-front.jpg'),
+        _frontImage ?? KycImage(front, fileName: 'cccd-front.jpg'),
         KycImage(back, fileName: 'cccd-back.jpg'),
-        KycImage(live.selfie, fileName: 'selfie.jpg'),
+        _selfieImage ?? KycImage(live.selfie, fileName: 'selfie.jpg'),
         for (var i = 0; i < live.frames.length; i++)
           KycImage(live.frames[i], fileName: 'liveness-$i.jpg'),
       ];
@@ -242,7 +340,7 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
           livenessBlobNames: names.sublist(3),
           clientInfo: KycClientInfo(
             faceMatchScore: match?.score,
-            ocrSource: _usedAi ? OcrSource.ai : OcrSource.manual,
+            ocrSource: _usedClaude ? OcrSource.claude : OcrSource.manual,
             modelVersion: _modelVersion(match),
             livenessChallenges: live.challenges,
           ),
@@ -268,7 +366,7 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
 
   String? _modelVersion(FaceMatchResult? match) {
     final parts = [
-      if (_usedAi) 'gemma-4-e2b-it',
+      if (_usedClaude) 'claude',
       if (match?.score != null) match!.modelVersion,
     ];
     return parts.isEmpty ? null : parts.join('+');
@@ -549,6 +647,14 @@ class _KycFlowScreenState extends ConsumerState<KycFlowScreen> {
           style: context.text.bodyMedium?.copyWith(color: colors.textSecondary),
         ),
         const SizedBox(height: AppSpacing.md),
+        if (_selfieIssues != null && live == null) ...[
+          AppBanner(
+            tone: AppTagTone.error,
+            icon: Icons.error_outline,
+            message: _selfieIssues!,
+          ),
+          const SizedBox(height: AppSpacing.md),
+        ],
         if (live != null) ...[
           Center(
             child: ClipOval(
