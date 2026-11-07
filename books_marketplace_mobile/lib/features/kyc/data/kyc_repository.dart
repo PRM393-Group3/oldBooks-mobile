@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import '../../../core/network/api_client.dart';
 import '../../../core/network/blob_uploader.dart';
+import '../domain/cccd_analysis.dart';
 import '../domain/kyc_models.dart';
 
 /// Ảnh KYC chờ tải lên. Sau khi tải xong, [blobName] được ghi lại để lần thử
@@ -52,6 +53,23 @@ class KycRepository {
     }
     return [for (final i in images) i.blobName!];
   }
+
+  /// Claude đọc mặt trước CCCD đã tải lên kho riêng tư (`POST /me/kyc/extract`).
+  /// Có thể ném `AI_UNAVAILABLE`, `KYC_AI_FAILED`, `RATE_LIMITED`,
+  /// `KYC_IMAGE_INVALID`; UI gọi qua `extractWithFallback`.
+  Future<CccdFields> extractCccd(String frontBlobName) => _api.post(
+    '/me/kyc/extract',
+    body: {'frontBlobName': frontBlobName},
+    parse: CccdFields.fromJson,
+  );
+
+  /// Claude kiểm tra chất lượng selfie đã tải lên (`POST /me/kyc/check-selfie`).
+  /// UI gọi qua `checkSelfieWithFallback`.
+  Future<SelfieCheck> checkSelfie(String selfieBlobName) => _api.post(
+    '/me/kyc/check-selfie',
+    body: {'selfieBlobName': selfieBlobName},
+    parse: SelfieCheck.fromJson,
+  );
 
   Future<KycSubmission> submit(
     KycSubmitRequest request, {

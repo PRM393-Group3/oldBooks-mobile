@@ -1,9 +1,26 @@
+import '../../../core/network/api_error.dart';
+import '../../../core/util/json_read.dart';
 import 'kyc_rules.dart';
 
-/// Thông tin Gemma đọc từ mặt trước CCCD. Trường không đọc được thì `null`.
-/// Người dùng luôn xem và sửa lại, admin mới là người quyết định.
+/// Thông tin Claude đọc từ mặt trước CCCD (`POST /me/kyc/extract`). Trường
+/// không đọc được thì `null`. Người dùng luôn xem và sửa lại, admin mới là
+/// người quyết định.
 class CccdFields {
   const CccdFields({this.fullName, this.idNumber, this.dateOfBirth});
+
+  /// Đọc `data` của `/me/kyc/extract`. Giá trị sai định dạng bị bỏ (coi như
+  /// không đọc được) để người dùng tự nhập, không làm hỏng form.
+  factory CccdFields.fromJson(dynamic json) {
+    if (json is! Map) return const CccdFields();
+    final name = readString(json, 'fullName')?.trim();
+    final id = readString(json, 'idNumber')?.replaceAll(RegExp(r'\s'), '');
+    final dob = readString(json, 'dateOfBirth');
+    return CccdFields(
+      fullName: name != null && isValidFullName(name) ? name : null,
+      idNumber: id != null && isValidIdNumber(id) ? id : null,
+      dateOfBirth: _parseApiDate(dob),
+    );
+  }
 
   final String? fullName;
 
@@ -15,74 +32,125 @@ class CccdFields {
       fullName == null && idNumber == null && dateOfBirth == null;
 }
 
-/// Lời nhắc gửi model. Tiếng Anh vì model nhỏ làm theo tốt hơn; từng trường
-/// một dòng để [previewCccd] đọc được khi model đang sinh dần.
-const cccdPrompt =
-    'This is the front of a Vietnamese citizen identity card (CCCD). Read only '
-    'what is clearly printed on the card; never guess or invent. Write UNKNOWN '
-    'for anything you cannot read. Answer with exactly these lines and nothing '
-    'else:\n'
-    'FULL_NAME: <full name in capital letters as printed, or UNKNOWN>\n'
-    'ID_NUMBER: <the 12-digit identity number, digits only, or UNKNOWN>\n'
-    'DATE_OF_BIRTH: <date of birth as dd/MM/yyyy, or UNKNOWN>';
-
-/// Giá trị model hay điền khi không đọc được; coi như không có.
-final _emptyValue = RegExp(
-  r'^(unknown|none|n/?a|null|nil|-+|không rõ|không có|không biết)\.?$',
-  caseSensitive: false,
-);
-
-String _clean(String s) => s
-    .replaceAll(RegExp(r'\s+'), ' ')
-    .replaceAll(RegExp('^["\'“*]+|["\'”*]+\$'), '')
-    .trim();
-
-/// Lấy giá trị một dòng `KEY: value`. Dòng chưa xuống dòng là dòng model còn
-/// đang viết nên bị bỏ qua, trừ khi [last] (câu trả lời đã xong).
-String? _field(String text, String key, {required bool last}) {
-  final m = RegExp(
-    '^\\W*$key\\s*[:：]\\s*(.*?)(\\n|\$)',
-    caseSensitive: false,
-    multiLine: true,
-  ).firstMatch(text);
-  if (m == null) return null;
-  if (m.group(2)!.isEmpty && !last) return null;
-  final v = _clean(m.group(1)!);
-  return v.isEmpty || _emptyValue.hasMatch(v) ? null : v;
-}
-
-/// Lấy đúng 12 chữ số, chấp nhận dấu cách hoặc dấu chấm xen giữa. Sai số chữ số
-/// thì bỏ (model hay đọc thiếu/thừa một số).
-String? _idNumber(String? v) {
+/// `yyyy-MM-dd` -> ngày, `null` nếu sai định dạng hoặc ngày không có thật.
+DateTime? _parseApiDate(String? v) {
   if (v == null) return null;
-  final digits = v.replaceAll(RegExp(r'[\s.\-]'), '');
-  return isValidIdNumber(digits) ? digits : null;
+  final m = RegExp(r'^(\d{4})-(\d{2})-(\d{2})$').firstMatch(v.trim());
+  if (m == null) return null;
+  final y = int.parse(m.group(1)!);
+  final mo = int.parse(m.group(2)!);
+  final d = int.parse(m.group(3)!);
+  final date = DateTime(y, mo, d);
+  if (date.year != y || date.month != mo || date.day != d) return null;
+  return date;
 }
 
-/// Họ tên: bỏ giá trị có chữ số hoặc quá ngắn.
-String? _name(String? v) {
-  if (v == null || !isValidFullName(v)) return null;
-  return v;
+/// Vì sao OCR không điền được gì, để UI báo đúng. Mọi trường hợp đều quay về
+/// nhập tay.
+enum KycAiNotice {
+  /// Không báo gì (AI tắt, Claude lỗi, mất mạng): im lặng chuyển sang nhập tay.
+  none,
+
+  /// Đọc xong nhưng không trường nào dùng được.
+  nothingRead,
+
+  /// Quá giới hạn tần suất (429).
+  rateLimited,
 }
 
-/// Đọc phần đã sinh ra để hiện dần. [done] cho phép đọc cả dòng cuối chưa xuống
-/// dòng. Chịu được chữ thừa quanh các dòng.
-CccdFields previewCccd(String raw, {bool done = false, DateTime? now}) {
-  return CccdFields(
-    fullName: _name(_field(raw, 'full[_ ]?name', last: done)),
-    idNumber: _idNumber(
-      _field(raw, '(?:id[_ ]?number|id[_ ]?no|number)', last: done),
-    ),
-    dateOfBirth: parseVnDate(
-      _field(raw, '(?:date[_ ]?of[_ ]?birth|dob|birth[_ ]?date)', last: done),
-      now: now,
-    ),
-  );
+/// Kết quả một lần đọc CCCD, đã áp dụng quy tắc fallback.
+class CccdExtraction {
+  const CccdExtraction(this.fields, [this.notice = KycAiNotice.none]);
+
+  /// `null` khi phải nhập tay.
+  final CccdFields? fields;
+  final KycAiNotice notice;
+
+  /// Có trường nào từ Claude: ocrSource gửi đi là CLAUDE, ngược lại MANUAL.
+  bool get hasFields => fields != null && !fields!.isEmpty;
 }
 
-/// Đọc câu trả lời hoàn chỉnh. Trả `null` nếu không đọc được trường nào.
-CccdFields? parseCccd(String raw, {DateTime? now}) {
-  if (raw.trim().isEmpty) return null;
-  final f = previewCccd(raw, done: true, now: now);
-  return f.isEmpty ? null : f;
+/// Chạy [call] (gọi `/me/kyc/extract`) và không bao giờ ném lỗi: mọi lỗi
+/// (`AI_UNAVAILABLE`, `KYC_AI_FAILED`, `KYC_IMAGE_INVALID`, mạng, lạ) đều về
+/// nhập tay; riêng `RATE_LIMITED` kèm [KycAiNotice.rateLimited].
+Future<CccdExtraction> extractWithFallback(
+  Future<CccdFields> Function() call,
+) async {
+  try {
+    final fields = await call();
+    if (fields.isEmpty) {
+      return const CccdExtraction(null, KycAiNotice.nothingRead);
+    }
+    return CccdExtraction(fields);
+  } on ApiError catch (e) {
+    return CccdExtraction(
+      null,
+      e.code == ApiErrorCode.rateLimited
+          ? KycAiNotice.rateLimited
+          : KycAiNotice.none,
+    );
+  } catch (_) {
+    return const CccdExtraction(null);
+  }
+}
+
+/// Lỗi chất lượng selfie backend trả trong `issues`.
+enum SelfieIssue {
+  noFace('NO_FACE'),
+  multipleFaces('MULTIPLE_FACES'),
+  faceCovered('FACE_COVERED'),
+  blurryOrDark('BLURRY_OR_DARK'),
+  screenOrPrint('SCREEN_OR_PRINT');
+
+  const SelfieIssue(this.api);
+  final String api;
+
+  static SelfieIssue? fromApi(String? v) {
+    for (final i in values) {
+      if (i.api == v) return i;
+    }
+    return null;
+  }
+}
+
+/// Kết quả `POST /me/kyc/check-selfie`.
+class SelfieCheck {
+  const SelfieCheck({required this.usable, this.issues = const []});
+
+  /// `usable` thiếu thì coi là dùng được (không chặn người dùng vì dữ liệu lạ).
+  factory SelfieCheck.fromJson(dynamic json) {
+    if (json is! Map) return const SelfieCheck(usable: true);
+    final raw = json['issues'];
+    return SelfieCheck(
+      usable: readBool(json, 'usable') ?? true,
+      issues: [
+        if (raw is List)
+          for (final v in raw) ?SelfieIssue.fromApi(v is String ? v : null),
+      ],
+    );
+  }
+
+  final bool usable;
+
+  /// Chỉ gồm mã đã biết; mã lạ bị bỏ (UI dùng câu chung nếu danh sách rỗng).
+  final List<SelfieIssue> issues;
+}
+
+/// Chạy [call] (gọi `/me/kyc/check-selfie`). Trả `null` = bỏ qua kiểm tra và
+/// cho đi tiếp: AI tắt, Claude lỗi, hết lượt, mất mạng hay lỗi lạ đều không
+/// được chặn người dùng. Riêng `KYC_IMAGE_INVALID` nghĩa là ảnh không dùng
+/// được nên bắt chụp lại.
+Future<SelfieCheck?> checkSelfieWithFallback(
+  Future<SelfieCheck> Function() call,
+) async {
+  try {
+    return await call();
+  } on ApiError catch (e) {
+    if (e.code == ApiErrorCode.kycImageInvalid) {
+      return const SelfieCheck(usable: false);
+    }
+    return null;
+  } catch (_) {
+    return null;
+  }
 }

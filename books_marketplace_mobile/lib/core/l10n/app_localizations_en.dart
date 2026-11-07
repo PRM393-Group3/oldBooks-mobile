@@ -5111,11 +5111,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kycIntroPrivacy =>
-      'ID card photos, your selfie and these details are sensitive personal data (Decree 13/2023/ND-CP). They are used only to verify your identity, stored privately and visible to admins only. Text and face recognition run on your phone and are not sent to third parties. You can ask us to delete your data at any time.';
+      'ID card photos, your selfie and these details are sensitive personal data (Decree 13/2023/ND-CP). They are used only to verify your identity, stored privately and visible to admins only. To read the text on your ID card and check selfie quality, the front ID card photo and your selfie are sent to an AI provider, Anthropic (Claude), for processing. Face matching and liveness still run on your phone. You can skip AI reading and type the details yourself, and you can ask us to delete your data at any time.';
 
   @override
   String get kycConsentLabel =>
-      'I agree that Oldbook may collect and process my ID card photos, selfie and personal details to verify my account.';
+      'I agree that Oldbook may collect and process my ID card photos, selfie and personal details to verify my account, including sending the front ID card photo and my selfie to an AI provider (Anthropic) to read the text and check photo quality.';
 
   @override
   String get kycDocumentsHint =>
@@ -5163,33 +5163,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get kycErrDob => 'Enter the date of birth as dd/MM/yyyy.';
 
   @override
-  String get kycOcrTitle => 'Read ID card details';
+  String get kycOcrReading =>
+      'Reading the ID card with AI, please wait a few seconds…';
 
   @override
-  String get kycOcrIntro =>
-      'On-device AI will read the name, ID number and date of birth from the front photo. The photo does not leave your phone at this step.';
+  String get kycOcrFilled =>
+      'Details filled in from the ID card photo. AI can misread, so please check carefully and correct if needed.';
 
   @override
-  String get kycOcrAnalyzing =>
-      'Reading the ID card, this can take a few dozen seconds.';
+  String get kycOcrNothing =>
+      'The AI could not read the ID card clearly. Enter the details yourself or retake a brighter, sharper photo.';
 
   @override
-  String get kycOcrCheckNote =>
-      'AI can misread. Please check carefully and correct if needed.';
+  String get kycOcrRateLimited =>
+      'You are going a bit fast. Enter the details manually or try reading with AI again in a few minutes.';
 
   @override
-  String get kycOcrApply => 'Use these details';
+  String get kycSelfieChecking => 'Checking selfie quality…';
 
   @override
-  String get kycOcrEnterManually => 'Enter manually';
+  String get kycSelfieRetakeNeeded =>
+      'The selfie is not good enough, please retake it:';
 
   @override
-  String get kycOcrIncompatibleManual =>
-      'You can still type your name, ID number and date of birth yourself.';
+  String get kycSelfieIssueNoFace => 'No face was found in the photo.';
 
   @override
-  String get kycOcrErrUnreadable =>
-      'The AI could not read the ID card clearly. Try a brighter, sharper photo, or enter the details yourself.';
+  String get kycSelfieIssueMultipleFaces =>
+      'There is more than one face in the photo.';
+
+  @override
+  String get kycSelfieIssueFaceCovered =>
+      'Your face is covered (mask, sunglasses, hand...).';
+
+  @override
+  String get kycSelfieIssueBlurryOrDark => 'The photo is blurry or too dark.';
+
+  @override
+  String get kycSelfieIssueScreenOrPrint =>
+      'The photo looks like it was taken of a screen or a printout.';
+
+  @override
+  String get kycSelfieIssueGeneric => 'The selfie cannot be used.';
 
   @override
   String get kycSelfieTitle => 'Selfie';
