@@ -2059,6 +2059,7 @@
   "mlReason": "Lý do: {reason}",
   "@mlReason": {"placeholders": {"reason": {"type": "String"}}},
   "mlPendingNote": "Đang chờ duyệt, thường trong 24 giờ. Chưa sửa được.",
+  "mlApprovedByAi": "Đã duyệt tự động bởi AI",
   "mlSubmitted": "Đã gửi duyệt.",
   "mlUnpublished": "Đã gỡ tin.",
   "mlSimHeader": "Đấu giá (mô phỏng)",

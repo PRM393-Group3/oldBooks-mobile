@@ -6014,6 +6014,12 @@ abstract class AppLocalizations {
   /// **'Đang chờ duyệt, thường trong 24 giờ. Chưa sửa được.'**
   String get mlPendingNote;
 
+  /// No description provided for @mlApprovedByAi.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã duyệt tự động bởi AI'**
+  String get mlApprovedByAi;
+
   /// No description provided for @mlSubmitted.
   ///
   /// In vi, this message translates to:

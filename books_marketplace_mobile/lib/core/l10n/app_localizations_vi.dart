@@ -3397,6 +3397,9 @@ class AppLocalizationsVi extends AppLocalizations {
       'Đang chờ duyệt, thường trong 24 giờ. Chưa sửa được.';
 
   @override
+  String get mlApprovedByAi => 'Đã duyệt tự động bởi AI';
+
+  @override
   String get mlSubmitted => 'Đã gửi duyệt.';
 
   @override
